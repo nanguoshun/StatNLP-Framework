@@ -1,0 +1,32 @@
+Haha O
+.. O
+now O
+she B-NP
+asking O
+why O
+no B-NP
+sound I-NP
+. O
+
+Haha O
+I B-NP
+just O
+board O
+the B-NP
+bus I-NP
+from O
+np B-NP
+only O
+. O
+Think O
+will O
+reach O
+about O
+<DECIMAL> B-NP
+. O
+Take O
+your B-NP
+time I-NP
+bah O
+. O
+

@@ -1,0 +1,1360 @@
+CNN20001102 .1400.1483 NEWS STORY 11/02/2000 14:24:43.89
+NN CD NN NN CD CD
+
+
+
+tommy lee jones may start chasing after an accused criminal once more .
+NN NN NNS MD VB VBG IN DT VBN JJ RB RBR .
+0,2,PER|9,9,PER
+
+
+he 's in talks to star in the " the hunted . "
+PRP VBZ IN NNS TO VB IN DT `` DT VBN . ''
+0,0,PER
+
+
+and that would pair him again with director william friedkin .
+CC DT MD VB PRP RB IN NN NN JJ .
+4,4,PER|8,9,PER
+Personal/Social 4,4 PER 8,9 PER
+
+the duo just teamed on " rules of engagement . "
+DT NN RB VBD IN `` NNS IN NN . ''
+1,1,PER
+
+
+jones would play a famous fbi tracker leading a manhunt for a killer .
+NNS MD VB DT JJ NN NN VBG DT NN IN DT NN .
+0,0,PER|6,6,PER|5,5,ORG|12,12,PER
+Employee/Membership/Subsidiary 6,6 PER 5,5 ORG
+
+11/02/2000 14:25:00.53
+CD CD
+
+
+
+NBC20001026 .1830.0047 NEWS STORY 10/26/2000 18:30:47.70
+NN CD NN NN CD CD
+
+
+
+good evening .
+JJ NN .
+
+
+
+there is n't a national poll in the race between vice president al gore and governor george w. bush that shows a clear advantage for one or the other with two weekends to go .
+EX VBZ RB DT JJ NN IN DT NN IN NN NN NNP VB CC NN VBP JJ NN WDT VBZ DT JJ NN IN CD CC DT JJ IN CD NNS TO VB .
+4,4,GPE|12,13,PER|11,11,PER|16,18,PER|15,15,PER|25,25,PER|28,28,PER
+
+
+according to today 's msnbc/reuters tracking poll , gore is hanging onto a two-point lead over bush for the second day in a row .
+VBG TO NN POS NNS VBG NN , VBP VBZ VBG IN DT JJ NN IN NN IN DT JJ NN IN DT NN .
+4,4,ORG|4,4,ORG|8,8,PER|16,16,PER
+
+
+but all these polls , it 's important to point out , are within a margin of error that could flip the results .
+CC PDT DT NNS , PRP VBZ JJ TO VB RP , VBP IN DT NN IN NN WDT MD VB DT NNS .
+
+
+
+what they 're really telling us is that the race appears to be a dead heat .
+WP PRP VBP RB VBG PRP VBZ IN DT NN VBZ TO VB DT JJ NN .
+
+
+
+and with time running short , the final strategies are taking a sharper form .
+CC IN NN VBG RB , DT JJ NNS VBP VBG DT JJR NN .
+
+
+
+nbc 's david gregory is with the governor again tonight , claire shipman with the vice president .
+NN POS NN NN VBZ IN DT NN RB RB , VBP NN IN DT NN NN .
+2,3,PER|0,0,ORG|7,7,PER|11,12,PER|16,16,PER
+Personal/Social 2,3 PER 7,7 PER|Employee/Membership/Subsidiary 2,3 PER 0,0 ORG|Personal/Social 11,12 PER 16,16 PER
+
+claire , the gore campaign worried about ralph nader .
+NN , DT VBP NN JJ IN NN NN .
+0,0,PER|4,4,ORG|3,3,PER|7,8,PER
+Employee/Membership/Subsidiary 3,3 PER 4,4 ORG
+
+reporter : tom , the greening of al gore today -- his environmental message has n't always been a priority on the campaign trail , but now , with fears of ralph nader 's growing support , it could be critical .
+NN : NN , DT NN IN NNP VBP NN : PRP$ JJ NN VBZ RB RB VBN DT NN IN DT NN NN , CC RB , IN NNS IN NN NN POS VBG NN , PRP MD VB JJ .
+2,2,PER|7,8,PER|11,11,PER|31,32,PER
+
+
+al gore , today hopscotching across the midwest , reminding voters of his environmentalist credentials .
+NNP VBP , NN VBG IN DT JJ , VBG NNS IN PRP$ NN NNS .
+0,1,PER|7,7,LOC|10,10,PER|12,12,PER|13,13,PER
+Physical 0,1 PER 7,7 LOC
+
+together , we can clean up the environment .
+RB , PRP MD VB RP DT NN .
+2,2,PER
+
+
+reporter : seizing on a new u.n. report about global warming , he pitches his message in diners .
+NN : VBG IN DT JJ NN NN IN JJ NN , PRP VBZ PRP$ NN IN NNS .
+6,6,ORG|9,9,LOC|12,12,PER|14,14,PER|17,17,FAC
+Physical 12,12 PER 17,17 FAC
+
+one that i 've worked on a lot , one people do n't talk about , is global warming .
+CD WDT FW VBP VBN IN DT NN , CD NNS VBP RB VB IN , VBZ JJ NN .
+2,2,PER|10,10,PER|17,17,LOC
+
+
+reporter : and even to tv personality queen latifah .
+NN : CC RB TO NN NN NN NN .
+7,8,PER|6,6,PER
+
+
+the environment is at stake in this election .
+DT NN VBZ IN NN IN DT NN .
+
+
+
+reporter : why ?
+NN : WRB .
+
+
+
+it 's a message that appeals to those critical undecided voters and especially the supporters of this man , ralph nader .
+PRP VBZ DT NN WDT NNS TO DT JJ JJ NNS CC RB DT NNS IN DT NN , NN NN .
+10,10,PER|14,14,PER|17,17,PER|19,20,PER
+PER/ORG-Affiliation 14,14 PER 17,17 PER
+
+once a minor distraction , gore aides now fear nader could cost them the election .
+RB DT JJ NN , VB NNS RB VBP NN MD VB PRP DT NN .
+3,3,PER|6,6,PER|5,5,PER|9,9,PER|12,12,PER
+Personal/Social 6,6 PER 5,5 PER
+
+how much can nader hurt ?
+WRB RB MD VB VB .
+3,3,PER
+
+
+take oregon , a state gore was counting on .
+VB NNP , DT NN VBP VBD VBG IN .
+1,1,GPE|5,5,PER
+
+
+a recent poll has bush at 45 % , gore at 41 % and nader at 10 % .
+DT JJ NN VBZ NN IN CD NN , VBP IN CD NN CC NN IN CD NN .
+4,4,PER|9,9,PER|14,14,PER
+
+
+in traditionally democratic minnesota , bush has 44 % , gore 41 % , nader 8 % .
+IN RB JJ NN , NN VBZ CD NN , VBP CD NN , NN CD NN .
+3,3,GPE|2,2,ORG|5,5,PER|10,10,PER|14,14,PER
+PER/ORG-Affiliation 3,3 GPE 2,2 ORG
+
+here in wisconsin , gore has an edge in one poll , bush in another .
+RB IN NN , VB VBZ DT NN IN CD NN , NN IN DT .
+0,0,GPE|2,2,GPE|4,4,PER|12,12,PER
+
+
+nader remains steady at 5 % .
+NN VBZ JJ IN CD NN .
+0,0,PER
+
+
+those statistics have democrats cranking up the head on nader supporters .
+DT NNS VBP NNS VBG RP DT NN IN NN NNS .
+3,3,PER|10,10,PER|9,9,PER
+PER/ORG-Affiliation 10,10 PER 9,9 PER
+
+former gore rival bill bradley , on the stump today in washington state .
+JJ VBP JJ NN NN , IN DT NN NN IN NN NN .
+3,4,PER|1,1,PER|11,12,GPE
+Physical 3,4 PER 11,12 GPE|Personal/Social 1,1 PER 3,4 PER
+
+pro-choice organizations are spending big money for ads like this one to make the case that a vote for nader could mean the end of a woman 's right to choose .
+JJ NNS VBP VBG JJ NN IN NNS IN DT CD TO VB DT NN IN DT NN IN NN MD VB DT NN IN DT NN POS NN TO VB .
+1,1,ORG|19,19,PER|26,26,PER
+
+
+before voting nader , consider the risk .
+IN VBG NN , VB DT NN .
+2,2,PER
+
+
+it 's your choice .
+PRP VBZ PRP$ NN .
+2,2,PER
+
+
+environmental groups are also getting involved .
+JJ NNS VBP RB VBG VBN .
+1,1,ORG
+
+
+some prominent democrats are thinking about a full-page ad in " the new york times . "
+DT JJ NNS VBP VBG IN DT JJ NN IN `` DT JJ NN NNS . ''
+2,2,PER|12,14,ORG
+
+
+and look for states like oregon and minnesota to figure prominently on gore 's travel schedule in the final week .
+CC VB IN NNS IN NN CC NN TO NN RB IN VB POS NN NN IN DT JJ NN .
+3,3,GPE|5,5,GPE|7,7,GPE|12,12,PER
+Discourse 5,5 GPE 3,3 GPE|Discourse 7,7 GPE 3,3 GPE
+
+tom ?
+NN .
+0,0,PER
+
+
+thanks very much , nbc 's claire shipman tonight .
+NNS RB RB , NN POS NN NN NN .
+6,7,PER|4,4,ORG
+Employee/Membership/Subsidiary 6,7 PER 4,4 ORG
+
+as for governor bush , he had some high-powered help today on the campaign trail and a more pointed commentary on the vice president .
+IN IN NN NN , PRP VBD DT JJ NN NN IN DT NN NN CC DT RBR JJ NN IN DT NN NN .
+3,3,PER|2,2,PER|5,5,PER|23,23,PER
+
+
+nbc 's david gregory with the vice president in pittsburgh tonight .
+NN POS NN NN IN DT NN NN IN NN NN .
+2,3,PER|0,0,ORG|7,7,PER|9,9,GPE
+Physical 2,3 PER 9,9 GPE|Personal/Social 2,3 PER 7,7 PER|Employee/Membership/Subsidiary 2,3 PER 0,0 ORG|Physical 7,7 PER 9,9 GPE
+
+reporter : tom , making it abundantly clear that the clinton/gore scandals of the past eight years will be a major theme in the closing days of this campaign , bush attacks the vice president for being a failed leader and promises if he 's elected americans will once again be able to respect their government .
+NN : NN , VBG PRP RB JJ IN DT NN NNS IN DT JJ CD NNS MD VB DT JJ NN IN DT NN NNS IN DT NN , JJ NNS DT NN NN IN VBG DT JJ NN CC VBZ IN PRP VBZ VBN NNS MD RB RB VB JJ TO VB PRP$ NN .
+2,2,PER|10,10,PER|10,10,PER|30,30,PER|34,34,PER|39,39,PER|43,43,PER|46,46,GPE|55,55,GPE|54,54,GPE
+
+
+bush campaigns today in this tough battleground state alongside the popular retired general colin powell and again hints strongly powell will be a member of his cabinet if elected .
+JJ NNS NN IN DT JJ NN NN IN DT JJ JJ JJ NN NN CC RB NNS RB VBP MD VB DT NN IN PRP$ NN IN VBN .
+0,0,PER|7,7,GPE|13,14,PER|12,12,PER|19,19,PER|23,23,PER|26,26,ORG|25,25,PER
+Physical 0,0 PER 7,7 GPE|Physical 13,14 PER 7,7 GPE|Employee/Membership/Subsidiary 23,23 PER 26,26 ORG|Employee/Membership/Subsidiary 25,25 PER 26,26 ORG
+
+today 's address focuses on " responsible leadership " and how on issues like social security and medicare , the clinton/gore administration has failed to pr
+NN POS NN VBZ IN `` JJ NN '' CC WRB IN NNS IN JJ NN CC NN , DT NN NN VBZ VBN TO VB
+21,21,ORG|20,20,PER|20,20,PER
+Employee/Membership/Subsidiary 20,20 PER 21,21 ORG|Employee/Membership/Subsidiary 20,20 PER 21,21 ORG
+
+they are going out as they came in -- their guide , the nightly polls .
+PRP VBP VBG RP IN PRP VBD IN : PRP$ NN , DT JJ NNS .
+0,0,ORG|5,5,ORG|9,9,ORG
+
+
+their goal , the morning headlines .
+PRP$ NN , DT NN NNS .
+0,0,ORG
+
+
+their legacy , the fruitless search for a legacy .
+PRP$ NN , DT JJ NN IN DT NN .
+0,0,ORG
+
+
+reporter : with the race so tight , advisers are hunkered down trying to for the final push .
+NN : IN DT NN RB RB , NNS VBP VBN RP VBG TO IN DT JJ NN .
+8,8,PER
+
+
+plotting out the final push that , aides say , is likely to include visits to eight different states bill clinton carried the last two elections .
+VBG RP DT JJ NN IN , NNS VBP , VBZ JJ TO VB NNS TO CD JJ NNS NN NN VBD DT JJ CD NNS .
+7,7,PER|18,18,GPE|19,20,PER
+
+
+tom ?
+NN .
+0,0,PER
+
+
+david gregory tonight with governor bush , not with vice president gore , obviously .
+NN NN NN IN NN NN , RB IN NN NN VBP , RB .
+0,1,PER|5,5,PER|4,4,PER|11,11,PER|10,10,PER
+
+
+10/26/2000 18:34:53.21
+CD CD
+
+
+
+CNN20001024 .1400.0192 NEWS STORY 10/24/2000 14:03:12.52
+NN CD NN NN CD CD
+
+
+
+the chicago suburb of arlington heights is the first stop for george w. bush today .
+DT NNP NN IN NN NNS VBZ DT JJ NN IN NN JJ NN NN .
+2,2,GPE|1,1,GPE|4,5,GPE|9,9,GPE|11,13,PER
+Physical 2,2 GPE 1,1 GPE|Physical 11,13 PER 9,9 GPE
+
+as part of his barnstorm for reform tour , he is joined by republican governors from connecticut , south dakota , and montana .
+IN NN IN PRP$ NN IN NN NN , PRP VBZ VBN IN JJ NNS IN NN , RB NNP , CC FW .
+3,3,PER|9,9,PER|14,14,PER|13,13,ORG|16,16,GPE|18,19,GPE|22,22,GPE
+Employee/Membership/Subsidiary 14,14 PER 13,13 ORG|Employee/Membership/Subsidiary 14,14 PER 16,16 GPE|Employee/Membership/Subsidiary 14,14 PER 18,19 GPE|Employee/Membership/Subsidiary 14,14 PER 22,22 GPE
+
+the message for the morning was education reform .
+DT NN IN DT NN VBD NN NN .
+
+
+
+the texas governor stops in gore 's home state of tennessee this afternoon for remarks at a middle school .
+DT NNS NN VBZ IN VBP POS NN NN IN NN DT NN IN NNS IN DT JJ NN .
+2,2,PER|1,1,GPE|8,8,GPE|5,5,PER|10,10,GPE|18,18,FAC
+Physical 2,2 PER 8,8 GPE|Physical 18,18 FAC 8,8 GPE|Employee/Membership/Subsidiary 2,2 PER 1,1 GPE|GPE-Affiliation 5,5 PER 8,8 GPE
+
+tonight , bush holds what 's called a victory rally in jacksonville , florida .
+RB , NN VBZ WP VBZ VBN DT NN NN IN NN , NN .
+2,2,PER|11,11,GPE|13,13,GPE
+Physical 2,2 PER 11,11 GPE|Physical 11,11 GPE 13,13 GPE
+
+10/24/2000 14:03:35.82
+CD CD
+
+
+
+APW20001219 .1316.0416 NEWS STORY 2000-12-19 14:10:44
+NN CD NN NN CD CD
+
+
+
+FBN Broncos Bar
+NNP NNS VBP
+
+
+
+Broncos Complain About Sports Bar
+NNS NNP IN NNP NNP
+
+
+
+DENVER ( AP ) _ The Denver Broncos and the NFL want a commercial real estate agent to take down a sign advertising a site for a potential sports bar because it features the team 's name .
+NNP CD NN CD CD DT NNP NNS CC DT NNP VBP DT JJ JJ NN NN TO VB RP DT NN NN DT NN IN DT JJ NNS NN IN PRP VBZ DT NN POS NN .
+0,0,GPE|2,2,ORG|6,7,ORG|10,10,ORG|16,16,PER|15,15,FAC|24,24,FAC|29,29,ORG|34,34,ORG
+
+
+John `` Jack '' Hanlon of Coldwell Banker American Spectrum is listing an acre of land about a mile from the Broncos ' training camp in Dove Valley .
+NNP `` NNP '' NNP IN NNP NNP NNP NNP VBZ VBG DT NN IN NN IN DT NN IN DT NNS POS NN NN IN NN NNP .
+0,4,PER|6,9,ORG|13,13,FAC|15,15,FAC|24,24,FAC|21,21,ORG|26,27,GPE
+Employee/Membership/Subsidiary 0,4 PER 6,9 ORG|Physical 13,13 FAC 24,24 FAC|Agent-Artifact 21,21 ORG 24,24 FAC|Physical 24,24 FAC 26,27 GPE
+
+Hanlon , a longtime Broncos fan , thinks it is the perfect place for a sports bar and has put up a blue-and-orange sign reading , `` Wanted Broncos Sports Bar On This Site . ''
+NNP , DT JJ NNS NN , VBZ PRP VBZ DT JJ NN IN DT NNS NN CC VBZ VBN RP DT JJ NN NN , `` VBD NNS NNP NNP IN DT NN . ''
+0,0,PER|5,5,PER|4,4,ORG|8,8,FAC|12,12,FAC|16,16,ORG|30,30,ORG|28,28,ORG|33,33,FAC
+Physical 30,30 ORG 33,33 FAC
+
+He said that 47,000 cars drive by the site daily and `` because the players have to drive by it every day it could become a hangout for them . ''
+PRP VBD IN CD NNS NN IN DT NN JJ CC `` IN DT NNS VBP TO VB IN PRP DT NN PRP MD VB DT NN IN PRP . ''
+0,0,PER|4,4,VEH|8,8,FAC|14,14,PER|19,19,FAC|22,22,FAC|26,26,FAC|28,28,PER
+Physical 4,4 VEH 8,8 FAC|Physical 14,14 PER 19,19 FAC
+
+Hanlon said he never has implied that the future sports bar would be called the Broncos Bar , but his company has turned over the matter to its legal department .
+NNP VBD PRP RB VBZ VBN IN DT JJ NNS NN MD VB VBN DT NNS VBP , CC PRP$ NN VBZ VBN RP DT NN TO PRP$ JJ NN .
+0,0,PER|2,2,PER|10,10,ORG|15,16,ORG|20,20,ORG|19,19,PER|29,29,ORG|27,27,ORG
+Employee/Membership/Subsidiary 19,19 PER 20,20 ORG|Employee/Membership/Subsidiary 29,29 ORG 27,27 ORG
+
+`` I thought it would be a good idea to have a bar that would celebrate the Broncos , emphasizing everything Broncos with pregame and postgame activities , '' Hanlon said .
+`` PRP VBD PRP MD VB DT JJ NN TO VB DT NN WDT MD VB DT NNS , VBG NN NNS IN JJ CC JJ NNS , '' NNP VBD .
+1,1,PER|12,12,ORG|13,13,ORG|17,17,ORG|21,21,ORG|29,29,PER
+
+
+`` But I could n't put that on a 4-by-8 sign . ''
+`` CC PRP MD RB VB DT IN DT JJ NN . ''
+2,2,PER
+
+
+He said he will do whatever his lawyer advises , but `` I do n't think the Broncos own the word ' Broncos . '' '
+PRP VBD PRP MD VB WDT PRP$ NN VBZ , CC `` PRP VBP RB VB DT NNS VBP DT NN '' NNS . '' ''
+0,0,PER|2,2,PER|7,7,PER|6,6,PER|12,12,PER|17,17,ORG
+Personal/Social 6,6 PER 7,7 PER
+
+NFL lawyer David Proper has given Hanlon until Dec. 26 to remove the sign .
+NNP NN NNP JJ VBZ VBN NNP IN NNP CD TO VB DT NN .
+2,3,PER|1,1,PER|0,0,ORG|6,6,PER
+Employee/Membership/Subsidiary 1,1 PER 0,0 ORG
+
+In a Nov. 28 letter , Proper states `` while we have no objection to your advertising the property as a location for a sports bar , using the Broncos ' name and colors gives the false impression that the bar is or can be affiliated with the Broncos . ''
+IN DT NNP CD NN , JJ NNS `` IN PRP VBP DT NN TO PRP$ NN DT NN IN DT NN IN DT NNS NN , VBG DT NNS POS NN CC NNS VBZ DT JJ NN IN DT NN VBZ CC MD VB VBN IN DT NNS . ''
+6,6,PER|10,10,ORG|15,15,PER|18,18,FAC|21,21,FAC|25,25,ORG|29,29,ORG|40,40,ORG|48,48,ORG
+Physical 25,25 ORG 21,21 FAC
+
+The land is valued at $ 650,000 and the bar could cost about $ 1 million to $ 1.2 million , Hanlon said .
+DT NN VBZ VBN IN $ CD CC DT NN MD VB IN $ CD CD TO $ CD CD , NNP VBD .
+1,1,FAC|9,9,ORG|21,21,PER
+
+
+MNB20001025 .2100.0275 NEWS STORY 10/25/2000 21:04:35.41
+CD CD NN NN CD CD
+
+
+
+for a late update , live from the campaign trail we 're joined by nbc news correspondent campbell brown ho who 's traveling with the bush effort .
+IN DT JJ VBP , VBP IN DT NN NN PRP VBP VBN IN NN NN NN NN JJ NN WP VBZ VBG IN DT JJ NN .
+10,10,PER|17,18,PER|16,16,PER|14,15,ORG|19,19,PER|20,20,PER|26,26,ORG|25,25,PER
+Employee/Membership/Subsidiary 16,16 PER 14,15 ORG
+
+and nbc news correspondent chip reid travel traveling with the gore campaign in kansas city missouri .
+CC NN NN NN NN NN NN VBG IN DT VBP NN IN FW NN NN .
+4,5,PER|3,3,PER|1,2,ORG|11,11,ORG|10,10,PER|13,14,GPE|15,15,GPE
+Physical 4,5 PER 13,14 GPE|Employee/Membership/Subsidiary 3,3 PER 1,2 ORG|GPE-Affiliation 11,11 ORG 13,14 GPE|Employee/Membership/Subsidiary 10,10 PER 11,11 ORG|Physical 13,14 GPE 15,15 GPE
+
+good evening to you .
+JJ NN TO PRP .
+3,3,PER
+
+
+good evening , brian .
+JJ NN , NN .
+3,3,PER
+
+
+well , bush ended the day with a big rally here .
+RB , NN VBD DT NN IN DT JJ NN RB .
+2,2,PER|10,10,LOC
+Physical 2,2 PER 10,10 LOC
+
+we 're just outside of tampa .
+PRP VBP RB IN IN NN .
+0,0,PER|5,5,GPE
+Physical 0,0 PER 5,5 GPE
+
+and i 'll tell you , these evening rallies really have the feel of a rock concert , or maybe a pro wrestling match .
+CC FW MD VB PRP , DT NN VBZ RB VB DT NN IN DT NN NN , CC RB DT JJ NN NN .
+1,1,PER|4,4,PER
+
+
+you have strobe lights .
+PRP VBP NN NNS .
+0,0,PER
+
+
+you have screaming crowds .
+PRP VBP VBG NNS .
+0,0,PER|3,3,PER
+
+
+all designed to make bush look like a winner .
+DT VBN TO VB JJ NN IN DT NN .
+4,4,PER|8,8,PER
+
+
+but he is not a winner yet in florida .
+CC PRP VBZ RB DT NN RB IN NN .
+1,1,PER|5,5,PER|8,8,GPE
+
+
+there is one new poll out that actually puts gore ahead here .
+EX VBZ CD JJ NN IN IN RB VBZ VB RB RB .
+9,9,PER|11,11,GPE
+
+
+there are still several polls that say bush is still ahead in florida .
+EX VBP RB JJ NNS WDT VBP NN VBZ RB RB IN NN .
+7,7,PER|12,12,GPE
+
+
+bottom line , as we heard david gregory report , this is not the position the campaign wanted to be in at this stage of the game .
+JJ NN , IN PRP VBD NN NN NN , DT VBZ RB DT NN DT NN VBD TO VB IN IN DT NN IN DT NN .
+4,4,PER|6,7,PER|16,16,ORG
+
+
+bush 's central message on this bu bus trip across central florida today was to his die hard sup portes telling them go out , tell your friends still on the fence why they need to vote for me .
+NN POS JJ NN IN DT NN NN NN IN JJ NN NN VBD TO PRP$ VB JJ NN NNS VBG PRP VB RP , VB PRP$ NNS RB IN DT NN WRB PRP VBP TO VB IN PRP .
+0,0,PER|10,11,LOC|18,19,PER|15,15,PER|21,21,PER|27,27,PER|26,26,PER|33,33,PER|38,38,PER
+Physical 0,0 PER 10,11 LOC|Personal/Social 15,15 PER 18,19 PER|Personal/Social 26,26 PER 27,27 PER
+
+and it 's a message the campaign hopes it was able to convey today .
+CC PRP VBZ DT NN DT NN VBZ PRP VBD JJ TO VB NN .
+6,6,ORG
+
+
+because while florida is a must win , they also can not ignore the other battleground states .
+IN IN NN VBZ DT MD VB , PRP RB MD RB VB DT JJ NN NNS .
+2,2,GPE|5,6,GPE|8,8,ORG|16,16,GPE|15,15,LOC
+
+
+brian tomorrow morning , bush flies to pennsylvania , another swing state with 2023 electoral votes .
+NN NN NN , JJ NNS TO NN , DT NN NN IN CD JJ NNS .
+0,0,PER|4,4,PER|7,7,GPE
+Physical 4,4 PER 7,7 GPE
+
+just two less than florida .
+RB CD JJR IN NN .
+4,4,GPE
+
+
+pennsylvania traditionally , a democratic state , but one where there 's a popular republican governor , tom ridge , and there 's a lot of pressure on ridge right now to deliver pennsylvania .
+NN RB , DT JJ NN , CC CD WRB EX VBZ DT JJ JJ NN , NN NN , CC EX VBZ DT NN IN NN IN NN RB RB TO VB NN .
+0,0,GPE|5,5,GPE|4,4,ORG|8,8,GPE|9,9,GPE|15,15,PER|14,14,ORG|17,18,PER|28,28,PER|33,33,GPE
+PER/ORG-Affiliation 5,5 GPE 4,4 ORG|Employee/Membership/Subsidiary 15,15 PER 9,9 GPE|Employee/Membership/Subsidiary 15,15 PER 14,14 ORG
+
+he 'll end up tomorrow night in ohio , and then end the week in another two crucial states , wisconsin and michigan .
+PRP MD VB RP NN NN IN NN , CC RB VB DT NN IN DT CD JJ NNS , NN CC NN .
+0,0,PER|7,7,GPE|18,18,GPE|20,20,GPE|22,22,GPE
+Physical 0,0 PER 18,18 GPE|Physical 0,0 PER 7,7 GPE
+
+thank you for that .
+VB PRP IN DT .
+1,1,PER
+
+
+10/25/2000 21:06:09.90
+CD CD
+
+
+
+VOA20001220 .2000.0060 NEWS STORY 12/20/2000 20:01:00.18
+NN CD NN NN CD CD
+
+
+
+I am David Coler , VOA News .
+PRP VBP NNP NNP , NNP NNP .
+0,0,PER|2,3,PER|5,6,ORG
+Employee/Membership/Subsidiary 2,3 PER 5,6 ORG
+
+President Elect George W Bush made more cabinet appointments Wednesday .
+NNP NNP NNP NNP NNP VBD JJR NN NNS NNP .
+2,4,PER|0,0,PER|7,7,ORG
+
+
+He named Al Koha Chairman Paul O ' Neil as Treasury Secretary and former California Food and Agriculture Secretary , Anne Venemon as Secretary of Agriculture .
+PRP VBD NNP NNP NNP NNP NNP POS NNP IN NNP NNP CC JJ NNP NNP CC NNP NNP , NNP NNP IN NNP IN NNP .
+0,0,PER|5,8,PER|4,4,PER|2,3,ORG|11,11,PER|20,21,PER|18,18,PER|14,14,GPE|23,23,PER
+Employee/Membership/Subsidiary 4,4 PER 2,3 ORG|Employee/Membership/Subsidiary 18,18 PER 14,14 GPE
+
+He also named an old friend , an oil business associate , Don Evans as Secretary of Commerce .
+PRP RB VBD DT JJ NN , DT NN NN NN , NNP NNP IN NNP IN NNP .
+0,0,PER|5,5,PER|10,10,PER|12,13,PER|15,15,PER
+
+
+The promotion of free enterprise first in America and then abroad will be our first priority .
+DT NN IN JJ NN RB IN NNP CC RB RB MD VB PRP$ JJ NN .
+7,7,GPE|10,10,LOC|13,13,PER
+
+
+Free flow of capital , free and open competition .
+NNP NN IN NN , JJ CC JJ NN .
+
+
+
+We will strive to be an advocate for US businesses first in America and also those wading into the waters of the global market place .
+PRP MD VB TO VB DT NN IN NNP NNS RB IN NNP CC RB DT VBG IN DT NNS IN DT JJ NN NN .
+0,0,PER|9,9,ORG|8,8,GPE|12,12,GPE|15,15,ORG|22,22,LOC
+GPE-Affiliation 9,9 ORG 8,8 GPE
+
+Mr. Bush also named former Cuban refugee Mel Martinez as Secretary of Housing and Urban Development .
+NNP NNP RB VBD JJ NNP NN NNP NNP IN NNP IN NNP CC NNP NNP .
+1,1,PER|0,0,PER|7,8,PER|6,6,PER|5,5,GPE|10,10,PER
+GPE-Affiliation 6,6 PER 5,5 GPE
+
+Mr. Martinez is a close political ally of the President Elect 's brother , Florida Governor Jeb Bush .
+NNP NNP VBZ DT JJ JJ NN IN DT NNP NNP POS NN , NNP NNP NNP NNP .
+1,1,PER|0,0,PER|6,6,PER|12,12,PER|9,9,PER|16,17,PER|15,15,PER|14,14,GPE
+Personal/Social 6,6 PER 12,12 PER|Personal/Social 9,9 PER 12,12 PER|Employee/Membership/Subsidiary 15,15 PER 14,14 GPE
+
+Mr. Bush says he will step down Thursday as Governor of Texas .
+NNP NNP VBZ PRP MD VB RB NNP IN NNP IN NNP .
+1,1,PER|0,0,PER|3,3,PER|9,9,PER|11,11,GPE
+Employee/Membership/Subsidiary 9,9 PER 11,11 GPE
+
+12/20/2000 20:01:58.08
+CD CD
+
+
+
+APW20001103 .1315.0364 NEWS STORY 2000-11-03 14:10:45
+NN CD NN NN CD CD
+
+
+
+FBC Rutgers Shea
+NN NNP NNP
+
+
+
+Source : Rutgers Coach To Resign
+NN : NNP VB TO VB
+
+
+
+PISCATAWAY , N.J. ( AP ) _ Terry Shea , who failed to produce a winning season in four-plus years at Rutgers , will step down as coach at the end of this season , a source close to the school told The Associated Press Friday .
+NNP , NNP CD NN CD CD NNP NNP , WP VBD TO VB DT VBG NN IN CD NNS IN NNP , MD VB RP IN NN IN DT NN IN DT NN , DT NN RB TO DT NN VBD DT NNP NNP NNP .
+0,0,GPE|2,2,GPE|4,4,ORG|7,8,PER|10,10,PER|21,21,ORG|27,27,PER|36,36,PER|40,40,ORG|43,44,ORG
+Physical 0,0 GPE 2,2 GPE|Employee/Membership/Subsidiary 10,10 PER 21,21 ORG|PER/ORG-Affiliation 36,36 PER 40,40 ORG
+
+Shea , who has an 11-41 record , agreed to resign after meeting with athletic director Robert E. Mulcahy on Thursday afternoon , according to the source , who spoke on the condition of anonymity .
+NNP , WP VBZ DT NN NN , VBD TO VB IN VBG IN JJ NN NNP NNP NNP IN NNP NN , VBG TO DT NN , WP VBD IN DT NN IN NN .
+0,0,PER|2,2,PER|16,18,PER|15,15,PER|26,26,PER|28,28,PER
+
+
+The Star Ledger of Newark , Gannett Newspapers and The Record of Hackensack reported Friday that Shea agreed to resign .
+DT NNP NNP IN NNP , NNP NNP CC DT NNP IN NNP VBD NNP IN NNP VBD TO VB .
+1,2,ORG|4,4,GPE|6,7,ORG|10,10,ORG|12,12,GPE|16,16,PER
+GPE-Affiliation 1,2 ORG 4,4 GPE|GPE-Affiliation 10,10 ORG 12,12 GPE
+
+Mulcahy and Shea signed off on his resignation around 7:30 p.m. , and Shea then held a meeting with his football team at 9:30 p.m. , the source said .
+NNP CC NNP VBD RP IN PRP$ NN IN CD RB , CC NNP RB VBD DT NN IN PRP$ NN NN IN CD RB , DT NN VBD .
+0,0,PER|2,2,PER|6,6,PER|13,13,PER|21,21,ORG|19,19,PER|27,27,PER
+Employee/Membership/Subsidiary 19,19 PER 21,21 ORG
+
+Rutgers athletic director Robert E. Mulcahy called a news conference for Friday at noon EST. . .
+NNP JJ NN NNP NNP NNP VBD DT NN NN IN NNP IN NN NN . .
+3,5,PER|2,2,PER|0,0,ORG
+Employee/Membership/Subsidiary 2,2 PER 0,0 ORG
+
+`` That 's when it will happen , '' the source said .
+`` DT VBZ WRB PRP MD VB , '' DT NN VBD .
+10,10,PER
+
+
+Telephone calls to Mulcahy and Rutgers sports information director John Wooding by The Associated Press were not immediately returned .
+NNP VBZ TO NNP CC NNP NNS NN NN NNP NNP IN DT NNP NNP VBD RB RB VBD .
+3,3,PER|9,10,PER|8,8,PER|5,5,ORG|13,14,ORG
+Employee/Membership/Subsidiary 8,8 PER 5,5 ORG
+
+The Scarlet Knights are 3-5 overall and 0-5 in the Big East Conference .
+DT JJ NNS VBP CD JJ CC CD IN DT NNP NNP NNP .
+1,2,ORG|10,12,ORG
+
+
+They have a bye this weekend , then finish the season with games against West Virginia , Notre Dame and Syracuse .
+PRP VBP DT NN DT NN , RB VB DT NN IN NNS IN NNP NNP , NNP NNP CC NNP .
+0,0,ORG|14,15,ORG|17,18,ORG|20,20,ORG
+
+
+After Rutgers posted a 1-10 record last season , Mulcahy told Shea he had to have a winning record this season and the team had to avoid the one-sided losses that embarrassed the school in recent years .
+IN NNP VBD DT CD NN JJ NN , NNP VBD NNP PRP VBD TO VB DT VBG NN DT NN CC DT NN VBD TO VB DT JJ NNS WDT VBD DT NN IN JJ NNS .
+1,1,ORG|9,9,PER|11,11,PER|12,12,PER|23,23,ORG|33,33,ORG
+
+
+After opening the season with wins over Villanova , a Division IAA program , and Buffalo , which recently announced its coach would not be returning next season , Rutgers lost its next five games by a combined 232-43 margin .
+IN VBG DT NN IN NNS IN NNP , DT NNP NNP NN , CC NNP , WDT RB VBD PRP$ NN MD RB VB VBG JJ NN , NNP VBD PRP$ JJ CD NNS IN DT JJ JJ NN .
+7,7,ORG|12,12,ORG|10,11,ORG|15,15,ORG|17,17,ORG|21,21,PER|20,20,ORG|29,29,ORG|31,31,ORG
+Employee/Membership/Subsidiary 12,12 ORG 10,11 ORG|Employee/Membership/Subsidiary 21,21 PER 20,20 ORG
+
+The skid ended last week with a victory over winless Navy .
+DT NN VBD JJ NN IN DT NN IN JJ NNP .
+10,10,ORG
+
+
+Shea replaced the fired Doug Graber in 1996 with hopes of building a program with a Bill Walsh-type West Coast offense .
+NNP VBD DT VBN NNP NNP IN CD IN NNS IN VBG DT NN IN DT NNP JJ NNP NNP NN .
+0,0,PER|4,5,PER|16,17,PER
+
+
+Shea never got the talent to make it happen .
+NNP RB VBD DT NN TO VB PRP VB .
+0,0,PER
+
+
+He posted records of 2-9 , 0-11 , 5-6 and 1-10 .
+PRP VBD NNS IN CD , CD , CD CC CD .
+0,0,PER
+
+
+His five wins in 1998 after going winless the year before were enough to earn him Big East Coach of the Year .
+PRP$ CD NNS IN CD IN VBG JJ DT NN IN VBD RB TO VB PRP NNP NNP VB IN DT NN .
+0,0,PER|15,15,PER|18,18,PER|16,17,ORG
+PER/ORG-Affiliation 18,18 PER 16,17 ORG
+
+Rutgers was 4-29 in Big East play during Shea 's tenure , including 1-16 in league road games .
+NNP VBD CD IN NNP NNP VB IN NNP POS NN , VBG CD IN NN NN NNS .
+0,0,ORG|4,5,ORG|8,8,PER|15,15,ORG
+Employee/Membership/Subsidiary 0,0 ORG 4,5 ORG
+
+The Scarlet Knights gave up 40 or more points in 23 games under Shea .
+DT JJ NNS VBD RP CD CC JJR NNS IN CD NNS IN NNP .
+1,2,ORG|13,13,PER
+
+
+Shea has one year remaining on his contract , which has a base salary of $ 160,000 .
+NNP VBZ CD NN VBG IN PRP$ NN , WDT VBZ DT NN NN IN $ CD .
+0,0,PER|6,6,PER
+
+
+Rutgers reportedly had started compiling a short list of candidates to replace Shea .
+NNP RB VBD VBN VBG DT JJ NN IN NNS TO VB NNP .
+0,0,ORG|9,9,PER|12,12,PER
+
+
+It includes head coaches Gary Darnell of Western Michigan , Gary Pinkel of Toledo and two coordinators _ Miami defensive coordinator Greg Schiano and Notre Dame offensive coordinator Kevin Rogers .
+PRP VBZ NN NNS NNP NNP IN NNP NNP , NNP NNP IN NNP CC CD NNS VBP NNP JJ NN NNP NNP CC NNP NNP JJ NN NNP NNP .
+3,3,PER|4,5,PER|7,8,ORG|10,11,PER|13,13,ORG|16,16,PER|21,22,PER|20,20,PER|18,18,ORG|28,29,PER|27,27,PER|24,25,ORG
+Employee/Membership/Subsidiary 4,5 PER 7,8 ORG|Employee/Membership/Subsidiary 10,11 PER 13,13 ORG|Employee/Membership/Subsidiary 20,20 PER 18,18 ORG|Employee/Membership/Subsidiary 27,27 PER 24,25 ORG
+
+CNN20001025 .0900.0149 NEWS STORY 10/25/2000 9:02:29.03
+CD CD NN NN CD CD
+
+
+
+george w. bush is campaigning in the hotly contested sunshine state today .
+NN JJ NN VBZ NN IN DT RB VBN NN NN NN .
+0,2,PER|10,10,GPE
+Physical 0,2 PER 10,10 GPE
+
+bush is stumping with his brother jeb , who is governor of the state .
+NN VBZ VBG IN PRP$ NN NN , WP VBZ NN IN DT NN .
+0,0,PER|6,6,PER|5,5,PER|4,4,PER|8,8,PER|10,10,PER|13,13,GPE
+Personal/Social 4,4 PER 5,5 PER|Employee/Membership/Subsidiary 10,10 PER 13,13 GPE
+
+also on hand , arizona senator john m cain .
+RB IN NN , NN NN NN NN NN .
+6,8,PER|5,5,PER|4,4,GPE
+Employee/Membership/Subsidiary 5,5 PER 4,4 GPE
+
+meanwhile , gore is expected to deliver what aides are calling a major speech on education in tennessee this morning .
+RB , VBP VBZ VBN TO VB WP NNS VBP VBG DT JJ NN IN NN IN NN DT NN .
+2,2,PER|8,8,PER|17,17,GPE
+Physical 2,2 PER 17,17 GPE
+
+the vice president is campaigning with running mate joe lieberman .
+DT NN NN VBZ VBG IN VBG NN NN NN .
+2,2,PER|8,9,PER|7,7,PER
+
+
+polls in gore 's home state show him nearly even with bush .
+NNS IN VBP POS NN NN VBP PRP RB RB IN NN .
+5,5,GPE|2,2,PER|7,7,PER|11,11,PER
+GPE-Affiliation 2,2 PER 5,5 GPE
+
+nationwide , the race appears to be seesawing back and forth .
+RB , DT NN VBZ TO VB VBG RB CC RB .
+
+
+
+we have not seen the lead change hands , after labor day , according to the gallup poll , in a presidential election since 1980 .
+PRP VBP RB VBN DT JJ NN NNS , IN NN NN , VBG TO DT NN NN , IN DT JJ NN IN CD .
+0,0,PER|16,16,ORG
+
+
+this is the first time .
+DT VBZ DT JJ NN .
+
+
+
+in 1984 , 1988 , 1992 and 1996 , the candidate who was ahead on labor day never went behind .
+IN CD , CD , CD CC CD , DT NN WP VBD RB IN NN NN RB VBD RB .
+10,10,PER|11,11,PER
+
+
+now , unless i 've lost track , because a 's been a little hard to keep track , today is the fifth lead change in gallup polling after labor day between gore and bush .
+RB , IN FW VBP VBN NN , IN DT POS VBN DT JJ JJ TO VB NN , NN VBZ DT JJ NN NN IN NN NN IN NN NN IN VB CC VB .
+3,3,PER|26,26,ORG|32,32,PER|34,34,PER
+
+
+the lead did change hands .
+DT NN VBD VB NNS .
+
+
+
+yesterday 's cnn / " usa today " / gallup tracking poll shows gore with a slight edge for the first time in two weeks .
+NN POS NN : `` NN NN '' : NN NN NN VBZ VB IN DT JJ NN IN DT JJ NN IN CD NNS .
+2,2,ORG|5,6,ORG|9,9,ORG|13,13,PER
+
+
+the new numbers show that if the election were held today , 46 % of the likely voters questioned would choose gore .
+DT JJ NNS VBP IN IN DT NN VBD VBN NN , CD NN IN DT JJ NNS VBD MD VB VB .
+12,13,PER|17,17,PER|21,21,PER
+Discourse 12,13 PER 17,17 PER
+
+45 % would choose bush .
+CD NN MD VB NN .
+0,1,PER|4,4,PER
+
+
+but the pollsters say the change is statistically insignificant when the margin of error is considered .
+CC DT NNS VBP DT NN VBZ RB JJ WRB DT NN IN NN VBZ VBN .
+2,2,PER
+
+
+10/25/2000 9:03:47.96
+CD CD
+
+
+
+NYT20001115 .2157.0439 NEWS STORY 2000-11-15 22:12:10
+NN CD NN NN CD CD
+
+
+
+A0465 & Cx1f ; taf-z u l BC CIRCUITS PHOTO UPDATE 11-15 0444
+NNP CC NNP : NN FW NN NNP NNP NNP NNP CD CD
+
+
+
+BC CIRCUITS PHOTO UPDATE NYT
+NNP NNP NNP NNP NNP
+
+
+
+ATTENTION EDITORS :
+NN NNS :
+
+
+
+The following photos have been sent as part of The New York Times ' Circuits Photo Package , moving Wednesday , 11/15/00 .
+DT VBG NNS VBP VBN VBN IN NN IN DT NNP NNP NNP POS NNP NNP NNP , VBG NNP , CD .
+10,12,ORG
+
+
+Photo clients will automatically receive our photos via AP 's PhotoExpress or may download them from either the Wieck Photo Database in Dallas at 972-392-0888 or from NYTPhotos on Newscom at 213-237-4577 or PressLink at 800-888-6195 .
+NNP NNS MD RB VB PRP$ NNS IN NN POS NNP CC MD VB PRP IN CC DT NNP NNP NNP IN NNP IN CD CC IN NNS IN NNP IN CD CC NNP IN CD .
+1,1,PER|5,5,ORG|8,8,ORG|22,22,GPE
+
+
+Non-clients can make individual purchases by calling (888) 603-1036 or 212-556-4204 .
+NNS MD VB JJ NNS IN VBG CD CC CD .
+0,0,PER
+
+
+( NYT37 ) CAMBRIDGE , Mass. -- Nov. 15 , 2000 -- CIR ROBOT DOLL -- Rodney Brooks , the 45-year-old director of the Artificial Intelligence Laboratory at the Massachusetts Institute of Technology , has spent most of his career engrossed in the question of how to model biological systems .
+NN NN CD NNP , NNP : NNP CD , CD : NNP NNP NNP : NNP NNP , DT JJ NN IN DT NNP NNP NNP IN DT NNP NNP IN NNP , VBZ VBN JJS IN PRP$ NN VBN IN DT NN IN WRB TO VB JJ NNS .
+3,3,GPE|5,5,GPE|16,17,PER|21,21,PER|24,26,ORG|29,32,ORG|38,38,PER
+Physical 3,3 GPE 5,5 GPE|Employee/Membership/Subsidiary 16,17 PER 24,26 ORG|Physical 24,26 ORG 29,32 ORG
+
+Brooks is chairman and chief technical officer at iRobot , a 10-year-old robotics company in Cambridge , Mass. , that started out making robots for private missions to the moon and Mars .
+NNP VBZ NN CC NN JJ NN IN NNP , DT JJ NNS NN IN NNP , NNP , WDT VBD RP VBG NNS IN JJ NNS TO DT NN CC NNP .
+0,0,PER|2,2,PER|6,6,PER|8,8,ORG|13,13,ORG|15,15,GPE|17,17,GPE|19,19,ORG|29,29,LOC|31,31,LOC
+Employee/Membership/Subsidiary 0,0 PER 8,8 ORG|GPE-Affiliation 13,13 ORG 15,15 GPE
+
+Brooks with My Real Baby doll , an animatronic doll priced at $ 100 .
+NNP IN PRP$ JJ NNP NN , DT JJ NN VBN IN $ CD .
+0,0,PER
+
+
+( Michael Quan/The New York Times )
+NN NNP NNP NNP NNP NNP NN
+1,2,PER|3,5,ORG
+Employee/Membership/Subsidiary 1,2 PER 3,5 ORG
+
+( NYT36 ) UNDATED -- Nov. 15 , 2000 -- CIR GAMES -- In the ever-shifting race for dominance between consoles and PCs , the year 2000 will probably go to the consoles .
+NN NN CD NNP : NNP CD , CD : NNP NNP : IN DT JJ NN IN NN IN VBZ CC NNS , DT NN CD MD RB VB TO DT VBZ .
+
+
+
+1 ) The Gamer PC 2 ) Gaming sound system 3 ) Game console 4 ) Online fishing reel 5 ) Voice controller ; Chip set ; Keyboard and mouse ; Game controller ; Graphics card .
+CD CD DT NN NN CD CD NN NN NN CD NN NN NN CD CD NN NN NN CD CD NNP NN : NN NN : NNP CC NN : NNP NN : NNP NN .
+
+
+
+( Tony Cenicola/The New York Times )
+NN NNP NNP NNP NNP NNP NN
+1,2,PER|3,5,ORG
+Employee/Membership/Subsidiary 1,2 PER 3,5 ORG
+
+( NYT35 ) UNDATED -- Nov. 15 , 2000 -- CIR KIDS -- Long gone are the days when children 's toys were principally powered by mainsprings and imagination , when a doll capable of uttering only `` Mama '' would be considered downright chatty .
+NN NN CD NNP : NNP CD , CD : NNP NNPS : JJ VBN VBP DT NNS WRB NNS POS NNS VBD RB VBN IN NNS CC NN , WRB DT NN JJ IN VBG RB `` NN '' MD VB VBN RB JJ .
+19,19,PER
+
+
+Today a relatively advanced technology empowers much of play .
+NN DT RB JJ NN VBZ RB IN NN .
+
+
+
+1 ) Organizer with built-in camera 2 ) Digital music player 3 ) Drawing tablet 4 ) Music system 5 ) Robots that see 6 ) Learning blocks 7,8 ) Educational toys ( Tony Cenicola/The New York Times )
+CD CD NN IN JJ NN CD CD NNP NN NN CD NN VBG NN CD CD NN NN CD CD NNS WDT VBP CD CD NNP VBZ CD CD NNP NNS VBD NNP NNP NNP NNP NNP NN
+33,34,PER|35,37,ORG
+
+
+( NYT34 ) WASHINGTON -- Nov. 15 , 2000 -- GINGRICH PORTRAIT -- Newt Gingrich , the most divisive figure in the recent history of the House , appealed Wednesday to both parties to work together and to listen to the fears of each other 's political bases .
+NN NN CD NNP : NNP CD , CD : NNP NNP : NNP NNP , DT RBS JJ NN IN DT JJ NN IN DT NNP , VBD NNP TO DT NNS TO VB RB CC TO VB TO DT NNS IN DT JJ POS JJ NNS .
+3,3,GPE|10,10,PER|13,14,PER|19,19,PER|26,26,ORG|32,32,ORG|47,47,PER|43,44,ORG
+PER/ORG-Affiliation 47,47 PER 43,44 ORG
+
+Speaking at the unveiling of his official portrait , the former speaker warned that `` otherwise we will sink deeper into two warring camps , each fearing and loathing the other . ''
+VBG IN DT NN IN PRP$ JJ NN , DT JJ NN VBD IN `` RB PRP MD VB RBR IN CD VBG NNS , DT VBG CC VBG DT JJ . ''
+5,5,PER|11,11,PER|16,16,ORG|23,23,ORG|25,25,ORG|30,30,ORG
+PER/ORG-Affiliation 25,25 ORG 30,30 ORG
+
+Gingrich , resigned as speaker of the House after the Republicans lost seats in 1998 as his party worked to impeach President Clinton .
+NNP , VBD IN NN IN DT NNP IN DT NNPS VBD NNS IN CD IN PRP$ NN VBD TO VB NNP NNP .
+0,0,PER|4,4,PER|7,7,ORG|10,10,ORG|17,17,ORG|16,16,PER|22,22,PER|21,21,PER
+Employee/Membership/Subsidiary 16,16 PER 17,17 ORG
+
+Gingrich at the unveiling of his portrait in Statuary Hall at the Capitol in Washington .
+NNP IN DT NN IN PRP$ NN IN NNP NNP IN DT NNP IN NNP .
+0,0,PER|5,5,PER|8,9,FAC|12,12,FAC|14,14,GPE
+Physical 12,12 FAC 14,14 GPE|Physical 8,9 FAC 12,12 FAC
+
+( Justin Lane/The New York Times )
+NN NNP NNP NNP NNP NNP NN
+1,2,PER|3,5,ORG
+Employee/Membership/Subsidiary 1,2 PER 3,5 ORG
+
+The New York Times News Services
+DT NNP NNP NNP NNP NNPS
+1,3,ORG
+
+
+NYT-11-15-00 2212EST
+NN NN
+
+
+
+APW20001008 .1511.0218 NEWS STORY 2000-10-08 15:34:30
+NN CD NN NN CD CD
+
+
+
+Yugoslavia
+NNP
+
+
+
+Kostunica Forming New Government
+NNP NNP NNP NNP
+
+
+
+BELGRADE , Yugoslavia ( AP ) _ With Vojislav Kostunica in office as president , backers of the pro-democracy leader embarked Sunday on the potentially volatile task of forming a government that tries to exclude backers of former leader Slobodan Milosevic .
+NNP , NNP CD NN CD CD IN NNP NNP IN NN IN NN , NNS IN DT JJ NN VBN NNP IN DT RB JJ NN IN VBG DT NN WDT VBZ TO VB NNS IN JJ NN NNP NNP .
+0,0,GPE|2,2,GPE|4,4,ORG|8,9,PER|13,13,PER|15,15,PER|19,19,PER|30,30,ORG|31,31,ORG|35,35,PER|38,38,PER|39,40,PER
+PER/ORG-Affiliation 15,15 PER 19,19 PER|PER/ORG-Affiliation 35,35 PER 38,38 PER
+
+Kostunica 's team was faced with a difficult task : Putting together a government with as few old faces as possible , while placating a Milosevic wing that still wields considerable power .
+NNP POS NN VBD VBN IN DT JJ NN : VBG RB DT NN IN IN JJ JJ NNS IN JJ , IN VBG DT JJ NN WDT RB VBZ JJ NN .
+2,2,PER|0,0,PER|13,13,ORG|18,18,PER|26,26,PER|25,25,PER
+Personal/Social 2,2 PER 0,0 PER
+
+`` We need a government of discontinuity , '' said opposition leader Zoran Djindjic , who helped manage Kostunica 's rise to power _ from his election campaign through the brief revolt that forced Milosevic to concede defeat and Kostunica 's swearing-in Saturday .
+`` PRP VBP DT NN IN NN , '' VBD NN NN NNP NNP , WP VBD VB NNP POS NN TO NN CD IN PRP$ NN NN IN DT JJ NN WDT VBD NNP TO VB NN CC NNP POS NN NNP .
+1,1,ORG|4,4,ORG|11,11,PER|10,10,ORG|12,13,PER|15,15,PER|18,18,PER|25,25,PER|34,34,PER|39,39,PER
+
+
+Milosevic himself has said he will remain in Yugoslavia as a political force .
+JJ PRP VBZ VBN PRP MD VB IN NNP IN DT JJ NN .
+0,0,PER|1,1,PER|4,4,PER|8,8,GPE
+
+
+Kostunica has said he will defy Western demands to surrender the outgoing president and others indicted by the U.N. war crimes tribunal in The Hague .
+NNP VBZ VBN PRP MD VB JJ NNS TO VB DT JJ NN CC NNS VBN IN DT NNP NN NNS NN IN DT NN .
+0,0,PER|3,3,PER|6,6,LOC|11,14,PER|21,21,ORG|18,18,ORG|23,24,GPE
+
+
+And Serbia , the main Yugoslav republic , still is run by a government of Milosevic cronies including Serbian President Milan Milutinovic _ like Milosevic , indicted by the tribunal .
+CC NNP , DT JJ JJ NN , RB VBZ VBN IN DT NN IN JJ NNS VBG NNP NNP NNP NNP NNP IN NNP , VBN IN DT NN .
+1,1,GPE|6,6,GPE|5,5,GPE|13,13,ORG|15,15,PER|20,21,PER|19,19,PER|18,18,GPE|24,24,PER|29,29,ORG
+Physical 1,1 GPE 5,5 GPE
+
+Milutinovic controls approximately 100,000 policemen in his republic and , indirectly , much of the republic 's economy .
+JJ NNS RB CD NNS IN PRP$ NN CC , RB , RB IN DT NN POS NN .
+0,0,PER|4,4,PER|7,7,GPE|6,6,PER|15,15,GPE
+Employee/Membership/Subsidiary 4,4 PER 7,7 GPE
+
+Kostunica 's pro-democracy forces have said they would demand early elections for new Serbian parliament and president .
+NNP POS JJ NNS VBP VBN PRP MD VB JJ NNS IN JJ JJ NN CC NN .
+3,3,PER|0,0,PER|6,6,PER|14,16,PER|13,13,GPE
+
+
+Kostunica scored a stunning upset over Milosevic in the Sept. 24 presidential election .
+NNP VBD DT JJ NN IN NNP IN DT NNP CD JJ NN .
+0,0,PER|6,6,PER|11,11,PER
+
+
+Milosevic 's attempt to deny Kostunica 's victory sparked a national uprising , and he conceded defeat Friday .
+NNP POS NN TO VB NNP POS NN VBD DT JJ NN , CC PRP VBD NN NNP .
+0,0,PER|5,5,PER|10,10,GPE|14,14,PER
+
+
+Norway 's Foreign Minister Thorbjoern Jagland and Mladjan Dinkic , the head of an influential group of economists , demanded Sunday that Milosevic be punished for vote-rigging .
+NNP POS NNP NNP NNP NNP CC NNP NNP , DT NN IN DT JJ NN IN NNS , VBD NNP IN NNP VB VBN IN NN .
+4,5,PER|3,3,PER|0,0,GPE|7,8,PER|11,11,PER|15,15,PER|17,17,PER|22,22,PER
+Employee/Membership/Subsidiary 4,5 PER 0,0 GPE|Employee/Membership/Subsidiary 11,11 PER 15,15 PER
+
+`` We now expect state prosecutors to bring charges against Slobodan Milosevic , '' Dinkic said .
+`` PRP RB VBP NN NNS TO VB NNS IN NNP NNP , '' NNP VBD .
+1,1,PER|5,5,PER|4,4,ORG|10,11,PER|14,14,PER
+
+
+A human rights group in Yugoslavia , the Humanitarian Law Fund , also demanded punishment for the ousted autocrat , issuing long lists of his alleged misdeeds .
+DT JJ NNS NN IN NNP , DT NNP NNP NNP , RB VBD NN IN DT VBN NN , VBG JJ NNS IN PRP$ JJ NNS .
+3,3,ORG|5,5,GPE|8,10,ORG|18,18,PER|24,24,PER
+GPE-Affiliation 3,3 ORG 5,5 GPE
+
+Dinkic also called for a donor 's conference on Yugoslavia with the aim of injecting at least $ 500 million into the cash-strapped country over the next year .
+NNP RB VBD IN DT NN POS NN IN NNP IN DT NN IN VBG IN JJS $ CD CD IN DT JJ NN IN DT JJ NN .
+0,0,PER|5,5,GPE|9,9,GPE|23,23,GPE
+
+
+Cleaning house at top levels is also seen as important for Yugoslavia in its efforts to break out of a decade of sanctions and international isolation meant to bring Milosevic to heel .
+VBG NN IN JJ NNS VBZ RB VBN IN JJ IN NNP IN PRP$ NNS TO VB RP IN DT NN IN NNS CC JJ NN VBD TO VB NNP TO NN .
+11,11,GPE|13,13,GPE|24,24,LOC|29,29,PER
+
+
+Milosevic is blamed by the West for starting _ and then losing _ four Balkan wars that broke out in the last decade when parts of Yugoslavia began to seek independence .
+NNP VBZ VBN IN DT NNP IN VBG NN CC RB VBG CD CD NNP NNS WDT VBD RP IN DT JJ NN WRB NNS IN NNP VBD TO VB NN .
+0,0,PER|5,5,LOC|14,14,LOC|24,24,GPE|26,26,GPE
+Physical 24,24 GPE 26,26 GPE
+
+Those conflicts were marked by horrific acts of violence against civilians , which prompted Western governments to impose sanctions and isolate the government in Belgrade .
+DT NNS VBD VBN IN JJ NNS IN NN IN NNS , WDT VBD JJ NNS TO VB NNS CC VB DT NN IN NNP .
+10,10,PER|15,15,ORG|14,14,LOC|22,22,ORG|24,24,GPE
+
+
+A new government should `` be able to show up in Brussels and Washington and say : ` the country has democratized ... we ask from you to lift the sanctions , '' ' Djindjic said .
+DT JJ NN MD `` VB JJ TO VB RP IN NNP CC NNP CC VB : `` DT NN VBZ VBN : PRP VBP IN PRP TO VB DT NNS , '' '' NNP VBD .
+2,2,ORG|11,11,GPE|13,13,GPE|19,19,GPE|23,23,GPE|26,26,GPE|34,34,PER
+
+
+Both the United States and the European Union have said they will begin to lift sanctions once the new government is in place .
+CC DT NNP NNPS CC DT NNP NNP VBP VBN PRP MD VB TO VB NNS RB DT JJ NN VBZ IN NN .
+2,3,GPE|6,7,GPE|10,10,GPE|19,19,ORG
+
+
+French Foreign Minister Hubert Vedrine confirmed Sunday that the EU would partially lift sanctions on Monday .
+NNP NNP NNP NNP NNP VBD NNP IN DT NNP MD RB VB NNS IN NNP .
+3,4,PER|2,2,PER|0,0,GPE|9,9,GPE
+Employee/Membership/Subsidiary 3,4 PER 0,0 GPE
+
+Djindjic spoke after the inaugural session of the Yugoslav Parliament , where Kostunica took office .
+JJ VBD IN DT JJ NN IN DT NNP NNP , WRB NNP VBD NN .
+0,0,PER|9,9,ORG|8,8,GPE|11,11,ORG|12,12,PER
+
+
+Kostunica pledged to follow his conscience in leading Yugoslavia and urged lawmakers to bury past enmities that led to bloodshed and chaos .
+NNP VBD TO VB PRP$ NN IN VBG NNP CC VBD NNS TO VB JJ NNS WDT VBD TO NN CC NN .
+0,0,PER|4,4,PER|8,8,GPE|11,11,PER
+
+
+The 56-year-old legal scholar promised to return Yugoslavia to democracy and end the ethnic conflict and economic devastation that marked the 13 years of Milosevic 's rule .
+DT JJ JJ NN VBD TO VB NNP TO NN CC VB DT JJ NN CC JJ NN WDT VBD DT CD NNS IN NNP POS NN .
+3,3,PER|7,7,GPE|24,24,PER
+
+
+`` Everything is peaceful , '' he said .
+`` NN VBZ JJ , '' PRP VBD .
+6,6,PER
+
+
+`` Yugoslavia and Serbia have joined the family of democratic nations . ''
+`` NNP CC NNP VBP VBN DT NN IN JJ NNS . ''
+1,1,GPE|3,3,GPE|7,7,GPE|10,10,GPE
+Discourse 1,1 GPE 7,7 GPE|Discourse 3,3 GPE 7,7 GPE
+
+Still , discord could resurface , at least in parliament .
+RB , NN MD VB , IN JJS IN NN .
+9,9,ORG
+
+
+The swearing-in itself was repeatedly delayed by Milosevic allies who contested parts of the Sept. 24 vote .
+DT NN PRP VBD RB VBN IN NNP NNS WP VBD NNS IN DT NNP CD NN .
+8,8,PER|9,9,PER
+
+
+And with Kostunica 's 18-party opposition block short of an absolute majority , it appears compelled to deal with the Socialist People 's Party of Montenegro , the smaller Yugoslav republic .
+CC IN NNP POS JJ NN NN JJ IN DT JJ NN , PRP VBZ VBN TO VB IN DT NNP NNPS POS NNP IN NNP , DT JJR JJ NN .
+6,6,ORG|2,2,PER|5,5,ORG|13,13,ORG|20,23,ORG|25,25,GPE|30,30,GPE|29,29,GPE
+GPE-Affiliation 20,23 ORG 25,25 GPE|Physical 25,25 GPE 29,29 GPE
+
+That party backed Milosevic until his downfall and now seeks to have one of its own appointed as Yugoslavia 's prime minister _ the constitution says that if the president is from Serbia , the prime minister must be Montenegrin .
+DT NN VBD NNP IN PRP$ NN CC RB VBZ TO VB CD IN PRP$ JJ VBN IN NNP POS JJ NN VBD DT NN VBZ IN IN DT NN VBZ IN NNP , DT JJ NN MD VB NNP .
+1,1,ORG|3,3,PER|5,5,PER|12,12,PER|15,15,PER|14,14,ORG|21,21,PER|18,18,GPE|29,29,PER|32,32,GPE|36,36,PER|39,39,GPE
+Employee/Membership/Subsidiary 15,15 PER 14,14 ORG|GPE-Affiliation 29,29 PER 32,32 GPE|GPE-Affiliation 36,36 PER 39,39 GPE
+
+With the opposition outnumbered in parliament , a nonpartisan government of experts , as favored by many in the Kostunica camp , has little chance of being formed .
+IN DT NN VBD IN NN , DT JJ NN IN NNS , IN VBN IN JJ IN DT NNP NN , VBZ JJ NN IN VBG VBN .
+2,2,ORG|5,5,ORG|9,9,ORG|11,11,PER|16,16,PER|20,20,PER|19,19,PER
+PER/ORG-Affiliation 16,16 PER 20,20 PER
+
+CNN20001126 .1400.0557 NEWS STORY 11/26/2000 14:09:17.10
+NN CD NN NN CD CD
+
+
+
+a fire in a bangladeshi garment factory has left at least 37 people dead and 100 hospitalized .
+DT NN IN DT JJ NN NN VBZ VBN IN JJS CD NNS JJ CC CD VBN .
+6,6,FAC|4,4,GPE|12,12,PER|15,15,PER
+Physical 6,6 FAC 4,4 GPE
+
+most of the deceased were killed in the crush as workers tried to flee the blaze in the four-story building .
+JJS IN DT VBN VBD VBN IN DT NN IN NNS VBD TO VB DT NN IN DT JJ NN .
+3,3,PER|10,10,PER|19,19,FAC
+Physical 10,10 PER 19,19 FAC
+
+witnesses say the only exit door was on the ground floor , and that it was locked when the fire broke out .
+NNS VBP DT JJ NN NN VBD IN DT NN NN , CC IN PRP VBD VBN WRB DT NN VBD RP .
+0,0,PER|10,10,FAC
+
+
+most of the victims were women and children .
+JJS IN DT NNS VBD NNS CC NNS .
+3,3,PER|5,5,PER|7,7,PER
+
+
+11/26/2000 14:09:35.54
+CD CD
+
+
+
+NYT20001024 .2203.0349 NEWS STORY 2000-10-24 22:13:10
+NN CD NN NN CD CD
+
+
+
+A5057 & Cx1f ; taf-z u f BC COMPAQ EARNINGS NYT &LR; 10-24 0537
+NNP CC NNP : NN FW FW FW NNP NNS VBP NN CD CD
+
+
+
+BC COMPAQ EARNINGS NYT
+NNP NNP NNS VBP
+
+
+
+COMPAQ BEATS PROFIT AND SALES FORECASTS
+NNP VBZ NN CC NNS NNS
+
+
+
+&UR; By BARNABY J. FEDER &LR; &QC; &QL; &UR; c. 2000 N.Y. Times News Service &LR; &QC; &QL;
+NN IN NNP NNP NNP NNP NNP NNP NNP VBP CD NNP NNP NNP NNP NNP NNP NNP
+
+
+
+Compaq Computer reported earnings and sales that beat Wall Street 's expectations Tuesday , bolstering arguments that the company is rebounding from problems that had hurt its performance the last two years .
+NNP NNP VBD NNS CC NNS WDT VBP NNP NNP POS NNS NNP , VBG NNS IN DT NN VBZ VBG IN NNS WDT VBD VBN PRP$ NN DT JJ CD NNS .
+0,1,ORG|8,9,ORG|18,18,ORG|26,26,ORG
+
+
+Compaq said it netted $ 550 million , or 31 cents a diluted share , in the quarter ended Sept. 30 , a leap of 23 cents a share , or 288 percent , from the similar period in 1999 .
+NNP VBD PRP VBD $ CD CD , CC CD NNS DT JJ NN , IN DT NN VBN NNP CD , DT NN IN CD NNS DT NN , CC CD NN , IN DT JJ NN IN CD .
+0,0,ORG|2,2,ORG
+
+
+About $ 25 million , or a penny a share , came from investment income rather than operations , but after discounting that boost , Compaq still beat the average of analysts ' projections by a penny a share .
+IN $ CD CD , CC DT NN DT NN , VBD IN NN NN RB IN NNS , CC IN VBG IN NN , NNP RB VBD DT NN IN NNS POS NNS IN DT NN DT NN .
+25,25,ORG|31,31,PER
+
+
+Compaq , which is based in Houston , reported worldwide revenue of $ 11.2 billion for the quarter , an increase of 22 percent over the previous year 's period .
+NNP , WDT VBZ VBN IN NNP , VBD JJ NN IN $ CD CD IN DT NN , DT NN IN CD NN IN DT JJ NN POS NN .
+0,0,ORG|2,2,ORG|6,6,GPE
+GPE-Affiliation 2,2 ORG 6,6 GPE
+
+Compaq said that revenues would have grown 26 percent but for the strength of the dollar , which reduced the value of overseas sales compared with a year ago .
+NNP VBD IN NNS MD VB VBN CD NN CC IN DT NN IN DT NN , WDT VBD DT NN IN JJ NNS VBN IN DT NN RB .
+0,0,ORG|22,22,LOC
+
+
+`` Our results clearly demonstrate our tremendous momentum in the marketplace , '' said Michael Capellas , chairman and chief executive .
+`` PRP$ NNS RB VBP PRP$ JJ NN IN DT NN , '' VBD NNP NNP , NN CC JJ NN .
+1,1,ORG|5,5,ORG|14,15,PER|17,17,PER|20,20,PER
+
+
+`` We 're on a bit of a roll . ''
+`` PRP VBP IN DT NN IN DT NN . ''
+1,1,ORG
+
+
+Capellas noted that the strong growth had come from every region of the world .
+NNP VBD IN DT JJ NN VBD VBN IN DT NN IN DT NN .
+0,0,PER|10,10,LOC|13,13,LOC
+Discourse 10,10 LOC 13,13 LOC
+
+He also expressed confidence that Compaq would meet its previous projections of 18 percent revenue growth in the current quarter and 40 percent earnings growth in 2001 .
+PRP RB VBD NN WDT NNP MD VB PRP$ JJ NNS IN CD NN NN NN IN DT JJ NN CC CD NN NNS NN IN CD .
+0,0,PER|5,5,ORG|8,8,ORG
+
+
+Analysts were pleased , if not completely persuaded , by the positive report .
+NNS VBD JJ , IN RB RB VBD , IN DT JJ NN .
+0,0,PER
+
+
+While Compaq reported strong overall growth in its server business , several observers noted that the 5 percent growth in the Unix server segment was well below the industry average .
+IN NNP VBD JJ JJ NN IN PRP$ NN NN , JJ NNS VBD IN DT CD NN NN IN DT NNP NN NN VBD RB IN DT NN NN .
+1,1,ORG|9,9,ORG|7,7,ORG|23,23,ORG|28,28,ORG
+Employee/Membership/Subsidiary 9,9 ORG 7,7 ORG
+
+Similarly , the 9 percent growth in the data storage business was an improvement on past quarters , but below the growth rate of competitors , like EMC .
+RB , DT CD NN NN IN DT NNS NN NN VBD DT NN IN JJ NNS , CC IN DT NN NN IN NNS , IN NNP .
+10,10,ORG|24,24,ORG|27,27,ORG
+Discourse 27,27 ORG 24,24 ORG
+
+Compaq is the world 's leading maker of personal computers , and its PC business was stronger than many analysts had projected .
+NNP VBZ DT NN POS VBG NN IN JJ NNS , CC PRP$ NN NN VBD JJR IN JJ NNS VBD VBN .
+0,0,ORG|6,6,ORG|3,3,LOC|14,14,ORG|12,12,ORG|19,19,PER
+GPE-Affiliation 6,6 ORG 3,3 LOC|Employee/Membership/Subsidiary 14,14 ORG 12,12 ORG
+
+The commercial PC unit had revenues of $ 3.5 billion , up 28 percent from a year ago , and its operating income was $ 133 million , compared with a loss of $ 169 million a year ago .
+DT JJ NN NN VBD NNS IN $ CD CD , RB CD NN IN DT NN RB , CC PRP$ NN NN VBD $ CD CD , VBN IN DT NN IN $ CD CD DT NN RB .
+3,3,ORG|20,20,ORG
+
+
+The consumer PC unit had revenue of $ 2.1 billion , an increase of 45 percent over the year-ago period , although a softening market and pricing pressures cut operating income 3 percent to $ 63 million .
+DT NN NN NN VBD NN IN $ CD CD , DT NN IN CD NN IN DT JJ NN , IN DT VBG NN CC NN NNS VBN VBG NN CD NN TO $ CD CD .
+3,3,ORG
+
+
+Perhaps the biggest continuing weakness was in Compaq 's services business .
+RB DT JJS VBG NN VBD IN NNP POS NNS NN .
+10,10,ORG|7,7,ORG
+Employee/Membership/Subsidiary 10,10 ORG 7,7 ORG
+
+Revenues attributed to Compaq 's 40,000 consultants fell 2 percent , to $ 1.7 billion , and operating income dropped 16 percent , to $ 254 million .
+NNS VBD TO NNP POS CD NNS VBD CD NN , TO $ CD CD , CC VBG NN VBD CD NN , TO $ CD CD .
+6,6,PER|3,3,ORG
+Employee/Membership/Subsidiary 6,6 PER 3,3 ORG
+
+Capellas said that improving that group 's performance was a high priority .
+NNP VBD IN VBG DT NN POS NN VBD DT JJ NN .
+0,0,PER|5,5,ORG
+
+
+Over all , though , Compaq enthusiasts like Kurtis R. King , an analyst at Banc of America Securities who rates the company a `` strong buy , '' said the quarter validated their bullishness .
+IN DT , RB , NNP NNS IN NNP NNP NNP , DT NN IN NNP IN NNP NNPS WP VBZ DT NN DT `` JJ NN , '' VBD DT NN VBD PRP$ NN .
+6,6,PER|5,5,ORG|8,10,PER|13,13,PER|15,18,ORG|19,19,PER|22,22,ORG|26,26,ORG|33,33,ORG
+Discourse 8,10 PER 6,6 PER|Employee/Membership/Subsidiary 13,13 PER 15,18 ORG
+
+And even skeptics who were not advising clients to buy the stock , like Charles R. Wolf at UBS Warburg , called the quarter a good one .
+CC RB NNS WP VBD RB VBG NNS TO VB DT NN , IN NNP NNP NNP IN NNP NNP , VBD DT NN DT JJ CD .
+2,2,PER|3,3,PER|7,7,PER|14,16,PER|18,19,ORG
+Discourse 14,16 PER 2,2 PER|Employee/Membership/Subsidiary 14,16 PER 18,19 ORG
+
+`` They 're turning , but the turn is n't completed yet , '' Wolf said .
+`` PRP VBP VBG , CC DT NN VBZ RB VBN RB , '' NNP VBD .
+1,1,ORG|14,14,PER
+
+
+The results were released after the end of trading on the New York Stock Exchange Tuesday .
+DT NNS VBD VBN IN DT NN IN NN IN DT NNP NNP NNP NNP NNP .
+11,14,ORG
+
+
+Compaq 's shares closed up 70 cents , to $ 28.40 , on the Big Board .
+NNP POS NNS VBD RB CD NNS , TO $ CD , IN DT NNP NNP .
+0,0,ORG
+
+
+NYT-10-24-00 2213EDT
+NN NN
+
+
+
+CNN20001219 .1400.0212 NEWS STORY 12/19/2000 14:03:32.52
+NN CD NN NN CD CD
+
+
+
+investors on wall street are waiting for the word from federal reserve chairman alan greenspan on interest rates .
+NNS IN NN NN VBP VBG IN DT NN IN JJ NN NN JJ NN IN NN NNS .
+0,0,PER|2,3,FAC|13,14,PER|10,12,PER|10,11,ORG
+Physical 0,0 PER 2,3 FAC|Employee/Membership/Subsidiary 10,12 PER 10,11 ORG
+
+greenspan will meet with the federal reserve board policymakers today for the last time this year .
+NN MD VB IN DT JJ NN NN NNS NN IN DT JJ NN DT NN .
+0,0,PER|8,8,PER|5,7,ORG
+Employee/Membership/Subsidiary 8,8 PER 5,7 ORG
+
+there 's widespread hope the fed will do something to stop the economic slowdown .
+EX VBZ JJ NN DT NN MD VB NN TO VB DT JJ NN .
+5,5,ORG
+
+
+that could mean a rate slash .
+WDT MD VB DT NN VBP .
+
+
+
+earlier this month , greenspan suggests cuts could be on the way .
+RBR DT NN , NN VBZ NNS MD VB IN DT NN .
+4,4,PER
+
+
+12/19/2000 14:03:52.42
+CD CD
+
+
+
+VOA20001031 .2100.1212 NEWS STORY 10/31/2000 21:20:12.73
+NN CD NN NN CD CD
+
+
+
+Major League baseball 's National League champion New York Mets fortified their teams leadership on Tuesday by resigning Manager Bobby Valentine and General Manager Steve Phillips .
+NNP NNP NN POS NNP NNP NN NNP NNP NNPS VBD PRP$ NNS NN IN NNP IN VBG NNP NNP NNP CC NNP NNP NNP NNP .
+4,6,ORG|0,2,ORG|7,9,ORG|12,12,ORG|11,11,ORG|19,20,PER|18,18,PER|24,25,PER|23,23,PER
+Employee/Membership/Subsidiary 0,2 ORG 4,6 ORG
+
+One of the Mets owners , Nelson Doubleday told a New York newspaper that Valentine 's contract was for three years at $ 7.5 million and with Phillips was for three years at $ 3 million .
+CD IN DT NNPS NNS , NNP NNP VBD DT NNP NNP NN WDT NNP POS NN VBD IN CD NNS IN $ CD CD CC IN NNP VBD IN CD NNS IN $ CD CD .
+0,0,PER|4,4,PER|3,3,ORG|6,7,PER|12,12,ORG|10,11,GPE|14,14,PER|27,27,PER
+Discourse 0,0 PER 4,4 PER|Employee/Membership/Subsidiary 4,4 PER 3,3 ORG|GPE-Affiliation 12,12 ORG 10,11 GPE
+
+The fifty-year-old Valentine replaced Dallas Green as the Mets manager on August 26th , 1996 .
+DT JJ NNP VBD NNP NNP IN DT NNPS NN IN NNP JJ , CD .
+1,1,PER|2,2,PER|4,5,PER|9,9,PER|9,9,PER|8,8,ORG
+Employee/Membership/Subsidiary 9,9 PER 8,8 ORG|Employee/Membership/Subsidiary 9,9 PER 8,8 ORG
+
+Since then , he has led the team to four consecutive winning seasons , including back-to-back post season berths and the franchise 's first trip to the World Series in 14 years .
+IN RB , PRP VBZ VBN DT NN TO CD JJ JJ NNS , VBG JJ NN NN NNS CC DT NN POS JJ NN TO DT NNP NNP IN CD NNS .
+3,3,PER|7,7,ORG|21,21,ORG
+
+
+Valentine said he knew he wanted to stay in New York .
+NNP VBD PRP VBD PRP VBD TO VB IN NNP NNP .
+0,0,PER|2,2,PER|4,4,PER|9,10,GPE
+
+
+We think after the last game when Mike and Fonse and Alan John amongst the others , came in and literally asked me to stay .
+PRP VBP IN DT JJ NN WRB NNP CC NNP CC NNP NNP IN DT NNS , VBD IN CC RB VBD PRP TO VB .
+0,0,PER|7,7,PER|9,9,PER|11,12,PER|15,15,PER|22,22,PER
+
+
+That I knew at that time , probably could have offered a lot less , that I was going to stay .
+DT PRP VBD IN DT NN , RB MD VB VBN DT NN RBR , IN PRP VBD VBG TO VB .
+1,1,PER|16,16,PER
+
+
+Valentine had been under contract through midnight Tuesday , while Phillips was under contract through December .
+NNP VBD VBN IN NN IN NN NNP , IN NNP VBD IN NN IN NNP .
+0,0,PER|10,10,PER
+
+
+By resigning Valentine before his contract expired , the Mets avoided a bidding war for his services .
+IN VBG NNP IN PRP$ NN VBD , DT NNPS VBD DT NN NN IN PRP$ NNS .
+2,2,PER|4,4,PER|9,9,ORG|15,15,PER
+
+
+The Cincinnati Reds had expressed an interest in him and the Los Angeles Dodgers , Philadelphia Phillies , and Toronto Blue Jays are also without managers .
+DT NNP NNS VBD VBN DT NN IN PRP CC DT NNP NNP NNPS , NNP NNPS , CC NNP NNP NNPS VBP RB IN NNS .
+1,2,ORG|8,8,PER|11,21,ORG|25,25,PER
+
+
+10/31/2000 21:21:29.70
+CD CD
+
+
+
+APW20001113 .2122.0704 NEWS STORY 2000-11-13 21:43:28
+NN CD NN NN CD CD
+
+
+
+ELN Unfinished House
+NNP NNP NNP
+
+
+
+Five House Races Still Unsettled
+CD NNP NN RB JJ
+
+
+
+WASHINGTON ( AP ) _ Doubts remain in five races for the House of Representatives , and while recounts are likely to extend the indecision they have no chance of erasing the Republican majority for the incoming 107th Congress .
+NNP CD NN CD CD NNS VBP IN CD NNS IN DT NNP IN NNPS , CC IN VBZ VBP JJ TO VB DT NN PRP VBP DT NN IN VBG DT JJ NN IN DT JJ NN NNP .
+0,0,GPE|2,2,ORG|12,14,ORG|32,32,ORG|38,38,ORG
+
+
+The Associated Press has called winners in all but two House races : New Jersey 's 12th district battle between incumbent Democratic Rep. Rush Holt and GOP challenger Dick Zimmer , who formerly held the seat ; and in Florida 's 22nd District , where veteran GOP Rep. Clay Shaw has claimed a 586-vote victory following a recount over Democrat Elaine Bloom .
+DT NNP NNP VBZ VBN NNS IN DT CC CD NNP NNS : NNP NNP POS JJ NN NN IN JJ JJ NNP NNP NNP CC NNP NN NNP NNP , WP RB VBD DT NN : CC IN NNP POS JJ NNP , WRB NN NNP NNP NNP NNP VBZ VBN DT JJ NN VBG DT NN IN NNP NNP NNP .
+1,2,ORG|5,5,PER|10,10,ORG|17,17,LOC|13,14,GPE|23,24,PER|22,22,PER|21,21,ORG|28,29,PER|27,27,PER|26,26,ORG|31,31,PER|42,42,LOC|39,39,GPE|44,44,LOC|48,49,PER|47,47,PER|46,46,ORG|60,61,PER|59,59,ORG
+Physical 17,17 LOC 13,14 GPE|Employee/Membership/Subsidiary 22,22 PER 21,21 ORG|Employee/Membership/Subsidiary 27,27 PER 26,26 ORG|Physical 42,42 LOC 39,39 GPE|Employee/Membership/Subsidiary 47,47 PER 46,46 ORG|Employee/Membership/Subsidiary 60,61 PER 59,59 ORG
+
+But there remained some doubt about narrow decisions in Minnesota , California and Michigan , where the apparent losers refusing to concede and recounts have either begun or are likely .
+CC EX VBD DT NN IN JJ NNS IN NNP , NNP CC NNP , WRB DT JJ NNS VBG TO VB CC VBZ VBP CC VBN CC VBP JJ .
+9,9,GPE|11,11,GPE|13,13,GPE|15,15,GPE|18,18,PER
+
+
+In Michigan 's 8th District , Republican Mike Rogers was leading Democrat Dianne Byrum by just 152 votes during a recanvass that must be completed by Nov. 21 .
+IN NNP POS JJ NNP , NNP NNP NNP VBD VBG NNP NNP NNP IN RB CD NNS IN DT NN WDT MD VB VBN IN NNP CD .
+4,4,LOC|1,1,GPE|7,8,PER|6,6,ORG|12,13,PER|11,11,ORG
+Physical 4,4 LOC 1,1 GPE|Employee/Membership/Subsidiary 7,8 PER 6,6 ORG|Employee/Membership/Subsidiary 12,13 PER 11,11 ORG
+

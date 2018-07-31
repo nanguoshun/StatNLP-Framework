@@ -1,0 +1,774 @@
+id:-1
+nl:death valley
+mrl:
+productions:
+*n:PlaceName -> ({ ' death valley ' })
+
+id:-2
+nl:κορυφή guadalupe
+mrl:
+productions:
+*n:PlaceName -> ({ ' guadalupe peak ' })
+
+id:-3
+nl:durham
+mrl:
+productions:
+*n:CityName -> ({ ' durham ' })
+
+id:-4
+nl:tempe
+mrl:
+productions:
+*n:CityName -> ({ ' tempe ' })
+
+id:-5
+nl:sacramento
+mrl:
+productions:
+*n:CityName -> ({ ' sacramento ' })
+
+id:-6
+nl:albany
+mrl:
+productions:
+*n:CityName -> ({ ' albany ' })
+
+id:-7
+nl:rochester
+mrl:
+productions:
+*n:CityName -> ({ ' rochester ' })
+
+id:-8
+nl:ga
+mrl:
+productions:
+*n:StateAbbrev -> ({ ' ga ' })
+
+id:-9
+nl:north carolina
+mrl:
+productions:
+*n:StateName -> ({ ' north carolina ' })
+
+id:-10
+nl:washington
+mrl:
+productions:
+*n:StateAbbrev -> ({ ' wa ' })
+
+id:-11
+nl:washington
+mrl:
+productions:
+*n:StateName -> ({ ' washington ' })
+
+id:-12
+nl:washington
+mrl:
+productions:
+*n:CityName -> ({ ' washington ' })
+
+id:-13
+nl:ηνωμένες πολιτείες
+mrl:
+productions:
+*n:CountryName -> ({ ' usa ' })
+
+id:-14
+nl:minnesota
+mrl:
+productions:
+*n:StateAbbrev -> ({ ' mn ' })
+
+id:-15
+nl:minnesota
+mrl:
+productions:
+*n:StateName -> ({ ' minnesota ' })
+
+id:-16
+nl:florida
+mrl:
+productions:
+*n:StateName -> ({ ' florida ' })
+
+id:-17
+nl:virginia
+mrl:
+productions:
+*n:StateName -> ({ ' virginia ' })
+
+id:-18
+nl:salem
+mrl:
+productions:
+*n:CityName -> ({ ' salem ' })
+
+id:-19
+nl:επίπεδο της θάλασσας
+mrl:
+productions:
+*n:Num -> ({ ' 0 ' })
+
+id:-20
+nl:arkansas
+mrl:
+productions:
+*n:StateName -> ({ ' arkansas ' })
+
+id:-21
+nl:iowa
+mrl:
+productions:
+*n:StateName -> ({ ' iowa ' })
+
+id:-22
+nl:portland
+mrl:
+productions:
+*n:CityName -> ({ ' portland ' })
+
+id:-23
+nl:χώρα
+mrl:
+productions:
+*n:CountryName -> ({ ' usa ' })
+
+id:-24
+nl:california
+mrl:
+productions:
+*n:StateName -> ({ ' california ' })
+
+id:-25
+nl:miami
+mrl:
+productions:
+*n:CityName -> ({ ' miami ' })
+
+id:-26
+nl:delaware
+mrl:
+productions:
+*n:StateName -> ({ ' delaware ' })
+
+id:-27
+nl:delaware
+mrl:
+productions:
+*n:RiverName -> ({ ' delaware ' })
+
+id:-28
+nl:new jersey
+mrl:
+productions:
+*n:StateName -> ({ ' new jersey ' })
+
+id:-29
+nl:san diego
+mrl:
+productions:
+*n:CityName -> ({ ' san diego ' })
+
+id:-30
+nl:rhode island
+mrl:
+productions:
+*n:StateName -> ({ ' rhode island ' })
+
+id:-31
+nl:spokane
+mrl:
+productions:
+*n:CityName -> ({ ' spokane ' })
+
+id:-32
+nl:nevada
+mrl:
+productions:
+*n:StateName -> ({ ' nevada ' })
+
+id:-33
+nl:erie
+mrl:
+productions:
+*n:CityName -> ({ ' erie ' })
+
+id:-34
+nl:nebraska
+mrl:
+productions:
+*n:StateName -> ({ ' nebraska ' })
+
+id:-35
+nl:austin
+mrl:
+productions:
+*n:CityName -> ({ ' austin ' })
+
+id:-36
+nl:new orleans
+mrl:
+productions:
+*n:CityName -> ({ ' new orleans ' })
+
+id:-37
+nl:indiana
+mrl:
+productions:
+*n:StateName -> ({ ' indiana ' })
+
+id:-38
+nl:wisconsin
+mrl:
+productions:
+*n:StateName -> ({ ' wisconsin ' })
+
+id:-39
+nl:oklahoma
+mrl:
+productions:
+*n:StateName -> ({ ' oklahoma ' })
+
+id:-40
+nl:dallas
+mrl:
+productions:
+*n:CityName -> ({ ' dallas ' })
+
+id:-41
+nl:όρος mckinley
+mrl:
+productions:
+*n:PlaceName -> ({ ' mount mckinley ' })
+
+id:-42
+nl:boulder
+mrl:
+productions:
+*n:CityName -> ({ ' boulder ' })
+
+id:-43
+nl:ηπα
+mrl:
+productions:
+*n:CountryName -> ({ ' usa ' })
+
+id:-44
+nl:plano
+mrl:
+productions:
+*n:CityName -> ({ ' plano ' })
+
+id:-45
+nl:usa
+mrl:
+productions:
+*n:CountryName -> ({ ' usa ' })
+
+id:-46
+nl:fort wayne
+mrl:
+productions:
+*n:CityName -> ({ ' fort wayne ' })
+
+id:-47
+nl:new mexico
+mrl:
+productions:
+*n:StateName -> ({ ' new mexico ' })
+
+id:-48
+nl:idaho
+mrl:
+productions:
+*n:StateName -> ({ ' idaho ' })
+
+id:-49
+nl:ohio
+mrl:
+productions:
+*n:RiverName -> ({ ' ohio ' })
+
+id:-50
+nl:ohio
+mrl:
+productions:
+*n:StateName -> ({ ' ohio ' })
+
+id:-51
+nl:boston
+mrl:
+productions:
+*n:CityName -> ({ ' boston ' })
+
+id:-52
+nl:όρος whitney
+mrl:
+productions:
+*n:PlaceName -> ({ ' mount whitney ' })
+
+id:-53
+nl:springfield
+mrl:
+productions:
+*n:CityName -> ({ ' springfield ' })
+
+id:-54
+nl:seattle
+mrl:
+productions:
+*n:CityName -> ({ ' seattle ' })
+
+id:-55
+nl:dover
+mrl:
+productions:
+*n:CityName -> ({ ' dover ' })
+
+id:-56
+nl:minneapolis
+mrl:
+productions:
+*n:CityName -> ({ ' minneapolis ' })
+
+id:-57
+nl:montana
+mrl:
+productions:
+*n:StateName -> ({ ' montana ' })
+
+id:-58
+nl:arizona
+mrl:
+productions:
+*n:StateName -> ({ ' arizona ' })
+
+id:-59
+nl:arizona
+mrl:
+productions:
+*n:StateAbbrev -> ({ ' az ' })
+
+id:-60
+nl:denver
+mrl:
+productions:
+*n:CityName -> ({ ' denver ' })
+
+id:-61
+nl:tucson
+mrl:
+productions:
+*n:CityName -> ({ ' tucson ' })
+
+id:-62
+nl:βόρειος platte
+mrl:
+productions:
+*n:RiverName -> ({ ' north platte ' })
+
+id:-63
+nl:montgomery
+mrl:
+productions:
+*n:CityName -> ({ ' montgomery ' })
+
+id:-64
+nl:louisiana
+mrl:
+productions:
+*n:StateName -> ({ ' louisiana ' })
+
+id:-65
+nl:tennessee
+mrl:
+productions:
+*n:StateName -> ({ ' tennessee ' })
+
+id:-66
+nl:pennsylvania
+mrl:
+productions:
+*n:StateName -> ({ ' pennsylvania ' })
+
+id:-67
+nl:pennsylvania
+mrl:
+productions:
+*n:StateAbbrev -> ({ ' pa ' })
+
+id:-68
+nl:us
+mrl:
+productions:
+*n:CountryName -> ({ ' usa ' })
+
+id:-69
+nl:new hampshire
+mrl:
+productions:
+*n:StateName -> ({ ' new hampshire ' })
+
+id:-70
+nl:south carolina
+mrl:
+productions:
+*n:StateName -> ({ ' south carolina ' })
+
+id:-71
+nl:michigan
+mrl:
+productions:
+*n:StateName -> ({ ' michigan ' })
+
+id:-72
+nl:red
+mrl:
+productions:
+*n:RiverName -> ({ ' red ' })
+
+id:-73
+nl:san jose
+mrl:
+productions:
+*n:CityName -> ({ ' san jose ' })
+
+id:-74
+nl:utah
+mrl:
+productions:
+*n:StateName -> ({ ' utah ' })
+
+id:-75
+nl:νότια dakota
+mrl:
+productions:
+*n:StateName -> ({ ' south dakota ' })
+
+id:-76
+nl:vermont
+mrl:
+productions:
+*n:StateName -> ({ ' vermont ' })
+
+id:-77
+nl:kansas
+mrl:
+productions:
+*n:StateName -> ({ ' kansas ' })
+
+id:-78
+nl:oregon
+mrl:
+productions:
+*n:StateName -> ({ ' oregon ' })
+
+id:-79
+nl:wyoming
+mrl:
+productions:
+*n:StateName -> ({ ' wyoming ' })
+
+id:-80
+nl:san antonio
+mrl:
+productions:
+*n:CityName -> ({ ' san antonio ' })
+
+id:-81
+nl:atlanta
+mrl:
+productions:
+*n:CityName -> ({ ' atlanta ' })
+
+id:-82
+nl:salt lake city
+mrl:
+productions:
+*n:CityName -> ({ ' salt lake city ' })
+
+id:-83
+nl:kalamazoo
+mrl:
+productions:
+*n:CityName -> ({ ' kalamazoo ' })
+
+id:-84
+nl:αλαμπάμα
+mrl:
+productions:
+*n:StateName -> ({ ' alabama ' })
+
+id:-85
+nl:flint
+mrl:
+productions:
+*n:CityName -> ({ ' flint ' })
+
+id:-86
+nl:maryland
+mrl:
+productions:
+*n:StateName -> ({ ' maryland ' })
+
+id:-87
+nl:chicago
+mrl:
+productions:
+*n:CityName -> ({ ' chicago ' })
+
+id:-88
+nl:dc
+mrl:
+productions:
+*n:StateAbbrev -> ({ ' dc ' })
+
+id:-89
+nl:όχθη ποταμού
+mrl:
+productions:
+*n:CityName -> ({ ' riverside ' })
+
+id:-90
+nl:mount whitney
+mrl:
+productions:
+*n:PlaceName -> ({ ' mount whitney ' })
+
+id:-91
+nl:indianapolis
+mrl:
+productions:
+*n:CityName -> ({ ' indianapolis ' })
+
+id:-92
+nl:alaska
+mrl:
+productions:
+*n:StateName -> ({ ' alaska ' })
+
+id:-93
+nl:georgia
+mrl:
+productions:
+*n:StateName -> ({ ' georgia ' })
+
+id:-94
+nl:chattahoochee
+mrl:
+productions:
+*n:RiverName -> ({ ' chattahoochee ' })
+
+id:-95
+nl:mississippi
+mrl:
+productions:
+*n:StateName -> ({ ' mississippi ' })
+
+id:-96
+nl:mississippi
+mrl:
+productions:
+*n:RiverName -> ({ ' mississippi ' })
+
+id:-97
+nl:όρους mckinley
+mrl:
+productions:
+*n:PlaceName -> ({ ' mount mckinley ' })
+
+id:-98
+nl:rio grande
+mrl:
+productions:
+*n:RiverName -> ({ ' rio grande ' })
+
+id:-99
+nl:pittsburgh
+mrl:
+productions:
+*n:CityName -> ({ ' pittsburgh ' })
+
+id:-100
+nl:scotts valley
+mrl:
+productions:
+*n:CityName -> ({ ' scotts valley ' })
+
+id:-101
+nl:potomac
+mrl:
+productions:
+*n:RiverName -> ({ ' potomac ' })
+
+id:-102
+nl:illinois
+mrl:
+productions:
+*n:StateName -> ({ ' illinois ' })
+
+id:-103
+nl:baton rouge
+mrl:
+productions:
+*n:CityName -> ({ ' baton rouge ' })
+
+id:-104
+nl:texas
+mrl:
+productions:
+*n:StateName -> ({ ' texas ' })
+
+id:-105
+nl:texas
+mrl:
+productions:
+*n:StateAbbrev -> ({ ' tx ' })
+
+id:-106
+nl:south dakota
+mrl:
+productions:
+*n:StateName -> ({ ' south dakota ' })
+
+id:-107
+nl:alabama
+mrl:
+productions:
+*n:StateName -> ({ ' alabama ' })
+
+id:-108
+nl:kentucky
+mrl:
+productions:
+*n:StateName -> ({ ' kentucky ' })
+
+id:-109
+nl:νότια ντακότα
+mrl:
+productions:
+*n:StateAbbrev -> ({ ' sd ' })
+
+id:-110
+nl:san francisco
+mrl:
+productions:
+*n:CityName -> ({ ' san francisco ' })
+
+id:-111
+nl:hawaii
+mrl:
+productions:
+*n:StateName -> ({ ' hawaii ' })
+
+id:-112
+nl:des moines
+mrl:
+productions:
+*n:CityName -> ({ ' des moines ' })
+
+id:-113
+nl:columbus
+mrl:
+productions:
+*n:CityName -> ({ ' columbus ' })
+
+id:-114
+nl:north dakota
+mrl:
+productions:
+*n:StateName -> ({ ' north dakota ' })
+
+id:-115
+nl:αμερική
+mrl:
+productions:
+*n:CountryName -> ({ ' usa ' })
+
+id:-116
+nl:maine
+mrl:
+productions:
+*n:StateName -> ({ ' maine ' })
+
+id:-117
+nl:maine
+mrl:
+productions:
+*n:StateAbbrev -> ({ ' me ' })
+
+id:-118
+nl:west virginia
+mrl:
+productions:
+*n:StateName -> ({ ' west virginia ' })
+
+id:-119
+nl:houston
+mrl:
+productions:
+*n:CityName -> ({ ' houston ' })
+
+id:-120
+nl:colorado
+mrl:
+productions:
+*n:StateName -> ({ ' colorado ' })
+
+id:-121
+nl:colorado
+mrl:
+productions:
+*n:RiverName -> ({ ' colorado ' })
+
+id:-122
+nl:new york
+mrl:
+productions:
+*n:CityName -> ({ ' new york ' })
+
+id:-123
+nl:new york
+mrl:
+productions:
+*n:StateName -> ({ ' new york ' })
+
+id:-124
+nl:massachusetts
+mrl:
+productions:
+*n:StateName -> ({ ' massachusetts ' })
+
+id:-125
+nl:massachusetts
+mrl:
+productions:
+*n:StateAbbrev -> ({ ' ma ' })
+
+id:-126
+nl:missouri
+mrl:
+productions:
+*n:RiverName -> ({ ' missouri ' })
+
+id:-127
+nl:missouri
+mrl:
+productions:
+*n:StateName -> ({ ' missouri ' })
+
+id:-128
+nl:missouri
+mrl:
+productions:
+*n:StateAbbrev -> ({ ' mo ' })
+
+id:-129
+nl:detroit
+mrl:
+productions:
+*n:CityName -> ({ ' detroit ' })
+

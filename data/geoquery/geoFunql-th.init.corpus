@@ -1,0 +1,876 @@
+id:-1
+nl:ประเทศ อเมริกา
+mrl:
+productions:
+*n:CountryName -> ({ ' usa ' })
+
+id:-2
+nl:มอนต์โกเมอรี
+mrl:
+productions:
+*n:CityName -> ({ ' montgomery ' })
+
+id:-3
+nl:เวอร์มอนต์
+mrl:
+productions:
+*n:StateName -> ({ ' vermont ' })
+
+id:-4
+nl:นิวแฮมพ์เชียร์
+mrl:
+productions:
+*n:StateName -> ({ ' new hampshire ' })
+
+id:-5
+nl:อีรี
+mrl:
+productions:
+*n:CityName -> ({ ' erie ' })
+
+id:-6
+nl:บาทงรูจ
+mrl:
+productions:
+*n:CityName -> ({ ' baton rouge ' })
+
+id:-7
+nl:ดัลลัส
+mrl:
+productions:
+*n:CityName -> ({ ' dallas ' })
+
+id:-8
+nl:ไอโอวา
+mrl:
+productions:
+*n:StateName -> ({ ' iowa ' })
+
+id:-9
+nl:ทูซอน
+mrl:
+productions:
+*n:CityName -> ({ ' tucson ' })
+
+id:-10
+nl:ประเทศ สหรัฐอเมริกา
+mrl:
+productions:
+*n:CountryName -> ({ ' usa ' })
+
+id:-11
+nl:สโปเกน
+mrl:
+productions:
+*n:CityName -> ({ ' spokane ' })
+
+id:-12
+nl:โรดไอแลนด์
+mrl:
+productions:
+*n:StateName -> ({ ' rhode island ' })
+
+id:-13
+nl:ยอดเขา แมคคินลีย์
+mrl:
+productions:
+*n:PlaceName -> ({ ' mount mckinley ' })
+
+id:-14
+nl:แอตแลนต้า
+mrl:
+productions:
+*n:CityName -> ({ ' atlanta ' })
+
+id:-15
+nl:นอร์ธดาโกตา
+mrl:
+productions:
+*n:StateName -> ({ ' north dakota ' })
+
+id:-16
+nl:โปโตแมค
+mrl:
+productions:
+*n:RiverName -> ({ ' potomac ' })
+
+id:-17
+nl:อินเดียนาโปลิส
+mrl:
+productions:
+*n:CityName -> ({ ' indianapolis ' })
+
+id:-18
+nl:หลุยเซียนา
+mrl:
+productions:
+*n:StateName -> ({ ' louisiana ' })
+
+id:-19
+nl:แผ่นดิน อเมริกา
+mrl:
+productions:
+*n:CountryName -> ({ ' usa ' })
+
+id:-20
+nl:อลาสก้า
+mrl:
+productions:
+*n:StateName -> ({ ' alaska ' })
+
+id:-21
+nl:ซาเล็ม
+mrl:
+productions:
+*n:CityName -> ({ ' salem ' })
+
+id:-22
+nl:ไมอามี
+mrl:
+productions:
+*n:CityName -> ({ ' miami ' })
+
+id:-23
+nl:สหรัฐ
+mrl:
+productions:
+*n:CountryName -> ({ ' usa ' })
+
+id:-24
+nl:มินเนอาโพลิส
+mrl:
+productions:
+*n:CityName -> ({ ' minneapolis ' })
+
+id:-25
+nl:เนบราสก้า
+mrl:
+productions:
+*n:StateName -> ({ ' nebraska ' })
+
+id:-26
+nl:ซานดิอาโก
+mrl:
+productions:
+*n:CityName -> ({ ' san diego ' })
+
+id:-27
+nl:ไอดาโฮ
+mrl:
+productions:
+*n:StateName -> ({ ' idaho ' })
+
+id:-28
+nl:นอร์ธดาโกต้า
+mrl:
+productions:
+*n:StateName -> ({ ' north dakota ' })
+
+id:-29
+nl:เทนเนสซี
+mrl:
+productions:
+*n:StateName -> ({ ' tennessee ' })
+
+id:-30
+nl:เนวาดา
+mrl:
+productions:
+*n:StateName -> ({ ' nevada ' })
+
+id:-31
+nl:เซาท์ดาโกตา
+mrl:
+productions:
+*n:StateName -> ({ ' south dakota ' })
+
+id:-32
+nl:เซาท์ดาโกตา
+mrl:
+productions:
+*n:StateAbbrev -> ({ ' sd ' })
+
+id:-33
+nl:โดเวอร์
+mrl:
+productions:
+*n:CityName -> ({ ' dover ' })
+
+id:-34
+nl:มินเนโซตา
+mrl:
+productions:
+*n:StateAbbrev -> ({ ' mn ' })
+
+id:-35
+nl:มินเนโซตา
+mrl:
+productions:
+*n:StateName -> ({ ' minnesota ' })
+
+id:-36
+nl:ฟลอริด้า
+mrl:
+productions:
+*n:StateName -> ({ ' florida ' })
+
+id:-37
+nl:เวอร์จิเนีย
+mrl:
+productions:
+*n:StateName -> ({ ' virginia ' })
+
+id:-38
+nl:ฮุสตัน
+mrl:
+productions:
+*n:CityName -> ({ ' houston ' })
+
+id:-39
+nl:ระดับ น้ำ ทะเล
+mrl:
+productions:
+*n:Num -> ({ ' 0 ' })
+
+id:-40
+nl:เซาธ์ดาโกตา
+mrl:
+productions:
+*n:StateName -> ({ ' south dakota ' })
+
+id:-41
+nl:วิสคอนซิน
+mrl:
+productions:
+*n:StateName -> ({ ' wisconsin ' })
+
+id:-42
+nl:ซานฟรานซิสโก
+mrl:
+productions:
+*n:CityName -> ({ ' san francisco ' })
+
+id:-43
+nl:พลาโน
+mrl:
+productions:
+*n:CityName -> ({ ' plano ' })
+
+id:-44
+nl:ฟอร์ต เวยน์
+mrl:
+productions:
+*n:CityName -> ({ ' fort wayne ' })
+
+id:-45
+nl:พิทส์เบิร์ก
+mrl:
+productions:
+*n:CityName -> ({ ' pittsburgh ' })
+
+id:-46
+nl:โคโลราโด
+mrl:
+productions:
+*n:StateName -> ({ ' colorado ' })
+
+id:-47
+nl:โคโลราโด
+mrl:
+productions:
+*n:RiverName -> ({ ' colorado ' })
+
+id:-48
+nl:ไวโอมิง
+mrl:
+productions:
+*n:StateName -> ({ ' wyoming ' })
+
+id:-49
+nl:มิสซิสซิปปี
+mrl:
+productions:
+*n:StateName -> ({ ' mississippi ' })
+
+id:-50
+nl:มิสซิสซิปปี
+mrl:
+productions:
+*n:RiverName -> ({ ' mississippi ' })
+
+id:-51
+nl:โอกลาโฮมา
+mrl:
+productions:
+*n:StateName -> ({ ' oklahoma ' })
+
+id:-52
+nl:สปริงฟิลด์
+mrl:
+productions:
+*n:CityName -> ({ ' springfield ' })
+
+id:-53
+nl:อลาสกา
+mrl:
+productions:
+*n:StateName -> ({ ' alaska ' })
+
+id:-54
+nl:ดีซี
+mrl:
+productions:
+*n:StateAbbrev -> ({ ' dc ' })
+
+id:-55
+nl:แคนซัส
+mrl:
+productions:
+*n:StateName -> ({ ' kansas ' })
+
+id:-56
+nl:เคนตักกี้
+mrl:
+productions:
+*n:StateName -> ({ ' kentucky ' })
+
+id:-57
+nl:เดส์มวง
+mrl:
+productions:
+*n:CityName -> ({ ' des moines ' })
+
+id:-58
+nl:นอร์ธเพลต
+mrl:
+productions:
+*n:RiverName -> ({ ' north platte ' })
+
+id:-59
+nl:ริโอแกรนด์
+mrl:
+productions:
+*n:RiverName -> ({ ' rio grande ' })
+
+id:-60
+nl:ซอลท์เลคซิตี
+mrl:
+productions:
+*n:CityName -> ({ ' salt lake city ' })
+
+id:-61
+nl:บอสตัน
+mrl:
+productions:
+*n:CityName -> ({ ' boston ' })
+
+id:-62
+nl:โคลัมบัส
+mrl:
+productions:
+*n:CityName -> ({ ' columbus ' })
+
+id:-63
+nl:แชตตาฮูชี
+mrl:
+productions:
+*n:RiverName -> ({ ' chattahoochee ' })
+
+id:-64
+nl:ซาคราเม็นโต
+mrl:
+productions:
+*n:CityName -> ({ ' sacramento ' })
+
+id:-65
+nl:เวสท์เวอร์จิเนีย
+mrl:
+productions:
+*n:StateName -> ({ ' west virginia ' })
+
+id:-66
+nl:มอนตานา
+mrl:
+productions:
+*n:StateName -> ({ ' montana ' })
+
+id:-67
+nl:ซานอันโตนิโอ
+mrl:
+productions:
+*n:CityName -> ({ ' san antonio ' })
+
+id:-68
+nl:ภูเขา แมคคินลีย์
+mrl:
+productions:
+*n:PlaceName -> ({ ' mount mckinley ' })
+
+id:-69
+nl:เรด
+mrl:
+productions:
+*n:RiverName -> ({ ' red ' })
+
+id:-70
+nl:อาร์คันซอ
+mrl:
+productions:
+*n:StateName -> ({ ' arkansas ' })
+
+id:-71
+nl:ฮาวาย
+mrl:
+productions:
+*n:StateName -> ({ ' hawaii ' })
+
+id:-72
+nl:แคลิฟอร์เนีย
+mrl:
+productions:
+*n:StateName -> ({ ' california ' })
+
+id:-73
+nl:ภูเขา วิทนีย์
+mrl:
+productions:
+*n:PlaceName -> ({ ' mount whitney ' })
+
+id:-74
+nl:นอร์ธแคโรไลนา
+mrl:
+productions:
+*n:StateName -> ({ ' north carolina ' })
+
+id:-75
+nl:ยอดเขา กวาดาลูเป
+mrl:
+productions:
+*n:PlaceName -> ({ ' guadalupe peak ' })
+
+id:-76
+nl:แมสซาชูเซ็ต
+mrl:
+productions:
+*n:StateName -> ({ ' massachusetts ' })
+
+id:-77
+nl:ฟลินท์
+mrl:
+productions:
+*n:CityName -> ({ ' flint ' })
+
+id:-78
+nl:อลาบามา
+mrl:
+productions:
+*n:StateName -> ({ ' alabama ' })
+
+id:-79
+nl:อินเดียนา
+mrl:
+productions:
+*n:StateName -> ({ ' indiana ' })
+
+id:-80
+nl:อิลลินอยส์
+mrl:
+productions:
+*n:StateName -> ({ ' illinois ' })
+
+id:-81
+nl:ฟลอริดา
+mrl:
+productions:
+*n:StateName -> ({ ' florida ' })
+
+id:-82
+nl:เดอแรม
+mrl:
+productions:
+*n:CityName -> ({ ' durham ' })
+
+id:-83
+nl:โรเชสเตอร์
+mrl:
+productions:
+*n:CityName -> ({ ' rochester ' })
+
+id:-84
+nl:เซาท์แคโรไลนา
+mrl:
+productions:
+*n:StateName -> ({ ' south carolina ' })
+
+id:-85
+nl:มิชิแกน
+mrl:
+productions:
+*n:StateName -> ({ ' michigan ' })
+
+id:-86
+nl:นิวเม็กซิโก
+mrl:
+productions:
+*n:StateName -> ({ ' new mexico ' })
+
+id:-87
+nl:แอริโซนา
+mrl:
+productions:
+*n:StateName -> ({ ' arizona ' })
+
+id:-88
+nl:แอริโซนา
+mrl:
+productions:
+*n:StateAbbrev -> ({ ' az ' })
+
+id:-89
+nl:สก็อตแวลลีย์
+mrl:
+productions:
+*n:CityName -> ({ ' scotts valley ' })
+
+id:-90
+nl:นิวยอร์ค
+mrl:
+productions:
+*n:CityName -> ({ ' new york ' })
+
+id:-91
+nl:นิวยอร์ค
+mrl:
+productions:
+*n:StateName -> ({ ' new york ' })
+
+id:-92
+nl:คาลามาซู
+mrl:
+productions:
+*n:CityName -> ({ ' kalamazoo ' })
+
+id:-93
+nl:ออสติน
+mrl:
+productions:
+*n:CityName -> ({ ' austin ' })
+
+id:-94
+nl:นิวออร์ลีนส์
+mrl:
+productions:
+*n:CityName -> ({ ' new orleans ' })
+
+id:-95
+nl:เดนเวอร์
+mrl:
+productions:
+*n:CityName -> ({ ' denver ' })
+
+id:-96
+nl:เดธแวลีย์
+mrl:
+productions:
+*n:PlaceName -> ({ ' death valley ' })
+
+id:-97
+nl:มิสซูรี่
+mrl:
+productions:
+*n:RiverName -> ({ ' missouri ' })
+
+id:-98
+nl:โอไฮโฮ
+mrl:
+productions:
+*n:RiverName -> ({ ' ohio ' })
+
+id:-99
+nl:โอไฮโฮ
+mrl:
+productions:
+*n:StateName -> ({ ' ohio ' })
+
+id:-100
+nl:โอไฮโอ
+mrl:
+productions:
+*n:RiverName -> ({ ' ohio ' })
+
+id:-101
+nl:โอไฮโอ
+mrl:
+productions:
+*n:StateName -> ({ ' ohio ' })
+
+id:-102
+nl:แมรีแลนด์
+mrl:
+productions:
+*n:StateName -> ({ ' maryland ' })
+
+id:-103
+nl:เร็ด
+mrl:
+productions:
+*n:RiverName -> ({ ' red ' })
+
+id:-104
+nl:แมสซาชูเซ็ตต์
+mrl:
+productions:
+*n:StateName -> ({ ' massachusetts ' })
+
+id:-105
+nl:แมสซาชูเซ็ตต์
+mrl:
+productions:
+*n:StateAbbrev -> ({ ' ma ' })
+
+id:-106
+nl:เนบราสกา
+mrl:
+productions:
+*n:StateName -> ({ ' nebraska ' })
+
+id:-107
+nl:โบลเดอร์
+mrl:
+productions:
+*n:CityName -> ({ ' boulder ' })
+
+id:-108
+nl:วอชิงตัน
+mrl:
+productions:
+*n:StateAbbrev -> ({ ' wa ' })
+
+id:-109
+nl:วอชิงตัน
+mrl:
+productions:
+*n:StateName -> ({ ' washington ' })
+
+id:-110
+nl:วอชิงตัน
+mrl:
+productions:
+*n:CityName -> ({ ' washington ' })
+
+id:-111
+nl:อัลบานี
+mrl:
+productions:
+*n:CityName -> ({ ' albany ' })
+
+id:-112
+nl:เมน
+mrl:
+productions:
+*n:StateName -> ({ ' maine ' })
+
+id:-113
+nl:เมน
+mrl:
+productions:
+*n:StateAbbrev -> ({ ' me ' })
+
+id:-114
+nl:เท็กซัส
+mrl:
+productions:
+*n:StateName -> ({ ' texas ' })
+
+id:-115
+nl:เท็กซัส
+mrl:
+productions:
+*n:StateAbbrev -> ({ ' tx ' })
+
+id:-116
+nl:ริเวอร์ไซด์
+mrl:
+productions:
+*n:CityName -> ({ ' riverside ' })
+
+id:-117
+nl:มอนตาน่า
+mrl:
+productions:
+*n:StateName -> ({ ' montana ' })
+
+id:-118
+nl:ซีแอตเทิล
+mrl:
+productions:
+*n:CityName -> ({ ' seattle ' })
+
+id:-119
+nl:อินเดียน่า
+mrl:
+productions:
+*n:StateName -> ({ ' indiana ' })
+
+id:-120
+nl:โอเรกอน
+mrl:
+productions:
+*n:StateName -> ({ ' oregon ' })
+
+id:-121
+nl:ประเทศ
+mrl:
+productions:
+*n:CountryName -> ({ ' usa ' })
+
+id:-122
+nl:นิวเจอร์ซี
+mrl:
+productions:
+*n:StateName -> ({ ' new jersey ' })
+
+id:-123
+nl:มิสซูรี
+mrl:
+productions:
+*n:RiverName -> ({ ' missouri ' })
+
+id:-124
+nl:มิสซูรี
+mrl:
+productions:
+*n:StateName -> ({ ' missouri ' })
+
+id:-125
+nl:มิสซูรี
+mrl:
+productions:
+*n:StateAbbrev -> ({ ' mo ' })
+
+id:-126
+nl:ชิคาโก
+mrl:
+productions:
+*n:CityName -> ({ ' chicago ' })
+
+id:-127
+nl:จอร์เจีย
+mrl:
+productions:
+*n:StateName -> ({ ' georgia ' })
+
+id:-128
+nl:จอร์เจีย
+mrl:
+productions:
+*n:StateAbbrev -> ({ ' ga ' })
+
+id:-129
+nl:ซีแอตเติล
+mrl:
+productions:
+*n:CityName -> ({ ' seattle ' })
+
+id:-130
+nl:เพ็นซิลเวเนีย
+mrl:
+productions:
+*n:StateName -> ({ ' pennsylvania ' })
+
+id:-131
+nl:เพ็นซิลเวเนีย
+mrl:
+productions:
+*n:StateAbbrev -> ({ ' pa ' })
+
+id:-132
+nl:ซาน โฮเซ
+mrl:
+productions:
+*n:CityName -> ({ ' san jose ' })
+
+id:-133
+nl:ยูทาห์
+mrl:
+productions:
+*n:StateName -> ({ ' utah ' })
+
+id:-134
+nl:เวอร์ม็อนต์
+mrl:
+productions:
+*n:StateName -> ({ ' vermont ' })
+
+id:-135
+nl:เทมเป้
+mrl:
+productions:
+*n:CityName -> ({ ' tempe ' })
+
+id:-136
+nl:สหรัฐอเมริกา
+mrl:
+productions:
+*n:CountryName -> ({ ' usa ' })
+
+id:-137
+nl:ดีทรอยท์
+mrl:
+productions:
+*n:CityName -> ({ ' detroit ' })
+
+id:-138
+nl:ยอดเขา วิทนีย์
+mrl:
+productions:
+*n:PlaceName -> ({ ' mount whitney ' })
+
+id:-139
+nl:เพนซิลเวเนีย
+mrl:
+productions:
+*n:StateName -> ({ ' pennsylvania ' })
+
+id:-140
+nl:เดลาแวร์
+mrl:
+productions:
+*n:StateName -> ({ ' delaware ' })
+
+id:-141
+nl:เดลาแวร์
+mrl:
+productions:
+*n:RiverName -> ({ ' delaware ' })
+
+id:-142
+nl:แช็ตตาฮูชี
+mrl:
+productions:
+*n:RiverName -> ({ ' chattahoochee ' })
+
+id:-143
+nl:พอร์ตแลนด์
+mrl:
+productions:
+*n:CityName -> ({ ' portland ' })
+
+id:-144
+nl:ภูเขา แม็คคินลีย์
+mrl:
+productions:
+*n:PlaceName -> ({ ' mount mckinley ' })
+
+id:-145
+nl:อเมริกา
+mrl:
+productions:
+*n:CountryName -> ({ ' usa ' })
+
+id:-146
+nl:เคนตักกี
+mrl:
+productions:
+*n:StateName -> ({ ' kentucky ' })
+

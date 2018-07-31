@@ -1,0 +1,43 @@
+all patterns
+w W X Y XW YW WX WY WXW WYW XY YX WXY WYX XWY YWX XYW YXW WXWY WYWX XWYW YWXW WXYW WYXW WXWYW WYWXW A B C
+
+arity=0
+w W A
+A => W
+W => w | w W
+.
+
+
+arity=1
+w X XW WX WXW B
+B => WXW | WX | XW | X
+WXW => w WXW | w XW			
+WX => w WX | w X			
+XW => XW w | X w			
+.
+
+
+arity=2
+w X Y XW YW XY YX WXY WYX XWY YWX XYW YXW WXWY WYWX XWYW YWXW WXYW WYXW WXWYW WYWXW C
+C => WXWYW | WYWXW | WXWY | WYWX | WXYW | WYXW | XWYW | YWXW | XYW | YXW | XWY | YWX | WXY | WYX | XY | YX
+WXWYW => WXWYW w | WXWY w 
+WYWXW => WYWXW w | WYWX w 	
+WXWY => w WXWY | w XWY 		
+WYWX => w WYWX | w YWX 		
+WXYW => w WXYW | w XYW 		
+WYXW => w WYXW | w YXW 		
+XWYW => XWYW w | XWY w 		
+YWXW => YWXW w | YWX w 		
+WXY => w WXY | w XY 		
+WYX => w WYX | w YX 		
+XYW => XYW w | XY w 		
+YXW => YXW w | YX w 		
+XWY => XW Y 				
+YWX => YW X 				
+XW => XW w | X w 			
+YW => YW w | Y w 			
+XY => X Y 					
+YX => Y X 					
+.
+
+
