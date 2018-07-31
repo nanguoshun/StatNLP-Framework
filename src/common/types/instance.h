@@ -4,5 +4,10 @@
 
 #ifndef STATNLP_INSTANCE_H
 #define STATNLP_INSTANCE_H
+class Instance{
+public:
+    Instance();
+    ~Instance();
+};
 
 #endif //STATNLP_INSTANCE_H
