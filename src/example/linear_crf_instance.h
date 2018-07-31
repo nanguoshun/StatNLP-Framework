@@ -5,8 +5,12 @@
 #ifndef STATNLP_LINEAR_CRF_INSTANCE_H
 #define STATNLP_LINEAR_CRF_INSTANCE_H
 
-class LinearCRFInstance{
-    
+#include "../common/types/base_instance.h"
+
+class LinearCRFInstance: public BaseInstance{
+public:
+    LinearCRFInstance();
+    ~LinearCRFInstance();
 };
 
 #endif //STATNLP_LINEAR_CRF_INSTANCE_H
