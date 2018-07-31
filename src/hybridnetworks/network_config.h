@@ -4,10 +4,8 @@
 
 class NetworkConfig{
 public:
+    static double L2_REGULARIZATION_CONSTANT;
     NetworkConfig();
     ~NetworkConfig();
-    void SetL2Param(double L2);
-    double GetL2Param();
 private:
-    double L2_para_;
 };

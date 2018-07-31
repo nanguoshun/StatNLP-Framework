@@ -11,11 +11,3 @@ NetworkConfig::NetworkConfig() {
 NetworkConfig::~NetworkConfig() {
 
 }
-
-double NetworkConfig::GetL2Param() {
-    return L2_para_;
-}
-
-void NetworkConfig::SetL2Param(double L2) {
-    L2_para_ = L2;
-}

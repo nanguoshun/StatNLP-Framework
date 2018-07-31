@@ -8,4 +8,4 @@ add_executable(statNLP main.cpp src/hybridnetworks/hypergraph.h src/hybridnetwor
         src/hybridnetworks/feature_manager.h src/hybridnetworks/feature_manager.cpp src/hybridnetworks/local_network_param.h
         src/hybridnetworks/local_network_param.cpp src/example/linear_crf_instance.h src/common/types/instance.h
         src/common/types/base_instance.h src/common/types/base_instance.h src/common/types/base_instance.cpp
-        src/common/types/instance.cpp src/example/linear_crf_instance.cpp)
+        src/common/types/instance.cpp src/example/linear_crf_instance.cpp src/hybridnetworks/network_model.h src/hybridnetworks/network_model.cpp src/hybridnetworks/data_manager.h src/hybridnetworks/data_manager.cpp)
