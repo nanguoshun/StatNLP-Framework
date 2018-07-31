@@ -5,4 +5,8 @@
 #ifndef STATNLP_LINEAR_CRF_INSTANCE_H
 #define STATNLP_LINEAR_CRF_INSTANCE_H
 
+class LinearCRFInstance{
+    
+};
+
 #endif //STATNLP_LINEAR_CRF_INSTANCE_H
