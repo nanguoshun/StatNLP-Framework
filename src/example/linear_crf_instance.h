@@ -7,10 +7,14 @@
 
 #include "../common/types/base_instance.h"
 
-class LinearCRFInstance: public BaseInstance{
+template <class SELF_TYPE, class INPUT_TYPE, class OUTPUT_TYPE>
+
+class LinearCRFInstance: public BaseInstance<SELF_TYPE, INPUT_TYPE, OUTPUT_TYPE>{
 public:
-    LinearCRFInstance();
-    ~LinearCRFInstance();
+    LinearCRFInstance(SELF_TYPE a, INPUT_TYPE b, OUTPUT_TYPE c, int d, double e){
+    }
+    ~LinearCRFInstance(){
+    }
 };
 
 #endif //STATNLP_LINEAR_CRF_INSTANCE_H

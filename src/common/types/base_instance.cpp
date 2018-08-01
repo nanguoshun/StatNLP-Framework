@@ -4,10 +4,3 @@
 
 #include "base_instance.h"
 
-BaseInstance::BaseInstance() {
-
-}
-
-BaseInstance::~BaseInstance() {
-
-}

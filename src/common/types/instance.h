@@ -7,7 +7,16 @@
 class Instance{
 public:
     Instance();
+    Instance(int id, double weight);
     ~Instance();
+    bool IS_Labeled();
+    void SetLabeled();
+    void SetUnlabeled();
+protected:
+    int instance_id_;
+    double weight_;
+    bool isLableled_;
+
 };
 
 #endif //STATNLP_INSTANCE_H

@@ -3,11 +3,8 @@
 //
 
 #include "linear_crf_instance.h"
+/*
+LinearCRFInstance::LinearCRFInstance(int a, int b, int c, int id, double weigth) {
+    BaseInstance(a,b,c,id,weigth);
+}*/
 
-LinearCRFInstance::LinearCRFInstance() {
-
-}
-
-LinearCRFInstance::~LinearCRFInstance() {
-
-}
