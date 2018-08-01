@@ -12,6 +12,7 @@ template <class SELF_TYPE, class INPUT_TYPE, class OUTPUT_TYPE>
 class LinearCRFInstance: public BaseInstance<SELF_TYPE, INPUT_TYPE, OUTPUT_TYPE>{
 public:
     LinearCRFInstance(SELF_TYPE a, INPUT_TYPE b, OUTPUT_TYPE c, int d, double e){
+        BaseInstance<SELF_TYPE, INPUT_TYPE, OUTPUT_TYPE>(a,b,c,d,e);
     }
     ~LinearCRFInstance(){
     }

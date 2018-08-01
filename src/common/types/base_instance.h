@@ -20,6 +20,9 @@ public:
     BaseInstance(){
 
     }
+    BaseInstance(SELF_TYPE self, INPUT_TYPE input, OUTPUT_TYPE output){
+
+    }
     BaseInstance(SELF_TYPE self, INPUT_TYPE input, OUTPUT_TYPE output, int id, double weight){
         Instance::Instance(id,weight);
     }

@@ -5,6 +5,7 @@
 class NetworkConfig{
 public:
     static double L2_REGULARIZATION_CONSTANT;
+    static int NUM_OF_THREADS;
     NetworkConfig();
     ~NetworkConfig();
 private:
