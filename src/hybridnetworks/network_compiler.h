@@ -8,12 +8,14 @@
 #include "network.h"
 #include "../common/types/instance.h"
 #include "local_network_param.h"
+#include "../example/linear_crf_network.h"
 
 class NetworkCompiler{
 public:
     NetworkCompiler();
     ~NetworkCompiler();
-    virtual Network Compile(int networkId, Instance inst, LocalNetworkParam param) = 0;
-    virtual Instance Decompile(Network network) = 0;
+    virtual LinearCRFNetwork * Compile(int networkId, Instance inst, LocalNetworkParam param) = 0;
+    virtual Instance *Decompile(Network network) = 0;
 };
+
 #endif //STATNLP_NETWORK_COMPILER_H

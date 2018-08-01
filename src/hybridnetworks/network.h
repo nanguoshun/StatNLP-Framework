@@ -14,4 +14,5 @@ public:
     Network();
     ~Network();
 };
+
 #endif //STATNLP_NETWORK_H
