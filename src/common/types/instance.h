@@ -15,7 +15,7 @@ public:
 protected:
     int instance_id_;
     double weight_;
-    bool isLableled_;
+    bool is_lableled_;
 
 };
 

@@ -5,17 +5,21 @@
 #ifndef STATNLP_FILE_MANAGER_H
 #define STATNLP_FILE_MANAGER_H
 
+#include <vector>
+#include "../common/types/instance.h"
+
+template <class InstanceType>
+
 class DataManager{
 public:
     static int value;
-    static int ReadPTBData(){
-        return  0;
-    }
-    static int ReadPosData(){
-        return  0;
-    }
+    std::vector<Instance *> * ReadPTBData(const char* file_name, InstanceType type, bool withLabels, bool isLabeled);
+    std::vector<Instance *> * ReadPosData(const char* file_name, InstanceType type, bool withLabels, bool isLabeled);
     DataManager();
     ~DataManager();
+
+private:
+    std::vector<Instance *> *ptr_instance;
 };
 
 #endif //STATNLP_FILE_MANAGER_H

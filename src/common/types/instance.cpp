@@ -17,9 +17,13 @@ Instance::~Instance() {
 }
 
 void Instance::SetLabeled() {
-    isLableled_ = true;
+    is_lableled_ = true;
 }
 
 void Instance::SetUnlabeled() {
-    isLableled_ = false;
+    is_lableled_ = false;
+}
+
+bool Instance::IS_Labeled() {
+    return is_lableled_;
 }

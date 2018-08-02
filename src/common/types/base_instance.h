@@ -23,12 +23,17 @@ public:
     BaseInstance(SELF_TYPE self, INPUT_TYPE input, OUTPUT_TYPE output){
 
     }
-    BaseInstance(SELF_TYPE self, INPUT_TYPE input, OUTPUT_TYPE output, int id, double weight){
+    BaseInstance(SELF_TYPE &self, INPUT_TYPE &input, OUTPUT_TYPE &output, int id, double weight){
         Instance::Instance(id,weight);
     }
     ~BaseInstance(){
 
     }
+
+protected:
+    INPUT_TYPE *ptr_input;
+    OUTPUT_TYPE *ptr_output;
+    OUTPUT_TYPE *ptr_prediction;
 };
 
 #endif //STATNLP_BASE_INSTANCE_H

@@ -11,5 +11,25 @@ class LinearCRFNetwork: public TableLookupNetwork{
 public:
     LinearCRFNetwork();
     ~LinearCRFNetwork();
+
+    int CountNodes() override;
+
+    long GetNode(int k) override;
+
+    int *GetNodeArray(int k) override;
+
+    int **GetChild(int k) override;
+
+    bool IsRemovded(int k) override;
+
+    void Remove(int k) override;
+
+    bool IsRoot(int k) override;
+
+    bool IsLeaf(int k) override;
+
+    bool IsContain(long node) override;
+
+private:
 };
 #endif //STATNLP_LINEAR_CRF_NETWORK_H

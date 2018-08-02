@@ -10,3 +10,39 @@ LinearCRFNetwork::LinearCRFNetwork() {
 LinearCRFNetwork::~LinearCRFNetwork() {
 
 }
+
+int LinearCRFNetwork::CountNodes() {
+    return 0;
+}
+
+long LinearCRFNetwork::GetNode(int k) {
+    return 0;
+}
+
+int *LinearCRFNetwork::GetNodeArray(int k) {
+    return nullptr;
+}
+
+int **LinearCRFNetwork::GetChild(int k) {
+    return nullptr;
+}
+
+bool LinearCRFNetwork::IsRemovded(int k) {
+    return false;
+}
+
+void LinearCRFNetwork::Remove(int k) {
+
+}
+
+bool LinearCRFNetwork::IsRoot(int k) {
+    return false;
+}
+
+bool LinearCRFNetwork::IsLeaf(int k) {
+    return false;
+}
+
+bool LinearCRFNetwork::IsContain(long node) {
+    return false;
+}
