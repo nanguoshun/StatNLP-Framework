@@ -34,7 +34,6 @@ LinearCRFNetwork* LinearCRFNetworkCompiler::Compile(int networkId, Instance &ins
     } else{
         //to be done
     }
-
 }
 
 
@@ -114,4 +113,5 @@ LinearCRFInstance LinearCRFNetworkCompiler::CompileUnlabeled(int networkId, Line
 LinearCRFInstance LinearCRFNetworkCompiler::CompileLabeled(int networkId, LinearCRFInstance *ptr_inst,
                                                            LocalNetworkParam *ptr_param) {
     //to be done
+
 }

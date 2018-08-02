@@ -27,3 +27,7 @@ void Instance::SetUnlabeled() {
 bool Instance::IS_Labeled() {
     return is_lableled_;
 }
+
+double Instance::GetWeight() {
+    return weight_;
+}

@@ -6,16 +6,20 @@
 #define STATNLP_FEATUREMANAGER_H
 
 #include "global_network_param.h"
-#include "local_network_param.h"
+#include <vector>
+//#include "local_network_param.h"
+
+class LocalNetworkParam;
 
 class FeatureManager{
 public:
-    FeatureManager(GlobalNetworkParam param);
+    FeatureManager();
+    FeatureManager(GlobalNetworkParam* ptr_param);
     ~FeatureManager();
 
 protected:
-    GlobalNetworkParam param_g_;
-    LocalNetworkParam *ptr_param_l_;
+    GlobalNetworkParam *ptr_param_g_;
+    std::vector<LocalNetworkParam *> *ptr_param_l_;
     int num_of_threads_;
 };
 

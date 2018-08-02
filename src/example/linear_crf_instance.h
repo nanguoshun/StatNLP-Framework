@@ -17,8 +17,14 @@ public:
 
     }
     LinearCRFInstance(LinearCRFInstance &inst, Input_Str_Matrix &input, Label_Str_Matrix &label, int id, double weight){
-        BaseInstance<LinearCRFInstance, Input_Str_Matrix, Label_Str_Matrix>(inst,input,label,id,weight);
+ //       BaseInstance<LinearCRFInstance, Input_Str_Matrix, Label_Str_Matrix>(inst,input,label,id,weight);
+        BaseInstance<LinearCRFInstance, Input_Str_Matrix, Label_Str_Matrix>(id,weight);
     }
+    LinearCRFInstance(int instance_id, double weight,std::vector<std::string> &words, std::vector<std::string> &labes){
+        //       BaseInstance<LinearCRFInstance, Input_Str_Matrix, Label_Str_Matrix>(inst,input,label,id,weight);
+        BaseInstance<LinearCRFInstance, Input_Str_Matrix, Label_Str_Matrix>(instance_id,weight);
+    }
+
     ~LinearCRFInstance(){
 
     }

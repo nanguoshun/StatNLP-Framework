@@ -16,9 +16,9 @@ public:
 
     long GetNode(int k) override;
 
-    int *GetNodeArray(int k) override;
+    std::vector<int> *GetNodeArray(int k) override;
 
-    int **GetChild(int k) override;
+    std::vector<std::vector<int>> *GetChildren(int k) override;
 
     bool IsRemovded(int k) override;
 

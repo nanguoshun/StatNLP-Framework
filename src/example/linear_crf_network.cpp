@@ -19,11 +19,11 @@ long LinearCRFNetwork::GetNode(int k) {
     return 0;
 }
 
-int *LinearCRFNetwork::GetNodeArray(int k) {
+std::vector<int> *LinearCRFNetwork::GetNodeArray(int k) {
     return nullptr;
 }
 
-int **LinearCRFNetwork::GetChild(int k) {
+std::vector<std::vector<int>> *LinearCRFNetwork::GetChildren(int k) {
     return nullptr;
 }
 

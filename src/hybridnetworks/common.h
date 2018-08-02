@@ -6,6 +6,8 @@
 #define STATNLP_COMMON_H
 
 const int MAX_LENGTH = 200;
+const int Num_Of_Threads = 1;
+const bool _CACHE_FEATURES_DURING_TRAINING = false;
 typedef std::vector<std::vector<std::string>> Input_Str_Matrix;
 typedef std::vector<std::vector<std::string>> Label_Str_Matrix;
 
