@@ -16,7 +16,8 @@ public:
     FeatureManager();
     FeatureManager(GlobalNetworkParam* ptr_param);
     ~FeatureManager();
-
+    GlobalNetworkParam * GetGlobalParam();
+    bool Update();
 protected:
     GlobalNetworkParam *ptr_param_g_;
     std::vector<LocalNetworkParam *> *ptr_param_l_;

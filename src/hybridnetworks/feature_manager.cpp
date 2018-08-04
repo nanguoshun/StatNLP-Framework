@@ -4,6 +4,7 @@
 
 #include "feature_manager.h"
 #include "network_config.h"
+#include "common.h"
 
 FeatureManager::FeatureManager() {
 
@@ -17,4 +18,14 @@ FeatureManager::FeatureManager(GlobalNetworkParam *ptr_param) {
 
 FeatureManager::~FeatureManager() {
     delete this->ptr_param_l_;
+}
+
+GlobalNetworkParam* FeatureManager::GetGlobalParam() {
+    return ptr_param_g_;
+}
+
+bool FeatureManager::Update() {
+    if(Num_Of_Threads != 1){
+
+    }
 }

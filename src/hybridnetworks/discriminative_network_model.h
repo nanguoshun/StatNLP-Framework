@@ -14,6 +14,6 @@ public:
     DiscriminativeNetworkModel(FeatureManager *ptr_fm, NetworkCompiler *ptr_nc);
     ~DiscriminativeNetworkModel();
 
-    
+
 };
 #endif //STATNLP_DISCRIMINATIVE_NETWORK_MODEL_H

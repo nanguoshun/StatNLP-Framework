@@ -11,3 +11,32 @@ GlobalNetworkParam::GlobalNetworkParam() {
 GlobalNetworkParam::~GlobalNetworkParam() {
 
 }
+
+void GlobalNetworkParam::LockIt() {
+    // to be done....
+
+}
+
+bool GlobalNetworkParam::Update() {
+    bool done;
+    if(this->IsDiscriminative()){
+        done = this->UpdateDiscriminative();
+    } else{
+        done = this->UpdateGenerative();
+    }
+    this->obj_prev_ = this->obj_current_;
+    return done;
+}
+
+bool GlobalNetworkParam::UpdateDiscriminative() {
+
+}
+
+bool GlobalNetworkParam::UpdateGenerative() {
+
+}
+
+bool GlobalNetworkParam::IsDiscriminative() {
+    return is_discriminative_;
+}
+

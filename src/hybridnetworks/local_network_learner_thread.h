@@ -14,7 +14,8 @@ public:
     LocalNetworkLearnerThread(int threadId, FeatureManager *ptr_fm, std::vector<Instance *> *ptr_ins_vector, NetworkCompiler *ptr_nc, int it);
     ~LocalNetworkLearnerThread();
     void Touch();
-    Network GetNetwork(int networkId);
+    Network* GetNetwork(int networkId);
+    void Train();
 protected:
     int thread_id_;
     LocalNetworkParam *ptr_param_l_;
@@ -22,5 +23,6 @@ protected:
     std::vector<Instance *> *ptr_inst_vec_;
     NetworkCompiler *ptr_nc_;
     int network_capcity_;
+    int it_no_;
 };
 #endif //STATNLP_LOCALNETWORKLEARNERTHREAD_H

@@ -111,7 +111,8 @@ LinearCRFInstance LinearCRFNetworkCompiler::CompileUnlabeled(int networkId, Line
 }
 
 LinearCRFInstance LinearCRFNetworkCompiler::CompileLabeled(int networkId, LinearCRFInstance *ptr_inst,
-                                                           LocalNetworkParam *ptr_param) {
+
+                                                               LocalNetworkParam *ptr_param) {
     //to be done
 
 }

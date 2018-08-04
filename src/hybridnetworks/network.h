@@ -19,6 +19,10 @@ public:
     ~Network();
     void Touch();
     void Touch(int k);
+    void Train();
+    void Inside();
+    void Outside();
+    void UpdateInsideOutside();
 
 protected:
     int network_id_;

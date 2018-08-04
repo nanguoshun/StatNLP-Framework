@@ -36,3 +36,24 @@ void Network::Touch(int k) {
         this->ptr_param_->Extract(this,k,&childern_k,children_index);
     }
 }
+
+void Network::Train() {
+    if(this->weight_ == 0){
+        return;
+    }
+    this->Inside();
+    this->Outside();
+    this->UpdateInsideOutside();
+}
+
+void Network::Inside() {
+
+}
+
+void Network::Outside() {
+
+}
+
+void Network::UpdateInsideOutside() {
+
+}

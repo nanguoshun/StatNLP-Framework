@@ -23,6 +23,18 @@ void NetworkModel::Train(std::vector<Instance *> *ptr_all_instances, int max_num
         ptr_local_learner_vector_->push_back(ptr_learner);
         ptr_learner->Touch();
     }
+    //
+    this->ptr_fm_->GetGlobalParam()->LockIt();
+    //
+    for(int i =0; i<max_num_interations; ++i){
+        for(auto it = ptr_local_learner_vector_->begin(); it != ptr_local_learner_vector_->end(); ++it){
+
+        }
+        for(auto it = ptr_local_learner_vector_->begin(); it != ptr_local_learner_vector_->end(); ++it){
+
+        }
+
+    }
 }
 
 Instance* NetworkModel::Decode(Instance *ptr_test_instences) {

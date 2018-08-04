@@ -32,7 +32,7 @@ LocalNetworkParam::~LocalNetworkParam() {
 
 void LocalNetworkParam::DisableCache() {
     this->ptr_cache_ = NULL;
-    this->cache_enabled_ = false;
+    this->is_cache_enabled_ = false;
 }
 
 int LocalNetworkParam::GetThreadId() {
@@ -57,11 +57,25 @@ void LocalNetworkParam::FinalizeIt() {
         return;
     }
     this->ptr_fs_ = new std::vector<int>(this->ptr_globalFeature2LocalFeature_->size());
+    // to be confirmed for this part: global to local feature.
+    for(auto it = this->ptr_globalFeature2LocalFeature_->begin(); it != ptr_globalFeature2LocalFeature_->end(); ++it){
+        int f_global = (*it).first;
+        int f_local = this->ptr_globalFeature2LocalFeature_->find(f_global)->second;
+        (*ptr_fs_)[f_local] = f_global;
+    }
+    this->isFinalized_= true;
+    this->ptr_counts_ = new std::vector<int>(this->ptr_fs_->size());
+}
 
+bool LocalNetworkParam::isCacheAble() {
+    return is_cache_enabled_;
 }
 
 FeatureArray* LocalNetworkParam::Extract(Network *ptr_network, int parent_k, std::vector<int> *ptr_children_k,
                                          int children_k_index) {
+    if(this->isCacheAble()){
+
+    }
     //to be done...
     FeatureArray * ptr;
     return ptr;

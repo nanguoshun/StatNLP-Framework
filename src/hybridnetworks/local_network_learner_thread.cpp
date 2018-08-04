@@ -9,6 +9,7 @@ LocalNetworkLearnerThread::LocalNetworkLearnerThread(int threadId, FeatureManage
     this->thread_id_ = threadId;
     this->ptr_param_l_ = new LocalNetworkParam(threadId,ptr_fm, ptr_ins_vector->size());
     this->ptr_inst_vec_ = ptr_ins_vector;
+    this->it_no_ = it;
 }
 
 LocalNetworkLearnerThread::~LocalNetworkLearnerThread() {
@@ -17,11 +18,18 @@ LocalNetworkLearnerThread::~LocalNetworkLearnerThread() {
 
 void LocalNetworkLearnerThread::Touch() {
     for(int networkId=0; networkId < this->ptr_inst_vec_->size(); ++networkId){
-        this->GetNetwork(networkId).Touch();
+        this->GetNetwork(networkId)->Touch();
     }
     this->ptr_param_l_->FinalizeIt();
 }
 
-Network LocalNetworkLearnerThread::GetNetwork(int networkId) {
+Network* LocalNetworkLearnerThread::GetNetwork(int networkId) {
 
+}
+
+void LocalNetworkLearnerThread::Train(){
+    for(int networkId = 0; networkId < ptr_inst_vec_->size(); ++networkId){
+        Network *ptr_network = this->GetNetwork(networkId);
+        ptr_network->Train();
+    }
 }
