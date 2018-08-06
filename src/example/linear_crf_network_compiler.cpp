@@ -36,7 +36,6 @@ LinearCRFNetwork* LinearCRFNetworkCompiler::Compile(int networkId, Instance &ins
     }
 }
 
-
 Instance* LinearCRFNetworkCompiler::Decompile(Network &network) {
 
 }

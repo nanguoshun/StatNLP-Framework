@@ -24,6 +24,10 @@ public:
     void Outside();
     void UpdateInsideOutside();
 
+    void Inside(int nodeId);
+    void Outside(int nodeId);
+    void UpdateInsideOutside(int nodeId);
+
 protected:
     int network_id_;
     int thread_id_;

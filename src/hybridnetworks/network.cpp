@@ -47,13 +47,19 @@ void Network::Train() {
 }
 
 void Network::Inside() {
-
 }
 
 void Network::Outside() {
-
 }
 
 void Network::UpdateInsideOutside() {
+}
 
+void Network::Inside(int nodeId) {
+}
+
+void Network::Outside(int nodeId) {
+}
+
+void Network::UpdateInsideOutside(int nodeId) {
 }
