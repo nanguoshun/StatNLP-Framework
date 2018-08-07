@@ -29,7 +29,9 @@ private:
     std::list<std::string> labels_;
     std::map<std::string, int> labels_id_map_;
     LinearCRFNetwork *ptr_network_;
-    std::vector<long> *ptr_nodes_;
-    std::vector<std::vector<std::vector<int>>> *ptr_children_;
+    //contains  node Id
+    std::vector<long> *ptr_all_nodes_;
+    //parent Id, HyperEdge (children), Nodes
+    std::vector<std::vector<std::vector<int>>> *ptr_all_children_;
 };
 #endif //STATNLP_LINEAR_NEWORK_COMPILER_H

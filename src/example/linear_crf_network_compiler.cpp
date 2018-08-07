@@ -98,8 +98,8 @@ void LinearCRFNetworkCompiler::CompileUnlabeledGeneric() {
         }
     }
     ptr_network_->FinalizeNetwork();
-    this->ptr_nodes_ = ptr_network_->GetAllNodes();
-    this->ptr_children_ = ptr_network_->GetAllChildren();
+    this->ptr_all_nodes_ = ptr_network_->GetAllNodes();
+    this->ptr_all_children_ = ptr_network_->GetAllChildren();
 }
 
 LinearCRFInstance LinearCRFNetworkCompiler::CompileUnlabeled(int networkId, LinearCRFInstance *ptr_inst,

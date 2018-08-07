@@ -6,11 +6,12 @@
 #define STATNLP_FEATUREMANAGER_H
 
 #include "global_network_param.h"
+#include "feature_array.h"
 #include <vector>
 //#include "local_network_param.h"
 
 class LocalNetworkParam;
-
+class Network;
 class FeatureManager{
 public:
     FeatureManager();
@@ -18,6 +19,7 @@ public:
     ~FeatureManager();
     GlobalNetworkParam * GetGlobalParam();
     bool Update();
+    virtual FeatureArray* ExtractHelper(Network *ptr, int parent, std::vector<int> *ptr_children) = 0;
 protected:
     GlobalNetworkParam *ptr_param_g_;
     std::vector<LocalNetworkParam *> *ptr_param_l_;

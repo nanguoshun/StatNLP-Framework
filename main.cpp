@@ -57,7 +57,7 @@ void ReadData(std::string file_name, std::vector<Instance*> *ptr_inst_vec_all, b
     }
 }
 
-void Release(std::vector<LinearCRFInstance*> *ptr_vec_all){
+void Release(std::vector<Instance*> *ptr_vec_all){
     for(auto it = ptr_vec_all->begin(); it!=ptr_vec_all->end(); ++it){
         delete (*it);
     }
@@ -67,20 +67,21 @@ void Release(std::vector<LinearCRFInstance*> *ptr_vec_all){
 int main(){
     std::string train_file_name = "/Users/ngs/Documents/cplusproject/statNLP/data/conll2000/sample_train.txt";
     std::string test_file_name =  "/Users/ngs/Documents/cplusproject/statNLP/data/conll2000/sample_test.txt";
-    std::vector<Instance*> *ptr_vec_all = new std::vector<Instance *>;
-    ReadData(train_file_name,ptr_vec_all,true,true);
+    std::vector<Instance*> *ptr_training_inst = new std::vector<Instance *>;
+    ReadData(train_file_name,ptr_training_inst,true,true);
     int num_iterations = 100;
-    int size = ptr_vec_all->size();
+    int size = ptr_training_inst->size();
     GlobalNetworkParam *ptr_param_g = new GlobalNetworkParam();
     LinearCRFFeatureManager *ptr_fm = new LinearCRFFeatureManager(ptr_param_g);
     LinearCRFNetworkCompiler *ptr_nc = new LinearCRFNetworkCompiler(all_labels);
     NetworkModel *ptr_nm = new DiscriminativeNetworkModel(ptr_fm,ptr_nc);
-    ptr_nm->Train(ptr_vec_all,num_iterations);
+    ptr_nm->Train(ptr_training_inst,num_iterations);
     std::cout << "the size is:"<<size<<std::endl;
     delete ptr_param_g;
     delete ptr_fm;
     delete ptr_nc;
     delete ptr_nm;
     //BaseInstance<int, int, int> ins(a,b,c,d,e);//*ptr = new LinearCRFInstance(a,b,c);
+    Release(ptr_training_inst);
 }
 

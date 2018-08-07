@@ -41,9 +41,9 @@ int LocalNetworkParam::GetThreadId() {
 
 double LocalNetworkParam::GetWeight(int featureId) {
     if(this->IsGlobalMode()){
-        //return this->ptr_fm_.
+        return this->ptr_fm_->GetGlobalParam()->GetWeight(featureId);
     } else{
-        // to be done;
+        return this->ptr_fm_->GetGlobalParam()->GetWeight((*this->ptr_fs_)[featureId]);
     }
 }
 

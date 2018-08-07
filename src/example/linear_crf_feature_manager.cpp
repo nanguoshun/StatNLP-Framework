@@ -11,3 +11,9 @@ LinearCRFFeatureManager::LinearCRFFeatureManager(GlobalNetworkParam *ptr_param):
 LinearCRFFeatureManager::~LinearCRFFeatureManager() {
 
 }
+
+// this function is called LocalNetworkLearnerThread during touch phase.
+FeatureArray* LinearCRFFeatureManager::ExtractHelper(Network *ptr, int parent, std::vector<int> *ptr_children) {
+    //to be done..
+    //
+}

@@ -21,8 +21,11 @@ public:
     std::vector<long> *GetAllNodes();
     std::vector<std::vector<std::vector<int>>> *GetAllChildren();
 protected:
+    //the node Id and its notes in a hyperedge.
     std::unordered_map<long, std::list<long*>> *ptr_children_tmp_;
+    //the node Id.
     std::vector<long> *ptr_nodes_;
+    //parent idx, hyper-edge, children nodes.
     std::vector<std::vector<std::vector<int>>> *ptr_children_;
 //    std::unordered_map<long, std::list<long>> *ptr_children_tmp_;
 };

@@ -40,3 +40,10 @@ bool GlobalNetworkParam::IsDiscriminative() {
     return is_discriminative_;
 }
 
+double GlobalNetworkParam::GetWeight(int featureId) {
+    return (*ptr_weights_)[featureId];
+}
+
+double GlobalNetworkParam::GetOldObj() {
+    return obj_prev_;
+}

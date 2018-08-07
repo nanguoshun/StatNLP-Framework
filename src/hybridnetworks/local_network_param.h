@@ -6,9 +6,9 @@
 #define STATNLP_LOCAL_NETWORK_PARAM_H
 
 #include "feature_manager.h"
-#include "feature_array.h"
 #include <vector>
 #include <unordered_map>
+#include "feature_array.h"
 
 class Network;
 
@@ -32,6 +32,7 @@ protected:
     std::vector<int> *ptr_counts_;
     std::unordered_map<int ,int> *ptr_globalFeature2LocalFeature_;
     bool isFinalized_;
+    //networkId, parent Id, Child ID
     std::vector<std::vector<std::vector<FeatureArray *>>> *ptr_cache_;
     bool is_cache_enabled_;
     int num_networks_;
