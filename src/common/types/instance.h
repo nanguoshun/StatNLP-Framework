@@ -17,7 +17,6 @@ protected:
     int instance_id_;
     double weight_;
     bool is_lableled_;
-
 };
 
 #endif //STATNLP_INSTANCE_H

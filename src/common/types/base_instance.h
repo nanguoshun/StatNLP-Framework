@@ -20,14 +20,18 @@ public:
     BaseInstance(){
 
     }
-    BaseInstance(SELF_TYPE self, INPUT_TYPE input, OUTPUT_TYPE output){
+
+    BaseInstance(SELF_TYPE *ptr_self, INPUT_TYPE *ptr_input, OUTPUT_TYPE *ptr_output){
 
     }
+
     BaseInstance(int id, double weight){
         Instance::Instance(id,weight);
     }
 
-    BaseInstance(SELF_TYPE &self, INPUT_TYPE &input, OUTPUT_TYPE &output, int id, double weight){
+    BaseInstance(SELF_TYPE *ptr_self, INPUT_TYPE *ptr_input, OUTPUT_TYPE *ptr_output, int id, double weight){
+        ptr_input_ = ptr_input;
+        ptr_output_ = ptr_output;
         Instance::Instance(id,weight);
     }
 
@@ -36,9 +40,9 @@ public:
     }
 
 protected:
-    INPUT_TYPE *ptr_input;
-    OUTPUT_TYPE *ptr_output;
-    OUTPUT_TYPE *ptr_prediction;
+    INPUT_TYPE *ptr_input_;
+    OUTPUT_TYPE *ptr_output_;
+    OUTPUT_TYPE *ptr_prediction_;
 };
 
 #endif //STATNLP_BASE_INSTANCE_H

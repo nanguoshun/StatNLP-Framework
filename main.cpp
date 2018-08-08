@@ -18,12 +18,16 @@ static std::list<std::string> all_labels;
 void ReadData(std::string file_name, std::vector<Instance*> *ptr_inst_vec_all, bool withLabels, bool isLabeled){
     std::ifstream ifs(file_name);
     std::string str;
+//    std::vector<std::vector<std::string>> words;
+//    std::vector<std::vector<std::string>> labels;
     std::vector<std::string> words;
     std::vector<std::string> labels;
+    words.push_back("a");
+    labels.push_back("b");
     int instance_id = 0;
     while (std::getline(ifs,str)){
-        if(str.length() == 0){
-            LinearCRFInstance *ptr_crf_inst = new LinearCRFInstance(instance_id,1,words,labels);
+        if(str.length() != 0){
+            LinearCRFInstance *ptr_crf_inst = new LinearCRFInstance(instance_id,1,&words,&labels);
             if(isLabeled){
                 ptr_crf_inst->SetLabeled();
             } else{
@@ -39,8 +43,8 @@ void ReadData(std::string file_name, std::vector<Instance*> *ptr_inst_vec_all, b
             std::string feature1, feature2;
             ss >> feature1;
             ss >> feature2;
-            words.push_back(feature1);
-            words.push_back(feature2);
+            //words.push_back(feature1);
+            //words.push_back(feature2);
             if(withLabels){
                 std::string label;
                 ss >> label;
@@ -50,7 +54,7 @@ void ReadData(std::string file_name, std::vector<Instance*> *ptr_inst_vec_all, b
                 } else{
                     label = (*it);
                 }
-                labels.push_back(label);
+                //labels.push_back(label);
             }
             std::cout << str << std::endl;
         }

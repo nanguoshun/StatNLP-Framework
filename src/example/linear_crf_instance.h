@@ -8,30 +8,13 @@
 #include <vector>
 #include "../common/types/base_instance.h"
 #include "../hybridnetworks/common.h"
-
 //template <class SELF_TYPE, class INPUT_TYPE, class OUTPUT_TYPE>
-
-class LinearCRFInstance: public BaseInstance<LinearCRFInstance, Input_Str_Matrix, Label_Str_Matrix>{
+class LinearCRFInstance: public BaseInstance<LinearCRFInstance, Input_Str_Vector, Label_Str_Vector>{
 public:
-    LinearCRFInstance(){
-
-    }
-    LinearCRFInstance(LinearCRFInstance &inst, Input_Str_Matrix &input, Label_Str_Matrix &label, int id, double weight){
- //       BaseInstance<LinearCRFInstance, Input_Str_Matrix, Label_Str_Matrix>(inst,input,label,id,weight);
-        BaseInstance<LinearCRFInstance, Input_Str_Matrix, Label_Str_Matrix>(id,weight);
-    }
-    LinearCRFInstance(int instance_id, double weight,std::vector<std::string> &words, std::vector<std::string> &labes){
-        //       BaseInstance<LinearCRFInstance, Input_Str_Matrix, Label_Str_Matrix>(inst,input,label,id,weight);
-        BaseInstance<LinearCRFInstance, Input_Str_Matrix, Label_Str_Matrix>(instance_id,weight);
-    }
-
-    ~LinearCRFInstance(){
-
-    }
-    int Size(){
-        this->ptr_input->size();
-    }
-
+    LinearCRFInstance();
+   // LinearCRFInstance(LinearCRFInstance *ptr_inst, Input_Str_Vector* ptr_input, Label_Str_Vector *ptr_label, int id, double weight);
+    LinearCRFInstance(int instance_id, double weight, Input_Str_Vector *ptr_words, Label_Str_Vector *ptr_labels);
+    ~LinearCRFInstance();
+    int Size();
 };
-
 #endif //STATNLP_LINEAR_CRF_INSTANCE_H
