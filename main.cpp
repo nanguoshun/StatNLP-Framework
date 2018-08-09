@@ -18,16 +18,12 @@ static std::list<std::string> all_labels;
 void ReadData(std::string file_name, std::vector<Instance*> *ptr_inst_vec_all, bool withLabels, bool isLabeled){
     std::ifstream ifs(file_name);
     std::string str;
-//    std::vector<std::vector<std::string>> words;
-//    std::vector<std::vector<std::string>> labels;
-    std::vector<std::string> words;
-    std::vector<std::string> labels;
-    words.push_back("a");
-    labels.push_back("b");
+    std::vector<std::string> *ptr_words = new std::vector<std::string>;
+    std::vector<std::string> *ptr_labels = new std::vector<std::string>;
     int instance_id = 0;
     while (std::getline(ifs,str)){
-        if(str.length() != 0){
-            LinearCRFInstance *ptr_crf_inst = new LinearCRFInstance(instance_id,1,&words,&labels);
+        if(str.length() == 0){
+            LinearCRFInstance *ptr_crf_inst = new LinearCRFInstance(instance_id,1,ptr_words,ptr_labels);
             if(isLabeled){
                 ptr_crf_inst->SetLabeled();
             } else{
@@ -35,16 +31,18 @@ void ReadData(std::string file_name, std::vector<Instance*> *ptr_inst_vec_all, b
             }
             instance_id++;
             ptr_inst_vec_all->push_back((Instance*)ptr_crf_inst);
-            words.clear();
-            labels.clear();
-            std::cout <<"the end of sentence"<< str <<std::endl;
+            ptr_words = new std::vector<std::string>;
+            ptr_labels = new std::vector<std::string>;
+            std::cout <<"The end of "<<instance_id<<" th instance" <<std::endl;
+            std::cout << std::endl;
         } else{
             std::stringstream ss(str);
             std::string feature1, feature2;
             ss >> feature1;
             ss >> feature2;
-            //words.push_back(feature1);
-            //words.push_back(feature2);
+            ptr_words->push_back(feature1);
+            ptr_words->push_back(feature2);
+            std::cout << feature1 <<" "<< feature2<<" ";
             if(withLabels){
                 std::string label;
                 ss >> label;
@@ -54,9 +52,9 @@ void ReadData(std::string file_name, std::vector<Instance*> *ptr_inst_vec_all, b
                 } else{
                     label = (*it);
                 }
-                //labels.push_back(label);
+                ptr_labels->push_back(label);
+                std::cout<<label<<std::endl;
             }
-            std::cout << str << std::endl;
         }
     }
 }
@@ -71,21 +69,21 @@ void Release(std::vector<Instance*> *ptr_vec_all){
 int main(){
     std::string train_file_name = "/Users/ngs/Documents/cplusproject/statNLP/data/conll2000/sample_train.txt";
     std::string test_file_name =  "/Users/ngs/Documents/cplusproject/statNLP/data/conll2000/sample_test.txt";
-    std::vector<Instance*> *ptr_training_inst = new std::vector<Instance *>;
-    ReadData(train_file_name,ptr_training_inst,true,true);
+    std::vector<Instance*> *ptr_inst_vec_all = new std::vector<Instance *>;
+    ReadData(train_file_name,ptr_inst_vec_all,true,true);
     int num_iterations = 100;
-    int size = ptr_training_inst->size();
+    int size = ptr_inst_vec_all->size();
     GlobalNetworkParam *ptr_param_g = new GlobalNetworkParam();
     LinearCRFFeatureManager *ptr_fm = new LinearCRFFeatureManager(ptr_param_g);
     LinearCRFNetworkCompiler *ptr_nc = new LinearCRFNetworkCompiler(all_labels);
     NetworkModel *ptr_nm = new DiscriminativeNetworkModel(ptr_fm,ptr_nc);
-    ptr_nm->Train(ptr_training_inst,num_iterations);
+    ptr_nm->Train(ptr_inst_vec_all,num_iterations);
     std::cout << "the size is:"<<size<<std::endl;
     delete ptr_param_g;
     delete ptr_fm;
     delete ptr_nc;
     delete ptr_nm;
     //BaseInstance<int, int, int> ins(a,b,c,d,e);//*ptr = new LinearCRFInstance(a,b,c);
-    Release(ptr_training_inst);
+    Release(ptr_inst_vec_all);
 }
 

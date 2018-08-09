@@ -36,7 +36,8 @@ public:
     }
 
     ~BaseInstance(){
-
+        delete ptr_input_;
+        delete ptr_output_;
     }
 
 protected:
