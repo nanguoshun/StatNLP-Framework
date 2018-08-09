@@ -5,11 +5,24 @@
 #include "global_network_param.h"
 
 GlobalNetworkParam::GlobalNetworkParam() {
-
+    is_locked_ = false;
+    size_ = 0;
+    fixed_featureSize_ = 0;
+    obj_prev_= DOUBLE_NEGATIVE_INFINITY;
+    obj_current_ = DOUBLE_NEGATIVE_INFINITY;
+    is_discriminative_ = ! TRAIN_MODE_IS_GENERATIVE;
+    if(IsDiscriminative()){
+        ptr_opt = new CRFPP::LBFGS();
+        kappa_ =L2_REGULARIZATION_CONSTANT;
+    }
+    ptr_featureIntMap_ = new FeatureIntMap;
+    ptr_type2InputMap_ = new Type2InputMap;
 }
 
 GlobalNetworkParam::~GlobalNetworkParam() {
-
+    delete ptr_opt;
+    delete ptr_featureIntMap_;
+    delete ptr_type2InputMap_;
 }
 
 void GlobalNetworkParam::LockIt() {

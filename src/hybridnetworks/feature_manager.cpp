@@ -13,7 +13,10 @@ FeatureManager::FeatureManager() {
 FeatureManager::FeatureManager(GlobalNetworkParam *ptr_param) {
     this->ptr_param_g_ = ptr_param;
     this->num_of_threads_ = NetworkConfig::NUM_OF_THREADS;
-    this->ptr_param_l_= new std::vector<LocalNetworkParam*>(this->num_of_threads_);
+    this->ptr_param_l_= new std::vector<LocalNetworkParam*>(this->num_of_threads_);\
+    this->cache_enabled_ = false;
+    this->word_hal_window_size_ = 1;
+    this->pos_hal_window_size_ = -1;
 }
 
 FeatureManager::~FeatureManager() {
@@ -26,6 +29,6 @@ GlobalNetworkParam* FeatureManager::GetGlobalParam() {
 
 bool FeatureManager::Update() {
     if(Num_Of_Threads != 1){
-
+        //TODO:
     }
 }

@@ -15,6 +15,13 @@ int NetworkConfig::NUM_OF_THREADS = 1;
 bool NetworkConfig::TRAIN_MODE_IS_GENERATIVE = false;
 static std::list<std::string> all_labels;
 
+/**
+ *
+ * @param file_name
+ * @param ptr_inst_vec_all : the vector of all instances.
+ * @param withLabels
+ * @param isLabeled
+ */
 void ReadData(std::string file_name, std::vector<Instance*> *ptr_inst_vec_all, bool withLabels, bool isLabeled){
     std::ifstream ifs(file_name);
     std::string str;

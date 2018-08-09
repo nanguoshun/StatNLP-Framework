@@ -4,19 +4,17 @@
 #ifndef STATNLP_TABLE_LOOKUP_NETWORK_H
 #define STATNLP_TABLE_LOOKUP_NETWORK_H
 
-#include <unordered_map>
-#include <list>
+
 #include "network.h"
-#include <vector>
 
 class TableLookupNetwork: public Network{
 public:
     TableLookupNetwork();
     ~TableLookupNetwork();
-    bool AddNode(long node);
+    bool AddNode(long nodeId);
     void AddEdge(long parent, std::vector<long> &children);
-    void CheckLinkValidity(long parent, std::vector<long> &children);
-    void CheckNodeValidity(long node);
+    void CheckLinkValidity(long parentId, std::vector<long> &children);
+    void CheckNodeValidity(long nodeId);
     void FinalizeNetwork();
     std::vector<long> *GetAllNodes();
     std::vector<std::vector<std::vector<int>>> *GetAllChildren();

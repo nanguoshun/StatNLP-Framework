@@ -14,19 +14,28 @@ TableLookupNetwork::TableLookupNetwork() {
 }
 
 TableLookupNetwork::~TableLookupNetwork() {
+
+    //delete ptr_children_temp.
+    for(auto it = ptr_children_tmp_->begin(); it!=ptr_children_tmp_->end(); ++it){
+        std::list<long*> childrens_list = (*it).second;
+        for(auto itt = childrens_list.begin(); itt != childrens_list.end(); ++itt){
+            delete (*itt);
+        }
+        delete &childrens_list;
+    }
     delete ptr_children_tmp_;
     delete ptr_children_;
     delete ptr_nodes_;
 }
 
-bool TableLookupNetwork::AddNode(long node) {
-    if(ptr_children_tmp_->find(node) != ptr_children_tmp_->end()){
+bool TableLookupNetwork::AddNode(long nodeId) {
+    if(ptr_children_tmp_->find(nodeId) != ptr_children_tmp_->end()){
         return false;
     }
     //note that null_list is meaningless.
     std::list<long*> null_list;
     null_list.push_back(NULL);
-    ptr_children_tmp_->insert(std::make_pair(node,null_list));
+    ptr_children_tmp_->insert(std::make_pair(nodeId,null_list));
     return true;
 }
 
@@ -34,7 +43,11 @@ void TableLookupNetwork::AddEdge(long parent, std::vector<long> &children) {
     this->CheckLinkValidity(parent,children);
     if(ptr_children_tmp_->find(parent) == ptr_children_tmp_->end()){
 //to be done
+        std::list<long *> *ptr_children_list = new std::list<long *>;
+        //TODO:
+        //ptr_children_tmp_->insert(std::make_pair(parent,))
     }
+
 //to be done
 }
 

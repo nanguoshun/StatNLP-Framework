@@ -24,6 +24,10 @@ protected:
     GlobalNetworkParam *ptr_param_g_;
     std::vector<LocalNetworkParam *> *ptr_param_l_;
     int num_of_threads_;
+    bool cache_enabled_;
+
+    int word_hal_window_size_;
+    int pos_hal_window_size_;
 };
 
 #endif //STATNLP_FEATUREMANAGER_H

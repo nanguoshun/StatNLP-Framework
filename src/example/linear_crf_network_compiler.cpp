@@ -79,8 +79,7 @@ void LinearCRFNetworkCompiler::CompileUnlabeledGeneric() {
             curr_nodes.push_back(node);
             ptr_network_->AddNode(node);
             for(auto it = prev_nodes.begin(); it!=prev_nodes.end(); ++it){
-                std::vector<long> pre_node;
-                pre_node.push_back((*it));
+                std::vector<long> pre_node((*it));
                 ptr_network_->AddEdge(node,pre_node);
             }
         }
@@ -92,8 +91,7 @@ void LinearCRFNetworkCompiler::CompileUnlabeledGeneric() {
         ptr_network_->AddNode(root);
         //build edges among nodes and root.
         for(auto it = prev_nodes.begin(); it!= prev_nodes.end(); ++it){
-            std::vector<long> pre_node;
-            pre_node.push_back((*it));
+            std::vector<long> pre_node((*it)) ;
             ptr_network_->AddEdge(root,pre_node);
         }
     }
