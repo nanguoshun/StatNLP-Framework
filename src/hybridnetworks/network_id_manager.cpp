@@ -14,7 +14,7 @@ NetworkIDManager::~NetworkIDManager() {
 }
 
 /**
- * Convert a node as an ID.
+ * Convert a node array an node ID, which is unique in the graph.
  * @param vec
  * @return
  */

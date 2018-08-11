@@ -17,4 +17,4 @@ add_executable(statNLP main.cpp src/hybridnetworks/hypergraph.h src/hybridnetwor
         src/hybridnetworks/network_id_manager.cpp src/example/linear_crf_feature_manager.h src/example/linear_crf_feature_manager.cpp
         src/hybridnetworks/feature_array.h src/hybridnetworks/feature_array.cpp src/hybridnetworks/discriminative_network_model.h
         src/hybridnetworks/discriminative_network_model.cpp src/hybridnetworks/local_network_learner_thread.h
-        src/hybridnetworks/local_network_learner_thread.cpp src/common/opt/lbfgs.h src/common/opt/lbfgs.cpp)
+        src/hybridnetworks/local_network_learner_thread.cpp src/common/opt/lbfgs.h src/common/opt/lbfgs.cpp src/hybridnetworks/freelistbase.h src/hybridnetworks/freelistbase.cpp)
