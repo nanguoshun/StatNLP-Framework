@@ -34,7 +34,7 @@ std::vector<int> *LinearCRFNetwork::GetNodeArray(int k) {
     return nullptr;
 }
 
-std::vector<std::vector<int>> *LinearCRFNetwork::GetChildren(int k) {
+int **LinearCRFNetwork::GetChildren(int k) {
     return nullptr;
 }
 

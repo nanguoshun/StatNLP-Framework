@@ -19,15 +19,19 @@ public:
     ~FeatureManager();
     GlobalNetworkParam * GetGlobalParam();
     bool Update();
-    virtual FeatureArray* ExtractHelper(Network *ptr, int parent, std::vector<int> *ptr_children) = 0;
+    FeatureArray * Extract(Network *ptr_network, int parent_k, int * ptr_children_k, int children_k_index);
+    bool isCacheAble();
+    void EnableCache(int numNetworks);
+    virtual FeatureArray* ExtractHelper(Network *ptr_network, int parent, int *ptr_children) = 0;
 protected:
     GlobalNetworkParam *ptr_param_g_;
     std::vector<LocalNetworkParam *> *ptr_param_l_;
     int num_of_threads_;
     bool cache_enabled_;
-
+    FeatureArray ****ptr_cache_;
     int word_hal_window_size_;
     int pos_hal_window_size_;
+    int num_of_networks_;
 };
 
 #endif //STATNLP_FEATUREMANAGER_H

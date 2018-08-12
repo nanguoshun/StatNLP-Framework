@@ -90,7 +90,7 @@ void LinearCRFNetworkCompiler::CompileUnlabeledGeneric() {
         ptr_network_->AddNode(root);
         //build edges among nodes and root.
         for(auto it = prev_nodes.begin(); it!= prev_nodes.end(); ++it){
-            std::vector<long> pre_node((*it)) ;
+            std::vector<long> pre_node((*it)); //FIXME: this line has running error.
             ptr_network_->AddEdge(root,pre_node);
         }
     }
@@ -121,7 +121,7 @@ LinearCRFNetwork* LinearCRFNetworkCompiler::CompileLabeled(int networkId, Linear
                                                                LocalNetworkParam *ptr_param) {
     LinearCRFNetwork *ptr_network = new LinearCRFNetwork(networkId,ptr_inst,ptr_param);
 
-    //FIXME:
+    //FIXME: link error when call the GetOuput Function, need further analyze the cause.
     //Label_Str_Vector *ptr_output = ptr_inst->GetOutPut();
 
     //Add Leaf

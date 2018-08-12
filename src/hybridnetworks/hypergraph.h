@@ -17,7 +17,7 @@ public:
     virtual int CountNodes() = 0;
     virtual long GetNode(int k) = 0;
     virtual std::vector<int> *GetNodeArray(int k) = 0;
-    virtual std::vector<std::vector<int>> *GetChildren(int k) = 0;
+    virtual int **GetChildren(int k) = 0;
     virtual bool IsRemovded(int k) = 0;
     virtual void Remove(int k) = 0;
     virtual bool IsRoot(int k) = 0;

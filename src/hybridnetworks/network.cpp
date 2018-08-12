@@ -34,10 +34,12 @@ void Network::Touch(int k) {
     if(this->IsRemovded(k)){
         return;
     }
-    std::vector<std::vector<int>> *ptr_children_vec = this->GetChildren(k);
-    for(int children_index = 0; children_index < ptr_children_vec->size(); ++children_index){
-        std::vector<int> childern_k = (*ptr_children_vec)[children_index];
-        this->ptr_param_->Extract(this,k,&childern_k,children_index);
+    int **ptr_children_vec = this->GetChildren(k);
+    int size = sizeof(ptr_children_vec);
+    for(int children_index = 0; children_index < size; ++children_index){
+        int* ptr_childern_k = ptr_children_vec[children_index];
+        //TODO: change the vector "childern_k" to a pointer.
+        //this->ptr_param_->Extract(this,k,&childern_k,children_index);
     }
 }
 
@@ -70,13 +72,16 @@ void Network::UpdateInsideOutside() {
 
 }
 
+
 void Network::Inside(int nodeId) {
+    //TODO: change the vector to a pointer.
     //check if it is removed?
     if(this->IsRemovded(nodeId)){
         (*this->ptr_inside_)[nodeId] = std::numeric_limits<double>::infinity();
         return;;
     }
-    std::vector<std::vector<int>> *ptr_children = this->GetChildren(nodeId);
+    //FIXME:
+    std::vector<std::vector<int>> *ptr_children; //= this->GetChildren(nodeId);
     if(ptr_children->size() ==0){
         ptr_children = NULL;
     }
@@ -94,7 +99,8 @@ void Network::Inside(int nodeId) {
     if(ignore_flag){
         inside = std::numeric_limits<double>::infinity();
     } else{
-        FeatureArray* ptr_fa = this->ptr_param_->Extract(this,nodeId,&children,children_index);
+        //FIXME: the children should be a pointer here
+        FeatureArray* ptr_fa ; //= this->ptr_param_->Extract(this,nodeId,&children,children_index);
         double score = ptr_fa->GetScore(this->ptr_param_);
         for(int child:children){
             score += (* this->ptr_inside_)[child];
@@ -140,3 +146,6 @@ std::vector<double>* Network::GetOutsideSharedArray() {
 
 }
 
+int Network::GetNetworkID() {
+    return network_id_;
+}

@@ -21,7 +21,7 @@ public:
     int GetThreadId();
     double GetWeight(int featureId);
     bool IsGlobalMode();
-    FeatureArray *Extract(Network *ptr_network, int parent_k, std::vector<int> *ptr_children_k, int children_k_index);
+    FeatureArray *Extract(Network *ptr_network, int parent_k, int *ptr_children_k, int children_k_index);
     void FinalizeIt();
     bool isCacheAble();
 protected:
@@ -32,8 +32,8 @@ protected:
     std::vector<int> *ptr_counts_;
     std::unordered_map<int ,int> *ptr_globalFeature2LocalFeature_;
     bool isFinalized_;
-    //a hyperedge, which consists of networkId, parent Id, Child ID:
-    std::vector<std::vector<std::vector<FeatureArray *>>> *ptr_cache_;
+    //a hyperedge, which consists of networkId, parent Id, Child IDs, note that each
+    FeatureArray **** ptr_cache_;
     bool is_cache_enabled_;
     int num_networks_;
     bool is_gobal_mode_;

@@ -20,7 +20,7 @@ public:
 
     std::vector<int> *GetNodeArray(int k) override;
 
-    std::vector<std::vector<int>> *GetChildren(int k) override;
+    int **GetChildren(int k) override;
 
     bool IsRemovded(int k) override;
 

@@ -12,6 +12,6 @@ public:
 //    LinearCRFFeatureManager();
     LinearCRFFeatureManager(GlobalNetworkParam *ptr_param);
     ~LinearCRFFeatureManager();
-    FeatureArray* ExtractHelper(Network *ptr, int parent, std::vector<int> *ptr_children);
+    FeatureArray* ExtractHelper(Network *ptr, int parent, int *ptr_children);
 };
 #endif //STATNLP_LINEAR_CRF_LINEAR_FEATURE_MANAGER_H

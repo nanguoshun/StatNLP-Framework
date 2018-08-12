@@ -13,7 +13,6 @@ LinearCRFFeatureManager::~LinearCRFFeatureManager() {
 }
 
 // this function is called LocalNetworkLearnerThread during touch phase.
-FeatureArray* LinearCRFFeatureManager::ExtractHelper(Network *ptr, int parent, std::vector<int> *ptr_children) {
-    //to be done..
-    //
+FeatureArray* LinearCRFFeatureManager::ExtractHelper(Network *ptr, int parent, int *ptr_children) {
+
 }

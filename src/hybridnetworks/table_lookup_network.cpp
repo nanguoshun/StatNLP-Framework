@@ -182,8 +182,8 @@ std::vector<int> *TableLookupNetwork::GetNodeArray(int k) {
     return nullptr;
 }
 
-std::vector<std::vector<int>> *TableLookupNetwork::GetChildren(int k) {
-    return nullptr;
+int **TableLookupNetwork::GetChildren(int k) {
+    return this->ptr_children_[k];
 }
 
 bool TableLookupNetwork::IsRemovded(int k) {

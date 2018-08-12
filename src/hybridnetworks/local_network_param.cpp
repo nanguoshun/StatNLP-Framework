@@ -4,6 +4,7 @@
 
 #include "local_network_param.h"
 #include "common.h"
+#include "network.h"
 
 LocalNetworkParam::LocalNetworkParam() {
 
@@ -71,12 +72,43 @@ bool LocalNetworkParam::isCacheAble() {
     return is_cache_enabled_;
 }
 
-FeatureArray* LocalNetworkParam::Extract(Network *ptr_network, int parent_k, std::vector<int> *ptr_children_k,
+/**
+ * Extract features from a hyperedge, which is denoted by the parent node parent_k (its index), the hyperedge index
+ (as there are multiple hyper edges that is rooted by parent node parent_k), and the children_nodes of the
+
+ * @param ptr_network : the network (graph)
+ * @param parent_k : the index of parent node
+ * @param ptr_children_k : the index of hyperedge, which is rooted by parent node.
+ * @param children_k_index : the indices of children of the hyperedge.
+ * @return
+ */
+FeatureArray* LocalNetworkParam::Extract(Network *ptr_network, int parent_k, int *ptr_children_k,
                                          int children_k_index) {
     if(this->isCacheAble()){
-
+        if(NULL == this->ptr_cache_){
+            this->ptr_cache_ = new FeatureArray***[this->num_networks_];
+        }
+        int networkId = ptr_network->GetNetworkID();
+        if(NULL == this->ptr_cache_[networkId]){
+            this->ptr_cache_[networkId] = new FeatureArray**[ptr_network->CountNodes()];
+        }
+        if(NULL == this->ptr_cache_[networkId][parent_k]){
+            //size indicates the num of hyperedges.
+            int size = sizeof(ptr_network->GetChildren(parent_k));
+            this->ptr_cache_[networkId][parent_k] = new FeatureArray*[size];
+        }
+        FeatureArray *ptr_fa = this->ptr_cache_[networkId][parent_k][children_k_index];
+        //if this FeatureArray pointer is cached in the ptr_cache, then return the pointer from the cache.
+        if(NULL != ptr_fa){
+            return ptr_fa;
+        }
     }
-    //to be done...
-    FeatureArray * ptr;
-    return ptr;
+    //if the feature Array is not cached in the ptr_cache, then extract it via feature manager
+    FeatureArray *ptr_fa = this->ptr_fm_->Extract(ptr_network,parent_k,ptr_children_k,children_k_index);
+    if(this->isCacheAble()){
+        //store the FeatureArray pointer to the cache.
+        this->ptr_cache_[ptr_network->GetNetworkID()][parent_k][children_k_index] = ptr_fa;
+    }
+    return ptr_fa;
 }
+
