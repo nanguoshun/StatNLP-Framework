@@ -14,7 +14,7 @@ class NetworkCompiler{
 public:
     NetworkCompiler();
     ~NetworkCompiler();
-    virtual LinearCRFNetwork * Compile(int networkId, Instance &inst, LocalNetworkParam &param) = 0;
+    virtual LinearCRFNetwork * Compile(int networkId, Instance* ptr_inst, LocalNetworkParam *ptr_param) = 0;
     virtual Instance *Decompile(Network &network) = 0;
 };
 

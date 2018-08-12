@@ -16,22 +16,22 @@ class LinearCRFNetworkCompiler: public NetworkCompiler {
 public:
     LinearCRFNetworkCompiler(std::list<std::string> &labels);
     ~LinearCRFNetworkCompiler();
-    LinearCRFNetwork* Compile(int networkId, Instance &instance, LocalNetworkParam &param);
+    LinearCRFNetwork* Compile(int networkId, Instance *ptr_instance, LocalNetworkParam *ptr_param);
     Instance * Decompile(Network &network);
     void CompileUnlabeledGeneric();
     long ToNode(int pos, int tag_id);
     long ToNodeRoot(int size);
     long ToNodeLeaf();
-    LinearCRFInstance CompileUnlabeled(int networkId, LinearCRFInstance *ptr_inst, LocalNetworkParam *ptr_param);
-    LinearCRFInstance CompileLabeled(int networkId, LinearCRFInstance *ptr_inst, LocalNetworkParam *ptr_param);
+    LinearCRFNetwork* CompileUnlabeled(int networkId, LinearCRFInstance *ptr_inst, LocalNetworkParam *ptr_param);
+    LinearCRFNetwork* CompileLabeled(int networkId, LinearCRFInstance *ptr_inst, LocalNetworkParam *ptr_param);
 
 private:
     std::list<std::string> labels_;
     std::map<std::string, int> labels_id_map_;
     LinearCRFNetwork *ptr_network_;
     //contains  node Id
-    std::vector<long> *ptr_all_nodes_;
-    //parent Id, HyperEdge (children), Nodes
-    std::vector<std::vector<std::vector<int>>> *ptr_all_children_;
+    long *ptr_all_nodes_;
+    //parent index, HyperEdge (children), Nodes index
+    int *** ptr_all_children_;
 };
 #endif //STATNLP_LINEAR_NEWORK_COMPILER_H

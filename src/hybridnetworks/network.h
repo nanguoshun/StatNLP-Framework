@@ -31,6 +31,7 @@ public:
 
     std::vector<double>* GetInsideSharedArray();
     std::vector<double>* GetOutsideSharedArray();
+    //Network * GetNetwork(int networkId);
 
 protected:
     int network_id_;

@@ -19,7 +19,7 @@ const double  L2_REGULARIZATION_CONSTANT = 0.01;
 const int FOREST_MAX_HEIGHT = 10000;
 const int FOREST_MAX_WIDTH = 10000;
 const int NETWORK_MAX_DEPTH = 901;
-
+const int NETWORK_CAPACITY = 1000000;
 //typedef std::vector<std::vector<std::string>> Input_Str_Vector;
 //typedef std::vector<std::vector<std::string>> Label_Str_Vector;
 typedef std::vector<std::string> Input_Str_Vector;

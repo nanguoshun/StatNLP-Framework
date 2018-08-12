@@ -14,32 +14,28 @@
  */
 
 template <class SELF_TYPE, class INPUT_TYPE, class OUTPUT_TYPE>
-
 class BaseInstance: public Instance{
 public:
     BaseInstance(){
 
     }
-
     BaseInstance(SELF_TYPE *ptr_self, INPUT_TYPE *ptr_input, OUTPUT_TYPE *ptr_output){
 
     }
-
     BaseInstance(int id, double weight){
-        Instance::Instance(id,weight);
-    }
 
+    }
     BaseInstance(SELF_TYPE *ptr_self, INPUT_TYPE *ptr_input, OUTPUT_TYPE *ptr_output, int id, double weight){
         ptr_input_ = ptr_input;
         ptr_output_ = ptr_output;
         Instance::Instance(id,weight);
     }
-
     ~BaseInstance(){
-        delete ptr_input_;
-        delete ptr_output_;
-    }
 
+    }
+    OUTPUT_TYPE *GetOutPut();
+    INPUT_TYPE *GetInput();
+    OUTPUT_TYPE *GetPrediction();
 protected:
     INPUT_TYPE *ptr_input_;
     OUTPUT_TYPE *ptr_output_;

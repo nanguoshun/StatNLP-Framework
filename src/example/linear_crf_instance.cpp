@@ -10,8 +10,8 @@ LinearCRFInstance::LinearCRFInstance(LinearCRFInstance *ptr_inst, Input_Str_Vect
 }*/
 
 LinearCRFInstance::LinearCRFInstance(int instance_id, double weight, Input_Str_Vector *ptr_words,
-                                     Label_Str_Vector *ptr_labels) {
-    BaseInstance<LinearCRFInstance, Input_Str_Vector, Label_Str_Vector>(this,ptr_words,ptr_labels,instance_id, weight);
+                                     Label_Str_Vector *ptr_labels):BaseInstance<LinearCRFInstance, Input_Str_Vector, Label_Str_Vector>(this,ptr_words,ptr_labels,instance_id, weight) {
+
 }
 
 LinearCRFInstance::LinearCRFInstance() {

@@ -25,10 +25,10 @@ TableLookupNetwork::~TableLookupNetwork() {
         delete &childrens_list;
     }
 
-    for(int i =0; i<node_size_; ++i){
-        for(int j=0; j<ptr_childrens_size_[i]; ++j){
-            for(int k=0; i<)
-            ptr_children_[i][j]
+    for(int i =0; i < node_size_; ++i){
+        int childrens_size = sizeof(ptr_children_[i]);
+        for(int j=0; j < childrens_size; ++j){
+                delete ptr_children_[i][j];
         }
         delete ptr_children_[i];
     }
@@ -36,7 +36,17 @@ TableLookupNetwork::~TableLookupNetwork() {
     delete ptr_children_tmp_;
     delete ptr_children_;
     delete ptr_nodes_;
-    delete ptr_childrens_size_;
+//    delete ptr_childrens_size_;
+}
+
+TableLookupNetwork::TableLookupNetwork(int networkId, Instance *ptr_inst, LocalNetworkParam *ptr_param):Network(networkId,ptr_inst,ptr_param) {
+
+}
+
+TableLookupNetwork::TableLookupNetwork(int networkId, Instance *ptr_inst, long *ptr_nodes, int ***ptr_children,
+                                       LocalNetworkParam *ptr_param):Network(networkId,ptr_inst,ptr_param) {
+    this->ptr_nodes_ = ptr_nodes_;
+    this->ptr_children_ = ptr_children;
 }
 
 bool TableLookupNetwork::AddNode(long nodeId) {
@@ -97,20 +107,21 @@ long * TableLookupNetwork::GetAllNodes() {
     return this->ptr_nodes_;
 }
 
-long *** TableLookupNetwork::GetAllChildren() {
+int *** TableLookupNetwork::GetAllChildren() {
     return this->ptr_children_;
 }
 
 std::unordered_map<long, int>* TableLookupNetwork::FinalizeNodes() {
     node_size_ = ptr_children_tmp_->size();
     ptr_nodes_ = new long[node_size_];
-    ptr_childrens_size_ = new int[node_size_];
-    ptr_children_ = new long **[node_size_];
+    //ptr_childrens_size_ = new int[node_size_];
+    ptr_children_ = new int **[node_size_];
     std::vector<long> *ptr_node_vector_temp = new std::vector<long>;
     auto end = ptr_children_tmp_->end();
     for(auto it = ptr_children_tmp_->begin(); it!=end; ++it){
         ptr_node_vector_temp->push_back((*it).first);
     }
+    //sort the Node ID in the vector.
     std::sort(ptr_node_vector_temp->begin(),ptr_node_vector_temp->end());
     //ptr_nodeId2Index_map_tmp: the fist element is the nodeID,and the second element is node index;
     std::unordered_map<long, int> *ptr_nodeId2Index_map_tmp = new std::unordered_map<long, int>;
@@ -127,36 +138,72 @@ std::unordered_map<long, int>* TableLookupNetwork::FinalizeNodes() {
 
 void TableLookupNetwork::FinalizeNetwork() {
     std::unordered_map<long, int> * ptr_nodeId2Index_map_tmp = FinalizeNodes();
-    auto end = ptr_children_tmp_->end();
-    for(auto it = ptr_children_tmp_->begin(); it!=end; ++it){
+    for(auto it = this->ptr_children_tmp_->begin(); it!=this->ptr_children_tmp_->end(); ++it){
         long parent = (*it).first;
         //get the parent index;
         int parent_index = ptr_nodeId2Index_map_tmp->find(parent)->second;
         //get all hypereges for a parent;
         std::list<std::vector<long>> childrens = (*it).second;
         if(childrens.empty()){
-            ptr_children_[parent_index] = NULL;
+            this->ptr_children_[parent_index] = NULL;
         }else{
-            int childrens_size = childrens.size();
-            ptr_childrens_size_[parent_index] = childrens_size;
-            //allocate the space for all hyper-edges rooted by node parent.
-            ptr_children_[parent_index] = new long*[ptr_childrens_size_[parent_index]];
-
-            auto list_end = (*it).second.end();
-            //k is the index of hyperedge.
-            int k = 0;
+            //k is the index of the hyperedge rooted by node parent.
+            this->ptr_children_[parent_index] = new int*[childrens.size()];
+            int hyper_edge_no = 0;
+            //childrens is a list, which stores the hyperege rooted by a parent note.
+            //itt is a vector, which stores the nodes in a hpyeredge.
             for(auto itt = childrens.begin(); itt!=childrens.end(); ++itt){
-                std::vector<long> children_vec = (*itt);
-                for(auto ittt = (*it).second.begin(); ittt != list_end; ++ittt){
-                    int children_size = (*ittt).size();
-                    //ptr_children_[parent_index][k][]
+                int *ptr_node_vector = new int[(*itt).size()];
+                //ittt is a node ID.
+                int node_no = 0;
+                for(auto ittt = (*itt).begin(); ittt != (*itt).end(); ++ittt){
+                    //find the node index
+                    ptr_node_vector[node_no] = ptr_nodeId2Index_map_tmp->find((*ittt))->second;
+                    node_no++;
                 }
-                k++;
+                this->ptr_children_[parent_index][hyper_edge_no] = ptr_node_vector;
+                hyper_edge_no++;
             }
         }
     }
     //release the memory;
     delete ptr_nodeId2Index_map_tmp;
+}
+
+int TableLookupNetwork::CountNodes() {
+    return 0;
+}
+
+long TableLookupNetwork::GetNode(int k) {
+    return 0;
+}
+
+std::vector<int> *TableLookupNetwork::GetNodeArray(int k) {
+    return nullptr;
+}
+
+std::vector<std::vector<int>> *TableLookupNetwork::GetChildren(int k) {
+    return nullptr;
+}
+
+bool TableLookupNetwork::IsRemovded(int k) {
+    return false;
+}
+
+void TableLookupNetwork::Remove(int k) {
+
+}
+
+bool TableLookupNetwork::IsRoot(int k) {
+    return false;
+}
+
+bool TableLookupNetwork::IsLeaf(int k) {
+    return false;
+}
+
+bool TableLookupNetwork::IsContain(long node) {
+    return false;
 }
 
 

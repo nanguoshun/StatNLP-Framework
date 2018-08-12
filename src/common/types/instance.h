@@ -13,6 +13,7 @@ public:
     void SetLabeled();
     void SetUnlabeled();
     double GetWeight();
+    
 protected:
     int instance_id_;
     double weight_;

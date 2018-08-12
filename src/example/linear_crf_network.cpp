@@ -11,6 +11,17 @@ LinearCRFNetwork::~LinearCRFNetwork() {
 
 }
 
+LinearCRFNetwork::LinearCRFNetwork(int networkid, Instance *ptr_inst, LocalNetworkParam *ptr_param):TableLookupNetwork(networkid,ptr_inst,ptr_param) {
+
+}
+
+LinearCRFNetwork::LinearCRFNetwork(int networkid, LinearCRFInstance *ptr_inst, long *ptr_nodes, int ***ptr_children,
+                                   LocalNetworkParam *ptr_param, int num_nodes):TableLookupNetwork(networkid,ptr_inst,ptr_nodes,ptr_children,ptr_param) {
+
+    this->num_of_nodes_ = num_nodes;
+
+}
+
 int LinearCRFNetwork::CountNodes() {
     return 0;
 }

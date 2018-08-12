@@ -26,18 +26,17 @@ LinearCRFNetworkCompiler::~LinearCRFNetworkCompiler() {
     delete ptr_network_;
 }
 
-LinearCRFNetwork* LinearCRFNetworkCompiler::Compile(int networkId, Instance &instance, LocalNetworkParam &param) {
-    Instance *ptr_inst = &instance;
+LinearCRFNetwork* LinearCRFNetworkCompiler::Compile(int networkId, Instance* ptr_inst, LocalNetworkParam *ptr_param) {
     LinearCRFInstance* ptr_crf_inst = (LinearCRFInstance*)ptr_inst;
     if(ptr_crf_inst->IS_Labeled()){
-        //to be done
+        return this->CompileLabeled(networkId,ptr_crf_inst,ptr_param);
     } else{
-        //to be done
+        return this->CompileUnlabeled(networkId,ptr_crf_inst,ptr_param);
     }
 }
 
 Instance* LinearCRFNetworkCompiler::Decompile(Network &network) {
-
+    //TODO: will be done after finished the training part.
 }
 
 /**
@@ -100,16 +99,53 @@ void LinearCRFNetworkCompiler::CompileUnlabeledGeneric() {
     this->ptr_all_children_ = ptr_network_->GetAllChildren();
 }
 
-LinearCRFInstance LinearCRFNetworkCompiler::CompileUnlabeled(int networkId, LinearCRFInstance *ptr_inst,
+LinearCRFNetwork* LinearCRFNetworkCompiler::CompileUnlabeled(int networkId, LinearCRFInstance *ptr_inst,
                                                              LocalNetworkParam *ptr_param) {
     int size = ptr_inst->Size();
     long root = this->ToNodeRoot(size);
-    //to be done
+    int pos  = 0;
+    //FIXME: this finding code in an array can be further optimized by binary search.
+    for(int i=0; i< size; ++i){
+        if(root == ptr_all_nodes_[i]){
+            pos = i;
+        }
+    }
+    int num_nodes = pos + 1;
+    //this pointer will be stored and manageed in local_network_learner_thread.
+    LinearCRFNetwork *ptr_linear_crf_network = new LinearCRFNetwork(networkId,ptr_inst,this->ptr_all_nodes_, this->ptr_all_children_,ptr_param,num_nodes);
+    return ptr_linear_crf_network;
+
 }
 
-LinearCRFInstance LinearCRFNetworkCompiler::CompileLabeled(int networkId, LinearCRFInstance *ptr_inst,
-
+LinearCRFNetwork* LinearCRFNetworkCompiler::CompileLabeled(int networkId, LinearCRFInstance *ptr_inst,
                                                                LocalNetworkParam *ptr_param) {
-    //to be done
+    LinearCRFNetwork *ptr_network = new LinearCRFNetwork(networkId,ptr_inst,ptr_param);
+
+    //FIXME:
+    //Label_Str_Vector *ptr_output = ptr_inst->GetOutPut();
+
+    //Add Leaf
+    long leaf = ToNodeLeaf();
+    ptr_network->AddNode(leaf);
+    long prevNode = leaf;
+    std::vector<long> prev_nodes_vec;
+    prev_nodes_vec.push_back(leaf);
+    int pos = 0;
+    for(auto it = labels_.begin(); it!=labels_.end(); ++it){
+        std::string label_str = (*it);
+        long nodeId = ToNode(pos,labels_id_map_.find(label_str)->second);
+        ptr_network->AddNode(nodeId);
+        ptr_network->AddEdge(nodeId,prev_nodes_vec);
+        prev_nodes_vec.clear();
+        prev_nodes_vec.push_back(nodeId);
+    }
+
+    //add root
+    long root = ToNodeRoot(labels_.size());
+    ptr_network->AddNode(root);
+    ptr_network->AddEdge(root,prev_nodes_vec);
+
+    ptr_network->FinalizeNetwork();
+    return ptr_network;
 
 }

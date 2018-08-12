@@ -139,3 +139,4 @@ std::vector<double>* Network::GetInsideSharedArray() {
 std::vector<double>* Network::GetOutsideSharedArray() {
 
 }
+
