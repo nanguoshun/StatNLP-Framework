@@ -4,7 +4,7 @@
 
 #include "network_id_manager.h"
 
-std::vector<int>* NetworkIDManager::ptr_capacity_vec_ = new std::vector<int>{FOREST_MAX_HEIGHT+1,FOREST_MAX_WIDTH+1,FOREST_MAX_HEIGHT+1,FOREST_MAX_HEIGHT+1,NETWORK_MAX_DEPTH};;
+std::vector<int>* NetworkIDManager::ptr_capacity_vec_ = new std::vector<int>{FOREST_MAX_HEIGHT+1,FOREST_MAX_WIDTH+1,FOREST_MAX_HEIGHT+1,FOREST_MAX_HEIGHT+1,NETWORK_MAX_DEPTH};
 
 NetworkIDManager::NetworkIDManager() {
 }

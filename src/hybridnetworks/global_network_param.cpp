@@ -60,3 +60,8 @@ double GlobalNetworkParam::GetWeight(int featureId) {
 double GlobalNetworkParam::GetOldObj() {
     return obj_prev_;
 }
+
+int GlobalNetworkParam::ToFeature(std::string type, std::string output, std::string input) {
+    //TODO:
+
+}

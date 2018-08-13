@@ -29,7 +29,7 @@ protected:
     int num_of_threads_;
     bool cache_enabled_;
     FeatureArray ****ptr_cache_;
-    int word_hal_window_size_;
+    //int word_hal_window_size_;
     int pos_hal_window_size_;
     int num_of_networks_;
 };

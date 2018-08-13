@@ -35,10 +35,6 @@ LinearCRFNetwork* LinearCRFNetworkCompiler::Compile(int networkId, Instance* ptr
     }
 }
 
-Instance* LinearCRFNetworkCompiler::Decompile(Network &network) {
-    //TODO: will be done after finished the training part.
-}
-
 /**
  * Get the node ID.
  * @param pos
@@ -147,5 +143,8 @@ LinearCRFNetwork* LinearCRFNetworkCompiler::CompileLabeled(int networkId, Linear
 
     ptr_network->FinalizeNetwork();
     return ptr_network;
+}
 
+Instance* LinearCRFNetworkCompiler::Decompile(Network &network) {
+    //TODO: will be done after finished the training part.
 }

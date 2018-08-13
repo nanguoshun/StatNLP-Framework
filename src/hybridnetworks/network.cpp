@@ -149,3 +149,7 @@ std::vector<double>* Network::GetOutsideSharedArray() {
 int Network::GetNetworkID() {
     return network_id_;
 }
+
+Instance* Network::GetInstance() {
+    return ptr_inst_;
+}

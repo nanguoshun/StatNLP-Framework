@@ -6,12 +6,25 @@
 #define STATNLP_LINEAR_CRF_LINEAR_FEATURE_MANAGER_H
 
 #include "../hybridnetworks/feature_manager.h"
+#include "../common/types/instance.h"
+
+enum FeatureType{
+    WORD = true,
+    WORD_BIGRAM = false,
+    TAG = false,
+    TAG_BIGRAM = false,
+    TRANSITION = true
+};
 
 class LinearCRFFeatureManager: public FeatureManager{
 public:
 //    LinearCRFFeatureManager();
-    LinearCRFFeatureManager(GlobalNetworkParam *ptr_param);
+    LinearCRFFeatureManager(GlobalNetworkParam *ptr_param, std::vector<Instance*> *ptr_inst);
     ~LinearCRFFeatureManager();
     FeatureArray* ExtractHelper(Network *ptr, int parent, int *ptr_children);
+    static int word_hal_window_size_;
+
+private:
+    std::vector<Instance*> *ptr_inst_vector_;
 };
 #endif //STATNLP_LINEAR_CRF_LINEAR_FEATURE_MANAGER_H

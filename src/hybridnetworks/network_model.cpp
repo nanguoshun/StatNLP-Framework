@@ -38,6 +38,7 @@ void NetworkModel::Train(std::vector<Instance *> *ptr_all_instances, int max_num
         for (auto it = ptr_local_learner_vector_->begin(); it != ptr_local_learner_vector_->end(); ++it) {
 
         }
+
         bool done = false;
         this->ptr_fm_->Update();
         double obj = this->ptr_fm_->GetGlobalParam()->GetOldObj();
@@ -51,7 +52,6 @@ void NetworkModel::Train(std::vector<Instance *> *ptr_all_instances, int max_num
         }
     }
 }
-
 
 Instance* NetworkModel::Decode(Instance *ptr_test_instences) {
     Instance * ptr;

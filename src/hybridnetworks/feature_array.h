@@ -8,18 +8,22 @@
 #include <vector>
 
 class LocalNetworkParam;
-
 class FeatureArray{
 public:
     FeatureArray();
+    FeatureArray(int *ptr_fs, int fs_size);
+    FeatureArray(int *ptr_fs, int fs_size, FeatureArray *ptr_next);
     FeatureArray(double score);
     ~FeatureArray();
     double GetScore(LocalNetworkParam *ptr_local_param);
-    double ComputeScore(LocalNetworkParam *ptr_local_param, std::vector<int> *ptr_fs);
-    std::vector<int> * GetCurrent();
+    double ComputeScore(LocalNetworkParam *ptr_local_param, int *ptr_fs);
+    int * GetCurrent();
+    static FeatureArray *PTR_EMPTY;
+
 private:
     double score_;
-    std::vector<int> *ptr_fs_;
-
+    int *ptr_fs_;
+    int fs_size_;
+    FeatureArray *ptr_next_;
 };
 #endif //STATNLP_FEATURE_ARRAY_H

@@ -19,6 +19,7 @@ public:
     bool IsDiscriminative();
     double GetWeight(int featureId);
     double GetOldObj();
+    int ToFeature(std::string type, std::string output, std::string input);
 private:
     bool is_locked_;
     //the num of feature

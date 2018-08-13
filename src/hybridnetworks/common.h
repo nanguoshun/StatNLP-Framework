@@ -24,19 +24,24 @@ const int NETWORK_CAPACITY = 1000000;
 //typedef std::vector<std::vector<std::string>> Label_Str_Vector;
 typedef std::vector<std::string> Input_Str_Vector;
 typedef std::vector<std::string> Label_Str_Vector;
+//typedef std::string** Input_Str_Vector;
+//typedef std::string** Label_Str_Vector;
+
 typedef std::unordered_map<std::string, std::unordered_map<std::string, std::unordered_map<std::string, int>>> FeatureIntMap;
 typedef std::unordered_map<std::string, std::list<std::string>> Type2InputMap;
 
 enum NODE_TYPES{
     LEAF, NODE, ROOT
 };
-
+/*
 enum FeatureType{
     WORD,
     WORD_BIGRAM,
     TAG,
     TAG_BIGRAM,
     TRANSITION
-};
+};*/
+
+
 
 #endif //STATNLP_COMMON_H

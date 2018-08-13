@@ -37,7 +37,7 @@ void ReadData(std::string file_name, std::vector<Instance*> *ptr_inst_vec_all, b
                 ptr_crf_inst->SetUnlabeled();
             }
             instance_id++;
-            ptr_inst_vec_all->push_back((Instance*)ptr_crf_inst);
+            ptr_inst_vec_all->push_back(ptr_crf_inst);
             ptr_words = new std::vector<std::string>;
             ptr_labels = new std::vector<std::string>;
             std::cout <<"The end of "<<instance_id<<" th instance" <<std::endl;
@@ -71,6 +71,7 @@ void Release(std::vector<Instance*> *ptr_vec_all){
         delete (*it);
     }
     delete ptr_vec_all;
+    delete FeatureArray::PTR_EMPTY;
 }
 
 int main(){
@@ -81,7 +82,7 @@ int main(){
     int num_iterations = 100;
     int size = ptr_inst_vec_all->size();
     GlobalNetworkParam *ptr_param_g = new GlobalNetworkParam();
-    LinearCRFFeatureManager *ptr_fm = new LinearCRFFeatureManager(ptr_param_g);
+    LinearCRFFeatureManager *ptr_fm = new LinearCRFFeatureManager(ptr_param_g, ptr_inst_vec_all);
     LinearCRFNetworkCompiler *ptr_nc = new LinearCRFNetworkCompiler(all_labels);
     NetworkModel *ptr_nm = new DiscriminativeNetworkModel(ptr_fm,ptr_nc);
     ptr_nm->Train(ptr_inst_vec_all,num_iterations);
