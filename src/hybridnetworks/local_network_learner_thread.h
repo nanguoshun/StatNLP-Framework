@@ -24,6 +24,7 @@ protected:
     std::vector<Instance *> *ptr_inst_vec_;
     NetworkCompiler *ptr_nc_;
     int network_capcity_;
+    //current iteration number
     int it_no_;
     bool cache_networks_;
 };

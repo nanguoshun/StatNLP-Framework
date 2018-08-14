@@ -23,5 +23,5 @@ LinearCRFInstance::~LinearCRFInstance() {
 }
 
 int LinearCRFInstance::Size() {
-    ((Input_Str_Vector *) ptr_input_)->size();
+    //((Input_Str_Vector *) ptr_input_)->size();
 }

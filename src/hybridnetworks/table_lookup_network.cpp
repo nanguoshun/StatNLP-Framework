@@ -56,8 +56,6 @@ bool TableLookupNetwork::AddNode(long nodeId) {
     //note that null_list is meaningless.
     //FIXME:
     std::list<std::vector<long>> null_list;
-    std::vector<long> null;
-    null_list.push_back(null);
     ptr_children_tmp_->insert(std::make_pair(nodeId,null_list));
     return true;
 }
@@ -138,6 +136,7 @@ std::unordered_map<long, int>* TableLookupNetwork::FinalizeNodes() {
 
 void TableLookupNetwork::FinalizeNetwork() {
     std::unordered_map<long, int> * ptr_nodeId2Index_map_tmp = FinalizeNodes();
+    int size = ptr_nodeId2Index_map_tmp->size();
     for(auto it = this->ptr_children_tmp_->begin(); it!=this->ptr_children_tmp_->end(); ++it){
         long parent = (*it).first;
         //get the parent index;

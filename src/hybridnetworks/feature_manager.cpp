@@ -14,14 +14,17 @@ FeatureManager::FeatureManager() {
 FeatureManager::FeatureManager(GlobalNetworkParam *ptr_param) {
     this->ptr_param_g_ = ptr_param;
     this->num_of_threads_ = NetworkConfig::NUM_OF_THREADS;
-    this->ptr_param_l_= new std::vector<LocalNetworkParam*>(this->num_of_threads_);\
+    this->pptr_param_l_= new LocalNetworkParam*[this->num_of_threads_];
     this->cache_enabled_ = false;
     //this->word_hal_window_size_ = 1;
     this->pos_hal_window_size_ = -1;
 }
 
 FeatureManager::~FeatureManager() {
-    delete this->ptr_param_l_;
+    for(int i=0; i<this->num_of_threads_; ++i){
+        delete pptr_param_l_[i];
+    }
+    delete this->pptr_param_l_;
 }
 
 GlobalNetworkParam* FeatureManager::GetGlobalParam() {
@@ -66,4 +69,7 @@ FeatureArray* FeatureManager::Extract(Network *ptr_network, int parent_k, int *p
 
 bool FeatureManager::isCacheAble() {
     return cache_enabled_;
+}
+void FeatureManager::SetLocalNetworkParams(int threadId, LocalNetworkParam *ptr_param_l) {
+    this->pptr_param_l_[threadId] = ptr_param_l;
 }

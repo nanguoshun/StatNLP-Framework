@@ -23,9 +23,10 @@ public:
     bool isCacheAble();
     void EnableCache(int numNetworks);
     virtual FeatureArray* ExtractHelper(Network *ptr_network, int parent, int *ptr_children) = 0;
+    void SetLocalNetworkParams(int threadId, LocalNetworkParam *ptr_param_l);
 protected:
     GlobalNetworkParam *ptr_param_g_;
-    std::vector<LocalNetworkParam *> *ptr_param_l_;
+    LocalNetworkParam **pptr_param_l_;
     int num_of_threads_;
     bool cache_enabled_;
     FeatureArray ****ptr_cache_;

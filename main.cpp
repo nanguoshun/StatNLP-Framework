@@ -25,10 +25,17 @@ static std::list<std::string> all_labels;
 void ReadData(std::string file_name, std::vector<Instance*> *ptr_inst_vec_all, bool withLabels, bool isLabeled){
     std::ifstream ifs(file_name);
     std::string str;
-    std::vector<std::string> *ptr_words = new std::vector<std::string>;
-    std::vector<std::string> *ptr_labels = new std::vector<std::string>;
+    std::vector<std::string> *ptr_words = NULL;
+    std::vector<std::string> *ptr_labels = NULL;
     int instance_id = 0;
+    bool is_allocate_vector = true;
     while (std::getline(ifs,str)){
+        //allocate the space for each instance at the beginning.
+        if(is_allocate_vector){
+            ptr_words = new std::vector<std::string>;
+            ptr_labels = new std::vector<std::string>;
+            is_allocate_vector = false;
+        }
         if(str.length() == 0){
             LinearCRFInstance *ptr_crf_inst = new LinearCRFInstance(instance_id,1,ptr_words,ptr_labels);
             if(isLabeled){
@@ -38,8 +45,7 @@ void ReadData(std::string file_name, std::vector<Instance*> *ptr_inst_vec_all, b
             }
             instance_id++;
             ptr_inst_vec_all->push_back(ptr_crf_inst);
-            ptr_words = new std::vector<std::string>;
-            ptr_labels = new std::vector<std::string>;
+            is_allocate_vector = true;
             std::cout <<"The end of "<<instance_id<<" th instance" <<std::endl;
             std::cout << std::endl;
         } else{
@@ -75,7 +81,7 @@ void Release(std::vector<Instance*> *ptr_vec_all){
 }
 
 int main(){
-    std::string train_file_name = "/Users/ngs/Documents/cplusproject/statNLP/data/conll2000/sample_train.txt";
+    std::string train_file_name = "/Users/ngs/Documents/cplusproject/statNLP/data/conll2000/sample_part_train.txt";
     std::string test_file_name =  "/Users/ngs/Documents/cplusproject/statNLP/data/conll2000/sample_test.txt";
     std::vector<Instance*> *ptr_inst_vec_all = new std::vector<Instance *>;
     ReadData(train_file_name,ptr_inst_vec_all,true,true);

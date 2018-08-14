@@ -19,15 +19,15 @@ NetworkIDManager::~NetworkIDManager() {
  * @return
  */
 long NetworkIDManager::ToHybridNodeID(std::vector<int> &vec) {
-    int value = vec[0];
-    for(int i = vec[1]; i < vec.size(); ++i){
+    long value = vec[0];
+    for(int i = 1; i < vec.size(); ++i){
         if(vec[i] >= (*ptr_capacity_vec_)[i]){
             std::cout << "Invalid: capacity"<<std::endl;
             return -1;
         }
         value = value * (*ptr_capacity_vec_)[i] + vec[i];
     }
-    return  value;
+    return value;
 }
 
 std::vector<int> NetworkIDManager::ToHybridNodeArray(long NodeId) {

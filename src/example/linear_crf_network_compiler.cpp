@@ -15,7 +15,6 @@ LinearCRFNetworkCompiler::LinearCRFNetworkCompiler(std::list<std::string> &label
         labels_id_map_.insert(std::make_pair(label,i));
         ++i;
     }
-    ptr_network_ = new LinearCRFNetwork();
     this->CompileUnlabeledGeneric();
 }
 
@@ -23,7 +22,7 @@ LinearCRFNetworkCompiler::~LinearCRFNetworkCompiler() {
     //first release the node resource
 
     //the delete the network
-    delete ptr_network_;
+    delete ptr_generic_network_;
 }
 
 LinearCRFNetwork* LinearCRFNetworkCompiler::Compile(int networkId, Instance* ptr_inst, LocalNetworkParam *ptr_param) {
@@ -63,8 +62,9 @@ long LinearCRFNetworkCompiler::ToNodeLeaf() {
  *  Build the generic network
  */
 void LinearCRFNetworkCompiler::CompileUnlabeledGeneric() {
+    ptr_generic_network_ = new LinearCRFNetwork();
     long leaf = this->ToNodeLeaf();
-    ptr_network_->AddNode(leaf);
+    ptr_generic_network_->AddNode(leaf);
     std::list<long> prev_nodes, curr_nodes;
     prev_nodes.push_back(leaf);
     for(int k=0; k< MAX_LENGTH; ++k){
@@ -72,10 +72,12 @@ void LinearCRFNetworkCompiler::CompileUnlabeledGeneric() {
         for(int tag_id = 0; tag_id < this->labels_.size(); ++tag_id){
             long node = this->ToNode(k,tag_id);
             curr_nodes.push_back(node);
-            ptr_network_->AddNode(node);
+            ptr_generic_network_->AddNode(node);
+            //build edges between a current node and each prev node,
             for(auto it = prev_nodes.begin(); it!=prev_nodes.end(); ++it){
-                std::vector<long> pre_node((*it));
-                ptr_network_->AddEdge(node,pre_node);
+                std::vector<long> pre_node;
+                pre_node.push_back((*it));
+                ptr_generic_network_->AddEdge(node,pre_node);
             }
         }
         //build a root for each row.
@@ -83,16 +85,17 @@ void LinearCRFNetworkCompiler::CompileUnlabeledGeneric() {
         std::list<long> root_node;
         curr_nodes = root_node;
         long root = this->ToNodeRoot(k+1);
-        ptr_network_->AddNode(root);
+        ptr_generic_network_->AddNode(root);
         //build edges among nodes and root.
         for(auto it = prev_nodes.begin(); it!= prev_nodes.end(); ++it){
-            std::vector<long> pre_node((*it)); //FIXME: this line has running error.
-            ptr_network_->AddEdge(root,pre_node);
+            std::vector<long> pre_node; //FIXME: this line has running error.
+            pre_node.push_back((*it));
+            ptr_generic_network_->AddEdge(root,pre_node);
         }
     }
-    ptr_network_->FinalizeNetwork();
-    this->ptr_all_nodes_ = ptr_network_->GetAllNodes();
-    this->ptr_all_children_ = ptr_network_->GetAllChildren();
+    ptr_generic_network_->FinalizeNetwork();
+    this->ptr_all_nodes_ = ptr_generic_network_->GetAllNodes();
+    this->ptr_all_children_ = ptr_generic_network_->GetAllChildren();
 }
 
 LinearCRFNetwork* LinearCRFNetworkCompiler::CompileUnlabeled(int networkId, LinearCRFInstance *ptr_inst,

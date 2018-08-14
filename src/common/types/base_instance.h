@@ -34,12 +34,31 @@ public:
 
     }
     OUTPUT_TYPE *GetOutPut();
-    INPUT_TYPE *GetInput();
+
+    void *GetInput() override;
+
     OUTPUT_TYPE *GetPrediction();
 protected:
     INPUT_TYPE *ptr_input_;
     OUTPUT_TYPE *ptr_output_;
     OUTPUT_TYPE *ptr_prediction_;
 };
+
+template <class SELF_TYPE, class INPUT_TYPE, class OUTPUT_TYPE>
+OUTPUT_TYPE* BaseInstance <SELF_TYPE, INPUT_TYPE, OUTPUT_TYPE>::GetOutPut() {
+    return ptr_output_;
+}
+
+
+template <class SELF_TYPE, class INPUT_TYPE, class OUTPUT_TYPE>
+OUTPUT_TYPE* BaseInstance <SELF_TYPE, INPUT_TYPE, OUTPUT_TYPE>::GetPrediction() {
+    return ptr_prediction_;
+}
+
+template<class SELF_TYPE, class INPUT_TYPE, class OUTPUT_TYPE>
+void *BaseInstance<SELF_TYPE, INPUT_TYPE, OUTPUT_TYPE>::GetInput() {
+    //return (void*) ptr_input_;
+}
+
 
 #endif //STATNLP_BASE_INSTANCE_H
