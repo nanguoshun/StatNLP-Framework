@@ -50,13 +50,16 @@ protected:
     //the vector of node Ids.
     // the node IDs.
     long *ptr_nodes_;
+    int count_of_nodes_;
     //index matrix: parent node index (not ID), hyperedges rooted by parent node, children node index for a hyperedge.
     int *** ptr_children_;
     //std::vector<std::vector<std::vector<int>>> *ptr_children_;
 //    std::unordered_map<long, std::list<long>> *ptr_children_tmp_;
     int node_size_;
     //record the num of hyperedges for each parent, the index of the array is the index of the node.
-    //int *ptr_childrens_size_;
+    int *ptr_childrens_size_;
+    //the parent index, the num of node in each hyperedge that is rooted by parent node.
+    int **ptr_children_size_;
     int network_size_;
 
 };

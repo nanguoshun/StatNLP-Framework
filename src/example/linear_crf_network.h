@@ -16,21 +16,11 @@ public:
     LinearCRFNetwork(int networkId, LinearCRFInstance *ptr_inst, long *ptr_nodes, int ***ptr_children, LocalNetworkParam *ptr_param, int num_nodes);
     int CountNodes() override;
 
-    long GetNode(int k) override;
-
-    std::vector<int> *GetNodeArray(int k) override;
-
-    int **GetChildren(int k) override;
-
     bool IsRemovded(int k) override;
 
     void Remove(int k) override;
 
-    bool IsRoot(int k) override;
 
-    bool IsLeaf(int k) override;
-
-    bool IsContain(long node) override;
 
 private:
 

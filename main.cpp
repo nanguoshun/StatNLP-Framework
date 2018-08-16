@@ -25,19 +25,22 @@ static std::list<std::string> all_labels;
 void ReadData(std::string file_name, std::vector<Instance*> *ptr_inst_vec_all, bool withLabels, bool isLabeled){
     std::ifstream ifs(file_name);
     std::string str;
+
     std::vector<std::string> *ptr_words = NULL;
-    std::vector<std::string> *ptr_labels = NULL;
+    std::list<std::string> *ptr_labels = NULL;
     int instance_id = 0;
     bool is_allocate_vector = true;
+    Input_Str_List_Vector *ptr_list_vect;
     while (std::getline(ifs,str)){
         //allocate the space for each instance at the beginning.
         if(is_allocate_vector){
+            ptr_list_vect = new Input_Str_List_Vector;
             ptr_words = new std::vector<std::string>;
-            ptr_labels = new std::vector<std::string>;
+            ptr_labels = new std::list<std::string>;
             is_allocate_vector = false;
         }
         if(str.length() == 0){
-            LinearCRFInstance *ptr_crf_inst = new LinearCRFInstance(instance_id,1,ptr_words,ptr_labels);
+            LinearCRFInstance *ptr_crf_inst = new LinearCRFInstance(instance_id,1,ptr_list_vect,ptr_labels);
             if(isLabeled){
                 ptr_crf_inst->SetLabeled();
             } else{
@@ -55,6 +58,7 @@ void ReadData(std::string file_name, std::vector<Instance*> *ptr_inst_vec_all, b
             ss >> feature2;
             ptr_words->push_back(feature1);
             ptr_words->push_back(feature2);
+            ptr_list_vect->push_back(*ptr_words);
             std::cout << feature1 <<" "<< feature2<<" ";
             if(withLabels){
                 std::string label;
@@ -82,7 +86,7 @@ void Release(std::vector<Instance*> *ptr_vec_all){
 
 int main(){
     std::string train_file_name = "/Users/ngs/Documents/cplusproject/statNLP/data/conll2000/sample_part_train.txt";
-    std::string test_file_name =  "/Users/ngs/Documents/cplusproject/statNLP/data/conll2000/sample_test.txt";
+    //std::string test_file_name =  "/Users/ngs/Documents/cplusproject/statNLP/data/conll2000/sample_test.txt";
     std::vector<Instance*> *ptr_inst_vec_all = new std::vector<Instance *>;
     ReadData(train_file_name,ptr_inst_vec_all,true,true);
     int num_iterations = 100;

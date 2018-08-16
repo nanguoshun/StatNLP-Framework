@@ -8,10 +8,10 @@
 TableLookupNetwork::TableLookupNetwork() {
 
     ptr_children_tmp_ = new std::unordered_map<long, std::list<std::vector<long>>>;
-    //ptr_children_tmp_ = new std::unordered_map<long,std::list<long>>;
-   // ptr_children_ = new std::vector<std::vector<std::vector<int>>>;
-    //ptr_nodes_ = new std::vector<long>;
-    //ptr_nodes_ = new int;
+    ptr_childrens_size_ = nullptr;
+    ptr_children_size_ = nullptr;
+    ptr_nodes_ = nullptr;
+    ptr_children_ = nullptr;
 }
 
 TableLookupNetwork::~TableLookupNetwork() {
@@ -26,27 +26,40 @@ TableLookupNetwork::~TableLookupNetwork() {
     }
 
     for(int i =0; i < node_size_; ++i){
-        int childrens_size = sizeof(ptr_children_[i]);
+        int childrens_size = ptr_childrens_size_[i];
         for(int j=0; j < childrens_size; ++j){
                 delete ptr_children_[i][j];
         }
         delete ptr_children_[i];
     }
 
+
+    for(int i =0; i<node_size_; ++i){
+        delete ptr_children_size_[i];
+    }
+    delete ptr_childrens_size_;
     delete ptr_children_tmp_;
     delete ptr_children_;
     delete ptr_nodes_;
-//    delete ptr_childrens_size_;
 }
 
 TableLookupNetwork::TableLookupNetwork(int networkId, Instance *ptr_inst, LocalNetworkParam *ptr_param):Network(networkId,ptr_inst,ptr_param) {
-
+    ptr_children_tmp_ = new std::unordered_map<long, std::list<std::vector<long>>>;
+    ptr_childrens_size_ = nullptr;
+    ptr_children_size_ = nullptr;
+    ptr_nodes_ = nullptr;
+    ptr_children_ = nullptr;
 }
 
 TableLookupNetwork::TableLookupNetwork(int networkId, Instance *ptr_inst, long *ptr_nodes, int ***ptr_children,
                                        LocalNetworkParam *ptr_param):Network(networkId,ptr_inst,ptr_param) {
+    ptr_children_tmp_ = new std::unordered_map<long, std::list<std::vector<long>>>;
     this->ptr_nodes_ = ptr_nodes_;
     this->ptr_children_ = ptr_children;
+    ptr_childrens_size_ = nullptr;
+    ptr_children_size_ = nullptr;
+    ptr_nodes_ = nullptr;
+    ptr_children_ = nullptr;
 }
 
 bool TableLookupNetwork::AddNode(long nodeId) {
@@ -68,6 +81,11 @@ bool TableLookupNetwork::AddNode(long nodeId) {
  */
 void TableLookupNetwork::AddEdge(long parent, std::vector<long> &children) {
     this->CheckLinkValidity(parent,children);
+    int size_tmp = ptr_children_tmp_->size();
+    long id = 0;
+    for(auto ittt= ptr_children_tmp_->begin(); ittt!=ptr_children_tmp_->end(); ++ittt){
+        id =  (*ittt).first;
+    }
     auto it = ptr_children_tmp_->find(parent);
     //the nodes in a hyperedge.
     std::vector<long> *ptr_children = new std::vector<long>;
@@ -112,7 +130,8 @@ int *** TableLookupNetwork::GetAllChildren() {
 std::unordered_map<long, int>* TableLookupNetwork::FinalizeNodes() {
     node_size_ = ptr_children_tmp_->size();
     ptr_nodes_ = new long[node_size_];
-    //ptr_childrens_size_ = new int[node_size_];
+    ptr_childrens_size_ = new int[node_size_];
+    ptr_children_size_ = new int*[node_size_];
     ptr_children_ = new int **[node_size_];
     std::vector<long> *ptr_node_vector_temp = new std::vector<long>;
     auto end = ptr_children_tmp_->end();
@@ -136,7 +155,6 @@ std::unordered_map<long, int>* TableLookupNetwork::FinalizeNodes() {
 
 void TableLookupNetwork::FinalizeNetwork() {
     std::unordered_map<long, int> * ptr_nodeId2Index_map_tmp = FinalizeNodes();
-    int size = ptr_nodeId2Index_map_tmp->size();
     for(auto it = this->ptr_children_tmp_->begin(); it!=this->ptr_children_tmp_->end(); ++it){
         long parent = (*it).first;
         //get the parent index;
@@ -146,13 +164,19 @@ void TableLookupNetwork::FinalizeNetwork() {
         if(childrens.empty()){
             this->ptr_children_[parent_index] = NULL;
         }else{
-            //k is the index of the hyperedge rooted by node parent.
+            //all hyperedges rooted by node parent.
             this->ptr_children_[parent_index] = new int*[childrens.size()];
+            //the number of hyper edges rooted by node parent
+            ptr_childrens_size_[parent_index] = childrens.size();
+            //ptr_children_size_[parent_index] denotes the array whose value will be the num of nodes in each hyperedge.
+            ptr_children_size_[parent_index] = new int[childrens.size()];
             int hyper_edge_no = 0;
-            //childrens is a list, which stores the hyperege rooted by a parent note.
+            //childrens is a list, which stores the hyper-edge rooted by a parent note.
             //itt is a vector, which stores the nodes in a hpyeredge.
             for(auto itt = childrens.begin(); itt!=childrens.end(); ++itt){
                 int *ptr_node_vector = new int[(*itt).size()];
+                //the num of nodes in each hyperedge.
+                ptr_children_size_[parent_index][hyper_edge_no] = (*itt).size();
                 //ittt is a node ID.
                 int node_no = 0;
                 for(auto ittt = (*itt).begin(); ittt != (*itt).end(); ++ittt){
@@ -170,7 +194,7 @@ void TableLookupNetwork::FinalizeNetwork() {
 }
 
 int TableLookupNetwork::CountNodes() {
-    return 0;
+    return node_size_;
 }
 
 long TableLookupNetwork::GetNode(int k) {

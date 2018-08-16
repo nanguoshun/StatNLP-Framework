@@ -25,7 +25,7 @@ FeatureArray* LinearCRFFeatureManager::ExtractHelper(Network *ptr_network, int p
     LinearCRFInstance *ptr_crf_instance = (LinearCRFInstance*)ptr_crf_instance;
     int size = ptr_crf_instance->Size();
     //FIXME:
-    Input_Str_Vector *ptr_input;//ptr_instance->GetInput();
+    Input_Str_List_Vector *ptr_input;//ptr_instance->GetInput();
 
     int curr_node = ptr_crf_network->GetNode(parent_k);
     std::vector<int> array = NetworkIDManager::ToHybridNodeArray(curr_node);

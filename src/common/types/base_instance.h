@@ -49,7 +49,6 @@ OUTPUT_TYPE* BaseInstance <SELF_TYPE, INPUT_TYPE, OUTPUT_TYPE>::GetOutPut() {
     return ptr_output_;
 }
 
-
 template <class SELF_TYPE, class INPUT_TYPE, class OUTPUT_TYPE>
 OUTPUT_TYPE* BaseInstance <SELF_TYPE, INPUT_TYPE, OUTPUT_TYPE>::GetPrediction() {
     return ptr_prediction_;

@@ -4,7 +4,7 @@
 #include "linear_crf_network.h"
 
 LinearCRFNetwork::LinearCRFNetwork() {
-
+    this->num_of_nodes_ = -1;
 }
 
 LinearCRFNetwork::~LinearCRFNetwork() {
@@ -12,7 +12,7 @@ LinearCRFNetwork::~LinearCRFNetwork() {
 }
 
 LinearCRFNetwork::LinearCRFNetwork(int networkid, Instance *ptr_inst, LocalNetworkParam *ptr_param):TableLookupNetwork(networkid,ptr_inst,ptr_param) {
-
+    this->num_of_nodes_ = -1;
 }
 
 LinearCRFNetwork::LinearCRFNetwork(int networkid, LinearCRFInstance *ptr_inst, long *ptr_nodes, int ***ptr_children,
@@ -23,20 +23,12 @@ LinearCRFNetwork::LinearCRFNetwork(int networkid, LinearCRFInstance *ptr_inst, l
 }
 
 int LinearCRFNetwork::CountNodes() {
-    return 0;
+    if(this->num_of_nodes_ == -1){
+        return TableLookupNetwork::CountNodes();
+    }
+    return num_of_nodes_;
 }
 
-long LinearCRFNetwork::GetNode(int k) {
-    return 0;
-}
-
-std::vector<int> *LinearCRFNetwork::GetNodeArray(int k) {
-    return nullptr;
-}
-
-int **LinearCRFNetwork::GetChildren(int k) {
-    return nullptr;
-}
 
 bool LinearCRFNetwork::IsRemovded(int k) {
     return false;
@@ -44,16 +36,4 @@ bool LinearCRFNetwork::IsRemovded(int k) {
 
 void LinearCRFNetwork::Remove(int k) {
 
-}
-
-bool LinearCRFNetwork::IsRoot(int k) {
-    return false;
-}
-
-bool LinearCRFNetwork::IsLeaf(int k) {
-    return false;
-}
-
-bool LinearCRFNetwork::IsContain(long node) {
-    return false;
 }

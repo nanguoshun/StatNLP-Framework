@@ -113,37 +113,32 @@ LinearCRFNetwork* LinearCRFNetworkCompiler::CompileUnlabeled(int networkId, Line
     //this pointer will be stored and manageed in local_network_learner_thread.
     LinearCRFNetwork *ptr_linear_crf_network = new LinearCRFNetwork(networkId,ptr_inst,this->ptr_all_nodes_, this->ptr_all_children_,ptr_param,num_nodes);
     return ptr_linear_crf_network;
-
 }
 
 LinearCRFNetwork* LinearCRFNetworkCompiler::CompileLabeled(int networkId, LinearCRFInstance *ptr_inst,
                                                                LocalNetworkParam *ptr_param) {
     LinearCRFNetwork *ptr_network = new LinearCRFNetwork(networkId,ptr_inst,ptr_param);
-
     //FIXME: link error when call the GetOuput Function, need further analyze the cause.
-    //Label_Str_Vector *ptr_output = ptr_inst->GetOutPut();
-
+    Label_Str_List *ptr_output = ptr_inst->GetOutPut();
     //Add Leaf
     long leaf = ToNodeLeaf();
     ptr_network->AddNode(leaf);
-    long prevNode = leaf;
     std::vector<long> prev_nodes_vec;
     prev_nodes_vec.push_back(leaf);
-    int pos = 0;
-    for(auto it = labels_.begin(); it!=labels_.end(); ++it){
+    auto it = ptr_output->begin();
+    for(int i=0; i < ptr_output->size(); ++i){
         std::string label_str = (*it);
-        long nodeId = ToNode(pos,labels_id_map_.find(label_str)->second);
+        long nodeId = ToNode(i,labels_id_map_.find(label_str)->second);
         ptr_network->AddNode(nodeId);
         ptr_network->AddEdge(nodeId,prev_nodes_vec);
         prev_nodes_vec.clear();
         prev_nodes_vec.push_back(nodeId);
+        ++it;
     }
-
     //add root
-    long root = ToNodeRoot(labels_.size());
+    long root = ToNodeRoot(ptr_output->size());
     ptr_network->AddNode(root);
     ptr_network->AddEdge(root,prev_nodes_vec);
-
     ptr_network->FinalizeNetwork();
     return ptr_network;
 }
