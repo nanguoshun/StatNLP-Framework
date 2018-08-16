@@ -120,6 +120,7 @@ LinearCRFNetwork* LinearCRFNetworkCompiler::CompileLabeled(int networkId, Linear
     LinearCRFNetwork *ptr_network = new LinearCRFNetwork(networkId,ptr_inst,ptr_param);
     //FIXME: link error when call the GetOuput Function, need further analyze the cause.
     Label_Str_List *ptr_output = ptr_inst->GetOutPut();
+    int size = ptr_output->size();
     //Add Leaf
     long leaf = ToNodeLeaf();
     ptr_network->AddNode(leaf);

@@ -13,7 +13,6 @@ class DiscriminativeNetworkModel: public NetworkModel{
 public:
     DiscriminativeNetworkModel(FeatureManager *ptr_fm, NetworkCompiler *ptr_nc);
     ~DiscriminativeNetworkModel();
-
-
+    Instance **SplitInstanceForTrain() override;
 };
 #endif //STATNLP_DISCRIMINATIVE_NETWORK_MODEL_H

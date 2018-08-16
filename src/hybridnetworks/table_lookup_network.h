@@ -46,7 +46,7 @@ public:
 
 protected:
     //the parent, hyperedges, and nodes ID in a hyperedge.
-    std::unordered_map<long, std::list<std::vector<long>>> *ptr_children_tmp_;
+    std::unordered_map<long, std::list<std::vector<long> *> *> *ptr_children_tmp_;
     //the vector of node Ids.
     // the node IDs.
     long *ptr_nodes_;

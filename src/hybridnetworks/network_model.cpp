@@ -18,6 +18,7 @@ void NetworkModel::Train(std::vector<Instance *> *ptr_all_instances, int max_num
     this->ptr_inst_all_ = ptr_all_instances;
 
     ptr_local_learner_vector_ = new std::vector<LocalNetworkLearnerThread *>(this->num_threads_);
+
     for (int threadId = 0; threadId < this->num_threads_; ++threadId) {
         LocalNetworkLearnerThread *ptr_learner = new LocalNetworkLearnerThread(threadId, this->ptr_fm_,
                                                                                ptr_all_instances, this->ptr_nc_, -1);

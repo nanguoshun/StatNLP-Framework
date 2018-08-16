@@ -27,7 +27,6 @@ FeatureArray::FeatureArray(int *ptr_fs, int fs_size, FeatureArray *ptr_next) {
     ptr_next_ = ptr_next;
 }
 
-
 FeatureArray::FeatureArray(double score) {
     score_ = score;
 }

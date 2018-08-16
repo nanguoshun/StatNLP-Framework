@@ -19,7 +19,7 @@ NetworkModel(FeatureManager *ptr_fm, NetworkCompiler *ptr_nc);
 ~NetworkModel();
 void Train(std::vector<Instance *> *ptr_all_instances, int max_num_interations);
 Instance* Decode(Instance *ptr_test_instences);
-
+virtual Instance ** SplitInstanceForTrain() = 0;
 protected:
     FeatureManager *ptr_fm_;
     NetworkCompiler *ptr_nc_;

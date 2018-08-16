@@ -12,3 +12,7 @@ DiscriminativeNetworkModel::~DiscriminativeNetworkModel() {
 
 }
 
+Instance **DiscriminativeNetworkModel::SplitInstanceForTrain() {
+    return nullptr;
+}
+

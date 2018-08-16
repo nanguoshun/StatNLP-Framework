@@ -10,7 +10,7 @@
 #include <unordered_map>
 #include <list>
 
-const int MAX_LENGTH = 200;
+const int MAX_LENGTH = 300;
 const int Num_Of_Threads = 1;
 const bool _CACHE_FEATURES_DURING_TRAINING = false;
 const double DOUBLE_NEGATIVE_INFINITY = std::numeric_limits<double>::infinity();
