@@ -199,6 +199,29 @@ int TableLookupNetwork::CountNodes() {
     return node_size_;
 }
 
+/**
+ *
+ * return the number of hyperedges root by a parent node, which is indexed by node_index (not the nodeID)..
+ *
+ * @param node_index
+ * @return
+ */
+int TableLookupNetwork::GetChildrens_Size(int node_index) {
+    if(node_index > node_size_){
+        std::cerr << "Error: the index is bigger than the node size"<<std::endl;
+        return -1;
+    }
+    return ptr_childrens_size_[node_index];
+}
+
+int *TableLookupNetwork::GetChildren_Size(int node_index) {
+    if(node_index > node_size_){
+        std::cerr << "Error: the index is bigger than the node size"<<std::endl;
+        return nullptr;
+    }
+    return ptr_children_size_[node_index];
+}
+
 long TableLookupNetwork::GetNode(int k) {
     return 0;
 }

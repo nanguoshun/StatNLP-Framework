@@ -44,6 +44,10 @@ public:
 
     bool IsContain(long node) override;
 
+    int GetChildrens_Size(int node_index) override;
+
+    int *GetChildren_Size(int node_index) override;
+
 protected:
     //the parent, hyperedges, and nodes ID in a hyperedge.
     std::unordered_map<long, std::list<std::vector<long> *> *> *ptr_children_tmp_;

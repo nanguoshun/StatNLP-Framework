@@ -23,6 +23,8 @@ public:
     virtual bool IsRoot(int k) = 0;
     virtual bool IsLeaf(int k) = 0;
     virtual bool IsContain(long node) = 0;
+    virtual int GetChildrens_Size(int node_index) = 0; // the number of hyperedge
+    virtual int *GetChildren_Size(int node_index) = 0; // the number of hyperedge, the pointer points an array that stores the size of each hyperedge.
 };
 
 

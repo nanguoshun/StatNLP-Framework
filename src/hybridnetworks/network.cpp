@@ -30,14 +30,14 @@ void Network::Touch() {
     }
 }
 
-void Network::Touch(int k) {
-    if(this->IsRemovded(k)){
+void Network::Touch(int node_index) {
+    if(this->IsRemovded(node_index)){
         return;
     }
-    int **ptr_children_vec = this->GetChildren(k);
-    int size = sizeof(ptr_children_vec);
-    for(int children_index = 0; children_index < size; ++children_index){
-        int* ptr_childern_k = ptr_children_vec[children_index];
+    int **ptr_childrens_vec = this->GetChildren(node_index);
+    int childrens_num  = this->GetChildrens_Size(node_index);
+    for(int children_index = 0; children_index < childrens_num; ++children_index){
+        int * ptr_children_num = this->GetChildren_Size(children_index);
         //TODO: change the vector "childern_k" to a pointer.
         //this->ptr_param_->Extract(this,k,&childern_k,children_index);
     }
