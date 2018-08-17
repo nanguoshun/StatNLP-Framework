@@ -17,13 +17,12 @@ void NetworkModel::Train(std::vector<Instance *> *ptr_all_instances, int max_num
     this->num_threads_ = Num_Of_Threads;
     this->ptr_inst_all_ = ptr_all_instances;
 
-    ptr_local_learner_vector_ = new std::vector<LocalNetworkLearnerThread *>(this->num_threads_);
+    ptr_local_learner_vector_ = new LocalNetworkLearnerThread*[this->num_threads_];
 
     for (int threadId = 0; threadId < this->num_threads_; ++threadId) {
-        LocalNetworkLearnerThread *ptr_learner = new LocalNetworkLearnerThread(threadId, this->ptr_fm_,
+        ptr_local_learner_vector_[threadId] = new LocalNetworkLearnerThread(threadId, this->ptr_fm_,
                                                                                ptr_all_instances, this->ptr_nc_, -1);
-        ptr_local_learner_vector_->push_back(ptr_learner);
-        ptr_learner->Touch();
+        ptr_local_learner_vector_[threadId]->Touch();
     }
     //
     this->ptr_fm_->GetGlobalParam()->LockIt();
@@ -33,11 +32,11 @@ void NetworkModel::Train(std::vector<Instance *> *ptr_all_instances, int max_num
     long start_time = clock();
     for (int i = 0; i < max_num_interations; ++i) {
         long time = clock();
-        for (auto it = ptr_local_learner_vector_->begin(); it != ptr_local_learner_vector_->end(); ++it) {
-            //thread
+        for (int threadId = 0; threadId < this->num_threads_; ++threadId) {
+            //this->ptr_local_learner_vector_[threadId]
         }
-        for (auto it = ptr_local_learner_vector_->begin(); it != ptr_local_learner_vector_->end(); ++it) {
-
+        for (int threadId = 0; threadId < this->num_threads_; ++threadId) {
+            //this->ptr_local_learner_vector_[threadId]
         }
 
         bool done = false;

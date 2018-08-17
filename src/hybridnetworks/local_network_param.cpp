@@ -78,8 +78,8 @@ bool LocalNetworkParam::isCacheAble() {
 
  * @param ptr_network : the network (graph)
  * @param parent_k : the index of parent node
- * @param ptr_children_k : the index of hyperedge, which is rooted by parent node.
- * @param children_k_index : the indices of children of the hyperedge.
+ * @param ptr_children_k : the pointer of a hyperedge.
+ * @param children_k_index : the index of the hyperedge, which is rooted by parent node.
  * @return
  */
 FeatureArray* LocalNetworkParam::Extract(Network *ptr_network, int parent_k, int *ptr_children_k,

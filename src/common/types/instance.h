@@ -13,7 +13,7 @@ public:
     void SetLabeled();
     void SetUnlabeled();
     double GetWeight();
-    virtual void * GetInput();
+    //virtual void * GetInput();
     
 protected:
     int instance_id_;

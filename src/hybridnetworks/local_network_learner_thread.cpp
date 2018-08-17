@@ -15,6 +15,9 @@ LocalNetworkLearnerThread::LocalNetworkLearnerThread(int threadId, FeatureManage
     this->cache_networks_ = true;
     if(this->cache_networks_){
         this->ptr_network_ = new Network*[ptr_ins_vector->size()];
+        for(int i=0; i<ptr_ins_vector->size(); ++i){
+            this->ptr_network_[i] = nullptr;
+        }
     }
     this->ptr_nc_ = ptr_nc;
 
@@ -36,7 +39,7 @@ void LocalNetworkLearnerThread::Touch() {
 }
 
 Network* LocalNetworkLearnerThread::GetNetwork(int networkId) {
-    if(this->cache_networks_ && !this->ptr_network_[networkId]){
+    if(this->cache_networks_ && nullptr != this->ptr_network_[networkId]){
         return this-> ptr_network_[networkId];
     }
     Network *ptr_network = this->ptr_nc_->Compile(networkId,(*(this->ptr_inst_vec_))[networkId],this->ptr_param_l_);

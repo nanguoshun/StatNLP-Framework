@@ -9,12 +9,19 @@
 #include "../common/types/instance.h"
 
 enum FeatureType{
-    WORD = true,
-    WORD_BIGRAM = false,
-    TAG = false,
-    TAG_BIGRAM = false,
-    TRANSITION = true
+    WORD,
+    WORD_BIGRAM,
+    TAG,
+    TAG_BIGRAM,
+    TRANSITION
 };
+
+struct FeatureT{
+    std::string type;
+    bool isOn;
+};
+
+const int NUM_FEATURE_TYPE = 5;
 
 class LinearCRFFeatureManager: public FeatureManager{
 public:
@@ -23,8 +30,9 @@ public:
     ~LinearCRFFeatureManager();
     FeatureArray* ExtractHelper(Network *ptr, int parent, int *ptr_children);
     static int word_hal_window_size_;
-
+    static std::string feature_type_[5];
 private:
     std::vector<Instance*> *ptr_inst_vector_;
+    FeatureT *ptr_feature_type_;
 };
 #endif //STATNLP_LINEAR_CRF_LINEAR_FEATURE_MANAGER_H

@@ -26,7 +26,7 @@ protected:
     int num_threads_;
     std::vector<Instance *> *ptr_inst_all_;
     std::vector<std::thread> *ptr_thread_vector_;
-    std::vector<LocalNetworkLearnerThread *> *ptr_local_learner_vector_;
+    LocalNetworkLearnerThread **ptr_local_learner_vector_;
 };
 
 #endif //STATNLP_NETWORK_MODEL_H

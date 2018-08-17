@@ -223,11 +223,7 @@ int *TableLookupNetwork::GetChildren_Size(int node_index) {
 }
 
 long TableLookupNetwork::GetNode(int k) {
-    return 0;
-}
-
-std::vector<int> *TableLookupNetwork::GetNodeArray(int k) {
-    return nullptr;
+    return this->ptr_nodes_[k];
 }
 
 int **TableLookupNetwork::GetChildren(int k) {

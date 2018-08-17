@@ -6,7 +6,7 @@
 #include "common.h"
 
 Network::Network() {
-
+std::cout << "no param"<<std::endl;
 }
 
 Network::Network(int networkId, Instance *ptr_inst, LocalNetworkParam *ptr_param) {
@@ -34,12 +34,15 @@ void Network::Touch(int node_index) {
     if(this->IsRemovded(node_index)){
         return;
     }
+    //ptr_childrens_vec points to all hypedges which are rooted by node_index;
     int **ptr_childrens_vec = this->GetChildren(node_index);
+    //childrens_num is the num of hyperedges which are rooted by node_index;
     int childrens_num  = this->GetChildrens_Size(node_index);
     for(int children_index = 0; children_index < childrens_num; ++children_index){
-        int * ptr_children_num = this->GetChildren_Size(children_index);
-        //TODO: change the vector "childern_k" to a pointer.
-        //this->ptr_param_->Extract(this,k,&childern_k,children_index);
+        //int * ptr_children_num = this->GetChildren_Size(children_index);
+        int *ptr_children_k = ptr_childrens_vec[children_index];
+        //ptr_children_k is the pointer of a hyperedge.
+        this->ptr_param_->Extract(this,node_index,ptr_children_k,children_index);
     }
 }
 
@@ -152,4 +155,9 @@ int Network::GetNetworkID() {
 
 Instance* Network::GetInstance() {
     return ptr_inst_;
+}
+
+std::vector<int> Network::GetNodeArray(int nodeIndex) {
+    long nodeId = this->GetNode(nodeIndex);
+    return NetworkIDManager::ToHybridNodeArray(nodeId);
 }

@@ -35,7 +35,7 @@ public:
     }
     OUTPUT_TYPE *GetOutPut();
 
-    void *GetInput() override;
+    INPUT_TYPE *GetInput();
 
     OUTPUT_TYPE *GetPrediction();
 protected:
@@ -55,7 +55,8 @@ OUTPUT_TYPE* BaseInstance <SELF_TYPE, INPUT_TYPE, OUTPUT_TYPE>::GetPrediction() 
 }
 
 template<class SELF_TYPE, class INPUT_TYPE, class OUTPUT_TYPE>
-void *BaseInstance<SELF_TYPE, INPUT_TYPE, OUTPUT_TYPE>::GetInput() {
+INPUT_TYPE *BaseInstance<SELF_TYPE, INPUT_TYPE, OUTPUT_TYPE>::GetInput() {
+    return ptr_input_;
     //return (void*) ptr_input_;
 }
 

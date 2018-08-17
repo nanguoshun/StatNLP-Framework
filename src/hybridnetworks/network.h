@@ -8,6 +8,7 @@
 #include "hypergraph.h"
 #include "../common/types/instance.h"
 #include "local_network_param.h"
+#include "network_id_manager.h"
 #include <vector>
 
 /**
@@ -32,6 +33,7 @@ public:
     //Network * GetNetwork(int networkId);
     int GetNetworkID();
     Instance *GetInstance();
+    std::vector<int> GetNodeArray(int nodeIndex);
 protected:
     int network_id_;
     int thread_id_;

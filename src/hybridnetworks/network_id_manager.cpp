@@ -30,7 +30,15 @@ long NetworkIDManager::ToHybridNodeID(std::vector<int> &vec) {
     return value;
 }
 
-std::vector<int> NetworkIDManager::ToHybridNodeArray(long NodeId) {
-    std::vector<int> a;
-    return a;
+std::vector<int> NetworkIDManager::ToHybridNodeArray(long nodeId) {
+    int size = ptr_capacity_vec_->size();
+    std::vector<int> result(size,0);
+    for(int k=size-1; k>=1; --k){
+        long v = nodeId / (*ptr_capacity_vec_)[k];
+        result[k] = (int) (nodeId % (*ptr_capacity_vec_)[k]);
+        nodeId = v;
+    }
+    result[0] = (int) nodeId;
+    return result;
 }
+

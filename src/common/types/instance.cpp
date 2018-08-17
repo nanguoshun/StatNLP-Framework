@@ -32,6 +32,3 @@ double Instance::GetWeight() {
     return weight_;
 }
 
-void* Instance::GetInput() {
-
-}

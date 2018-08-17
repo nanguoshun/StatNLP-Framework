@@ -30,7 +30,7 @@ public:
 
     long GetNode(int k) override;
 
-    std::vector<int> *GetNodeArray(int k) override;
+    //std::vector<int> GetNodeArray(int k) override;
 
     int **GetChildren(int k) override;
 

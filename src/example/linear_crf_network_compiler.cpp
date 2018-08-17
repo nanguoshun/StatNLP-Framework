@@ -100,7 +100,7 @@ void LinearCRFNetworkCompiler::CompileUnlabeledGeneric() {
 
 LinearCRFNetwork* LinearCRFNetworkCompiler::CompileUnlabeled(int networkId, LinearCRFInstance *ptr_inst,
                                                              LocalNetworkParam *ptr_param) {
-    int size = ptr_inst->Size();
+    int size = ptr_inst->GetSize();
     long root = this->ToNodeRoot(size);
     int pos  = 0;
     //FIXME: this finding code in an array can be further optimized by binary search.
@@ -119,7 +119,7 @@ LinearCRFNetwork* LinearCRFNetworkCompiler::CompileLabeled(int networkId, Linear
                                                                LocalNetworkParam *ptr_param) {
     LinearCRFNetwork *ptr_network = new LinearCRFNetwork(networkId,ptr_inst,ptr_param);
     //FIXME: link error when call the GetOuput Function, need further analyze the cause.
-    Label_Str_List *ptr_output = ptr_inst->GetOutPut();
+    Label_Str_Vector *ptr_output = ptr_inst->GetOutPut();
     int size = ptr_output->size();
     //Add Leaf
     long leaf = ToNodeLeaf();
