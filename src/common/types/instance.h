@@ -13,6 +13,10 @@ public:
     void SetLabeled();
     void SetUnlabeled();
     double GetWeight();
+    void SetWeight(double weight);
+    int GetInstanceId();
+    void SetInstanceId(int id);
+    Instance *Duplicate();
     //virtual void * GetInput();
     
 protected:

@@ -54,7 +54,7 @@ TableLookupNetwork::TableLookupNetwork(int networkId, Instance *ptr_inst, LocalN
 TableLookupNetwork::TableLookupNetwork(int networkId, Instance *ptr_inst, long *ptr_nodes, int ***ptr_children,
                                        LocalNetworkParam *ptr_param):Network(networkId,ptr_inst,ptr_param) {
     ptr_children_tmp_ = new std::unordered_map<long, std::list<std::vector<long>*>*>;
-    this->ptr_nodes_ = ptr_nodes_;
+    this->ptr_nodes_ = ptr_nodes;
     this->ptr_children_ = ptr_children;
     ptr_childrens_size_ = nullptr;
     ptr_children_size_ = nullptr;

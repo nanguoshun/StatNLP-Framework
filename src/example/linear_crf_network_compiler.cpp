@@ -107,6 +107,7 @@ LinearCRFNetwork* LinearCRFNetworkCompiler::CompileUnlabeled(int networkId, Line
     for(int i=0; i< size; ++i){
         if(root == ptr_all_nodes_[i]){
             pos = i;
+            break;
         }
     }
     int num_nodes = pos + 1;

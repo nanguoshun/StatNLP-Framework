@@ -34,6 +34,7 @@ public:
     int GetNetworkID();
     Instance *GetInstance();
     std::vector<int> GetNodeArray(int nodeIndex);
+    int tmp_count_;
 protected:
     int network_id_;
     int thread_id_;

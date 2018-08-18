@@ -17,6 +17,7 @@ Network::Network(int networkId, Instance *ptr_inst, LocalNetworkParam *ptr_param
     this->ptr_param_ = ptr_param;
     ptr_inside_shared_array = new std::vector<std::vector<double>>(Num_Of_Threads);
     ptr_outside_shared_array = new std::vector<std::vector<double>>(Num_Of_Threads);
+    tmp_count_ = 0;
 }
 
 Network::~Network() {
@@ -43,6 +44,7 @@ void Network::Touch(int node_index) {
         int *ptr_children_k = ptr_childrens_vec[children_index];
         //ptr_children_k is the pointer of a hyperedge.
         this->ptr_param_->Extract(this,node_index,ptr_children_k,children_index);
+        tmp_count_++;
     }
 }
 

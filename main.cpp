@@ -22,25 +22,37 @@ static std::list<std::string> all_labels;
  * @param withLabels
  * @param isLabeled
  */
-void ReadData(std::string file_name, std::vector<Instance*> *ptr_inst_vec_all, bool withLabels, bool isLabeled){
+void ReadData(std::string file_name, std::vector<Instance*> *ptr_inst_vec_all, std::vector<Instance*> *ptr_inst_vec_all_duplicate, bool withLabels, bool isLabeled){
     std::ifstream ifs(file_name);
     std::string str;
 
     std::vector<std::string> *ptr_words = NULL;
     std::vector<std::string> *ptr_labels = NULL;
+
+    std::vector<std::string> *ptr_words_du = NULL;
+    std::vector<std::string> *ptr_labels_du = NULL;
+
     int instance_id = 0;
     bool is_allocate_vector = true;
     Input_Str_Matrix *ptr_list_vect;
+    Input_Str_Matrix *ptr_list_vect_du;
     while (std::getline(ifs,str)){
         //allocate the space for each instance at the beginning.
         if(is_allocate_vector){
             ptr_list_vect = new Input_Str_Matrix;
             ptr_words = new std::vector<std::string>;
             ptr_labels = new std::vector<std::string>;
+
+            ptr_list_vect_du = new Input_Str_Matrix;
+            ptr_words_du = new std::vector<std::string>;
+            ptr_labels_du = new std::vector<std::string>;
+
             is_allocate_vector = false;
         }
         if(str.length() == 0){
             LinearCRFInstance *ptr_crf_inst = new LinearCRFInstance(instance_id,1,ptr_list_vect,ptr_labels);
+            LinearCRFInstance *ptr_crf_inst_du = new LinearCRFInstance(-instance_id,1,ptr_list_vect_du,ptr_labels_du);
+
             if(isLabeled){
                 ptr_crf_inst->SetLabeled();
             } else{
@@ -48,6 +60,8 @@ void ReadData(std::string file_name, std::vector<Instance*> *ptr_inst_vec_all, b
             }
             instance_id++;
             ptr_inst_vec_all->push_back(ptr_crf_inst);
+            ptr_inst_vec_all_duplicate->push_back(ptr_crf_inst_du);
+
             is_allocate_vector = true;
             std::cout <<"The end of "<<instance_id<<" th instance" <<std::endl;
             std::cout << std::endl;
@@ -58,7 +72,13 @@ void ReadData(std::string file_name, std::vector<Instance*> *ptr_inst_vec_all, b
             ss >> feature2;
             ptr_words->push_back(feature1);
             ptr_words->push_back(feature2);
+
+            ptr_words_du->push_back(feature1);
+            ptr_words_du->push_back(feature2);
+
             ptr_list_vect->push_back(*ptr_words);
+            ptr_list_vect_du->push_back(*ptr_words_du);
+
             std::cout << feature1 <<" "<< feature2<<" ";
             if(withLabels){
                 std::string label;
@@ -70,10 +90,13 @@ void ReadData(std::string file_name, std::vector<Instance*> *ptr_inst_vec_all, b
                     label = (*it);
                 }
                 ptr_labels->push_back(label);
+                ptr_labels_du = nullptr;
+
                 std::cout<<label<<std::endl;
             }
         }
     }
+    //duplicate the data;
 }
 
 void Release(std::vector<Instance*> *ptr_vec_all){
@@ -88,14 +111,15 @@ int main(){
     std::string train_file_name = "/Users/ngs/Documents/cplusproject/statNLP/data/conll2000/sample_part_train.txt";
     //std::string test_file_name =  "/Users/ngs/Documents/cplusproject/statNLP/data/conll2000/sample_test.txt";
     std::vector<Instance*> *ptr_inst_vec_all = new std::vector<Instance *>;
-    ReadData(train_file_name,ptr_inst_vec_all,true,true);
+    std::vector<Instance*> *ptr_inst_vec_all_duplicate_ = new std::vector<Instance *>;
+    ReadData(train_file_name,ptr_inst_vec_all,ptr_inst_vec_all_duplicate_,true,true);
     int num_iterations = 100;
     int size = ptr_inst_vec_all->size();
     GlobalNetworkParam *ptr_param_g = new GlobalNetworkParam();
     LinearCRFFeatureManager *ptr_fm = new LinearCRFFeatureManager(ptr_param_g, ptr_inst_vec_all);
     LinearCRFNetworkCompiler *ptr_nc = new LinearCRFNetworkCompiler(all_labels);
     NetworkModel *ptr_nm = new DiscriminativeNetworkModel(ptr_fm,ptr_nc);
-    ptr_nm->Train(ptr_inst_vec_all,num_iterations);
+    ptr_nm->Train(ptr_inst_vec_all, ptr_inst_vec_all_duplicate_,num_iterations);
     std::cout << "the size is:"<<size<<std::endl;
     delete ptr_param_g;
     delete ptr_fm;

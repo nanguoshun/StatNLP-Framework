@@ -20,6 +20,8 @@ GlobalNetworkParam::GlobalNetworkParam() {
     ptr_featureIntMap_ = new FeatureIntMap;
     ptr_type2InputMap_ = new Type2InputMap;
     version_= -1;
+
+    tmp_count_ = 0;
 }
 
 GlobalNetworkParam::~GlobalNetworkParam() {
@@ -45,12 +47,13 @@ void GlobalNetworkParam::LockIt() {
         return;
     }
     this->ExpandFeaturesForGenerativeModelDuringTesting();
-    this->counts_ = new double[size_];
+    this->ptr_counts_ = new double[size_];
+    this->ptr_weights_ = new double[size_];
     //note: no fixed feature size operation in current c++ version.
     for(int feature_no = this->fixed_feature_size_; feature_no < this->size_; ++feature_no ){
         double random_value = DoubleRandom(0.0,1.0);
         random_value = (random_value - 0.5) / 10;
-        this->counts_[feature_no] =  RANDOM_INIT_WEIGHT ? random_value:FEATURE_INIT_WEIGHT;
+        this->ptr_counts_[feature_no] =  RANDOM_INIT_WEIGHT ? random_value:FEATURE_INIT_WEIGHT;
     }
     this->ResetCountsAndObj();
     this->ptr_feature2rep = new std::string*[size_];
@@ -124,6 +127,7 @@ int GlobalNetworkParam::ToFeature(std::string type, std::string output, std::str
             }
         }
     }
+    tmp_count_++;
     //if no items exist, then allocate the space and insert this item into feature map;
     if(ptr_featureIntMap_->find(type) == ptr_featureIntMap_->end()){
         FeatureInMap_Value *ptr_value_new = new FeatureInMap_Value;
@@ -158,16 +162,16 @@ double GlobalNetworkParam::DoubleRandom(double min, double max) {
 
 void GlobalNetworkParam::ResetCountsAndObj() {
     for(int feature_no = 0; feature_no < size_; ++feature_no){
-        this->counts_[feature_no] = 0.0;
+        this->ptr_counts_[feature_no] = 0.0;
         //for regulation
         if(this->IsDiscriminative() && this->kappa_ > 0 &&  feature_no >= this->fixed_feature_size_){
-          this->counts_[feature_no] += 2 * this->kappa_ * this->ptr_weights_[feature_no];
+          this->ptr_counts_[feature_no] += 2 * this->kappa_ * this->ptr_weights_[feature_no];
         }
     }
     this->obj_current_ = 0.0;
     //for regulation
     if(this->IsDiscriminative() && this->kappa_ > 0){
-        this->obj_current_ += - (this->kappa_ * SquareVector(ptr_weights_, size_);
+        this->obj_current_ += - (this->kappa_ * SquareVector(ptr_weights_, size_));
     }
 }
 

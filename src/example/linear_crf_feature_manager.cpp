@@ -21,6 +21,7 @@ LinearCRFFeatureManager::LinearCRFFeatureManager(GlobalNetworkParam *ptr_param, 
         }
         ptr_feature_type_[i].type = feature_type_[i];
     }
+    temp_count_ = 0;
 }
 
 LinearCRFFeatureManager::~LinearCRFFeatureManager() {
@@ -29,11 +30,12 @@ LinearCRFFeatureManager::~LinearCRFFeatureManager() {
 
 // this function is called LocalNetworkLearnerThread during touch phase.
 FeatureArray* LinearCRFFeatureManager::ExtractHelper(Network *ptr_network, int parent_k, int *ptr_children) {
+    temp_count_ ++;
     LinearCRFNetwork *ptr_crf_network = (LinearCRFNetwork*) ptr_network;
-    //FIXME: should get the instance from (LinearCRFInstance*)ptr_crf_network->GetInstance(), but encounters errors. Alternatively, we use ptr_inst_vector_ to get instance directly.
+    //FIXME: should get the instance from (LinearCRFInstance*)ptr_crf_network->GetInstance(), but encounters errors. Alternatively, we use ptr_inst_matrix_ to get instance directly.
     LinearCRFInstance *ptr_instance = (LinearCRFInstance*)ptr_crf_network->GetInstance();
 
-    //Instance *ptr_instance = (*ptr_inst_vector_)[ptr_crf_network->GetNetworkID()];
+    //Instance *ptr_instance = (*ptr_inst_matrix_)[ptr_crf_network->GetNetworkID()];
     //LinearCRFInstance *ptr_crf_instance = (LinearCRFInstance*)ptr_crf_instance;
     int size = ptr_instance->GetSize();
     //FIXME:

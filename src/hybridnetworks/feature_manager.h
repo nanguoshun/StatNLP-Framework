@@ -24,6 +24,7 @@ public:
     void EnableCache(int numNetworks);
     virtual FeatureArray* ExtractHelper(Network *ptr_network, int parent, int *ptr_children) = 0;
     void SetLocalNetworkParams(int threadId, LocalNetworkParam *ptr_param_l);
+    int temp_count_;
 protected:
     GlobalNetworkParam *ptr_param_g_;
     LocalNetworkParam **pptr_param_l_;

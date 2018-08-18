@@ -12,27 +12,37 @@
  * @tparam T1: input type
  * @tparam T2: output type
  */
-
 template <class SELF_TYPE, class INPUT_TYPE, class OUTPUT_TYPE>
 class BaseInstance: public Instance{
 public:
-    BaseInstance(){
 
+    BaseInstance(){
+        ptr_input_ = nullptr;
+        ptr_output_ = nullptr;
+        ptr_prediction_ = nullptr;
     }
     BaseInstance(SELF_TYPE *ptr_self, INPUT_TYPE *ptr_input, OUTPUT_TYPE *ptr_output){
-
+        ptr_input_ = nullptr;
+        ptr_output_ = nullptr;
+        ptr_prediction_ = nullptr;
     }
-    BaseInstance(int id, double weight){
-
+    BaseInstance(int id, double weight):Instance(id,weight){
+        ptr_input_ = nullptr;
+        ptr_output_ = nullptr;
+        ptr_prediction_ = nullptr;
     }
-    BaseInstance(SELF_TYPE *ptr_self, INPUT_TYPE *ptr_input, OUTPUT_TYPE *ptr_output, int id, double weight){
+
+    BaseInstance(SELF_TYPE *ptr_self, INPUT_TYPE *ptr_input, OUTPUT_TYPE *ptr_output, int id, double weight):Instance(id,weight){
         ptr_input_ = ptr_input;
         ptr_output_ = ptr_output;
-        Instance::Instance(id,weight);
     }
+
     ~BaseInstance(){
 
     }
+
+    SELF_TYPE* Duplicate(INPUT_TYPE *ptr_input, OUTPUT_TYPE *ptr_output, OUTPUT_TYPE *ptr_prediction);
+
     OUTPUT_TYPE *GetOutPut();
 
     INPUT_TYPE *GetInput();
@@ -43,6 +53,8 @@ protected:
     OUTPUT_TYPE *ptr_output_;
     OUTPUT_TYPE *ptr_prediction_;
 };
+
+//template <class SELF_TYPE = BaseInstance <SELF_TYPE, INPUT_TYPE, OUTPUT_TYPE>,class INPUT_TYPE, class OUTPUT_TYPE>
 
 template <class SELF_TYPE, class INPUT_TYPE, class OUTPUT_TYPE>
 OUTPUT_TYPE* BaseInstance <SELF_TYPE, INPUT_TYPE, OUTPUT_TYPE>::GetOutPut() {
@@ -58,6 +70,16 @@ template<class SELF_TYPE, class INPUT_TYPE, class OUTPUT_TYPE>
 INPUT_TYPE *BaseInstance<SELF_TYPE, INPUT_TYPE, OUTPUT_TYPE>::GetInput() {
     return ptr_input_;
     //return (void*) ptr_input_;
+}
+
+template<class SELF_TYPE, class INPUT_TYPE, class OUTPUT_TYPE>
+SELF_TYPE* BaseInstance<SELF_TYPE, INPUT_TYPE, OUTPUT_TYPE>::Duplicate(INPUT_TYPE *ptr_input, OUTPUT_TYPE *ptr_output, OUTPUT_TYPE *ptr_prediction) {
+    /*
+    Instance *ptr_duplicate = new Instance();
+    this->ptr_input_ = ptr_input;
+    this->ptr_output_ = ptr_output;
+    this->ptr_prediction_ = ptr_prediction;
+    return ptr_duplicate;*/
 }
 
 

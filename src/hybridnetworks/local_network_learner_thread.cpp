@@ -32,8 +32,13 @@ LocalNetworkLearnerThread::~LocalNetworkLearnerThread() {
 }
 
 void LocalNetworkLearnerThread::Touch() {
+    int tmp_cout[4] = {0,0,0,0};
+    int tmp_coun_value = 0;
+    int size = ptr_inst_vec_->size();
     for(int networkId=0; networkId < this->ptr_inst_vec_->size(); ++networkId){
         this->GetNetwork(networkId)->Touch();
+        tmp_cout[networkId] = this->GetNetwork(networkId)->tmp_count_;
+        tmp_coun_value += tmp_cout[networkId];
     }
     this->ptr_param_l_->FinalizeIt();
 }
@@ -55,6 +60,14 @@ Network* LocalNetworkLearnerThread::GetNetwork(int networkId) {
 
 void LocalNetworkLearnerThread::Train(){
     for(int networkId = 0; networkId < ptr_inst_vec_->size(); ++networkId){
+        Network *ptr_network = this->GetNetwork(networkId);
+        ptr_network->Train();
+    }
+}
+
+void LocalNetworkLearnerThread::Run() {
+    int size = this->ptr_inst_vec_->size();
+    for(int networkId = 0; networkId < size ; ++networkId){
         Network *ptr_network = this->GetNetwork(networkId);
         ptr_network->Train();
     }

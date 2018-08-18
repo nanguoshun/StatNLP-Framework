@@ -26,6 +26,7 @@ public:
     //caution: this function should be sychronized in multithread
     void ResetCountsAndObj();
     double SquareVector(double* vec, int size);
+    int tmp_count_;
 private:
     bool is_locked_;
     //the num of feature (feature size)
@@ -46,12 +47,13 @@ private:
     FeatureIntMap *ptr_featureIntMap_;
     Type2InputMap *ptr_type2InputMap_;
     //gradient;
-    double *counts_;
+    double *ptr_counts_;
     //the final number of features
     int fixed_feature_size_;
     std::string ** ptr_feature2rep;
 
     int version_;
+
 };
 
 #endif //STATNLP_GLOBAL_NETWORK_PARAM_H
