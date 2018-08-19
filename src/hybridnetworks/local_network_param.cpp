@@ -25,6 +25,8 @@ LocalNetworkParam::LocalNetworkParam(int threadId, FeatureManager *ptr_fm, int n
     if(Num_Of_Threads ==1){
         this->is_gobal_mode_ = true;
     }
+    is_cache_enabled_ = true;
+    ptr_cache_ = nullptr;
 }
 
 LocalNetworkParam::~LocalNetworkParam() {
@@ -32,7 +34,7 @@ LocalNetworkParam::~LocalNetworkParam() {
 }
 
 void LocalNetworkParam::DisableCache() {
-    this->ptr_cache_ = NULL;
+    this->ptr_cache_ = nullptr;
     this->is_cache_enabled_ = false;
 }
 
@@ -85,22 +87,29 @@ bool LocalNetworkParam::isCacheAble() {
 FeatureArray* LocalNetworkParam::Extract(Network *ptr_network, int parent_k, int *ptr_children_k,
                                          int children_k_index) {
     if(this->isCacheAble()){
-        if(NULL == this->ptr_cache_){
+        if(!this->ptr_cache_){
             this->ptr_cache_ = new FeatureArray***[this->num_networks_];
+            for(int networkid = 0; networkid < this->num_networks_; ++networkid){
+                ptr_cache_[networkid] = nullptr;
+            }
         }
         int networkId = ptr_network->GetNetworkID();
-        if(NULL == this->ptr_cache_[networkId]){
+        if(!this->ptr_cache_[networkId]){
             this->ptr_cache_[networkId] = new FeatureArray**[ptr_network->CountNodes()];
+            for(int nodeId = 0; nodeId < ptr_network->CountNodes(); ++nodeId){
+                this->ptr_cache_[networkId][nodeId] = nullptr;
+            }
         }
-        if(NULL == this->ptr_cache_[networkId][parent_k]){
-            //size indicates the num of hyperedges.
-            int size = sizeof(ptr_network->GetChildren(parent_k));
+        if(!this->ptr_cache_[networkId][parent_k]){
+            //size indicates the num of hyperedges rooted by node parent_k;
+            int size = ptr_network->GetChildrens_Size(parent_k);
             this->ptr_cache_[networkId][parent_k] = new FeatureArray*[size];
+            for(int hyperedge_no = 0; hyperedge_no < size; ++hyperedge_no){
+                this->ptr_cache_[networkId][parent_k][hyperedge_no] = nullptr;
+            }
         }
-        FeatureArray *ptr_fa = this->ptr_cache_[networkId][parent_k][children_k_index];
-        //if this FeatureArray pointer is cached in the ptr_cache, then return the pointer from the cache.
-        if(NULL != ptr_fa){
-            return ptr_fa;
+        if(this->ptr_cache_[networkId][parent_k][children_k_index]){
+            return ptr_cache_[networkId][parent_k][children_k_index];
         }
     }
     //if the feature Array is not cached in the ptr_cache, then extract it via feature manager
@@ -110,5 +119,9 @@ FeatureArray* LocalNetworkParam::Extract(Network *ptr_network, int parent_k, int
         this->ptr_cache_[ptr_network->GetNetworkID()][parent_k][children_k_index] = ptr_fa;
     }
     return ptr_fa;
+}
+
+FeatureManager* LocalNetworkParam::GetFeatureManager() {
+    return ptr_fm_;
 }
 

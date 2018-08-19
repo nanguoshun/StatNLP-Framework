@@ -24,6 +24,7 @@ public:
     FeatureArray *Extract(Network *ptr_network, int parent_k, int *ptr_children_k, int children_k_index);
     void FinalizeIt();
     bool isCacheAble();
+    FeatureManager *GetFeatureManager();
 protected:
     int thread_id_;
     FeatureManager *ptr_fm_;

@@ -11,7 +11,7 @@ std::string LinearCRFFeatureManager::feature_type_[5] = {"WORD","WORD_BIGRAM","T
 
 LinearCRFFeatureManager::LinearCRFFeatureManager(GlobalNetworkParam *ptr_param, std::vector<Instance*> *ptr_inst):FeatureManager(ptr_param){
     ptr_inst_vector_ = ptr_inst;
-    ptr_feature_type_ = new FeatureT[5];
+    ptr_feature_type_ = new FeatureT[NUM_FEATURE_TYPE];
     //init the feature type and its ID.
     for(int i = 0; i < NUM_FEATURE_TYPE; ++i){
         if(i == 0 || i == 4){
@@ -30,7 +30,6 @@ LinearCRFFeatureManager::~LinearCRFFeatureManager() {
 
 // this function is called LocalNetworkLearnerThread during touch phase.
 FeatureArray* LinearCRFFeatureManager::ExtractHelper(Network *ptr_network, int parent_k, int *ptr_children) {
-    temp_count_ ++;
     LinearCRFNetwork *ptr_crf_network = (LinearCRFNetwork*) ptr_network;
     //FIXME: should get the instance from (LinearCRFInstance*)ptr_crf_network->GetInstance(), but encounters errors. Alternatively, we use ptr_inst_matrix_ to get instance directly.
     LinearCRFInstance *ptr_instance = (LinearCRFInstance*)ptr_crf_network->GetInstance();
@@ -75,6 +74,8 @@ FeatureArray* LinearCRFFeatureManager::ExtractHelper(Network *ptr_network, int p
             std::string type = ptr_feature_type_[0].type + ":" + std::to_string(relIdx);
             std::string output = std::to_string(tag_id);
             ptr_word_window_features[i] =  this->ptr_param_g_->ToFeature(type,output,word);
+            temp_count_ ++;
+
         }
         FeatureArray *ptr_word_features = new FeatureArray(ptr_word_window_features, word_window_size,ptr_features);
         ptr_features = ptr_word_features;
@@ -94,6 +95,8 @@ FeatureArray* LinearCRFFeatureManager::ExtractHelper(Network *ptr_network, int p
         std::string input = std::to_string(child_tag_id) + " " + std::to_string(tag_id);
         int transition_feature = this->ptr_param_g_->ToFeature(type,output,input);
         ptr_features = new FeatureArray(new int[1]{transition_feature},1,ptr_features);
+        temp_count_ ++;
+
     }
     return ptr_features;
 }

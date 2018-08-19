@@ -127,7 +127,6 @@ int GlobalNetworkParam::ToFeature(std::string type, std::string output, std::str
             }
         }
     }
-    tmp_count_++;
     //if no items exist, then allocate the space and insert this item into feature map;
     if(ptr_featureIntMap_->find(type) == ptr_featureIntMap_->end()){
         FeatureInMap_Value *ptr_value_new = new FeatureInMap_Value;
@@ -140,7 +139,9 @@ int GlobalNetworkParam::ToFeature(std::string type, std::string output, std::str
     }
     std::unordered_map<std::string, int> *ptr_map_value_value = ptr_map_value->find(output)->second;
     if(ptr_map_value_value->find(input) == ptr_map_value_value->end()){
-        ptr_map_value_value->insert(std::make_pair(input,this->size_++));
+        ptr_map_value_value->insert(std::make_pair(input,this->size_));
+        this->size_++;
+        tmp_count_++;
         //TODO: for type2inputMap.
     }
     int featureId =  ptr_map_value_value->find(input)->second;

@@ -84,6 +84,9 @@ void LinearCRFNetworkCompiler::CompileUnlabeledGeneric() {
         prev_nodes = curr_nodes;
         std::list<long> root_node;
         curr_nodes = root_node;
+        if(k == 36){
+            std::cout << "k is 36"<<std::endl;
+        }
         long root = this->ToNodeRoot(k+1);
         ptr_generic_network_->AddNode(root);
         //build edges among nodes and root.
@@ -104,7 +107,9 @@ LinearCRFNetwork* LinearCRFNetworkCompiler::CompileUnlabeled(int networkId, Line
     long root = this->ToNodeRoot(size);
     int pos  = 0;
     //FIXME: this finding code in an array can be further optimized by binary search.
-    for(int i=0; i< size; ++i){
+    int all_node_size = ptr_generic_network_->CountNodes();
+    for(int i=0; i< all_node_size; ++i){
+        std::cout <<"node value is:"<<std::endl;
         if(root == ptr_all_nodes_[i]){
             pos = i;
             break;
@@ -112,7 +117,11 @@ LinearCRFNetwork* LinearCRFNetworkCompiler::CompileUnlabeled(int networkId, Line
     }
     int num_nodes = pos + 1;
     //this pointer will be stored and manageed in local_network_learner_thread.
-    LinearCRFNetwork *ptr_linear_crf_network = new LinearCRFNetwork(networkId,ptr_inst,this->ptr_all_nodes_, this->ptr_all_children_,ptr_param,num_nodes);
+    int *childrens_size = ptr_generic_network_->GetChildrens_Size();
+    int **children_size = ptr_generic_network_->GetChildren_Size();
+
+    LinearCRFNetwork *ptr_linear_crf_network = new LinearCRFNetwork(networkId,ptr_inst, this->ptr_all_nodes_, this->ptr_all_children_, childrens_size, children_size,ptr_param,num_nodes);
+
     return ptr_linear_crf_network;
 }
 

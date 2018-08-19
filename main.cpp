@@ -105,6 +105,8 @@ void Release(std::vector<Instance*> *ptr_vec_all){
     }
     delete ptr_vec_all;
     delete FeatureArray::PTR_EMPTY;
+    delete Network::ptr_inside_shared_array_;
+    delete Network::ptr_outside_shared_array_;
 }
 
 int main(){

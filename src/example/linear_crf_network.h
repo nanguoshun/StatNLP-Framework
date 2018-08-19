@@ -13,7 +13,7 @@ public:
     LinearCRFNetwork();
     ~LinearCRFNetwork();
     LinearCRFNetwork(int NetworkId, Instance *ptr_inst, LocalNetworkParam *ptr_param);
-    LinearCRFNetwork(int networkId, LinearCRFInstance *ptr_inst, long *ptr_nodes, int ***ptr_children, LocalNetworkParam *ptr_param, int num_nodes);
+    LinearCRFNetwork(int networkId, LinearCRFInstance *ptr_inst, long *ptr_nodes, int ***ptr_children,int *ptr_childrens_size, int **ptr_children_size, LocalNetworkParam *ptr_param, int num_nodes);
     int CountNodes() override;
 
     bool IsRemovded(int k) override;

@@ -28,23 +28,27 @@ public:
     void Inside(int nodeId);
     void Outside(int nodeId);
     void UpdateInsideOutside(int nodeId);
-    std::vector<double>* GetInsideSharedArray();
-    std::vector<double>* GetOutsideSharedArray();
+    double* GetInsideSharedArray();
+    double* GetOutsideSharedArray();
     //Network * GetNetwork(int networkId);
     int GetNetworkID();
     Instance *GetInstance();
     std::vector<int> GetNodeArray(int nodeIndex);
     int tmp_count_;
+    static double **ptr_inside_shared_array_;
+    static double **ptr_outside_shared_array_;
+    //the array size for each thread
+    static bool is_initialized_shared_array_;
 protected:
     int network_id_;
     int thread_id_;
     Instance *ptr_inst_;
     double weight_;
     LocalNetworkParam *ptr_param_;
-    std::vector<double> *ptr_inside_;
-    std::vector<double> *ptr_outside_;
-    std::vector<std::vector<double>> *ptr_inside_shared_array;
-    std::vector<std::vector<double>> *ptr_outside_shared_array;
+    double *ptr_inside_;
+    double *ptr_outside_;
+    int inside_shared_array_size_;
+    int outside_shared_array_size_;
 };
 
 #endif //STATNLP_NETWORK_H

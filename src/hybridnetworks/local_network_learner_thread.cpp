@@ -37,7 +37,9 @@ void LocalNetworkLearnerThread::Touch() {
     int size = ptr_inst_vec_->size();
     for(int networkId=0; networkId < this->ptr_inst_vec_->size(); ++networkId){
         this->GetNetwork(networkId)->Touch();
-        tmp_cout[networkId] = this->GetNetwork(networkId)->tmp_count_;
+//        tmp_cout[networkId] = this->GetNetwork(networkId)->tmp_count_;
+//        tmp_cout[networkId] = ptr_param_l_->GetFeatureManager()->temp_count_;
+        tmp_cout[networkId] = ptr_param_l_->GetFeatureManager()->GetGlobalParam()->tmp_count_;
         tmp_coun_value += tmp_cout[networkId];
     }
     this->ptr_param_l_->FinalizeIt();

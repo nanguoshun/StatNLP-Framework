@@ -51,7 +51,6 @@ void NetworkModel::Train(std::vector<Instance *> *ptr_all_instances, std::vector
             //this->ptr_local_learner_vector_[threadId]
             ptr_thread_vector_[threadId].join();
         }
-
         bool done = false;
         this->ptr_fm_->Update();
         double obj = this->ptr_fm_->GetGlobalParam()->GetOldObj();
@@ -68,6 +67,5 @@ void NetworkModel::Train(std::vector<Instance *> *ptr_all_instances, std::vector
 
 Instance* NetworkModel::Decode(Instance *ptr_test_instences) {
     Instance * ptr;
-
     return  ptr;
 }

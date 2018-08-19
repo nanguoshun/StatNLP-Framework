@@ -9,12 +9,12 @@
 #include <vector>
 #include <unordered_map>
 #include <list>
-
+#include <cmath>
 
 const int MAX_LENGTH = 300;
 const int Num_Of_Threads = 1;
-const bool _CACHE_FEATURES_DURING_TRAINING = false;
-const double DOUBLE_NEGATIVE_INFINITY = std::numeric_limits<double>::infinity();
+const bool _CACHE_FEATURES_DURING_TRAINING = true;
+const double DOUBLE_NEGATIVE_INFINITY = -std::numeric_limits<double>::infinity();
 const double TRAIN_MODE_IS_GENERATIVE = false;
 const double  L2_REGULARIZATION_CONSTANT = 0.01;
 const bool RANDOM_INIT_WEIGHT = true;
