@@ -25,12 +25,14 @@ public:
     void FinalizeIt();
     bool isCacheAble();
     FeatureManager *GetFeatureManager();
+    void AddObj(double obj);
+    void Reset();
 protected:
     int thread_id_;
     FeatureManager *ptr_fm_;
-    double obj_;
-    std::vector<int> *ptr_fs_;
-    std::vector<int> *ptr_counts_;
+    double current_obj_;
+    int *ptr_fs_;
+    double *ptr_counts_;
     std::unordered_map<int ,int> *ptr_globalFeature2LocalFeature_;
     bool isFinalized_;
     //a hyperedge, which consists of networkId, parent Id, Child IDs, note that each
@@ -38,6 +40,7 @@ protected:
     bool is_cache_enabled_;
     int num_networks_;
     bool is_gobal_mode_;
+    int fs_size_;
 };
 
 #endif //STATNLP_LOCAL_NETWORK_PARAM_H

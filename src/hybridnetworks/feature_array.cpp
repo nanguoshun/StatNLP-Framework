@@ -54,3 +54,7 @@ double FeatureArray::ComputeScore(LocalNetworkParam *ptr_local_param, int* ptr_f
 int* FeatureArray::GetCurrent() {
     return  ptr_fs_;
 }
+
+void FeatureArray::Update(LocalNetworkParam *ptr_param, double count) {
+
+}

@@ -16,6 +16,7 @@ public:
     bool IsLocked();
     bool UpdateDiscriminative();
     bool UpdateGenerative();
+    //caution: this function should be sychronized in multithread
     bool Update();
     bool IsDiscriminative();
     double GetWeight(int featureId);
@@ -26,6 +27,8 @@ public:
     //caution: this function should be sychronized in multithread
     void ResetCountsAndObj();
     double SquareVector(double* vec, int size);
+    //caution: this function should be sychronized in multithread
+    void AddObj(double obj);
     int tmp_count_;
 private:
     bool is_locked_;

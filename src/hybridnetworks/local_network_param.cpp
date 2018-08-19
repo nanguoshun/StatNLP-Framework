@@ -46,7 +46,7 @@ double LocalNetworkParam::GetWeight(int featureId) {
     if(this->IsGlobalMode()){
         return this->ptr_fm_->GetGlobalParam()->GetWeight(featureId);
     } else{
-        return this->ptr_fm_->GetGlobalParam()->GetWeight((*this->ptr_fs_)[featureId]);
+        return this->ptr_fm_->GetGlobalParam()->GetWeight(this->ptr_fs_[featureId]);
     }
 }
 
@@ -59,15 +59,16 @@ void LocalNetworkParam::FinalizeIt() {
         this->isFinalized_ = true;
         return;
     }
-    this->ptr_fs_ = new std::vector<int>(this->ptr_globalFeature2LocalFeature_->size());
+    fs_size_ = this->ptr_globalFeature2LocalFeature_->size();
+    this->ptr_fs_ = new int[fs_size_];
     // to be confirmed for this part: global to local feature.
     for(auto it = this->ptr_globalFeature2LocalFeature_->begin(); it != ptr_globalFeature2LocalFeature_->end(); ++it){
         int f_global = (*it).first;
         int f_local = this->ptr_globalFeature2LocalFeature_->find(f_global)->second;
-        (*ptr_fs_)[f_local] = f_global;
+        ptr_fs_[f_local] = f_global;
     }
     this->isFinalized_= true;
-    this->ptr_counts_ = new std::vector<int>(this->ptr_fs_->size());
+    this->ptr_counts_ = new double[fs_size_];
 }
 
 bool LocalNetworkParam::isCacheAble() {
@@ -125,3 +126,20 @@ FeatureManager* LocalNetworkParam::GetFeatureManager() {
     return ptr_fm_;
 }
 
+void LocalNetworkParam::AddObj(double obj) {
+    if(this->is_gobal_mode_){
+        this->ptr_fm_->GetGlobalParam()->AddObj(obj);
+        return;
+    }
+    this->current_obj_ += obj;
+}
+
+void LocalNetworkParam::Reset() {
+    if(this->is_gobal_mode_){
+        return;
+    }
+    this->current_obj_ = 0;
+    for(int i=0; i<fs_size_; ++i){
+        ptr_counts_[i] = 0.0;
+    }
+}

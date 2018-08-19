@@ -18,12 +18,14 @@ public:
     FeatureManager(GlobalNetworkParam* ptr_param);
     ~FeatureManager();
     GlobalNetworkParam * GetGlobalParam();
+    //caution: this function should be sychronized in multithread
     bool Update();
     FeatureArray * Extract(Network *ptr_network, int parent_k, int * ptr_children_k, int children_k_index);
     bool isCacheAble();
     void EnableCache(int numNetworks);
     virtual FeatureArray* ExtractHelper(Network *ptr_network, int parent, int *ptr_children) = 0;
     void SetLocalNetworkParams(int threadId, LocalNetworkParam *ptr_param_l);
+
     int temp_count_;
 protected:
     GlobalNetworkParam *ptr_param_g_;

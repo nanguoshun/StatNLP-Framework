@@ -18,8 +18,8 @@ public:
     double GetScore(LocalNetworkParam *ptr_local_param);
     double ComputeScore(LocalNetworkParam *ptr_local_param, int *ptr_fs);
     int * GetCurrent();
+    void Update(LocalNetworkParam *ptr_param, double count);
     static FeatureArray *PTR_EMPTY;
-
 private:
     double score_;
     int *ptr_fs_;

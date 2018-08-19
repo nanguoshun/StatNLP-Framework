@@ -32,9 +32,19 @@ GlobalNetworkParam* FeatureManager::GetGlobalParam() {
 }
 
 bool FeatureManager::Update() {
-    if(Num_Of_Threads != 1){
-        //TODO:
+    if (this->num_of_threads_ != 1) {
+        //TODO: for multithread.
     }
+    bool done = this->ptr_param_g_->Update();
+
+    if (this->num_of_threads_ != 1) {
+        for (int threadId = 0; threadId < this->num_of_threads_; ++threadId) {
+            pptr_param_l_[threadId]->Reset();
+        }
+    } else {
+        ptr_param_g_->ResetCountsAndObj();
+    }
+    return done;
 }
 
 void FeatureManager::EnableCache(int numNetworks) {

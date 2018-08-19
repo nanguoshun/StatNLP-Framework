@@ -67,6 +67,7 @@ void Network::Train() {
     this->Inside();
     this->Outside();
     this->UpdateInsideOutside();
+    this->ptr_param_->AddObj(this->GetInside() * weight_);
 }
 
 void Network::Inside() {
@@ -90,7 +91,9 @@ void Network::Outside() {
 }
 
 void Network::UpdateInsideOutside() {
-
+    for(int nodeId = 0; nodeId < this->CountNodes(); ++nodeId){
+        this->UpdateInsideOutside(nodeId);
+    }
 }
 
 void Network::Inside(int nodeId) {
@@ -222,7 +225,35 @@ void Network::Outside(int nodeId) {
 }
 
 void Network::UpdateInsideOutside(int nodeId) {
-    
+    if(this->IsRemovded(nodeId)){
+        return;
+    }
+    int **ptr_children_vec = this->GetChildren(nodeId);
+    int children_k_size = this->GetChildrens_Size(nodeId);
+    //update each hyperedge.
+    for(int children_k = 0; children_k < children_k_size; ++children_k){
+        int *ptr_children_k = ptr_children_vec[children_k];
+        int child_k_size = this->GetChildren_Size(nodeId)[children_k];
+        bool ignore_flag = false;
+        for(int child_no = 0; child_no < child_k_size; ++child_no){
+            if(this->IsRemovded(ptr_children_k[child_no])){
+                ignore_flag = true;
+                break;
+            }
+        }
+        if(ignore_flag){
+            continue;
+        }
+        FeatureArray *ptr_fa = this->ptr_param_->Extract(this, nodeId, ptr_children_k, children_k);
+        double score = ptr_fa->GetScore(this->ptr_param_);
+        score += this->ptr_outside_[nodeId];
+        for(int child_no = 0; child_no < child_k_size; ++child_no){
+            score += this->ptr_inside_[ptr_children_k[child_no]];
+        }
+        double count = std::exp(score - this->GetInside());
+        count *= weight_;
+        ptr_fa->Update(ptr_param_,count);
+    }
 }
 
 // the shared array is dynamically allocated for each thread according to the number of the nodes.
@@ -251,4 +282,11 @@ Instance* Network::GetInstance() {
 std::vector<int> Network::GetNodeArray(int nodeIndex) {
     long nodeId = this->GetNode(nodeIndex);
     return NetworkIDManager::ToHybridNodeArray(nodeId);
+}
+
+double Network::GetInside() {
+    if(nullptr == ptr_inside_){
+        std::cerr<< "ERROR: the empty pointer of ptr_inside"<<std::endl;
+    }
+    return ptr_inside_[this->CountNodes()-1];
 }

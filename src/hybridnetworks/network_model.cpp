@@ -51,8 +51,7 @@ void NetworkModel::Train(std::vector<Instance *> *ptr_all_instances, std::vector
             //this->ptr_local_learner_vector_[threadId]
             ptr_thread_vector_[threadId].join();
         }
-        bool done = false;
-        this->ptr_fm_->Update();
+        bool done = this->ptr_fm_->Update();
         double obj = this->ptr_fm_->GetGlobalParam()->GetOldObj();
         time = clock() - time;
         std::cout << "Iteration: " << i << " Obj: " << obj << " Time: " << time / 1000.0 <<

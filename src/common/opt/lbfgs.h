@@ -1,10 +1,9 @@
 // lbgfs.h and lbgfs.cpp is directly copied from CRF++. We'll make further modifications in future.
 //
-// Created by  ngs on 29/06/2018.
-//
 
 #ifndef CRF_LBFGS_H
 #define CRF_LBFGS_H
+
 #include <cmath>
 #include <vector>
 #include <iostream>
@@ -14,13 +13,14 @@ namespace CRFPP {
     class LBFGS {
     private:
         class Mcsrch;
+
         int iflag_, iscn, nfev, iycn, point, npt;
         int iter, info, ispt, isyt, iypt, maxfev;
         double stp, stp1;
-        std::vector <double> diag_;
-        std::vector <double> w_;
-        std::vector <double> v_;
-        std::vector <double> xi_;
+        std::vector<double> diag_;
+        std::vector<double> w_;
+        std::vector<double> v_;
+        std::vector<double> xi_;
         Mcsrch *mcsrch_;
 
         void pseudo_gradient(int size,
@@ -39,10 +39,11 @@ namespace CRFPP {
                             double C, double *v, double *xi, int *iflag);
 
     public:
-        explicit LBFGS(): iflag_(0), iscn(0), nfev(0), iycn(0),
-                          point(0), npt(0), iter(0), info(0),
-                          ispt(0), isyt(0), iypt(0), maxfev(0),
-                          stp(0.0), stp1(0.0), mcsrch_(0) {}
+        explicit LBFGS() : iflag_(0), iscn(0), nfev(0), iycn(0),
+                           point(0), npt(0), iter(0), info(0),
+                           ispt(0), isyt(0), iypt(0), maxfev(0),
+                           stp(0.0), stp1(0.0), mcsrch_(0) {}
+
         virtual ~LBFGS() { clear(); }
 
         void clear();

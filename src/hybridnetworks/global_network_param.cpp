@@ -20,7 +20,6 @@ GlobalNetworkParam::GlobalNetworkParam() {
     ptr_featureIntMap_ = new FeatureIntMap;
     ptr_type2InputMap_ = new Type2InputMap;
     version_= -1;
-
     tmp_count_ = 0;
 }
 
@@ -85,11 +84,12 @@ bool GlobalNetworkParam::Update() {
 }
 
 bool GlobalNetworkParam::UpdateDiscriminative() {
-
+    //use lbfgs
+    this->ptr_opt_->optimize(size_,ptr_weights_,obj_current_,ptr_counts_, true, 1.0);
 }
 
 bool GlobalNetworkParam::UpdateGenerative() {
-
+  //TODO:
 }
 
 bool GlobalNetworkParam::IsDiscriminative() {
@@ -182,4 +182,8 @@ double GlobalNetworkParam::SquareVector(double *vec, int size) {
         value += vec[i] * vec[i];
     }
     return value;
+}
+
+void GlobalNetworkParam::AddObj(double obj) {
+    this->obj_current_ += obj;
 }
