@@ -23,6 +23,8 @@ public:
 private:
     double score_;
     int *ptr_fs_;
+    //for global mode with one only on thread, the fs_size_ will be very small. while for the local mode with
+    //multiple threads, the fs_size_ should be big enough. i.e., 1/2 of the overall feature num.
     int fs_size_;
     FeatureArray *ptr_next_;
 };

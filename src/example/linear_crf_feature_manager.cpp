@@ -38,7 +38,7 @@ FeatureArray* LinearCRFFeatureManager::ExtractHelper(Network *ptr_network, int p
     //LinearCRFInstance *ptr_crf_instance = (LinearCRFInstance*)ptr_crf_instance;
     int size = ptr_instance->GetSize();
     //FIXME:
-    Input_Str_Matrix *ptr_input = ptr_instance->GetInput();
+    ComType::Input_Str_Matrix *ptr_input = ptr_instance->GetInput();
 
     int input_size = ptr_input->size();
 
@@ -47,7 +47,7 @@ FeatureArray* LinearCRFFeatureManager::ExtractHelper(Network *ptr_network, int p
     int pos = array[0] - 1;
     int tag_id = array[1];
     int node_type = array[4];
-    if(node_type == NODE_TYPES::LEAF){
+    if(node_type == ComType::NODE_TYPES::LEAF){
         return FeatureArray::PTR_EMPTY;
     }
     //only one child for linear CRF.
@@ -96,7 +96,6 @@ FeatureArray* LinearCRFFeatureManager::ExtractHelper(Network *ptr_network, int p
         int transition_feature = this->ptr_param_g_->ToFeature(type,output,input);
         ptr_features = new FeatureArray(new int[1]{transition_feature},1,ptr_features);
         temp_count_ ++;
-
     }
     return ptr_features;
 }

@@ -8,19 +8,19 @@
 GlobalNetworkParam::GlobalNetworkParam() {
     is_locked_ = false;
     size_ = 0;
-    fixed_featureSize_ = 0;
-    obj_prev_= DOUBLE_NEGATIVE_INFINITY;
-    obj_current_ = DOUBLE_NEGATIVE_INFINITY;
-    is_discriminative_ = ! TRAIN_MODE_IS_GENERATIVE;
+    fixed_feature_size_ = 0;
+    obj_prev_= ComParam::DOUBLE_NEGATIVE_INFINITY;
+    obj_current_ = ComParam::DOUBLE_NEGATIVE_INFINITY;
+    is_discriminative_ = ! ComParam::TRAIN_MODE_IS_GENERATIVE;
     if(IsDiscriminative()){
         //ptr_opt_ = new CRFPP::LBFGS();
-        kappa_ =L2_REGULARIZATION_CONSTANT;
+        kappa_ =ComParam::L2_REGULARIZATION_CONSTANT;
     }
-    fixed_featureSize_ = 0;
-    ptr_featureIntMap_ = new FeatureIntMap;
-    ptr_type2InputMap_ = new Type2InputMap;
+    ptr_featureIntMap_ = new ComType::FeatureIntMap;
+    ptr_type2InputMap_ = new ComType::Type2InputMap;
     version_= -1;
     tmp_count_ = 0;
+    small_change_count = 0;
 }
 
 GlobalNetworkParam::~GlobalNetworkParam() {
@@ -52,7 +52,7 @@ void GlobalNetworkParam::LockIt() {
     for(int feature_no = this->fixed_feature_size_; feature_no < this->size_; ++feature_no ){
         double random_value = DoubleRandom(0.0,1.0);
         random_value = (random_value - 0.5) / 10;
-        this->ptr_counts_[feature_no] =  RANDOM_INIT_WEIGHT ? random_value:FEATURE_INIT_WEIGHT;
+        this->ptr_counts_[feature_no] =  ComParam::RANDOM_INIT_WEIGHT ? random_value:ComParam::FEATURE_INIT_WEIGHT;
     }
     this->ResetCountsAndObj();
     this->ptr_feature2rep = new std::string*[size_];
@@ -85,7 +85,34 @@ bool GlobalNetworkParam::Update() {
 
 bool GlobalNetworkParam::UpdateDiscriminative() {
     //use lbfgs
-    this->ptr_opt_->optimize(size_,ptr_weights_,obj_current_,ptr_counts_, true, 1.0);
+    /**
+     * go_on_training equals 0: training finished.
+     * go_on_training equals 1: go on next training.
+     */
+    int go_on_training = this->ptr_opt_->optimize(size_,ptr_weights_,-obj_current_,ptr_counts_, true, 1.0);
+    double diff = this->obj_current_ - this->obj_prev_;
+    //if the objective function converged, finish training
+    if(diff >=0 && diff < ComParam::OBJTOL){
+        go_on_training = 0;
+    }
+
+    //if there are 3 consecutive times the decrease in objective function is less than 0.01%.
+    double diff_ratio = std::abs(diff/obj_prev_);
+    if(diff_ratio < 1e-4){
+        small_change_count +=1;
+    } else{
+        small_change_count = 0;
+    }
+    if(small_change_count ==3){
+        go_on_training = 0;
+    }
+    //the iteration num.
+    this->version_++;
+    if(0 == go_on_training){
+        return true;
+    } else{
+        return false;
+    }
 }
 
 bool GlobalNetworkParam::UpdateGenerative() {
@@ -113,7 +140,7 @@ int GlobalNetworkParam::ToFeature(std::string type, std::string output, std::str
         if(ptr_featureIntMap_->end() == ptr_featureIntMap_->find(type)){
             return  -1;
         } else{
-            FeatureInMap_Value *ptr_output2input = ptr_featureIntMap_->find(type)->second;
+            ComType::FeatureInMap_Value *ptr_output2input = ptr_featureIntMap_->find(type)->second;
             if(ptr_output2input->end() == ptr_output2input->find(output)){
                 return  -1;
             } else{
@@ -129,10 +156,10 @@ int GlobalNetworkParam::ToFeature(std::string type, std::string output, std::str
     }
     //if no items exist, then allocate the space and insert this item into feature map;
     if(ptr_featureIntMap_->find(type) == ptr_featureIntMap_->end()){
-        FeatureInMap_Value *ptr_value_new = new FeatureInMap_Value;
+        ComType::FeatureInMap_Value *ptr_value_new = new ComType::FeatureInMap_Value;
         ptr_featureIntMap_->insert(std::make_pair(type,ptr_value_new));
     }
-    FeatureInMap_Value *ptr_map_value =  ptr_featureIntMap_->find(type)->second;
+    ComType::FeatureInMap_Value *ptr_map_value =  ptr_featureIntMap_->find(type)->second;
     if(ptr_map_value->find(output) == ptr_map_value->end()){
         std::unordered_map<std::string, int>* ptr_value_value_new = new std::unordered_map<std::string, int>;
         ptr_map_value->insert(std::make_pair(output,ptr_value_value_new));
@@ -186,4 +213,24 @@ double GlobalNetworkParam::SquareVector(double *vec, int size) {
 
 void GlobalNetworkParam::AddObj(double obj) {
     this->obj_current_ += obj;
+}
+
+void GlobalNetworkParam::AddCount(int feature_index, double count) {
+    if(isnan(count)){
+        std::cerr<<"Error: the count is NAN: @GlobalNetworkParam::AddCount"<<std::endl;
+        return;
+    }
+    //FIXME: need further discussion for fixed definition
+    if(this->IsFixed(feature_index)){
+        return;
+    }
+    if(this->IsDiscriminative()){
+        this->ptr_counts_[feature_index] -= count;
+    } else {
+        this->ptr_counts_[feature_index] += count;
+    }
+}
+
+bool GlobalNetworkParam::IsFixed(int f_global) {
+    return f_global < this->fixed_feature_size_;
 }

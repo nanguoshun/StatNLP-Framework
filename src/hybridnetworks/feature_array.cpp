@@ -6,10 +6,13 @@
 #include "common.h"
 #include "local_network_param.h"
 
-FeatureArray * FeatureArray::PTR_EMPTY = new FeatureArray((int*)NULL,0);
+FeatureArray * FeatureArray::PTR_EMPTY = new FeatureArray((int*) nullptr,0);
 
 FeatureArray::FeatureArray() {
-
+    score_ = 0;
+    ptr_fs_ = nullptr;
+    fs_size_ = 0;
+    ptr_next_= nullptr;
 }
 
 FeatureArray::~FeatureArray() {
@@ -17,11 +20,14 @@ FeatureArray::~FeatureArray() {
 }
 
 FeatureArray::FeatureArray(int *ptr_fs, int fs_size) {
+    score_ = 0;
     ptr_fs_ = ptr_fs;
     fs_size_ = fs_size;
+    ptr_next_ = nullptr;
 }
 
 FeatureArray::FeatureArray(int *ptr_fs, int fs_size, FeatureArray *ptr_next) {
+    score_ = 0;
     ptr_fs_ = ptr_fs;
     fs_size_ = fs_size;
     ptr_next_ = ptr_next;
@@ -32,7 +38,7 @@ FeatureArray::FeatureArray(double score) {
 }
 
 double FeatureArray::GetScore(LocalNetworkParam *ptr_local_param) {
-    if(this->score_ == DOUBLE_NEGATIVE_INFINITY){
+    if(this->score_ == ComParam::DOUBLE_NEGATIVE_INFINITY){
         return this->score_;
     }
     this->score_ = ComputeScore(ptr_local_param, ptr_fs_);
@@ -56,5 +62,11 @@ int* FeatureArray::GetCurrent() {
 }
 
 void FeatureArray::Update(LocalNetworkParam *ptr_param, double count) {
-
+    int *ptr_fs = this->GetCurrent();
+    for(int i=0; i<fs_size_; ++i){
+        ptr_param->AddCount(ptr_fs[i],count);
+    }
+    if(nullptr != this->ptr_next_){
+        this->ptr_next_->Update(ptr_param,count);
+    }
 }

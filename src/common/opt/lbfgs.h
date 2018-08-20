@@ -48,24 +48,16 @@ namespace CRFPP {
 
         void clear();
 
-        // This is old interface for backward compatibility
-        // ignore msize |m|
-        int init(int n, int m) {
-            static const int msize = 5;
-            const size_t size = n;
-            iflag_ = 0;
-            w_.resize(size * (2 * msize + 1) + 2 * msize);
-            diag_.resize(size);
-            v_.resize(size);
-            return 0;
-        }
-
-        // old interface
-        int optimize(double *x, double *f, double *g) {
-            return optimize(diag_.size(), x, *f, g, false, 1.0);
-        }
-
-        // Use this interface
+        /**
+         *
+         * @param size, the size of the feature vector
+         * @param x, the weight vector
+         * @param f, current objective function.
+         * @param g, gradient vector
+         * @param orthant, if regulization.
+         * @param C, L2 parameter.
+         * @return , 0: training finished, 1: go on training.
+         */
         int optimize(size_t size, double *x, double f,
                      double *g, bool orthant, double C) {
             static const int msize = 5;

@@ -30,12 +30,13 @@ public:
     //caution: this function should be sychronized in multithread
     void AddObj(double obj);
     int tmp_count_;
+    //caution: this function should be sychronized in multithread
+    void AddCount(int feature, double count);
+    bool IsFixed(int f_global);
 private:
     bool is_locked_;
     //the num of feature (feature size)
     int size_;
-    //the final num of features.
-    int fixed_featureSize_;
     bool is_discriminative_;
     //previous objective value;
     double obj_prev_;
@@ -47,14 +48,14 @@ private:
     //L2 reguliztion weight;
     double kappa_;
     //feature map;
-    FeatureIntMap *ptr_featureIntMap_;
-    Type2InputMap *ptr_type2InputMap_;
+    ComType::FeatureIntMap *ptr_featureIntMap_;
+    ComType::Type2InputMap *ptr_type2InputMap_;
     //gradient;
     double *ptr_counts_;
     //the final number of features
     int fixed_feature_size_;
     std::string ** ptr_feature2rep;
-
+    double small_change_count;
     int version_;
 
 };

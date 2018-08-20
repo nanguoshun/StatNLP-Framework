@@ -6,7 +6,7 @@
 NetworkModel::NetworkModel(FeatureManager *ptr_fm, NetworkCompiler *ptr_nc) {
     this->ptr_fm_ = ptr_fm;
     this->ptr_nc_ = ptr_nc;
-    this->num_threads_ = Num_Of_Threads;
+    this->num_threads_ = ComParam::Num_Of_Threads;
 }
 
 NetworkModel::~NetworkModel() {
@@ -14,7 +14,7 @@ NetworkModel::~NetworkModel() {
 }
 
 void NetworkModel::Train(std::vector<Instance *> *ptr_all_instances, std::vector<Instance *> *ptr_all_instances_du, int max_num_interations) {
-    this->num_threads_ = Num_Of_Threads;
+    this->num_threads_ = ComParam::Num_Of_Threads;
     this->ptr_inst_all_ = ptr_all_instances;
     this->ptr_inst_all_du_ = ptr_all_instances_du;
 
@@ -37,7 +37,7 @@ void NetworkModel::Train(std::vector<Instance *> *ptr_all_instances, std::vector
     std::cout <<"tmp cout is: "<<this->ptr_fm_->temp_count_<<std::endl;
     std::cout <<"tmp cout is: "<<this->ptr_fm_->GetGlobalParam()->tmp_count_<<std::endl;
 
-    double obj_old = DOUBLE_NEGATIVE_INFINITY;
+    double obj_old = ComParam::DOUBLE_NEGATIVE_INFINITY;
     //EM algorithm
     long start_time = clock();
     ptr_thread_vector_ = new std::thread[this->num_threads_];

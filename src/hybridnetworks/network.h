@@ -27,7 +27,7 @@ public:
     void UpdateInsideOutside();
     void Inside(int nodeId);
     void Outside(int nodeId);
-    void UpdateInsideOutside(int nodeId);
+    void UpdateGradient(int nodeId);
     double* GetInsideSharedArray();
     double* GetOutsideSharedArray();
     //Network * GetNetwork(int networkId);
@@ -44,6 +44,7 @@ protected:
     int network_id_;
     int thread_id_;
     Instance *ptr_inst_;
+    //the weight of an instance, usually we set it as 1 for instance un-biased training.
     double weight_;
     LocalNetworkParam *ptr_param_;
     double *ptr_inside_;

@@ -21,6 +21,7 @@ public:
     
 protected:
     int instance_id_;
+    //it indicates the weight for an specific instance. Usually it is set as 1 for instance un-biased training.
     double weight_;
     bool is_lableled_;
 };

@@ -11,7 +11,7 @@ LocalNetworkLearnerThread::LocalNetworkLearnerThread(int threadId, FeatureManage
     ptr_fm->SetLocalNetworkParams(threadId,ptr_param_l_);
     this->ptr_inst_vec_ = ptr_ins_vector;
     this->it_no_ = it;
-    this->network_capcity_ = NETWORK_CAPACITY;
+    this->network_capcity_ = ComParam::NETWORK_CAPACITY;
     this->cache_networks_ = true;
     if(this->cache_networks_){
         this->ptr_network_ = new Network*[ptr_ins_vector->size()];
@@ -54,7 +54,7 @@ Network* LocalNetworkLearnerThread::GetNetwork(int networkId) {
         this->ptr_network_[networkId] = ptr_network;
     }
     //NEED further observation for below code about capacity.
-    if(ptr_network->CountNodes() > NETWORK_CAPACITY){
+    if(ptr_network->CountNodes() > ComParam::NETWORK_CAPACITY){
         this->network_capcity_ = ptr_network->CountNodes();
     }
     return ptr_network;

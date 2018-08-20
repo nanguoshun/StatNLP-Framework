@@ -5,8 +5,8 @@
 #include "network.h"
 #include "common.h"
 
-double **Network::ptr_inside_shared_array_ = new double*[Num_Of_Threads];
-double **Network::ptr_outside_shared_array_ = new double*[Num_Of_Threads];
+double **Network::ptr_inside_shared_array_ = new double*[ComParam::Num_Of_Threads];
+double **Network::ptr_outside_shared_array_ = new double*[ComParam::Num_Of_Threads];
 
 bool Network::is_initialized_shared_array_ = false;
 Network::Network() {
@@ -22,7 +22,7 @@ Network::Network(int networkId, Instance *ptr_inst, LocalNetworkParam *ptr_param
     tmp_count_ = 0;
     if(!is_initialized_shared_array_){
         is_initialized_shared_array_ = true;
-        for(int threadid = 0; threadid < Num_Of_Threads; ++threadid){
+        for(int threadid = 0; threadid < ComParam::Num_Of_Threads; ++threadid){
             ptr_inside_shared_array_[threadid] = nullptr;
             ptr_outside_shared_array_[threadid] = nullptr;
         }
@@ -72,6 +72,7 @@ void Network::Train() {
 
 void Network::Inside() {
     this->ptr_inside_ = GetInsideSharedArray();
+    //init the inside value of each node.
     for(int nodeId=0; nodeId<this->CountNodes(); ++nodeId){
         ptr_inside_[nodeId] = 0;
     }
@@ -82,6 +83,7 @@ void Network::Inside() {
 
 void Network::Outside() {
     this->ptr_outside_ = GetOutsideSharedArray();
+    //init the outside value of each node.
     for(int nodeId=0; nodeId<this->CountNodes(); ++nodeId){
         ptr_outside_[nodeId] = 0;
     }
@@ -92,14 +94,14 @@ void Network::Outside() {
 
 void Network::UpdateInsideOutside() {
     for(int nodeId = 0; nodeId < this->CountNodes(); ++nodeId){
-        this->UpdateInsideOutside(nodeId);
+        this->UpdateGradient(nodeId);
     }
 }
 
 void Network::Inside(int nodeId) {
     //check if it is removed?
     if(this->IsRemovded(nodeId)){
-        ptr_inside_[nodeId] = DOUBLE_NEGATIVE_INFINITY;
+        ptr_inside_[nodeId] = ComParam::DOUBLE_NEGATIVE_INFINITY;
         return;;
     }
 
@@ -127,7 +129,7 @@ void Network::Inside(int nodeId) {
         }
     }
     if(ignore_flag){
-        inside = std::numeric_limits<double>::infinity();
+        inside = ComParam::DOUBLE_NEGATIVE_INFINITY;
     } else{
         FeatureArray* ptr_fa = this->ptr_param_->Extract(this,nodeId, ptr_children_k,children_k);
         double score = ptr_fa->GetScore(this->ptr_param_);
@@ -156,19 +158,20 @@ void Network::Inside(int nodeId) {
         for(int child_no = 0; child_no < child_k_size; ++child_no){
             score += this->ptr_inside_[ptr_children_k[child_no]];
         }
+        //logsum value;
         double v1 = inside;
         double v2 = score;
-        if( v1 == v2 && v2 == DOUBLE_NEGATIVE_INFINITY){
-            inside = DOUBLE_NEGATIVE_INFINITY;
-        } else if(v1 == v2 && v2 == DOUBLE_NEGATIVE_INFINITY){
-            inside = DOUBLE_NEGATIVE_INFINITY;
+        if( v1 == v2 && v2 == ComParam::DOUBLE_NEGATIVE_INFINITY){
+            inside = ComParam::DOUBLE_NEGATIVE_INFINITY;
+        } else if(v1 == v2 && v2 == ComParam::DOUBLE_NEGATIVE_INFINITY){
+            inside = ComParam::DOUBLE_NEGATIVE_INFINITY;
         } else if(v1 > v2){
             inside = std::log(std::exp(score-inside)) + inside;
         } else {
             inside = std::log(std::exp(inside-score)) + score;
         }
         ptr_inside_[nodeId] = inside;
-        if(ptr_inside_[nodeId] == DOUBLE_NEGATIVE_INFINITY){
+        if(ptr_inside_[nodeId] == ComParam::DOUBLE_NEGATIVE_INFINITY){
             this->Remove(nodeId);
         }
     }
@@ -176,14 +179,14 @@ void Network::Inside(int nodeId) {
 
 void Network::Outside(int nodeId) {
     if(this->IsRemovded(nodeId)){
-        ptr_outside_[nodeId] = DOUBLE_NEGATIVE_INFINITY;
+        ptr_outside_[nodeId] = ComParam::DOUBLE_NEGATIVE_INFINITY;
         return;
     } else{
         this->ptr_outside_[nodeId] = this->IsRoot(nodeId) ? 0.0: ptr_outside_[nodeId];
     }
 
-    if(this->ptr_inside_[nodeId] == DOUBLE_NEGATIVE_INFINITY){
-        ptr_outside_[nodeId] = DOUBLE_NEGATIVE_INFINITY;
+    if(this->ptr_inside_[nodeId] == ComParam::DOUBLE_NEGATIVE_INFINITY){
+        ptr_outside_[nodeId] = ComParam::DOUBLE_NEGATIVE_INFINITY;
     }
     //get the vector of hyperedges rooted by nodeId.
     int **ptr_children_vec = this->GetChildren(nodeId);
@@ -207,7 +210,7 @@ void Network::Outside(int nodeId) {
             score += ptr_inside_[ptr_children_k[child_no]];
         }
 
-        if(score == DOUBLE_NEGATIVE_INFINITY){continue;}
+        if(score == ComParam::DOUBLE_NEGATIVE_INFINITY){continue;}
 
         for(int child_no = 0; child_no < child_k_size; ++ child_no){
             double v1 = ptr_outside_[ptr_children_k[child_no]];
@@ -219,12 +222,17 @@ void Network::Outside(int nodeId) {
             }
         }
     }
-    if(ptr_outside_[nodeId] == DOUBLE_NEGATIVE_INFINITY){
+    if(ptr_outside_[nodeId] == ComParam::DOUBLE_NEGATIVE_INFINITY){
         this->Remove(nodeId);
     }
 }
-
-void Network::UpdateInsideOutside(int nodeId) {
+/**
+ *
+ *Calc the gradient for each features of a node, which is indexed by nodeId.
+ *
+ * @param nodeId
+ */
+void Network::UpdateGradient(int nodeId) {
     if(this->IsRemovded(nodeId)){
         return;
     }
@@ -250,7 +258,9 @@ void Network::UpdateInsideOutside(int nodeId) {
         for(int child_no = 0; child_no < child_k_size; ++child_no){
             score += this->ptr_inside_[ptr_children_k[child_no]];
         }
-        double count = std::exp(score - this->GetInside());
+        //
+        double normalization = this->GetInside();
+        double count = std::exp(score - normalization);
         count *= weight_;
         ptr_fa->Update(ptr_param_,count);
     }

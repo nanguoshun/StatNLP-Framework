@@ -9,11 +9,11 @@
 #include "../common/types/base_instance.h"
 #include "../hybridnetworks/common.h"
 //template <class SELF_TYPE, class INPUT_TYPE, class OUTPUT_TYPE>
-class LinearCRFInstance: public BaseInstance<LinearCRFInstance, Input_Str_Matrix, Label_Str_Vector>{
+class LinearCRFInstance: public BaseInstance<LinearCRFInstance, ComType::Input_Str_Matrix, ComType::Label_Str_Vector>{
 public:
     LinearCRFInstance();
    // LinearCRFInstance(LinearCRFInstance *ptr_inst, Input_Str_Matrix* ptr_input, Label_Str_Vector *ptr_label, int id, double weight);
-    LinearCRFInstance(int instance_id, double weight, Input_Str_Matrix *ptr_words, Label_Str_Vector *ptr_labels);
+    LinearCRFInstance(int instance_id, double weight, ComType::Input_Str_Matrix *ptr_words, ComType::Label_Str_Vector *ptr_labels);
     ~LinearCRFInstance();
     int GetSize();
 

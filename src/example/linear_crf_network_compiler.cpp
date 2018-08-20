@@ -41,19 +41,19 @@ LinearCRFNetwork* LinearCRFNetworkCompiler::Compile(int networkId, Instance* ptr
  * @return
  */
 long LinearCRFNetworkCompiler::ToNode(int pos, int tag_id) {
-    int arr[] = {pos+1, tag_id, 0, 0, NODE_TYPES::NODE};
+    int arr[] = {pos+1, tag_id, 0, 0, ComType::NODE_TYPES::NODE};
     std::vector<int> vec(std::begin(arr),std::end(arr));
     return NetworkIDManager::ToHybridNodeID(vec);
 }
 
 long LinearCRFNetworkCompiler::ToNodeRoot(int size) {
-    int arr[] = {size,(int)this->labels_.size(),0,0,NODE_TYPES::ROOT};
+    int arr[] = {size,(int)this->labels_.size(),0,0,ComType::NODE_TYPES::ROOT};
     std::vector<int> vec(std::begin(arr),std::end(arr));
     return NetworkIDManager::ToHybridNodeID(vec);
 }
 
 long LinearCRFNetworkCompiler::ToNodeLeaf() {
-    int arr[] = {0,0,0,0,NODE_TYPES::LEAF};
+    int arr[] = {0,0,0,0,ComType::NODE_TYPES::LEAF};
     std::vector<int> vec(std::begin(arr),std::end(arr));
     return NetworkIDManager::ToHybridNodeID(vec);
 }
@@ -67,7 +67,7 @@ void LinearCRFNetworkCompiler::CompileUnlabeledGeneric() {
     ptr_generic_network_->AddNode(leaf);
     std::list<long> prev_nodes, curr_nodes;
     prev_nodes.push_back(leaf);
-    for(int k=0; k< MAX_LENGTH; ++k){
+    for(int k=0; k< ComParam::MAX_LENGTH; ++k){
         //build edges among pre nodes and current nodes.
         for(int tag_id = 0; tag_id < this->labels_.size(); ++tag_id){
             long node = this->ToNode(k,tag_id);
@@ -109,7 +109,7 @@ LinearCRFNetwork* LinearCRFNetworkCompiler::CompileUnlabeled(int networkId, Line
     //FIXME: this finding code in an array can be further optimized by binary search.
     int all_node_size = ptr_generic_network_->CountNodes();
     for(int i=0; i< all_node_size; ++i){
-        std::cout <<"node value is:"<<std::endl;
+        //std::cout <<"node value is:"<<std::endl;
         if(root == ptr_all_nodes_[i]){
             pos = i;
             break;
@@ -129,7 +129,7 @@ LinearCRFNetwork* LinearCRFNetworkCompiler::CompileLabeled(int networkId, Linear
                                                                LocalNetworkParam *ptr_param) {
     LinearCRFNetwork *ptr_network = new LinearCRFNetwork(networkId,ptr_inst,ptr_param);
     //FIXME: link error when call the GetOuput Function, need further analyze the cause.
-    Label_Str_Vector *ptr_output = ptr_inst->GetOutPut();
+    ComType::Label_Str_Vector *ptr_output = ptr_inst->GetOutPut();
     int size = ptr_output->size();
     //Add Leaf
     long leaf = ToNodeLeaf();

@@ -19,10 +19,10 @@ LocalNetworkParam::LocalNetworkParam(int threadId, FeatureManager *ptr_fm, int n
     this->isFinalized_ = false;
     this->is_gobal_mode_ = false;
     // to be done for multithread
-    if(!_CACHE_FEATURES_DURING_TRAINING){
+    if(!ComParam::_CACHE_FEATURES_DURING_TRAINING){
         this->DisableCache();
     }
-    if(Num_Of_Threads ==1){
+    if(ComParam::Num_Of_Threads ==1){
         this->is_gobal_mode_ = true;
     }
     is_cache_enabled_ = true;
@@ -142,4 +142,27 @@ void LocalNetworkParam::Reset() {
     for(int i=0; i<fs_size_; ++i){
         ptr_counts_[i] = 0.0;
     }
+}
+
+/**
+ *
+ * Add the gradient to the feature indexed by f_local.
+ *
+ * @param f_local
+ * @param count
+ */
+
+void LocalNetworkParam::AddCount(int f_local, double count) {
+    if(f_local == -1){
+        std::cerr<<"Error: the feature id is -1. @LocalNetworkParam::AddCount "<<std::endl;
+        return;
+    }
+    if(isnan(count)){
+        std::cerr<<"Error: the count is NAN. @LocalNetworkParam::AddCount"<<std::endl;
+    }
+    if(this->is_gobal_mode_){
+        this->ptr_fm_->GetGlobalParam()->AddCount(f_local,count);
+        return;
+    }
+    this->ptr_counts_[f_local] += count;
 }

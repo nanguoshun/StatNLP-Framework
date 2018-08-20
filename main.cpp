@@ -34,16 +34,16 @@ void ReadData(std::string file_name, std::vector<Instance*> *ptr_inst_vec_all, s
 
     int instance_id = 0;
     bool is_allocate_vector = true;
-    Input_Str_Matrix *ptr_list_vect;
-    Input_Str_Matrix *ptr_list_vect_du;
+    ComType::Input_Str_Matrix *ptr_list_vect;
+    ComType::Input_Str_Matrix *ptr_list_vect_du;
     while (std::getline(ifs,str)){
         //allocate the space for each instance at the beginning.
         if(is_allocate_vector){
-            ptr_list_vect = new Input_Str_Matrix;
+            ptr_list_vect = new ComType::Input_Str_Matrix;
             ptr_words = new std::vector<std::string>;
             ptr_labels = new std::vector<std::string>;
 
-            ptr_list_vect_du = new Input_Str_Matrix;
+            ptr_list_vect_du = new ComType::Input_Str_Matrix;
             ptr_words_du = new std::vector<std::string>;
             ptr_labels_du = new std::vector<std::string>;
 

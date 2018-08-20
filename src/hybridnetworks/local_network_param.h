@@ -27,11 +27,13 @@ public:
     FeatureManager *GetFeatureManager();
     void AddObj(double obj);
     void Reset();
+    void AddCount(int f_local,double count);
 protected:
     int thread_id_;
     FeatureManager *ptr_fm_;
     double current_obj_;
     int *ptr_fs_;
+    //the gradient array for the features stored in ptr_fs_;
     double *ptr_counts_;
     std::unordered_map<int ,int> *ptr_globalFeature2LocalFeature_;
     bool isFinalized_;
