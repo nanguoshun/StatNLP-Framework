@@ -66,7 +66,8 @@ FeatureArray* LinearCRFFeatureManager::ExtractHelper(Network *ptr_network, int p
             int relIdx = i - word_hal_window_size_;
             int idx = pos + relIdx;
             if(idx >=0 && idx < size){
-                word = (*ptr_input)[idx][0];
+                std::vector<std::string> str_vec = (*ptr_input)[idx];
+                word = str_vec[0];
             }
             if(idx > pos){
                 continue;

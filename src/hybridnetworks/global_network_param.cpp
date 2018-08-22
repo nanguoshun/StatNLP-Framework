@@ -224,6 +224,11 @@ void GlobalNetworkParam::AddCount(int feature_index, double count) {
     if(this->IsFixed(feature_index)){
         return;
     }
+    /**
+     * We set the gradient summation as negative, since the LBFGS that will be used as the optimizer,
+     * aims to minimize the objective function.
+     *
+     */
     if(this->IsDiscriminative()){
         this->ptr_counts_[feature_index] -= count;
     } else {

@@ -17,7 +17,6 @@ public:
     std::vector<std::vector<Instance*>*> *SplitInstanceForTrain() override;
 
 private:
-    //to improve the efficiency, we use the pointer there instead of STL vector.
     //thread id, instance array, each instance pointer.
     std::vector<std::vector<Instance*>*> *pptr_insts_;
     //thread id, instances.

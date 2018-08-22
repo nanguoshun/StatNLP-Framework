@@ -56,17 +56,17 @@ void FeatureManager::EnableCache(int numNetworks) {
 FeatureArray* FeatureManager::Extract(Network *ptr_network, int parent_k, int *ptr_children_k, int children_k_index) {
     if(this->isCacheAble()){
         int networkId = ptr_network->GetNetworkID();
-        if(NULL == this->ptr_cache_[networkId]){
+        if(nullptr == this->ptr_cache_[networkId]){
             this->ptr_cache_[networkId] = new FeatureArray**[ptr_network->CountNodes()];
         }
-        if(NULL == this->ptr_cache_[networkId][parent_k]){
+        if(nullptr == this->ptr_cache_[networkId][parent_k]){
             //size indicates the num of hyperedges.
             int size = sizeof(ptr_network->GetChildren(parent_k));
             this->ptr_cache_[networkId][parent_k] = new FeatureArray*[size];
         }
         FeatureArray *ptr_fa = this->ptr_cache_[networkId][parent_k][children_k_index];
         //if this FeatureArray pointer is cached in the ptr_cache, then return the pointer from the cache.
-        if(NULL != ptr_fa){
+        if(nullptr != ptr_fa){
             return ptr_fa;
         }
     }

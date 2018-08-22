@@ -61,39 +61,39 @@ long LinearCRFNetworkCompiler::ToNodeLeaf() {
 /**
  *  Build the generic network
  */
+
 void LinearCRFNetworkCompiler::CompileUnlabeledGeneric() {
     ptr_generic_network_ = new LinearCRFNetwork();
     long leaf = this->ToNodeLeaf();
     ptr_generic_network_->AddNode(leaf);
-    std::list<long> prev_nodes, curr_nodes;
-    prev_nodes.push_back(leaf);
+    std::list<long> prev_nodes_list, curr_nodes_list;
+    prev_nodes_list.push_back(leaf);
     for(int k=0; k< ComParam::MAX_LENGTH; ++k){
         //build edges among pre nodes and current nodes.
         for(int tag_id = 0; tag_id < this->labels_.size(); ++tag_id){
-            long node = this->ToNode(k,tag_id);
-            curr_nodes.push_back(node);
-            ptr_generic_network_->AddNode(node);
+            long node_id = this->ToNode(k,tag_id);
+            curr_nodes_list.push_back(node_id);
+            ptr_generic_network_->AddNode(node_id);
             //build edges between a current node and each prev node,
-            for(auto it = prev_nodes.begin(); it!=prev_nodes.end(); ++it){
-                std::vector<long> pre_node;
-                pre_node.push_back((*it));
-                ptr_generic_network_->AddEdge(node,pre_node);
+            for(auto it = prev_nodes_list.begin(); it!=prev_nodes_list.end(); ++it){
+                //pre_node_vec indicates all child nodes of a hyperedge.
+                std::vector<long> pre_node_vec;
+                pre_node_vec.push_back((*it));
+                //add a hyperedge, for tree-based CRF, the vector pre_node contains multiple child nodes.
+                ptr_generic_network_->AddEdge(node_id,pre_node_vec);
             }
         }
         //build a root for each row.
-        prev_nodes = curr_nodes;
-        std::list<long> root_node;
-        curr_nodes = root_node;
-        if(k == 36){
-            std::cout << "k is 36"<<std::endl;
-        }
-        long root = this->ToNodeRoot(k+1);
-        ptr_generic_network_->AddNode(root);
+        prev_nodes_list = curr_nodes_list;
+        std::list<long> root_node_list;
+        curr_nodes_list = root_node_list;
+        long root_id = this->ToNodeRoot(k+1);
+        ptr_generic_network_->AddNode(root_id);
         //build edges among nodes and root.
-        for(auto it = prev_nodes.begin(); it!= prev_nodes.end(); ++it){
-            std::vector<long> pre_node; //FIXME: this line has running error.
-            pre_node.push_back((*it));
-            ptr_generic_network_->AddEdge(root,pre_node);
+        for(auto it = prev_nodes_list.begin(); it!= prev_nodes_list.end(); ++it){
+            std::vector<long> pre_node_vec; //FIXME: this line has running error.
+            pre_node_vec.push_back((*it));
+            ptr_generic_network_->AddEdge(root_id,pre_node_vec);
         }
     }
     ptr_generic_network_->FinalizeNetwork();
@@ -137,6 +137,7 @@ LinearCRFNetwork* LinearCRFNetworkCompiler::CompileLabeled(int networkId, Linear
     std::vector<long> prev_nodes_vec;
     prev_nodes_vec.push_back(leaf);
     auto it = ptr_output->begin();
+    //the golden path from beginning to the end.
     for(int i=0; i < ptr_output->size(); ++i){
         std::string label_str = (*it);
         long nodeId = ToNode(i,labels_id_map_.find(label_str)->second);

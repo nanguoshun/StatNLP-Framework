@@ -8,6 +8,10 @@
 #include <vector>
 
 class LocalNetworkParam;
+
+/**
+ *  A hyperedge is consisted of several FeatureArray Instances, which is a list connected by the @addindex @anchor @class FeatureArray ptr_next
+ */
 class FeatureArray{
 public:
     FeatureArray();

@@ -37,13 +37,32 @@ FeatureArray::FeatureArray(double score) {
     score_ = score;
 }
 
+/**
+ *
+ * Compute the score summation for all features for all FeatureArray instances of the hyperedge.
+ * @param ptr_local_param: local parameter pointer.
+ * @return: score value
+ */
 double FeatureArray::GetScore(LocalNetworkParam *ptr_local_param) {
     if(this->score_ == ComParam::DOUBLE_NEGATIVE_INFINITY){
         return this->score_;
     }
+    //compute the scores of features in the feature array ptr_fs_;
     this->score_ = ComputeScore(ptr_local_param, ptr_fs_);
+    //compute the scores in next FeatureArray instance.
+    if(this->ptr_next_ != nullptr){
+        this->score_ += this->ptr_next_->GetScore(ptr_local_param);
+    }
 }
 
+/**
+ *
+ * Compute the score summation for all features stored in the array ptr_fs.
+ *
+ * @param ptr_local_param:
+ * @param ptr_fs: the array that stores the feature ids
+ * @return: score value
+ */
 double FeatureArray::ComputeScore(LocalNetworkParam *ptr_local_param, int* ptr_fs) {
     double score = 0.0;
     //ptr_fs stores the feature ID.

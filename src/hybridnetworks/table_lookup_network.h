@@ -17,6 +17,7 @@ public:
     TableLookupNetwork(int networkId, Instance *ptr_inst, LocalNetworkParam *ptr_param);
     TableLookupNetwork(int networkId, Instance *ptr_inst, long *ptr_nodes, int ***ptr_children, LocalNetworkParam *ptr_param);
     ~TableLookupNetwork();
+    void EarlyRelease();
     bool AddNode(long nodeId);
     void AddEdge(long parent, std::vector<long> &children);
     void CheckLinkValidity(long parentId, std::vector<long> &children);
@@ -52,7 +53,7 @@ public:
     int **GetChildren_Size();
 
 protected:
-    //the parent, hyperedges, and nodes ID in a hyperedge.
+    //the parent_id and its hyperedges, each hyperdeg contains multiple nodes_id.
     std::unordered_map<long, std::list<std::vector<long> *> *> *ptr_children_tmp_;
     //the vector of node Ids.
     // the node IDs.

@@ -24,7 +24,9 @@ protected:
     FeatureManager *ptr_fm_;
     NetworkCompiler *ptr_nc_;
     int num_threads_;
+    //instance for labeled network.
     std::vector<Instance *> *ptr_inst_all_;
+    //duplicate instance for unlabeled network.
     std::vector<Instance *> *ptr_inst_all_du_;
     LocalNetworkLearnerThread **ptr_local_learner_vector_;
     std::thread *ptr_thread_vector_;

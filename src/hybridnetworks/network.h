@@ -33,7 +33,7 @@ public:
     //Network * GetNetwork(int networkId);
     int GetNetworkID();
     Instance *GetInstance();
-    double GetInside();
+    double GetInside(int nodeId);
     std::vector<int> GetNodeArray(int nodeIndex);
     int tmp_count_;
     static double **ptr_inside_shared_array_;

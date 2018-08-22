@@ -26,32 +26,28 @@ void ReadData(std::string file_name, std::vector<Instance*> *ptr_inst_vec_all, s
     std::ifstream ifs(file_name);
     std::string str;
 
-    std::vector<std::string> *ptr_words = NULL;
-    std::vector<std::string> *ptr_labels = NULL;
+    std::vector<std::string> *ptr_words = nullptr;
+    std::vector<std::string> *ptr_labels = nullptr;
 
-    std::vector<std::string> *ptr_words_du = NULL;
-    std::vector<std::string> *ptr_labels_du = NULL;
+    std::vector<std::string> *ptr_words_du = nullptr;
+    std::vector<std::string> *ptr_labels_du = nullptr;
 
     int instance_id = 0;
     bool is_allocate_vector = true;
-    ComType::Input_Str_Matrix *ptr_list_vect;
+    ComType::Input_Str_Matrix *ptr_vec_matrix;
     ComType::Input_Str_Matrix *ptr_list_vect_du;
     while (std::getline(ifs,str)){
         //allocate the space for each instance at the beginning.
         if(is_allocate_vector){
-            ptr_list_vect = new ComType::Input_Str_Matrix;
-            ptr_words = new std::vector<std::string>;
+            ptr_vec_matrix = new ComType::Input_Str_Matrix;
             ptr_labels = new std::vector<std::string>;
-
             ptr_list_vect_du = new ComType::Input_Str_Matrix;
-            ptr_words_du = new std::vector<std::string>;
             ptr_labels_du = new std::vector<std::string>;
-
             is_allocate_vector = false;
         }
         if(str.length() == 0){
-            LinearCRFInstance *ptr_crf_inst = new LinearCRFInstance(instance_id,1,ptr_list_vect,ptr_labels);
-            LinearCRFInstance *ptr_crf_inst_du = new LinearCRFInstance(-instance_id,1,ptr_list_vect_du,ptr_labels_du);
+            LinearCRFInstance *ptr_crf_inst = new LinearCRFInstance(instance_id,1,ptr_vec_matrix,ptr_labels);
+            LinearCRFInstance *ptr_crf_inst_du = new LinearCRFInstance(-instance_id,-1,ptr_list_vect_du,ptr_labels_du);
 
             if(isLabeled){
                 ptr_crf_inst->SetLabeled();
@@ -59,6 +55,12 @@ void ReadData(std::string file_name, std::vector<Instance*> *ptr_inst_vec_all, s
                 ptr_crf_inst->SetUnlabeled();
             }
             instance_id++;
+            /*
+            for(auto it = ptr_vec_matrix->begin(); it!=ptr_vec_matrix->end(); ++it){
+               std::string str_vec = (*it)[0];
+               std::cout<<"feature 0 is: "<<str_vec<<std::endl;
+            }
+            */
             ptr_inst_vec_all->push_back(ptr_crf_inst);
             ptr_inst_vec_all_duplicate->push_back(ptr_crf_inst_du);
 
@@ -68,35 +70,36 @@ void ReadData(std::string file_name, std::vector<Instance*> *ptr_inst_vec_all, s
         } else{
             std::stringstream ss(str);
             std::string feature1, feature2;
+            std::vector<std::string> words_vec;
+            std::vector<std::string> words_vec_du;
             ss >> feature1;
             ss >> feature2;
-            ptr_words->push_back(feature1);
-            ptr_words->push_back(feature2);
+            words_vec.push_back(feature1);
+            words_vec.push_back(feature2);
 
-            ptr_words_du->push_back(feature1);
-            ptr_words_du->push_back(feature2);
+            words_vec_du.push_back(feature1);
+            words_vec_du.push_back(feature2);
 
-            ptr_list_vect->push_back(*ptr_words);
-            ptr_list_vect_du->push_back(*ptr_words_du);
+            ptr_vec_matrix->push_back(words_vec);
+            ptr_list_vect_du->push_back(words_vec_du);
 
-            std::cout << feature1 <<" "<< feature2<<" ";
+            //std::cout << feature1 <<" "<< feature2<<" ";
             if(withLabels){
                 std::string label;
                 ss >> label;
                 auto it = std::find(all_labels.begin(),all_labels.end(),label);
                 if(it == all_labels.end()){
                     all_labels.push_back(label);
-                } else{
-                    label = (*it);
                 }
                 ptr_labels->push_back(label);
                 ptr_labels_du = nullptr;
-
                 std::cout<<label<<std::endl;
             }
         }
     }
     //duplicate the data;
+
+
 }
 
 void Release(std::vector<Instance*> *ptr_vec_all){
