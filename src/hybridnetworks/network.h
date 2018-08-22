@@ -40,6 +40,7 @@ public:
     static double **ptr_outside_shared_array_;
     //the array size for each thread
     static bool is_initialized_shared_array_;
+    static void InitShareArray();
 protected:
     int network_id_;
     int thread_id_;

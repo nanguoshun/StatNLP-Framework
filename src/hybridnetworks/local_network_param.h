@@ -28,6 +28,7 @@ public:
     void AddObj(double obj);
     void Reset();
     void AddCount(int f_local,double count);
+    void SetGlobalMode();
 protected:
     int thread_id_;
     FeatureManager *ptr_fm_;

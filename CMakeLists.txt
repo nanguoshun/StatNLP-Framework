@@ -3,8 +3,8 @@ project(statNLP)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(statNLP main.cpp src/hybridnetworks/hypergraph.h src/hybridnetworks/network_config.h
-        src/hybridnetworks/network_config.cpp src/hybridnetworks/global_network_param.h src/hybridnetworks/global_network_param.cpp
+add_executable(statNLP main.cpp src/hybridnetworks/hypergraph.h
+        src/hybridnetworks/global_network_param.h src/hybridnetworks/global_network_param.cpp
         src/hybridnetworks/feature_manager.h src/hybridnetworks/feature_manager.cpp src/hybridnetworks/local_network_param.h
         src/hybridnetworks/local_network_param.cpp src/example/linear_crf_instance.h src/common/types/instance.h
         src/common/types/base_instance.h src/common/types/base_instance.h src/common/types/base_instance.cpp
@@ -17,4 +17,4 @@ add_executable(statNLP main.cpp src/hybridnetworks/hypergraph.h src/hybridnetwor
         src/hybridnetworks/network_id_manager.cpp src/example/linear_crf_feature_manager.h src/example/linear_crf_feature_manager.cpp
         src/hybridnetworks/feature_array.h src/hybridnetworks/feature_array.cpp src/hybridnetworks/discriminative_network_model.h
         src/hybridnetworks/discriminative_network_model.cpp src/hybridnetworks/local_network_learner_thread.h
-        src/hybridnetworks/local_network_learner_thread.cpp src/common/opt/lbfgs.h src/common/opt/lbfgs.cpp src/hybridnetworks/freelistbase.h src/hybridnetworks/freelistbase.cpp)
+        src/hybridnetworks/local_network_learner_thread.cpp src/common/opt/lbfgs.h src/common/opt/lbfgs.cpp src/hybridnetworks/freelistbase.h src/hybridnetworks/freelistbase.cpp src/hybridnetworks/local_network_decoder_thread.h src/hybridnetworks/local_network_decoder_thread.cpp)

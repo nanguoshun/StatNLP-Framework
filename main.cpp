@@ -2,7 +2,6 @@
 #include <fstream>
 #include <sstream>
 #include <list>
-#include "src/hybridnetworks/network_config.h"
 #include "src/hybridnetworks/data_manager.h"
 #include "src/example/linear_crf_instance.h"
 #include "src/example/linear_crf_feature_manager.h"
@@ -10,9 +9,6 @@
 #include "src/hybridnetworks/discriminative_network_model.h"
 #include "src/example/linear_crf_nework_compiler.h"
 
-double NetworkConfig::L2_REGULARIZATION_CONSTANT = 0.01;
-int NetworkConfig::NUM_OF_THREADS = 1;
-bool NetworkConfig::TRAIN_MODE_IS_GENERATIVE = false;
 static std::list<std::string> all_labels;
 
 /**
@@ -22,16 +18,11 @@ static std::list<std::string> all_labels;
  * @param withLabels
  * @param isLabeled
  */
-void ReadData(std::string file_name, std::vector<Instance*> *ptr_inst_vec_all, std::vector<Instance*> *ptr_inst_vec_all_duplicate, bool withLabels, bool isLabeled){
+void ReadData(std::string file_name, std::vector<Instance*> *ptr_inst_vec_all, std::vector<Instance*> *ptr_inst_vec_all_duplicate, bool istest, bool withLabels, bool isLabeled){
     std::ifstream ifs(file_name);
     std::string str;
-
-    std::vector<std::string> *ptr_words = nullptr;
     std::vector<std::string> *ptr_labels = nullptr;
-
-    std::vector<std::string> *ptr_words_du = nullptr;
     std::vector<std::string> *ptr_labels_du = nullptr;
-
     int instance_id = 0;
     bool is_allocate_vector = true;
     ComType::Input_Str_Matrix *ptr_vec_matrix;
@@ -47,23 +38,20 @@ void ReadData(std::string file_name, std::vector<Instance*> *ptr_inst_vec_all, s
         }
         if(str.length() == 0){
             LinearCRFInstance *ptr_crf_inst = new LinearCRFInstance(instance_id,1,ptr_vec_matrix,ptr_labels);
-            LinearCRFInstance *ptr_crf_inst_du = new LinearCRFInstance(-instance_id,-1,ptr_list_vect_du,ptr_labels_du);
-
+            LinearCRFInstance *ptr_crf_inst_du = nullptr;
+            if(!istest){
+                ptr_crf_inst_du = new LinearCRFInstance(-instance_id,-1,ptr_list_vect_du,ptr_labels_du);
+            }
             if(isLabeled){
                 ptr_crf_inst->SetLabeled();
             } else{
                 ptr_crf_inst->SetUnlabeled();
             }
             instance_id++;
-            /*
-            for(auto it = ptr_vec_matrix->begin(); it!=ptr_vec_matrix->end(); ++it){
-               std::string str_vec = (*it)[0];
-               std::cout<<"feature 0 is: "<<str_vec<<std::endl;
-            }
-            */
             ptr_inst_vec_all->push_back(ptr_crf_inst);
-            ptr_inst_vec_all_duplicate->push_back(ptr_crf_inst_du);
-
+            if(!istest){
+                ptr_inst_vec_all_duplicate->push_back(ptr_crf_inst_du);
+            }
             is_allocate_vector = true;
             std::cout <<"The end of "<<instance_id<<" th instance" <<std::endl;
             std::cout << std::endl;
@@ -76,13 +64,14 @@ void ReadData(std::string file_name, std::vector<Instance*> *ptr_inst_vec_all, s
             ss >> feature2;
             words_vec.push_back(feature1);
             words_vec.push_back(feature2);
-
-            words_vec_du.push_back(feature1);
-            words_vec_du.push_back(feature2);
-
+            if(!istest){
+                words_vec_du.push_back(feature1);
+                words_vec_du.push_back(feature2);
+            }
             ptr_vec_matrix->push_back(words_vec);
-            ptr_list_vect_du->push_back(words_vec_du);
-
+            if(!istest){
+                ptr_list_vect_du->push_back(words_vec_du);
+            }
             //std::cout << feature1 <<" "<< feature2<<" ";
             if(withLabels){
                 std::string label;
@@ -92,7 +81,9 @@ void ReadData(std::string file_name, std::vector<Instance*> *ptr_inst_vec_all, s
                     all_labels.push_back(label);
                 }
                 ptr_labels->push_back(label);
-                ptr_labels_du = nullptr;
+                if(!istest){
+                    ptr_labels_du = nullptr;
+                }
                 std::cout<<label<<std::endl;
             }
         }
@@ -110,14 +101,17 @@ void Release(std::vector<Instance*> *ptr_vec_all){
     delete FeatureArray::PTR_EMPTY;
     delete Network::ptr_inside_shared_array_;
     delete Network::ptr_outside_shared_array_;
+    //for(int i = 0; i < )
 }
 
 int main(){
     std::string train_file_name = "/Users/ngs/Documents/cplusproject/statNLP/data/conll2000/sample_part_train.txt";
-    //std::string test_file_name =  "/Users/ngs/Documents/cplusproject/statNLP/data/conll2000/sample_test.txt";
+    std::string test_file_name =  "/Users/ngs/Documents/cplusproject/statNLP/data/conll2000/sample_test.txt";
     std::vector<Instance*> *ptr_inst_vec_all = new std::vector<Instance *>;
     std::vector<Instance*> *ptr_inst_vec_all_duplicate_ = new std::vector<Instance *>;
-    ReadData(train_file_name,ptr_inst_vec_all,ptr_inst_vec_all_duplicate_,true,true);
+    std::vector<Instance*> *ptr_inst_vec_all_test = new std::vector<Instance*>;
+    ReadData(train_file_name,ptr_inst_vec_all,ptr_inst_vec_all_duplicate_,false,true,true);
+    ReadData(train_file_name,ptr_inst_vec_all_test, nullptr,true,true,true);
     int num_iterations = 100;
     int size = ptr_inst_vec_all->size();
     GlobalNetworkParam *ptr_param_g = new GlobalNetworkParam();
@@ -125,6 +119,10 @@ int main(){
     LinearCRFNetworkCompiler *ptr_nc = new LinearCRFNetworkCompiler(all_labels);
     NetworkModel *ptr_nm = new DiscriminativeNetworkModel(ptr_fm,ptr_nc);
     ptr_nm->Train(ptr_inst_vec_all, ptr_inst_vec_all_duplicate_,num_iterations);
+    ptr_nm->Decode(ptr_inst_vec_all_test);
+
+    //TODO: evaluate
+
     std::cout << "the size is:"<<size<<std::endl;
     delete ptr_param_g;
     delete ptr_fm;

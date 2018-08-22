@@ -3,7 +3,6 @@
 //
 
 #include "feature_manager.h"
-#include "network_config.h"
 #include "common.h"
 #include "network.h"
 
@@ -13,7 +12,7 @@ FeatureManager::FeatureManager() {
 
 FeatureManager::FeatureManager(GlobalNetworkParam *ptr_param) {
     this->ptr_param_g_ = ptr_param;
-    this->num_of_threads_ = NetworkConfig::NUM_OF_THREADS;
+    this->num_of_threads_ = ComParam::Num_Of_Threads;
     this->pptr_param_l_= new LocalNetworkParam*[this->num_of_threads_];
     this->cache_enabled_ = false;
     //this->word_hal_window_size_ = 1;

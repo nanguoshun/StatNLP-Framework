@@ -10,7 +10,7 @@ NetworkModel::NetworkModel(FeatureManager *ptr_fm, NetworkCompiler *ptr_nc) {
 }
 
 NetworkModel::~NetworkModel() {
-
+  //TODO: to release ptr_learn_thread_vector_
 }
 
 void NetworkModel::Train(std::vector<Instance *> *ptr_all_instances, std::vector<Instance *> *ptr_all_instances_du, int max_num_interations) {
@@ -22,17 +22,19 @@ void NetworkModel::Train(std::vector<Instance *> *ptr_all_instances, std::vector
         (*ptr_inst_all_)[inst_id]->SetInstanceId(inst_id+1);
     }
 
-    ptr_local_learner_vector_ = new LocalNetworkLearnerThread*[this->num_threads_];
+    pptr_learner_ = new LocalNetworkLearnerThread*[this->num_threads_];
 
     std::vector<std::vector<Instance*>*> *ptr_inst = this->SplitInstanceForTrain();
 
     for (int threadId = 0; threadId < this->num_threads_; ++threadId) {
-        ptr_local_learner_vector_[threadId] = new LocalNetworkLearnerThread(threadId, this->ptr_fm_,
+        pptr_learner_[threadId] = new LocalNetworkLearnerThread(threadId, this->ptr_fm_,
                                                                             (*ptr_inst)[threadId], this->ptr_nc_, -1);
-        ptr_local_learner_vector_[threadId]->Touch();
+        pptr_learner_[threadId]->Touch();
     }
     //
     this->ptr_fm_->GetGlobalParam()->LockIt();
+
+    Network::InitShareArray();
 
     std::cout <<"tmp cout is: "<<this->ptr_fm_->temp_count_<<std::endl;
     std::cout <<"tmp cout is: "<<this->ptr_fm_->GetGlobalParam()->tmp_count_<<std::endl;
@@ -40,16 +42,16 @@ void NetworkModel::Train(std::vector<Instance *> *ptr_all_instances, std::vector
     double obj_old = ComParam::DOUBLE_NEGATIVE_INFINITY;
     //EM algorithm
     long start_time = clock();
-    ptr_thread_vector_ = new std::thread[this->num_threads_];
+    ptr_learn_thread_vector_ = new std::thread[this->num_threads_];
     for (int i = 0; i < max_num_interations; ++i) {
         long time = clock();
         for (int threadId = 0; threadId < this->num_threads_; ++threadId) {
-            //this->ptr_local_learner_vector_[threadId]
-            ptr_thread_vector_[threadId] = std::thread(&LocalNetworkLearnerThread::Run,ptr_local_learner_vector_[threadId]);
+            //this->pptr_learner_[threadId]
+            ptr_learn_thread_vector_[threadId] = std::thread(&LocalNetworkLearnerThread::Run,pptr_learner_[threadId]);
         }
         for (int threadId = 0; threadId < this->num_threads_; ++threadId) {
-            //this->ptr_local_learner_vector_[threadId]
-            ptr_thread_vector_[threadId].join();
+            //this->pptr_learner_[threadId]
+            ptr_learn_thread_vector_[threadId].join();
         }
         bool done = this->ptr_fm_->Update();
         double obj = this->ptr_fm_->GetGlobalParam()->GetOldObj();
@@ -64,7 +66,39 @@ void NetworkModel::Train(std::vector<Instance *> *ptr_all_instances, std::vector
     }
 }
 
-Instance* NetworkModel::Decode(Instance *ptr_test_instences) {
-    Instance * ptr;
-    return  ptr;
+std::vector<Instance *>* NetworkModel::Decode(std::vector<Instance *> *ptr_test_instences) {
+
+    this->ptr_inst_all_test_ = ptr_test_instences;
+    this->num_threads_ = ComParam::Num_Of_Threads;
+    this->pptr_decoder_ = new LocalNetworkDecoderThread*[this->num_threads_];
+
+    std::vector<std::vector<Instance*>*>* ppptr_inst = SplitInstanceForTest();
+    for(int threadid = 0; threadid < this->num_threads_; ++threadid){
+        this->pptr_decoder_[threadid] = new LocalNetworkDecoderThread(threadid,(*ppptr_inst)[threadid],ptr_fm_,ptr_nc_);
+    }
+    this->ptr_decode_thread_vector_ = new std::thread[this->num_threads_];
+    for(int threadid = 0; threadid < this->num_threads_; ++threadid){
+        ptr_decode_thread_vector_[threadid] = std::thread(&LocalNetworkDecoderThread::Run,pptr_decoder_[threadid]);
+    }
+    for(int threadid = 0; threadid < this->num_threads_; ++threadid) {
+        ptr_decode_thread_vector_[threadid].join();
+    }
+    std::cout <<"decode done"<<std::endl;
+    std::vector<Instance *> *ptr_result = new std::vector<Instance *>;
+    for(int threadid = 0; threadid < this->num_threads_; ++threadid){
+        std::vector<Instance *> *ptr_outputs = pptr_decoder_[threadid]->GetOutPuts();
+        for(auto it = ptr_outputs->begin(); it != ptr_outputs->end(); ++it){
+            ptr_outputs->push_back((*it));
+        }
+    }
+    return ptr_result;
+}
+
+/**
+ * Allocate training instences to different threads.
+ *
+ * @return
+ */
+std::vector<std::vector<Instance*>*>* NetworkModel::SplitInstanceForTest() {
+
 }

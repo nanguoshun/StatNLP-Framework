@@ -25,7 +25,7 @@ LinearCRFFeatureManager::LinearCRFFeatureManager(GlobalNetworkParam *ptr_param, 
 }
 
 LinearCRFFeatureManager::~LinearCRFFeatureManager() {
-    delete ptr_feature_type_;
+    delete []ptr_feature_type_;
 }
 
 // this function is called LocalNetworkLearnerThread during touch phase.
@@ -52,15 +52,16 @@ FeatureArray* LinearCRFFeatureManager::ExtractHelper(Network *ptr_network, int p
     }
     //only one child for linear CRF.
     int child_tag_id = (ptr_network->GetNodeArray(ptr_children[0]))[1];
-
     FeatureArray *ptr_features = new FeatureArray((int*) nullptr,0);
-
     if(true == ptr_feature_type_[0].isOn){
         int word_window_size = word_hal_window_size_*2 + 1;
         if(word_window_size < 0){
             word_window_size = 0;
         }
         int* ptr_word_window_features = new int[word_window_size];
+        for(int i = 0; i < word_window_size; ++i){
+            ptr_word_window_features[i] = 0;
+        }
         for(int i=0; i<word_window_size; ++i){
             std::string word = "***";
             int relIdx = i - word_hal_window_size_;

@@ -9,8 +9,8 @@ double **Network::ptr_inside_shared_array_ = new double*[ComParam::Num_Of_Thread
 double **Network::ptr_outside_shared_array_ = new double*[ComParam::Num_Of_Threads];
 
 bool Network::is_initialized_shared_array_ = false;
-Network::Network() {
-std::cout << "no param"<<std::endl;
+    Network::Network() {
+    std::cout << "no param"<<std::endl;
 }
 
 Network::Network(int networkId, Instance *ptr_inst, LocalNetworkParam *ptr_param) {
@@ -33,6 +33,12 @@ Network::~Network() {
 
 }
 
+void Network::InitShareArray() {
+    for(int i=0; i<ComParam::Num_Of_Threads; ++i){
+        ptr_inside_shared_array_[i] = nullptr;
+        ptr_outside_shared_array_[i] = nullptr;
+    }
+}
 void Network::Touch() {
     for (int k = 0; k < this->CountNodes(); ++k) {
         this->Touch(k);
@@ -104,16 +110,16 @@ void Network::Inside(int nodeId) {
         ptr_inside_[nodeId] = ComParam::DOUBLE_NEGATIVE_INFINITY;
         return;;
     }
-
     //get the number of hyperedges rooted by nodeId
     int children_size = this->GetChildrens_Size(nodeId);
     //get the hyperedges rooted by nodeId.
     int **ptr_childrens_vec_ = this->GetChildren(nodeId);
     //if the number of hyperedges rooted by nodeId is zero, then return;
-    if( 0 == children_size){
+    double inside = 0.0;
+    if(nullptr == ptr_childrens_vec_){
+        ptr_inside_[nodeId] = inside;
         return;
     }
-    double inside = 0.0;
     /**
      *  ****************Linear CRF***********************
      * summation of all inside values in a hyperedge
@@ -163,7 +169,6 @@ void Network::Inside(int nodeId) {
         }
         inside = score;
     }
-
     //For each hyper edge that index is bigger than 1. we need logsum here.
     for(int children_k = 1; children_k < children_size; ++children_k){
         int *ptr_children_k = ptr_childrens_vec_[children_k];
@@ -317,7 +322,7 @@ void Network::UpdateGradient(int nodeId) {
 
 // the shared array is dynamically allocated for each thread according to the number of the nodes.
 double* Network::GetInsideSharedArray() {
-    if(!ptr_inside_shared_array_[this->thread_id_] || this->CountNodes() > inside_shared_array_size_){
+    if(nullptr == ptr_inside_shared_array_[this->thread_id_]){//|| this->CountNodes() > inside_shared_array_size_){
         ptr_inside_shared_array_[this->thread_id_] = new double[this->CountNodes()];
     }
     return ptr_inside_shared_array_[this->thread_id_];

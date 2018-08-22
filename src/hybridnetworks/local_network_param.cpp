@@ -166,3 +166,8 @@ void LocalNetworkParam::AddCount(int f_local, double count) {
     }
     this->ptr_counts_[f_local] += count;
 }
+
+void LocalNetworkParam::SetGlobalMode() {
+    this->is_gobal_mode_ = true;
+    this->ptr_globalFeature2LocalFeature_ = nullptr;
+}

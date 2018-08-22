@@ -21,18 +21,16 @@ GlobalNetworkParam::GlobalNetworkParam() {
     version_= -1;
     tmp_count_ = 0;
     small_change_count = 0;
+    obj_prev_ = 0;
 }
 
 GlobalNetworkParam::~GlobalNetworkParam() {
     delete ptr_opt_;
     for(auto type_it = ptr_featureIntMap_->begin(); type_it != ptr_featureIntMap_->end(); ++type_it){
         for(auto output_it = (*type_it).second->begin(); output_it != (*type_it).second->end(); ++output_it){
-            for(auto input_it = (*output_it).second->begin(); input_it != (*output_it).second->end(); ++input_it){
-                delete &(*input_it);
-            }
-            delete &(*output_it);
+            delete (*output_it).second;
         }
-        delete &(*type_it);
+        delete (*type_it).second;
     }
     delete ptr_featureIntMap_;
 
@@ -52,7 +50,7 @@ void GlobalNetworkParam::LockIt() {
     for(int feature_no = this->fixed_feature_size_; feature_no < this->size_; ++feature_no ){
         double random_value = DoubleRandom(0.0,1.0);
         random_value = (random_value - 0.5) / 10;
-        this->ptr_counts_[feature_no] =  ComParam::RANDOM_INIT_WEIGHT ? random_value:ComParam::FEATURE_INIT_WEIGHT;
+        this->ptr_weights_[feature_no] =  ComParam::RANDOM_INIT_WEIGHT ? random_value:ComParam::FEATURE_INIT_WEIGHT;
     }
     this->ResetCountsAndObj();
     this->ptr_feature2rep = new std::string*[size_];

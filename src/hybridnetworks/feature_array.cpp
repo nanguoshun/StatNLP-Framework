@@ -35,6 +35,9 @@ FeatureArray::FeatureArray(int *ptr_fs, int fs_size, FeatureArray *ptr_next) {
 
 FeatureArray::FeatureArray(double score) {
     score_ = score;
+    fs_size_ = 0;
+    ptr_fs_ = nullptr;
+    ptr_next_ = nullptr;
 }
 
 /**
@@ -67,7 +70,7 @@ double FeatureArray::ComputeScore(LocalNetworkParam *ptr_local_param, int* ptr_f
     double score = 0.0;
     //ptr_fs stores the feature ID.
     for(int i=0; i<fs_size_; ++i){
-        int fs = ptr_fs[i] ;
+        int fs = ptr_fs[i];
         if(fs != -1){
             //fs indicates the feature ID.
             score += ptr_local_param->GetWeight(fs);
