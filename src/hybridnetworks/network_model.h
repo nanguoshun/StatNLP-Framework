@@ -21,7 +21,7 @@ NetworkModel(FeatureManager *ptr_fm, NetworkCompiler *ptr_nc);
 void Train(std::vector<Instance *> *ptr_all_instances, std::vector<Instance *> *ptr_all_instances_du, int max_num_interations);
 std::vector<Instance *>* Decode(std::vector<Instance *> *ptr_test_instences);
 virtual std::vector<std::vector<Instance*>*>* SplitInstanceForTrain() = 0;
-std::vector<std::vector<Instance*>*>* SplitInstanceForTest();
+void SplitInstanceForTest();
 protected:
     FeatureManager *ptr_fm_;
     NetworkCompiler *ptr_nc_;
@@ -35,6 +35,7 @@ protected:
     std::thread *ptr_learn_thread_vector_;
     std::thread *ptr_decode_thread_vector_;
     std::vector<Instance *> *ptr_inst_all_test_;
+    std::vector<std::vector<Instance*>*> * ptr_split_inst_test_;
 };
 
 #endif //STATNLP_NETWORK_MODEL_H

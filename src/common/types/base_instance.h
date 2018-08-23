@@ -38,7 +38,18 @@ public:
     }
 
     ~BaseInstance(){
-
+        if(nullptr != ptr_input_){
+            delete ptr_input_;
+            ptr_input_ = nullptr;
+        }
+        if(nullptr != ptr_output_){
+            delete ptr_output_;
+            ptr_output_ = nullptr;
+        }
+        if(nullptr != ptr_prediction_){
+            delete ptr_prediction_;
+            ptr_prediction_= nullptr;
+        }
     }
 
     SELF_TYPE* Duplicate(INPUT_TYPE *ptr_input, OUTPUT_TYPE *ptr_output, OUTPUT_TYPE *ptr_prediction);
@@ -48,6 +59,8 @@ public:
     INPUT_TYPE *GetInput();
 
     OUTPUT_TYPE *GetPrediction();
+
+    void SetPrediction(OUTPUT_TYPE *ptr_prediction);
 protected:
     INPUT_TYPE *ptr_input_;
     OUTPUT_TYPE *ptr_output_;
@@ -82,5 +95,9 @@ SELF_TYPE* BaseInstance<SELF_TYPE, INPUT_TYPE, OUTPUT_TYPE>::Duplicate(INPUT_TYP
     return ptr_duplicate;*/
 }
 
+template<class SELF_TYPE, class INPUT_TYPE, class OUTPUT_TYPE>
+void BaseInstance<SELF_TYPE, INPUT_TYPE, OUTPUT_TYPE>::SetPrediction(OUTPUT_TYPE *ptr_prediction) {
+    ptr_prediction_ = ptr_prediction;
+}
 
 #endif //STATNLP_BASE_INSTANCE_H

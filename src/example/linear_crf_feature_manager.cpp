@@ -39,9 +39,7 @@ FeatureArray* LinearCRFFeatureManager::ExtractHelper(Network *ptr_network, int p
     int size = ptr_instance->GetSize();
     //FIXME:
     ComType::Input_Str_Matrix *ptr_input = ptr_instance->GetInput();
-
     int input_size = ptr_input->size();
-
     long curr_node = ptr_crf_network->GetNode(parent_k);
     std::vector<int> array = NetworkIDManager::ToHybridNodeArray(curr_node);
     int pos = array[0] - 1;
@@ -50,7 +48,7 @@ FeatureArray* LinearCRFFeatureManager::ExtractHelper(Network *ptr_network, int p
     if(node_type == ComType::NODE_TYPES::LEAF){
         return FeatureArray::PTR_EMPTY;
     }
-    //only one child for linear CRF.
+    //Only one child for linear CRF.
     int child_tag_id = (ptr_network->GetNodeArray(ptr_children[0]))[1];
     FeatureArray *ptr_features = new FeatureArray((int*) nullptr,0);
     if(true == ptr_feature_type_[0].isOn){
@@ -77,7 +75,6 @@ FeatureArray* LinearCRFFeatureManager::ExtractHelper(Network *ptr_network, int p
             std::string output = std::to_string(tag_id);
             ptr_word_window_features[i] =  this->ptr_param_g_->ToFeature(type,output,word);
             temp_count_ ++;
-
         }
         FeatureArray *ptr_word_features = new FeatureArray(ptr_word_window_features, word_window_size,ptr_features);
         ptr_features = ptr_word_features;

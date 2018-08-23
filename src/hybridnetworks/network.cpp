@@ -323,6 +323,7 @@ void Network::UpdateGradient(int nodeId) {
 // the shared array is dynamically allocated for each thread according to the number of the nodes.
 double* Network::GetInsideSharedArray() {
     if(nullptr == ptr_inside_shared_array_[this->thread_id_]){//|| this->CountNodes() > inside_shared_array_size_){
+        //FIXME:
         ptr_inside_shared_array_[this->thread_id_] = new double[this->CountNodes()];
     }
     return ptr_inside_shared_array_[this->thread_id_];
@@ -330,6 +331,7 @@ double* Network::GetInsideSharedArray() {
 
 double* Network::GetOutsideSharedArray() {
     if(!ptr_outside_shared_array_[this->thread_id_] || this->CountNodes() > outside_shared_array_size_){
+        //FIXME:
         ptr_outside_shared_array_[this->thread_id_] = new double[this->CountNodes()];
     }
     return ptr_outside_shared_array_[this->thread_id_];
@@ -358,7 +360,7 @@ double Network::GetInside(int nodeId) {
 void Network::Max() {
     int num_count = this->CountNodes();
     ptr_max_ = new double[num_count];
-    ptr_max_children_no_ = new double*[num_count];
+    ptr_max_children_no_ = new int*[num_count];
     for(int nodeid = 0; nodeid < num_count; ++nodeid){
         ptr_max_[nodeid] = 0;
         ptr_max_children_no_[nodeid] = nullptr;

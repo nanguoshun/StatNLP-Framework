@@ -162,7 +162,8 @@ LinearCRFNetwork* LinearCRFNetworkCompiler::CompileLabeled(int networkId, Linear
  */
 LinearCRFInstance* LinearCRFNetworkCompiler::Decompile(Network *ptr_network) {
     int num_node = ptr_network->CountNodes();
-    std::vector<std::string> predciton_vec(num_node);
+    LinearCRFInstance *ptr_inst = (LinearCRFInstance *) ptr_network->GetInstance();
+    std::vector<std::string> *ptr_prediction = new std::vector<std::string>(num_node);
     for(int nodeid = num_node - 1; nodeid >=0; --nodeid){
         int* ptr_nodes = ptr_network->GetPath(nodeid);
         int child_k = ptr_nodes[0];
@@ -170,8 +171,14 @@ LinearCRFInstance* LinearCRFNetworkCompiler::Decompile(Network *ptr_network) {
         std::vector<int> array = NetworkIDManager::ToHybridNodeArray(node);
         int pos = array[0] - 1;
         int tag_id = array[1];
-        std::string label =
-        predciton_vec[num_node-1] = labels_[tag_id];
+        (*ptr_prediction)[num_node-1] = labels_[tag_id];
+
+        if(pos != nodeid){
+            std::cerr << "Error:the position encoded in the node not the same as the interpretation! @LinearCRFNetworkCompiler::Decompile"<<std::endl;
+        }
     }
-    //LinearCRFInstance *ptr_inst = new LinearCRFInstance();
+
+    LinearCRFInstance *ptr_inst_du = new LinearCRFInstance(ptr_inst->GetInstanceId(),ptr_inst->GetWeight(),ptr_inst->GetInput(),ptr_inst->GetOutPut());
+    ptr_inst_du->SetPrediction(ptr_prediction);
+    return  ptr_inst_du;
 }
