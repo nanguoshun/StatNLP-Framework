@@ -13,3 +13,12 @@ This document describes how to develop graphical machine learning model using ou
 * MAC
 * Linux
 * Windows
+
+## Examples
+### Linear Condition Random Field (CRF)
+### Probability Context Free Grammer(PCFG)
+
+## Develop your graphical models
+StatNLP framework faciliates the customized graphical models.
+
+## Mathmatical Models
