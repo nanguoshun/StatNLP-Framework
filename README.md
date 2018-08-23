@@ -18,6 +18,7 @@ This document describes how to develop graphical machine learning model using ou
 ### Linear Condition Random Field (CRF)
 ### Probability Context Free Grammer(PCFG)
 
+![my equation](https://latex.codecogs.com/gif.download?%5Czeta%28s%29%20%3D%20%5Csum_%7Bn%3D1%7D%5E%5Cinfty%20%5Cfrac%7B1%7D%7Bn%5Es%7D)
 ## Develop your graphical models
 StatNLP framework faciliates the customized graphical models.
 
