@@ -36,11 +36,17 @@ public:
     double GetInside(int nodeId);
     std::vector<int> GetNodeArray(int nodeIndex);
     int tmp_count_;
+    bool IsIngored(int *ptr_children, int size);
+    void Max();
+    void Max(int nodeId);
+    bool IsSumNode(int nodeid);
+    int *GetPath(int nodeid);
     static double **ptr_inside_shared_array_;
     static double **ptr_outside_shared_array_;
     //the array size for each thread
     static bool is_initialized_shared_array_;
     static void InitShareArray();
+
 protected:
     int network_id_;
     int thread_id_;
@@ -50,6 +56,8 @@ protected:
     LocalNetworkParam *ptr_param_;
     double *ptr_inside_;
     double *ptr_outside_;
+    double *ptr_max_;
+    int **ptr_max_children_no_;
     int inside_shared_array_size_;
     int outside_shared_array_size_;
 };

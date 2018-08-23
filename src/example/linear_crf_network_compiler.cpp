@@ -8,7 +8,7 @@
 #include "../hybridnetworks/network_id_manager.h"
 
 
-LinearCRFNetworkCompiler::LinearCRFNetworkCompiler(std::list<std::string> &labels) {
+LinearCRFNetworkCompiler::LinearCRFNetworkCompiler(std::vector<std::string> &labels) {
     this->labels_ = labels;
     int i = 0;
     for(std::string label: labels){
@@ -155,6 +155,23 @@ LinearCRFNetwork* LinearCRFNetworkCompiler::CompileLabeled(int networkId, Linear
     return ptr_network;
 }
 
-Instance* LinearCRFNetworkCompiler::Decompile(Network &network) {
-    //TODO: will be done after finished the training part.
+/**
+ * Backtracking to get the predictions.
+ * @param ptr_network
+ * @return
+ */
+LinearCRFInstance* LinearCRFNetworkCompiler::Decompile(Network *ptr_network) {
+    int num_node = ptr_network->CountNodes();
+    std::vector<std::string> predciton_vec(num_node);
+    for(int nodeid = num_node - 1; nodeid >=0; --nodeid){
+        int* ptr_nodes = ptr_network->GetPath(nodeid);
+        int child_k = ptr_nodes[0];
+        long node = ptr_network->GetNode(child_k);
+        std::vector<int> array = NetworkIDManager::ToHybridNodeArray(node);
+        int pos = array[0] - 1;
+        int tag_id = array[1];
+        std::string label =
+        predciton_vec[num_node-1] = labels_[tag_id];
+    }
+    //LinearCRFInstance *ptr_inst = new LinearCRFInstance();
 }

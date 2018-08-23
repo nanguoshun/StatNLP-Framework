@@ -14,7 +14,6 @@ public:
     LocalNetworkDecoderThread(int threadid, std::vector<Instance*> *pptr_instance, FeatureManager *ptr_fm, NetworkCompiler *ptr_nc);
     ~LocalNetworkDecoderThread();
     void Run();
-    Instance *Max(Instance *ptr_inst);
     std::vector<Instance*> * GetOutPuts();
 private:
     int thread_id_;
@@ -22,6 +21,8 @@ private:
     std::vector<Instance*> *pptr_input_inst;
     std::vector<Instance*> *pptr_output_inst;
     NetworkCompiler *ptr_nc_;
+    Network **pptr_network_;
+    int sentence_size_;
 };
 
 #endif //STATNLP_LOCAL_NETWORK_DECODER_THREAD_H

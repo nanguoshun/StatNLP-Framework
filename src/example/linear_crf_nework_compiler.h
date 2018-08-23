@@ -14,10 +14,10 @@
 
 class LinearCRFNetworkCompiler: public NetworkCompiler {
 public:
-    LinearCRFNetworkCompiler(std::list<std::string> &labels);
+    LinearCRFNetworkCompiler(std::vector<std::string> &labels);
     ~LinearCRFNetworkCompiler();
     LinearCRFNetwork* Compile(int networkId, Instance *ptr_instance, LocalNetworkParam *ptr_param);
-    Instance * Decompile(Network &network);
+    LinearCRFInstance * Decompile(Network *ptr_network);
     void CompileUnlabeledGeneric();
     long ToNode(int pos, int tag_id);
     long ToNodeRoot(int size);
@@ -26,7 +26,7 @@ public:
     LinearCRFNetwork* CompileLabeled(int networkId, LinearCRFInstance *ptr_inst, LocalNetworkParam *ptr_param);
 
 private:
-    std::list<std::string> labels_;
+    std::vector<std::string> labels_;
     std::map<std::string, int> labels_id_map_;
     LinearCRFNetwork *ptr_generic_network_;
     //contains node Id

@@ -9,7 +9,7 @@
 #include "src/hybridnetworks/discriminative_network_model.h"
 #include "src/example/linear_crf_nework_compiler.h"
 
-static std::list<std::string> all_labels;
+static std::vector<std::string> all_labels;
 
 /**
  *

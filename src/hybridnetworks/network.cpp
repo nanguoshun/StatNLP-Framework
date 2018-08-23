@@ -354,3 +354,71 @@ double Network::GetInside(int nodeId) {
     }
     return ptr_inside_[nodeId];
 }
+
+void Network::Max() {
+    int num_count = this->CountNodes();
+    ptr_max_ = new double[num_count];
+    ptr_max_children_no_ = new double*[num_count];
+    for(int nodeid = 0; nodeid < num_count; ++nodeid){
+        ptr_max_[nodeid] = 0;
+        ptr_max_children_no_[nodeid] = nullptr;
+    }
+    for(int nodeid = 0; nodeid < num_count; ++nodeid){
+        this->Max(nodeid);
+    }
+}
+
+void Network::Max(int nodeId) {
+    if(this->IsRemovded(nodeId)){
+        this->ptr_max_[nodeId] = ComParam::DOUBLE_NEGATIVE_INFINITY;
+        return;
+    }
+    //for the leaf node.
+    if(0 == nodeId){
+        return;
+    }
+    if(IsSumNode(nodeId)){
+        //TODO:
+    } else{
+        //get the hyperedge num of nodeId
+        int childrens_size = this->GetChildrens_Size(nodeId);
+        //this pointer store the size of children for each hyperedge.
+        int* ptr_children_size = this->GetChildren_Size(nodeId);
+        //Get all hyperedges rooted by nodeId.
+        int **ptr_childrens = this->GetChildren(nodeId);
+        //Get the max value for each hyperedge rooted by nodeID.
+        for(int children_k = 0; children_k < childrens_size; ++children_k){
+            int *ptr_children_k = ptr_childrens[children_k];
+            int size = ptr_children_size[children_k];
+            if(IsIngored(ptr_children_k,size)){
+                continue;
+            }
+            FeatureArray *ptr_fa = this->ptr_param_->Extract(this,nodeId,ptr_children_k,children_k);
+            double score = ptr_fa->GetScore(ptr_param_);
+            for(int i=0; i < size; ++i){
+                score += this->ptr_max_[ptr_children_k[i]];
+            }
+            if(score > ptr_max_[nodeId]){
+                ptr_max_[nodeId] = score;
+                ptr_max_children_no_[nodeId] = ptr_children_k;
+            }
+        }
+    }
+}
+
+bool Network::IsSumNode(int nodeid) {
+    return false;
+}
+
+bool Network::IsIngored(int *ptr_children, int size) {
+    for(int i = 0; i < size; ++i){
+        if(IsRemovded(ptr_children[i])){
+            return true;
+        }
+    }
+    return false;
+}
+
+int* Network::GetPath(int nodeid) {
+    return ptr_max_children_no_[nodeid];
+}
