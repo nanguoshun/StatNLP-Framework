@@ -30,7 +30,9 @@ Network::Network(int networkId, Instance *ptr_inst, LocalNetworkParam *ptr_param
 }
 
 Network::~Network() {
-
+    delete []ptr_max_;
+    //the content of ptr_max_children_no_ are pointers, which are allocated in the class TableLookupNetwork
+    delete []ptr_max_children_no_;
 }
 
 void Network::InitShareArray() {
@@ -361,10 +363,12 @@ void Network::Max() {
     int num_count = this->CountNodes();
     ptr_max_ = new double[num_count];
     ptr_max_children_no_ = new int*[num_count];
+    //init the value and the pointer.
     for(int nodeid = 0; nodeid < num_count; ++nodeid){
         ptr_max_[nodeid] = 0;
         ptr_max_children_no_[nodeid] = nullptr;
     }
+    //
     for(int nodeid = 0; nodeid < num_count; ++nodeid){
         this->Max(nodeid);
     }

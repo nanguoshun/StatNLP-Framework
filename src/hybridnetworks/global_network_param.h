@@ -49,7 +49,7 @@ private:
     double kappa_;
     //feature map;
     ComType::FeatureIntMap *ptr_featureIntMap_;
-    ComType::Type2InputMap *ptr_type2InputMap_;
+    //ComType::Type2InputMap *ptr_type2InputMap_;
     //gradient;
     double *ptr_counts_;
     //the final number of features

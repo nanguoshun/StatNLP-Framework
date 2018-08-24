@@ -23,7 +23,7 @@ FeatureManager::~FeatureManager() {
     for(int i=0; i<this->num_of_threads_; ++i){
         delete pptr_param_l_[i];
     }
-    delete this->pptr_param_l_;
+    delete [] pptr_param_l_;
 }
 
 GlobalNetworkParam* FeatureManager::GetGlobalParam() {

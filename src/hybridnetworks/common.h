@@ -11,6 +11,8 @@
 #include <list>
 #include <cmath>
 
+#define DEBUG = 2;
+
 namespace ComParam{
     const int MAX_LENGTH = 300;
     const int Num_Of_Threads = 1;
@@ -43,6 +45,8 @@ namespace ComType{
         LEAF, NODE, ROOT
     };
 }
+
+
 //typedef std::vector<std::vector<std::string>> Input_Str_Matrix;
 //typedef std::vector<std::vector<std::string>> Label_Str_Vector;
 //typedef std::string** Input_Str_Matrix;

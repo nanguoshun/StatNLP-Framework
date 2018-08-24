@@ -28,6 +28,7 @@ TableLookupNetwork::~TableLookupNetwork() {
     for(int i =0; i<node_size_; ++i){
         delete ptr_children_size_[i];
     }
+
     delete ptr_childrens_size_;
     //delete ptr_children_tmp_;
     delete ptr_children_;
@@ -91,7 +92,7 @@ void TableLookupNetwork::AddEdge(long parent, std::vector<long> &children) {
     if(it == ptr_children_tmp_->end() || nullptr == (*it).second){
         std::list<std::vector<long>*> *ptr_children_list = new std::list<std::vector<long>*>;
         ptr_children_list->push_back(ptr_children);
-        //if the hyperedge is not exist in the hashmap
+        //if the hyper_edge is not exist in the hash_map
         if(it == ptr_children_tmp_->end()){
             ptr_children_tmp_->insert(std::make_pair(parent,ptr_children_list));
         } else{

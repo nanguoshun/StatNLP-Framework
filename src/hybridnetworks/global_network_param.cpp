@@ -17,7 +17,7 @@ GlobalNetworkParam::GlobalNetworkParam() {
         kappa_ =ComParam::L2_REGULARIZATION_CONSTANT;
     }
     ptr_featureIntMap_ = new ComType::FeatureIntMap;
-    ptr_type2InputMap_ = new ComType::Type2InputMap;
+    //ptr_type2InputMap_ = new ComType::Type2InputMap;
     version_= -1;
     tmp_count_ = 0;
     small_change_count = 0;
@@ -34,7 +34,7 @@ GlobalNetworkParam::~GlobalNetworkParam() {
     }
     delete ptr_featureIntMap_;
 
-    delete ptr_type2InputMap_;
+    //delete ptr_type2InputMap_;
 }
 /*
  * Lock the features.
