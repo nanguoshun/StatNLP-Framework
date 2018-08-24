@@ -5,28 +5,21 @@
 #include "network.h"
 #include "common.h"
 
-double **Network::ptr_inside_shared_array_ = new double*[ComParam::Num_Of_Threads];
-double **Network::ptr_outside_shared_array_ = new double*[ComParam::Num_Of_Threads];
+//double **Network::ptr_inside_shared_array_ = new double*[ComParam::Num_Of_Threads];
+//double **Network::ptr_outside_shared_array_ = new double*[ComParam::Num_Of_Threads];
 
-bool Network::is_initialized_shared_array_ = false;
-    Network::Network() {
+Network::Network() {
     std::cout << "no param"<<std::endl;
 }
 
-Network::Network(int networkId, Instance *ptr_inst, LocalNetworkParam *ptr_param) {
+Network::Network(int networkId, Instance *ptr_inst, LocalNetworkParam *ptr_param_l) {
     this->network_id_ = networkId;
-    this->thread_id_ = ptr_param->GetThreadId();
+    this->thread_id_ = ptr_param_l->GetThreadId();
     this->ptr_inst_ = ptr_inst;
     this->weight_ = this->ptr_inst_->GetWeight();
-    this->ptr_param_ = ptr_param;
+    this->ptr_param_l_ = ptr_param_l;
+    this->ptr_param_g_ = ptr_param_l_->GetFeatureManager()->GetGlobalParam();
     tmp_count_ = 0;
-    if(!is_initialized_shared_array_){
-        is_initialized_shared_array_ = true;
-        for(int threadid = 0; threadid < ComParam::Num_Of_Threads; ++threadid){
-            ptr_inside_shared_array_[threadid] = nullptr;
-            ptr_outside_shared_array_[threadid] = nullptr;
-        }
-    }
 }
 
 Network::~Network() {
@@ -35,12 +28,6 @@ Network::~Network() {
     delete []ptr_max_children_no_;
 }
 
-void Network::InitShareArray() {
-    for(int i=0; i<ComParam::Num_Of_Threads; ++i){
-        ptr_inside_shared_array_[i] = nullptr;
-        ptr_outside_shared_array_[i] = nullptr;
-    }
-}
 void Network::Touch() {
     for (int k = 0; k < this->CountNodes(); ++k) {
         this->Touch(k);
@@ -63,7 +50,7 @@ void Network::Touch(int node_index) {
         //int * ptr_children_num = this->GetChildren_Size(children_index);
         int *ptr_children_k = ptr_childrens_vec[children_index];
         //ptr_children_k is the pointer of a hyperedge.
-        this->ptr_param_->Extract(this,node_index,ptr_children_k,children_index);
+        this->ptr_param_l_->Extract(this,node_index,ptr_children_k,children_index);
         tmp_count_++;
     }
 }
@@ -75,7 +62,7 @@ void Network::Train() {
     this->Inside();
     this->Outside();
     this->UpdateInsideOutside();
-    this->ptr_param_->AddObj(this->GetInside(this->CountNodes()-1) * weight_);
+    this->ptr_param_l_->AddObj(this->GetInside(this->CountNodes()-1) * weight_);
 }
 
 void Network::Inside() {
@@ -156,12 +143,12 @@ void Network::Inside(int nodeId) {
     if(ignore_flag){
         inside = ComParam::DOUBLE_NEGATIVE_INFINITY;
     } else{
-        FeatureArray* ptr_fa = this->ptr_param_->Extract(this,nodeId, ptr_children_k,children_k);
+        FeatureArray* ptr_fa = this->ptr_param_l_->Extract(this,nodeId, ptr_children_k,children_k);
         /**
          * calc the score summation of all features in this hyperedge. Each score is the production
          * of feature value and its weight.
          */
-        double score = ptr_fa->GetScore(this->ptr_param_);
+        double score = ptr_fa->GetScore(this->ptr_param_l_);
         /**
          * for the first hyperedge, no log sum is required.
          * \alpa'_j(s) = \alpha'_{j-1}(s') +  \psi_j(X,s,s')
@@ -185,11 +172,11 @@ void Network::Inside(int nodeId) {
         if(ignore_flag){
             continue;
         }
-        FeatureArray *ptr_fa = this->ptr_param_->Extract(this, nodeId, ptr_children_k, children_k);
+        FeatureArray *ptr_fa = this->ptr_param_l_->Extract(this, nodeId, ptr_children_k, children_k);
         /**
          * Calc sore summation for all features in a specific hyperedge.
          */
-        double score = ptr_fa->GetScore(this->ptr_param_);
+        double score = ptr_fa->GetScore(this->ptr_param_l_);
         for(int child_no = 0; child_no < child_k_size; ++child_no){
             score += this->ptr_inside_[ptr_children_k[child_no]];
         }
@@ -244,9 +231,9 @@ void Network::Outside(int nodeId) {
             }
         }
         if(ignore_flag){ continue;}
-        FeatureArray *ptr_fa = this->ptr_param_->Extract(this,nodeId,ptr_children_k,children_k);
+        FeatureArray *ptr_fa = this->ptr_param_l_->Extract(this,nodeId,ptr_children_k,children_k);
         //calculate the score summation of the hyeredge.
-        double score = ptr_fa->GetScore(ptr_param_);
+        double score = ptr_fa->GetScore(ptr_param_l_);
         //sum the outside value of parent node.
         score += ptr_outside_[nodeId];
         //sum all inside value of children nodes.
@@ -302,8 +289,8 @@ void Network::UpdateGradient(int nodeId) {
         if(ignore_flag){
             continue;
         }
-        FeatureArray *ptr_fa = this->ptr_param_->Extract(this, nodeId, ptr_children_k, children_k);
-        double score = ptr_fa->GetScore(this->ptr_param_);
+        FeatureArray *ptr_fa = this->ptr_param_l_->Extract(this, nodeId, ptr_children_k, children_k);
+        double score = ptr_fa->GetScore(this->ptr_param_l_);
         score += this->ptr_outside_[nodeId];
         for(int child_no = 0; child_no < child_k_size; ++child_no){
             score += this->ptr_inside_[ptr_children_k[child_no]];
@@ -318,25 +305,31 @@ void Network::UpdateGradient(int nodeId) {
          * Details pls refer to Equation. 61 of Classical Probabilistic Models and Conditional Random Fields. Roman Klinger. 2007
          *
          */
-        ptr_fa->Update(ptr_param_,count);
+        ptr_fa->Update(ptr_param_l_,count);
     }
 }
 
 // the shared array is dynamically allocated for each thread according to the number of the nodes.
 double* Network::GetInsideSharedArray() {
-    if(nullptr == ptr_inside_shared_array_[this->thread_id_]){//|| this->CountNodes() > inside_shared_array_size_){
+    double **pptr_inside_array_ = ptr_param_g_->GetInsideSharedArray();
+    int *ptr_array_size = ptr_param_g_->GetInsideSharedArraySize();
+    if(nullptr == pptr_inside_array_[this->thread_id_] || this->CountNodes() > ptr_array_size[this->thread_id_]){
         //FIXME:
-        ptr_inside_shared_array_[this->thread_id_] = new double[this->CountNodes()];
+        //ptr_inside_shared_array_[this->thread_id_] = new double[this->CountNodes()];
+        pptr_inside_array_[this->thread_id_] = new double[this->CountNodes()];
+        ptr_array_size[this->thread_id_] = this->CountNodes();
     }
-    return ptr_inside_shared_array_[this->thread_id_];
+    return pptr_inside_array_[this->thread_id_];
 }
 
 double* Network::GetOutsideSharedArray() {
-    if(!ptr_outside_shared_array_[this->thread_id_] || this->CountNodes() > outside_shared_array_size_){
-        //FIXME:
-        ptr_outside_shared_array_[this->thread_id_] = new double[this->CountNodes()];
+    double **pptr_ouside_array = ptr_param_g_->GetOutsideSharedArray();
+    int *ptr_array_size = ptr_param_g_->GetOutsideSharedArraySize();
+    if(!pptr_ouside_array[this->thread_id_] || this->CountNodes() > ptr_array_size[this->thread_id_] ){
+        pptr_ouside_array[this->thread_id_] = new double[this->CountNodes()];
+        ptr_array_size[this->thread_id_] = this->CountNodes();
     }
-    return ptr_outside_shared_array_[this->thread_id_];
+    return pptr_ouside_array[this->thread_id_];
 }
 
 int Network::GetNetworkID() {
@@ -399,8 +392,8 @@ void Network::Max(int nodeId) {
             if(IsIngored(ptr_children_k,size)){
                 continue;
             }
-            FeatureArray *ptr_fa = this->ptr_param_->Extract(this,nodeId,ptr_children_k,children_k);
-            double score = ptr_fa->GetScore(ptr_param_);
+            FeatureArray *ptr_fa = this->ptr_param_l_->Extract(this,nodeId,ptr_children_k,children_k);
+            double score = ptr_fa->GetScore(ptr_param_l_);
             for(int i=0; i < size; ++i){
                 score += this->ptr_max_[ptr_children_k[i]];
             }

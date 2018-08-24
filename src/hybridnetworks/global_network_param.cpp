@@ -22,6 +22,18 @@ GlobalNetworkParam::GlobalNetworkParam() {
     tmp_count_ = 0;
     small_change_count = 0;
     obj_prev_ = 0;
+    ptr_inside_shared_array_ = new double*[ComParam::Num_Of_Threads];
+    ptr_outside_shared_array_ = new double*[ComParam::Num_Of_Threads];
+
+    ptr_inside_shared_array_size_ = new int[ComParam::Num_Of_Threads];
+    ptr_outside_shared_array_size_ = new int[ComParam::Num_Of_Threads];
+
+    for(int threadid = 0; threadid < ComParam::Num_Of_Threads; ++threadid){
+        ptr_inside_shared_array_[threadid] = nullptr;
+        ptr_outside_shared_array_[threadid] = nullptr;
+        ptr_inside_shared_array_size_[threadid] = 0;
+        ptr_outside_shared_array_size_[threadid] = 0;
+    }
 }
 
 GlobalNetworkParam::~GlobalNetworkParam() {
@@ -33,11 +45,20 @@ GlobalNetworkParam::~GlobalNetworkParam() {
         delete (*type_it).second;
     }
     delete ptr_featureIntMap_;
-
+    for(int threadId=0; threadId<ComParam::Num_Of_Threads; ++threadId){
+        delete ptr_inside_shared_array_[threadId];
+        delete ptr_outside_shared_array_[threadId];
+    }
+    delete []ptr_inside_shared_array_;
+    delete []ptr_outside_shared_array_;
+    delete []ptr_inside_shared_array_size_;
+    delete []ptr_outside_shared_array_size_;
     //delete ptr_type2InputMap_;
 }
 /*
+ *
  * Lock the features.
+ *
  */
 void GlobalNetworkParam::LockIt() {
     if(this->IsLocked()){
@@ -236,4 +257,36 @@ void GlobalNetworkParam::AddCount(int feature_index, double count) {
 
 bool GlobalNetworkParam::IsFixed(int f_global) {
     return f_global < this->fixed_feature_size_;
+}
+
+double** GlobalNetworkParam::GetInsideSharedArray() {
+    return ptr_inside_shared_array_;
+}
+
+double** GlobalNetworkParam::GetOutsideSharedArray() {
+    return ptr_outside_shared_array_;
+}
+
+double* GlobalNetworkParam::GetInsideSharedArray(int threadId) {
+    return ptr_inside_shared_array_[threadId];
+}
+
+double* GlobalNetworkParam::GetOutsideSharedArray(int threadId) {
+    return ptr_outside_shared_array_[threadId];
+}
+
+int GlobalNetworkParam::GetInsideSharedArraySize(int threadId) {
+    return ptr_inside_shared_array_size_[threadId];
+}
+
+int GlobalNetworkParam::GetOutsideSharedArraySize(int threadId) {
+    return ptr_outside_shared_array_size_[threadId];
+}
+
+int* GlobalNetworkParam::GetInsideSharedArraySize() {
+    return ptr_inside_shared_array_size_;
+}
+
+int* GlobalNetworkParam::GetOutsideSharedArraySize() {
+    return ptr_outside_shared_array_size_;
 }

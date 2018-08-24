@@ -17,7 +17,7 @@
 class Network: public HyperGraph{
 public:
     Network();
-    Network(int networkId, Instance *ptr_inst, LocalNetworkParam *ptr_param);
+    Network(int networkId, Instance *ptr_inst, LocalNetworkParam *ptr_param_l);
     ~Network();
     void Touch();
     void Touch(int k);
@@ -41,11 +41,9 @@ public:
     void Max(int nodeId);
     bool IsSumNode(int nodeid);
     int *GetPath(int nodeid);
-    static double **ptr_inside_shared_array_;
-    static double **ptr_outside_shared_array_;
-    //the array size for each thread
-    static bool is_initialized_shared_array_;
-    static void InitShareArray();
+//    static double **ptr_inside_shared_array_;
+//    static double **ptr_outside_shared_array_;
+    //the array size for each thread;
 
 protected:
     int network_id_;
@@ -53,13 +51,16 @@ protected:
     Instance *ptr_inst_;
     //the weight of an instance, usually we set it as 1 for instance un-biased training.
     double weight_;
-    LocalNetworkParam *ptr_param_;
+    //local parameter
+    LocalNetworkParam *ptr_param_l_;
+    //global parameter
+    GlobalNetworkParam *ptr_param_g_;
     double *ptr_inside_;
     double *ptr_outside_;
     double *ptr_max_;
     int **ptr_max_children_no_;
-    int inside_shared_array_size_;
-    int outside_shared_array_size_;
+//    int inside_shared_array_size_;
+//    int outside_shared_array_size_;
 };
 
 #endif //STATNLP_NETWORK_H

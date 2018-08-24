@@ -102,12 +102,13 @@ void Release(std::vector<Instance*> *ptr_vec_all){
 
 void ReleaseStaticPointer(){
     delete FeatureArray::PTR_EMPTY;
-    delete Network::ptr_inside_shared_array_;
-    delete Network::ptr_outside_shared_array_;
+//    delete Network::ptr_inside_shared_array_;
+//    delete Network::ptr_outside_shared_array_;
 }
 
 int main(){
-    std::string train_file_name = "/Users/ngs/Documents/cplusproject/statNLP/data/conll2000/sample_part_train.txt";
+    std::string train_file_name = "/Users/ngs/Documents/cplusproject/statNLP/data/conll2000/sample_train.txt";
+    //std::string train_file_name = "/Users/ngs/Documents/cplusproject/statNLP/data/conll2000/sample_part_train.txt";
     std::string test_file_name =  "/Users/ngs/Documents/cplusproject/statNLP/data/conll2000/sample_part_test.txt";
     std::vector<Instance*> *ptr_inst_vec_all = new std::vector<Instance *>;
     std::vector<Instance*> *ptr_inst_vec_all_duplicate_ = new std::vector<Instance *>;

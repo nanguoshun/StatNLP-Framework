@@ -18,8 +18,8 @@ public:
 private:
     int thread_id_;
     LocalNetworkParam *ptr_param_l_;
-    std::vector<Instance*> *pptr_input_inst;
-    std::vector<Instance*> *pptr_output_inst;
+    std::vector<Instance*> *pptr_input_inst_vec_;
+    std::vector<Instance*> *pptr_output_inst_vec_;
     NetworkCompiler *ptr_nc_;
     Network **pptr_network_;
     int sentence_size_;

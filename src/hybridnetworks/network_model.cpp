@@ -10,7 +10,6 @@ NetworkModel::NetworkModel(FeatureManager *ptr_fm, NetworkCompiler *ptr_nc) {
 }
 
 NetworkModel::~NetworkModel() {
-  //TODO: to release ptr_learn_thread_vector_
   for(int threadId = 0; threadId < this->num_threads_; ++threadId){
       delete pptr_learner_[threadId];
       delete pptr_decoder_[threadId];
@@ -42,7 +41,6 @@ void NetworkModel::Train(std::vector<Instance *> *ptr_all_instances, std::vector
     }
     //
     this->ptr_fm_->GetGlobalParam()->LockIt();
-    Network::InitShareArray();
     std::cout <<"tmp cout is: "<<this->ptr_fm_->temp_count_<<std::endl;
     std::cout <<"tmp cout is: "<<this->ptr_fm_->GetGlobalParam()->tmp_count_<<std::endl;
     double obj_old = ComParam::DOUBLE_NEGATIVE_INFINITY;
@@ -62,8 +60,8 @@ void NetworkModel::Train(std::vector<Instance *> *ptr_all_instances, std::vector
         bool done = this->ptr_fm_->Update();
         double obj = this->ptr_fm_->GetGlobalParam()->GetOldObj();
         time = clock() - time;
-        std::cout << "Iteration: " << i << " Obj: " << obj << " Time: " << time / 1000.0 <<
-                  " Convergence: " << obj / obj_old << " Total Time: " << clock() - start_time << std::endl;
+        std::cout << "Iteration: " << i << " Obj: " << obj << " Time: " << (double) time / (double)CLOCKS_PER_SEC <<
+                  " Convergence: " << obj / obj_old << " Total Time: " << (double) (clock() - start_time) / (double)CLOCKS_PER_SEC << std::endl;
         obj_old = obj;
         if (done) {
             std::cout << "Training complete after " << i << " iterations" << std::endl;
@@ -73,11 +71,9 @@ void NetworkModel::Train(std::vector<Instance *> *ptr_all_instances, std::vector
 }
 
 std::vector<Instance *>* NetworkModel::Decode(std::vector<Instance *> *ptr_test_instences) {
-
     this->ptr_inst_all_test_ = ptr_test_instences;
     this->num_threads_ = ComParam::Num_Of_Threads;
     this->pptr_decoder_ = new LocalNetworkDecoderThread*[this->num_threads_];
-
     SplitInstanceForTest();
     for(int threadid = 0; threadid < this->num_threads_; ++threadid){
         this->pptr_decoder_[threadid] = new LocalNetworkDecoderThread(threadid,(*ptr_split_inst_test_)[threadid],ptr_fm_,ptr_nc_);
@@ -94,7 +90,7 @@ std::vector<Instance *>* NetworkModel::Decode(std::vector<Instance *> *ptr_test_
     for(int threadid = 0; threadid < this->num_threads_; ++threadid){
         std::vector<Instance *> *ptr_outputs = pptr_decoder_[threadid]->GetOutPuts();
         for(auto it = ptr_outputs->begin(); it != ptr_outputs->end(); ++it){
-            ptr_outputs->push_back((*it));
+            ptr_result->push_back((*it));
         }
     }
     return ptr_result;
@@ -108,7 +104,7 @@ std::vector<Instance *>* NetworkModel::Decode(std::vector<Instance *> *ptr_test_
  */
 void NetworkModel::SplitInstanceForTest() {
     int inst_size = ptr_inst_all_test_->size();
-    ptr_split_inst_test_ = new std::vector<std::vector<Instance*>*>(this->num_threads_);
+    ptr_split_inst_test_ = new std::vector<std::vector<Instance*>*>;
     std::vector<std::vector<int>> thread_inst_vec(this->num_threads_);
     //uniformly allocate instances to different threads by its id.
     int threadId = 0;
@@ -116,14 +112,14 @@ void NetworkModel::SplitInstanceForTest() {
        thread_inst_vec[threadId].push_back(instId);
        threadId = (threadId + 1) % this->num_threads_;
     }
-    //
     for(int threadId =0; threadId < this->num_threads_; ++threadId){
         int size = thread_inst_vec[threadId].size();
-        std::vector<Instance *> *ptr_vec_inst = new std::vector<Instance *>(size);
+        std::vector<Instance *> *ptr_vec_inst = new std::vector<Instance *>;
         for(int i = 0; i < size; ++i){
-            int inst_no = thread_inst_vec[threadId][0];
-            (*ptr_vec_inst)[i] = (*ptr_inst_all_test_)[inst_no];
+            int inst_no = thread_inst_vec[threadId][i];
+            Instance *ptr_inst = (*ptr_inst_all_test_)[inst_no];
+            ptr_vec_inst->push_back(ptr_inst);
         }
-        ptr_split_inst_test_[threadId].push_back(ptr_vec_inst);
+        ptr_split_inst_test_->push_back(ptr_vec_inst);
     }
 }

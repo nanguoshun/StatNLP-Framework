@@ -7,9 +7,6 @@
 
 #include "network.h"
 
-struct {
-
-}Node;
 
 class TableLookupNetwork: public Network{
 public:

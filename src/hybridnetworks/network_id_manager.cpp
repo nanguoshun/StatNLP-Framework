@@ -11,6 +11,7 @@ std::vector<int> *NetworkIDManager::ptr_capacity_vec_ = new std::vector<int>{Com
                                                                              ComParam::NETWORK_MAX_DEPTH};
 
 NetworkIDManager::NetworkIDManager() {
+
 }
 
 NetworkIDManager::~NetworkIDManager() {

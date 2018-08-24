@@ -7,7 +7,7 @@
 #include "network.h"
 
 LocalNetworkParam::LocalNetworkParam() {
-
+    std::cout << "default constructor of LocalNetworkParam is callded"<<std::endl;
 }
 
 LocalNetworkParam::LocalNetworkParam(int threadId, FeatureManager *ptr_fm, int numNetworks) {
@@ -30,7 +30,7 @@ LocalNetworkParam::LocalNetworkParam(int threadId, FeatureManager *ptr_fm, int n
 }
 
 LocalNetworkParam::~LocalNetworkParam() {
-
+    //TODO for delete
 }
 
 void LocalNetworkParam::DisableCache() {
