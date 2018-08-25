@@ -15,7 +15,6 @@ LocalNetworkParam::LocalNetworkParam(int threadId, FeatureManager *ptr_fm, int n
     this->num_networks_ = numNetworks;
     this->ptr_fm_ = ptr_fm;
     //this->fs_ = NULL;
-    this->ptr_globalFeature2LocalFeature_ = new std::unordered_map<int, int>();
     this->isFinalized_ = false;
     this->is_gobal_mode_ = false;
     // to be done for multithread
@@ -27,10 +26,12 @@ LocalNetworkParam::LocalNetworkParam(int threadId, FeatureManager *ptr_fm, int n
     }
     is_cache_enabled_ = true;
     ptr_cache_ = nullptr;
+    ptr_globalFeature2LocalFeature_ = nullptr;
 }
 
 LocalNetworkParam::~LocalNetworkParam() {
     //TODO for delete
+    delete ptr_globalFeature2LocalFeature_;
 }
 
 void LocalNetworkParam::DisableCache() {
@@ -59,6 +60,7 @@ void LocalNetworkParam::FinalizeIt() {
         this->isFinalized_ = true;
         return;
     }
+    this->ptr_globalFeature2LocalFeature_ = new std::unordered_map<int, int>;
     fs_size_ = this->ptr_globalFeature2LocalFeature_->size();
     this->ptr_fs_ = new int[fs_size_];
     // to be confirmed for this part: global to local feature.
@@ -69,6 +71,7 @@ void LocalNetworkParam::FinalizeIt() {
     }
     this->isFinalized_= true;
     this->ptr_counts_ = new double[fs_size_];
+    //find the networks with the maximum nodes.
 }
 
 bool LocalNetworkParam::isCacheAble() {
@@ -170,5 +173,4 @@ void LocalNetworkParam::AddCount(int f_local, double count) {
 
 void LocalNetworkParam::SetGlobalMode() {
     this->is_gobal_mode_ = true;
-    this->ptr_globalFeature2LocalFeature_ = nullptr;
 }

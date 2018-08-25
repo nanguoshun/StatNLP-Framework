@@ -17,7 +17,7 @@ NetworkModel::~NetworkModel() {
   delete []pptr_learner_;
   delete []pptr_decoder_;
   delete []ptr_learn_thread_vector_;
-  delete []ptr_decode_thread_vector_;
+  delete ptr_decode_thread_vector_;
 
   for(auto it = ptr_split_inst_test_->begin(); it != ptr_split_inst_test_->end(); ++it){
       delete (*it);
@@ -78,12 +78,12 @@ std::vector<Instance *>* NetworkModel::Decode(std::vector<Instance *> *ptr_test_
     for(int threadid = 0; threadid < this->num_threads_; ++threadid){
         this->pptr_decoder_[threadid] = new LocalNetworkDecoderThread(threadid,(*ptr_split_inst_test_)[threadid],ptr_fm_,ptr_nc_);
     }
-    this->ptr_decode_thread_vector_ = new std::thread[this->num_threads_];
+    this->ptr_decode_thread_vector_ = new std::vector<std::thread>;
     for(int threadid = 0; threadid < this->num_threads_; ++threadid){
-        ptr_decode_thread_vector_[threadid] = std::thread(&LocalNetworkDecoderThread::Run,pptr_decoder_[threadid]);
+        ptr_decode_thread_vector_->push_back(std::thread(&LocalNetworkDecoderThread::Run,pptr_decoder_[threadid]));
     }
     for(int threadid = 0; threadid < this->num_threads_; ++threadid) {
-        ptr_decode_thread_vector_[threadid].join();
+        (*ptr_decode_thread_vector_)[threadid].join();
     }
     std::cout <<"decode done"<<std::endl;
     std::vector<Instance *> *ptr_result = new std::vector<Instance *>;

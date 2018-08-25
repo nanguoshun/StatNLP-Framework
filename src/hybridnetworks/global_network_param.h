@@ -37,10 +37,12 @@ public:
     double *GetOutsideSharedArray(int threadId);
     double **GetInsideSharedArray();
     double **GetOutsideSharedArray();
-    int GetInsideSharedArraySize(int threadId);
+    int GetSharedArraySize(int threadId);
     int GetOutsideSharedArraySize(int threadId);
-    int *GetInsideSharedArraySize();
+    //int *GetInsideSharedArraySize();
     int *GetOutsideSharedArraySize();
+    //caution: this function should be sychronized in multithread
+    void AllocateSharedArray(int threadid, int node_count);
 private:
     bool is_locked_;
     //the num of feature (feature size)
@@ -67,7 +69,7 @@ private:
     int version_;
     double **ptr_inside_shared_array_;
     double **ptr_outside_shared_array_;
-    int* ptr_inside_shared_array_size_;
+    int* ptr_shared_array_size_;
     int* ptr_outside_shared_array_size_;
 };
 

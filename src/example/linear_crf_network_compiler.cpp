@@ -187,9 +187,7 @@ LinearCRFInstance* LinearCRFNetworkCompiler::Decompile(Network *ptr_network) {
             std::cerr << "Error:the position encoded in the node not the same as the interpretation! @LinearCRFNetworkCompiler::Decompile"<<std::endl;
         }
         node_k = child_k;
-
     }
-
     LinearCRFInstance *ptr_inst_du = new LinearCRFInstance(ptr_inst->GetInstanceId(),ptr_inst->GetWeight(),ptr_inst->GetInput(),ptr_inst->GetOutPut());
     ptr_inst_du->SetPrediction(ptr_prediction);
     return  ptr_inst_du;

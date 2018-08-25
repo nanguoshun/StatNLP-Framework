@@ -25,13 +25,13 @@ GlobalNetworkParam::GlobalNetworkParam() {
     ptr_inside_shared_array_ = new double*[ComParam::Num_Of_Threads];
     ptr_outside_shared_array_ = new double*[ComParam::Num_Of_Threads];
 
-    ptr_inside_shared_array_size_ = new int[ComParam::Num_Of_Threads];
+    ptr_shared_array_size_ = new int[ComParam::Num_Of_Threads];
     ptr_outside_shared_array_size_ = new int[ComParam::Num_Of_Threads];
 
     for(int threadid = 0; threadid < ComParam::Num_Of_Threads; ++threadid){
         ptr_inside_shared_array_[threadid] = nullptr;
         ptr_outside_shared_array_[threadid] = nullptr;
-        ptr_inside_shared_array_size_[threadid] = 0;
+        ptr_shared_array_size_[threadid] = 0;
         ptr_outside_shared_array_size_[threadid] = 0;
     }
 }
@@ -46,12 +46,12 @@ GlobalNetworkParam::~GlobalNetworkParam() {
     }
     delete ptr_featureIntMap_;
     for(int threadId=0; threadId<ComParam::Num_Of_Threads; ++threadId){
-        delete ptr_inside_shared_array_[threadId];
-        delete ptr_outside_shared_array_[threadId];
+        delete []ptr_inside_shared_array_[threadId];
+        delete []ptr_outside_shared_array_[threadId];
     }
     delete []ptr_inside_shared_array_;
     delete []ptr_outside_shared_array_;
-    delete []ptr_inside_shared_array_size_;
+    delete []ptr_shared_array_size_;
     delete []ptr_outside_shared_array_size_;
     //delete ptr_type2InputMap_;
 }
@@ -275,18 +275,25 @@ double* GlobalNetworkParam::GetOutsideSharedArray(int threadId) {
     return ptr_outside_shared_array_[threadId];
 }
 
-int GlobalNetworkParam::GetInsideSharedArraySize(int threadId) {
-    return ptr_inside_shared_array_size_[threadId];
+int GlobalNetworkParam::GetSharedArraySize(int threadId) {
+    return ptr_shared_array_size_[threadId];
 }
 
 int GlobalNetworkParam::GetOutsideSharedArraySize(int threadId) {
     return ptr_outside_shared_array_size_[threadId];
 }
 
+/*
 int* GlobalNetworkParam::GetInsideSharedArraySize() {
     return ptr_inside_shared_array_size_;
-}
+}*/
 
 int* GlobalNetworkParam::GetOutsideSharedArraySize() {
     return ptr_outside_shared_array_size_;
+}
+
+void GlobalNetworkParam::AllocateSharedArray(int threadid, int node_count) {
+    ptr_inside_shared_array_[threadid] = new double[node_count];
+    ptr_outside_shared_array_[threadid] = new double[node_count];
+    ptr_shared_array_size_[threadid] = node_count;
 }

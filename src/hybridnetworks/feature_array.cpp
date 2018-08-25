@@ -56,6 +56,7 @@ double FeatureArray::GetScore(LocalNetworkParam *ptr_local_param) {
     if(this->ptr_next_ != nullptr){
         this->score_ += this->ptr_next_->GetScore(ptr_local_param);
     }
+    return this->score_;
 }
 
 /**

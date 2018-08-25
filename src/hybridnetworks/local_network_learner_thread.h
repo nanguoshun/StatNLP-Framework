@@ -15,7 +15,6 @@ public:
     ~LocalNetworkLearnerThread();
     void Touch();
     Network* GetNetwork(int networkId);
-    void Train();
     void Run();
 protected:
     int thread_id_;

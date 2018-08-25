@@ -37,10 +37,10 @@ void ReadData(std::string file_name, std::vector<Instance*> *ptr_inst_vec_all, s
             is_allocate_vector = false;
         }
         if(str.length() == 0){
-            LinearCRFInstance *ptr_crf_inst = new LinearCRFInstance(instance_id,1,ptr_vec_matrix,ptr_labels);
+            LinearCRFInstance *ptr_crf_inst = new LinearCRFInstance(instance_id,1.0,ptr_vec_matrix,ptr_labels);
             LinearCRFInstance *ptr_crf_inst_du = nullptr;
             if(!istest){
-                ptr_crf_inst_du = new LinearCRFInstance(-instance_id,-1,ptr_list_vect_du,ptr_labels_du);
+                ptr_crf_inst_du = new LinearCRFInstance(-instance_id,-1.0,ptr_list_vect_du,ptr_labels_du);
             }
             if(isLabeled){
                 ptr_crf_inst->SetLabeled();
@@ -53,7 +53,11 @@ void ReadData(std::string file_name, std::vector<Instance*> *ptr_inst_vec_all, s
                 ptr_inst_vec_all_duplicate->push_back(ptr_crf_inst_du);
             }
             is_allocate_vector = true;
-            std::cout <<"The end of "<<instance_id<<" th instance" <<std::endl;
+            if(!istest){
+                std::cout <<"The end of "<<instance_id<<" th training instance" <<std::endl;
+            } else{
+                std::cout <<"The end of "<<instance_id<<" th test instance" <<std::endl;
+            }
             std::cout << std::endl;
         } else{
             std::stringstream ss(str);
@@ -109,7 +113,7 @@ void ReleaseStaticPointer(){
 int main(){
     std::string train_file_name = "/Users/ngs/Documents/cplusproject/statNLP/data/conll2000/sample_train.txt";
     //std::string train_file_name = "/Users/ngs/Documents/cplusproject/statNLP/data/conll2000/sample_part_train.txt";
-    std::string test_file_name =  "/Users/ngs/Documents/cplusproject/statNLP/data/conll2000/sample_part_test.txt";
+    std::string test_file_name =  "/Users/ngs/Documents/cplusproject/statNLP/data/conll2000/sample_test.txt";
     std::vector<Instance*> *ptr_inst_vec_all = new std::vector<Instance *>;
     std::vector<Instance*> *ptr_inst_vec_all_duplicate_ = new std::vector<Instance *>;
     std::vector<Instance*> *ptr_inst_vec_all_test = new std::vector<Instance*>;
@@ -132,10 +136,10 @@ int main(){
     int total = 0;
     int count = 0;
 
-    auto itt = ptr_inst_vec_all_test->begin();
-    for(auto it = ptr_predictions->begin(); it != ptr_predictions->end(); ++it, ++itt){
-        LinearCRFInstance *ptr_predict = (LinearCRFInstance *)(*it);
-        LinearCRFInstance *ptr_golden = (LinearCRFInstance *)(*itt);
+    auto itt_gloden = ptr_inst_vec_all_test->begin();
+    for(auto it_pre = ptr_predictions->begin(); it_pre != ptr_predictions->end(); ++it_pre, ++itt_gloden){
+        LinearCRFInstance *ptr_predict = (LinearCRFInstance *)(*it_pre);
+        LinearCRFInstance *ptr_golden = (LinearCRFInstance *)(*itt_gloden);
         std::vector<std::string> *ptr_predict_vec = ptr_predict->GetOutPut();
         std::vector<std::string> *ptr_golden_vec = ptr_golden->GetOutPut();
         int inst_size = ptr_predict_vec->size();
@@ -148,9 +152,9 @@ int main(){
             ++total;
         }
     }
-    double acuracy = double(corr) / (double)(total);
+    double accuracy = double(corr) / (double)(total);
     std::cout << "Correct and Total are: "<<corr<<","<<total<<std::endl;
-    std::cout <<"Accuracy is: "<< acuracy <<std::endl;
+    std::cout <<"Accuracy is: "<< accuracy <<std::endl;
     //release the memory
     delete ptr_param_g;
     delete ptr_fm;
