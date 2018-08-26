@@ -244,11 +244,20 @@ void TableLookupNetwork::Remove(int k) {
 }
 
 bool TableLookupNetwork::IsRoot(int k) {
-    return false;
+    if(k == this->CountNodes() - 1){
+        return true;
+    } else{
+        return false;
+    }
 }
 
 bool TableLookupNetwork::IsLeaf(int k) {
-    return false;
+    //no childrens (hypedge) for the leaf node.
+    if(0 == this->GetChildrens_Size(k)){
+        return true;
+    } else{
+        return false;
+    }
 }
 
 bool TableLookupNetwork::IsContain(long node) {

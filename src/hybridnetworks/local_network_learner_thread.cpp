@@ -41,8 +41,9 @@ void LocalNetworkLearnerThread::Touch() {
 //        tmp_cout[networkId] = ptr_param_l_->GetFeatureManager()->temp_count_;
   //      tmp_cout[networkId] = ptr_param_l_->GetFeatureManager()->GetGlobalParam()->tmp_count_;
   //      tmp_coun_value += tmp_cout[networkId];
-        if(this->GetNetwork(networkId)->CountNodes() > max_size_node_count){
-            max_size_node_count = this->GetNetwork(networkId)->CountNodes();
+        int num_node = this->GetNetwork(networkId)->CountNodes();
+        if(num_node > max_size_node_count){
+            max_size_node_count = num_node;
         }
     }
     //allocate the share array to store inside and outside value in each thread.

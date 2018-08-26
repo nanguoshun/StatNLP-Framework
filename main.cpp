@@ -36,7 +36,7 @@ void ReadData(std::string file_name, std::vector<Instance*> *ptr_inst_vec_all, s
             ptr_labels_du = new std::vector<std::string>;
             is_allocate_vector = false;
         }
-        if(str.length() == 0){
+        if(str == ". . O"){
             LinearCRFInstance *ptr_crf_inst = new LinearCRFInstance(instance_id,1.0,ptr_vec_matrix,ptr_labels);
             LinearCRFInstance *ptr_crf_inst_du = nullptr;
             if(!istest){
@@ -111,13 +111,15 @@ void ReleaseStaticPointer(){
 }
 
 int main(){
-    std::string train_file_name = "/Users/ngs/Documents/cplusproject/statNLP/data/conll2000/sample_train.txt";
-    //std::string train_file_name = "/Users/ngs/Documents/cplusproject/statNLP/data/conll2000/sample_part_train.txt";
-    std::string test_file_name =  "/Users/ngs/Documents/cplusproject/statNLP/data/conll2000/sample_test.txt";
+    //std::string train_file_name = "/Users/ngs/Documents/cplusproject/statNLP/data/conll2000/sample_train.txt";
+    std::string train_file_name = "/Users/ngs/Documents/cplusproject/statNLP/data/conll2000/sample_part_train.txt";
+    std::string test_file_name =  "/Users/ngs/Documents/cplusproject/statNLP/data/conll2000/sample_part_test.txt";
+    //std::string test_file_name =  "/Users/ngs/Documents/cplusproject/statNLP/data/conll2000/sample_test.txt";
     std::vector<Instance*> *ptr_inst_vec_all = new std::vector<Instance *>;
     std::vector<Instance*> *ptr_inst_vec_all_duplicate_ = new std::vector<Instance *>;
     std::vector<Instance*> *ptr_inst_vec_all_test = new std::vector<Instance*>;
     ReadData(train_file_name,ptr_inst_vec_all,ptr_inst_vec_all_duplicate_,false,true,true);
+    int size = ptr_inst_vec_all->size();
     ReadData(test_file_name,ptr_inst_vec_all_test, nullptr, true, true, false);
     int num_iterations = 100;
     int size_train = ptr_inst_vec_all->size();

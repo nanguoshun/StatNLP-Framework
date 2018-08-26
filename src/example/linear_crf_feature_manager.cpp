@@ -68,7 +68,7 @@ FeatureArray* LinearCRFFeatureManager::ExtractHelper(Network *ptr_network, int p
                 std::vector<std::string> str_vec = (*ptr_input)[idx];
                 word = str_vec[0];
             }
-            if(idx > pos){
+            if(idx != pos){
                 continue;
             }
             std::string type = ptr_feature_type_[0].type + ":" + std::to_string(relIdx);

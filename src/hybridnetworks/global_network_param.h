@@ -23,7 +23,7 @@ public:
     double GetOldObj();
     int ToFeature(std::string type, std::string output, std::string input);
     void ExpandFeaturesForGenerativeModelDuringTesting();
-    double DoubleRandom(double min, double max);
+    double DoubleRandom();
     //caution: this function should be sychronized in multithread
     void ResetCountsAndObj();
     double SquareVector(double* vec, int size);

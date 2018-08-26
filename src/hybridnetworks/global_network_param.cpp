@@ -3,6 +3,8 @@
 //
 
 #include <random>
+#include <ctime>
+#include <stdlib.h>
 #include "global_network_param.h"
 
 GlobalNetworkParam::GlobalNetworkParam() {
@@ -69,9 +71,12 @@ void GlobalNetworkParam::LockIt() {
     this->ptr_weights_ = new double[size_];
     //note: no fixed feature size operation in current c++ version.
     for(int feature_no = this->fixed_feature_size_; feature_no < this->size_; ++feature_no ){
-        double random_value = DoubleRandom(0.0,1.0);
+        double random_value = DoubleRandom();
         random_value = (random_value - 0.5) / 10;
-        this->ptr_weights_[feature_no] =  ComParam::RANDOM_INIT_WEIGHT ? random_value:ComParam::FEATURE_INIT_WEIGHT;
+        this->ptr_weights_[feature_no] = 0.01; // ComParam::RANDOM_INIT_WEIGHT ? random_value:ComParam::FEATURE_INIT_WEIGHT;
+#ifdef DEBUG
+        std::cout <<feature_no<<"th feature weight is: "<< this->ptr_weights_[feature_no]<<std::endl;
+#endif
     }
     this->ResetCountsAndObj();
     this->ptr_feature2rep = new std::string*[size_];
@@ -108,7 +113,12 @@ bool GlobalNetworkParam::UpdateDiscriminative() {
      * go_on_training equals 0: training finished.
      * go_on_training equals 1: go on next training.
      */
-    int go_on_training = this->ptr_opt_->optimize(size_,ptr_weights_,-obj_current_,ptr_counts_, true, 1.0);
+    int go_on_training = 1; //= this->ptr_opt_->optimize(size_,ptr_weights_,-obj_current_,ptr_counts_, true, 1.0);
+    for(int i=0; i<size_; ++i){
+        std::cout << i <<"th weights before is: "<<ptr_weights_[i]<<"  gradient is: "<<ptr_counts_[i]<<std::endl;
+        ptr_weights_[i] = ptr_weights_[i] + 0.01 * ptr_counts_[i];
+        std::cout << i << "th weights after is: "<<ptr_weights_[i]<<std::endl;
+    }
     double diff = this->obj_current_ - this->obj_prev_;
     //if the objective function converged, finish training
     if(diff >=0 && diff < ComParam::OBJTOL){
@@ -201,31 +211,40 @@ void GlobalNetworkParam::ExpandFeaturesForGenerativeModelDuringTesting() {
     //TODO: for the generative models.
 }
 
-double GlobalNetworkParam::DoubleRandom(double min, double max) {
+double GlobalNetworkParam::DoubleRandom() {
+    /*
     std::uniform_real_distribution<double> unif(min, max);
     std::default_random_engine re;
     return unif(re);
+    */
+    double random_value = rand() / double (RAND_MAX);
+    return random_value;
+
 }
 
 void GlobalNetworkParam::ResetCountsAndObj() {
     for(int feature_no = 0; feature_no < size_; ++feature_no){
-        this->ptr_counts_[feature_no] = 0.0;
+        ptr_counts_[feature_no] = 0.0;
         //for regulation
-        if(this->IsDiscriminative() && this->kappa_ > 0 &&  feature_no >= this->fixed_feature_size_){
-          this->ptr_counts_[feature_no] += 2 * this->kappa_ * this->ptr_weights_[feature_no];
+        if(IsDiscriminative() && kappa_ > 0 &&  feature_no >= fixed_feature_size_){
+          ptr_counts_[feature_no] += 2 * kappa_ * ptr_weights_[feature_no];
         }
+#ifdef DEBUG
+std::cout << feature_no<<"th gradient is: "<<this->ptr_counts_[feature_no]<<std::endl;
+#endif
     }
-    this->obj_current_ = 0.0;
+    obj_current_ = 0.0;
     //for regulation
-    if(this->IsDiscriminative() && this->kappa_ > 0){
-        this->obj_current_ += - (this->kappa_ * SquareVector(ptr_weights_, size_));
+    if(IsDiscriminative() && kappa_ > 0){
+        obj_current_ += - (kappa_ * SquareVector(ptr_weights_, size_));
     }
 }
 
 double GlobalNetworkParam::SquareVector(double *vec, int size) {
     double value = 0.0;
     for(int i = 0; i < size; ++i){
-        value += vec[i] * vec[i];
+        double weight = vec[i];
+        value += weight * weight;
     }
     return value;
 }
@@ -244,6 +263,7 @@ void GlobalNetworkParam::AddCount(int feature_index, double count) {
         return;
     }
     /**
+     *
      * We set the gradient summation as negative, since the LBFGS that will be used as the optimizer,
      * aims to minimize the objective function.
      *

@@ -77,7 +77,9 @@ void Network::Inside() {
     }
     for(int nodeId=0; nodeId < num_node; ++nodeId){
         this->Inside(nodeId);
-        //std::cout << "NetworkID: "<<network_id_<< " Inside Index: "<< nodeId<< "  Value: "<<ptr_inside_[nodeId]<<std::endl;
+#ifdef DEBUG
+        std::cout << "NetworkID: "<<network_id_<< " Inside Index: "<< nodeId<< "  Value: "<<ptr_inside_[nodeId]<<std::endl;
+#endif
     }
 }
 
@@ -87,11 +89,13 @@ void Network::Outside() {
     //init the outside value of each node.
     int num_node = CountNodes();
     for(int nodeId=0; nodeId<num_node; ++nodeId){
-        ptr_outside_[nodeId] = 0;
+        ptr_outside_[nodeId] = ComParam::DOUBLE_NEGATIVE_INFINITY;
     }
     for(int nodeId = num_node - 1; nodeId >= 0; --nodeId){
         this->Outside(nodeId);
-        //std::cout << "NetworkID: "<<network_id_<< " Outside Index: "<< nodeId<< "  Value: "<<ptr_outside_[nodeId]<<std::endl;
+#ifdef DEBUG
+        std::cout << "NetworkID: "<<network_id_<< " Outside Index: "<< nodeId<< "  Value: "<<ptr_outside_[nodeId]<<std::endl;
+#endif
     }
 }
 
@@ -188,9 +192,9 @@ void Network::Inside(int nodeId) {
         } else if(v1 == v2 && v2 == ComParam::DOUBLE_NEGATIVE_INFINITY){
             inside = ComParam::DOUBLE_NEGATIVE_INFINITY;
         } else if(v1 > v2){
-            inside = std::log(std::exp(score-inside)) + inside;
+            inside = std::log(std::exp(score-inside)+1) + inside;
         } else {
-            inside = std::log(std::exp(inside-score)) + score;
+            inside = std::log(std::exp(inside-score)+1) + score;
         }
     }
     ptr_inside_[nodeId] = inside;
@@ -248,9 +252,9 @@ void Network::Outside(int nodeId) {
             double v2 = score - ptr_inside_[index];
             if(v1 > v2){
                 //log sum computation.
-                ptr_outside_[index] = v1 + std::log(std::exp(v2-v1));
+                ptr_outside_[index] = v1 + std::log(std::exp(v2-v1)+1);
             } else{
-                ptr_outside_[index] = v2 + std::log(std::exp(v1-v2));
+                ptr_outside_[index] = v2 + std::log(std::exp(v1-v2)+1);
             }
         }
     }
@@ -265,6 +269,7 @@ void Network::Outside(int nodeId) {
  * Noted that the gradient for all features
  *
  * @param nodeId
+ *
  */
 void Network::UpdateGradient(int nodeId) {
     if(this->IsRemovded(nodeId)){
@@ -273,6 +278,7 @@ void Network::UpdateGradient(int nodeId) {
     int **ptr_children_vec = this->GetChildren(nodeId);
     int children_k_size = this->GetChildrens_Size(nodeId);
     //update each hyper-edge.
+    if()
     for(int children_k = 0; children_k < children_k_size; ++children_k){
         int *ptr_children_k = ptr_children_vec[children_k];
         int child_k_size = this->GetChildren_Size(nodeId)[children_k];
@@ -296,6 +302,9 @@ void Network::UpdateGradient(int nodeId) {
          * Details pls refer to Equation. 61 of Classical Probabilistic Models and Conditional Random Fields. Roman Klinger. 2007
          *
          */
+#ifdef DEBUG
+        std::cout <<nodeId<<"th node count is: "<<count<<std::endl;
+#endif
         ptr_fa->Update(ptr_param_l_,count);
     }
 }
