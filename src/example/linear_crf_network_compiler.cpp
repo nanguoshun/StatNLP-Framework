@@ -164,7 +164,7 @@ LinearCRFInstance* LinearCRFNetworkCompiler::Decompile(Network *ptr_network) {
     int num_node = ptr_network->CountNodes();
     LinearCRFInstance *ptr_inst = (LinearCRFInstance *) ptr_network->GetInstance();
     int size = ptr_inst->GetSize();
-    std::vector<std::string> *ptr_prediction = new std::vector<std::string>(num_node);
+    std::vector<std::string> *ptr_prediction = new std::vector<std::string>(size);
     long root = ToNodeRoot(size);
     int node_k = 0;
     for(int i=0; i< num_node; ++i){
@@ -175,14 +175,14 @@ LinearCRFInstance* LinearCRFNetworkCompiler::Decompile(Network *ptr_network) {
         }
     }
     for(int i = size - 1; i >=0; --i){
-        int* ptr_nodes = ptr_network->GetPath(node_k);
+        int* ptr_nodes = ptr_network->GetMaxPath(node_k);
         int child_k = ptr_nodes[0];
         long node = ptr_network->GetNode(child_k);
         std::vector<int> array = NetworkIDManager::ToHybridNodeArray(node);
         int pos = array[0] - 1;
         int tag_id = array[1];
-        (*ptr_prediction)[num_node-1] = labels_[tag_id];
-
+        std::string tag_str = labels_[tag_id];
+        (*ptr_prediction)[i] = tag_str;
         if(pos != i){
             std::cerr << "Error:the position encoded in the node not the same as the interpretation! @LinearCRFNetworkCompiler::Decompile"<<std::endl;
         }

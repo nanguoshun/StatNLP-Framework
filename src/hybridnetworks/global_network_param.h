@@ -71,6 +71,7 @@ private:
     double **ptr_outside_shared_array_;
     int* ptr_shared_array_size_;
     int* ptr_outside_shared_array_size_;
+    std::mutex mtx;
 };
 
 #endif //STATNLP_GLOBAL_NETWORK_PARAM_H

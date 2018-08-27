@@ -1,3 +1,9 @@
 Confidence NN B-NP
 in IN B-PP
 . . O
+
+another DT B-NP
+sharp JJ I-NP
+dive NN I-NP
+. . O
+

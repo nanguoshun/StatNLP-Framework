@@ -29,6 +29,11 @@ public:
     void Reset();
     void AddCount(int f_local,double count);
     void SetGlobalMode();
+    int ToLocalFeature(int f_global);
+    int  *GetFeatures();
+    int GetFeatureSize();
+    double GetCount(int f_local);
+    double GetObj();
 protected:
     int thread_id_;
     FeatureManager *ptr_fm_;

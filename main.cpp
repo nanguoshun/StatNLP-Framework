@@ -36,7 +36,7 @@ void ReadData(std::string file_name, std::vector<Instance*> *ptr_inst_vec_all, s
             ptr_labels_du = new std::vector<std::string>;
             is_allocate_vector = false;
         }
-        if(str == ". . O"){
+        if(0 == str.length()){
             LinearCRFInstance *ptr_crf_inst = new LinearCRFInstance(instance_id,1.0,ptr_vec_matrix,ptr_labels);
             LinearCRFInstance *ptr_crf_inst_du = nullptr;
             if(!istest){
@@ -111,10 +111,11 @@ void ReleaseStaticPointer(){
 }
 
 int main(){
-    //std::string train_file_name = "/Users/ngs/Documents/cplusproject/statNLP/data/conll2000/sample_train.txt";
-    std::string train_file_name = "/Users/ngs/Documents/cplusproject/statNLP/data/conll2000/sample_part_train.txt";
-    std::string test_file_name =  "/Users/ngs/Documents/cplusproject/statNLP/data/conll2000/sample_part_test.txt";
-    //std::string test_file_name =  "/Users/ngs/Documents/cplusproject/statNLP/data/conll2000/sample_test.txt";
+//    std::string train_file_name = "/Users/ngs/Documents/cplusproject/statNLP/data/conll2000/sample_part_train.txt";
+    //std::string test_file_name =  "/Users/ngs/Documents/cplusproject/statNLP/data/conll2000/sample_part_test.txt";
+    std::string train_file_name = "/Users/ngs/Documents/cplusproject/statNLP/data/conll2000/sample_train.txt";
+    //std::string train_file_name = "/Users/ngs/Documents/cplusproject/statNLP/data/conll2000/train.txt";
+    std::string test_file_name =  "/Users/ngs/Documents/cplusproject/statNLP/data/conll2000/sample_test.txt";
     std::vector<Instance*> *ptr_inst_vec_all = new std::vector<Instance *>;
     std::vector<Instance*> *ptr_inst_vec_all_duplicate_ = new std::vector<Instance *>;
     std::vector<Instance*> *ptr_inst_vec_all_test = new std::vector<Instance*>;
@@ -137,13 +138,17 @@ int main(){
     int corr = 0;
     int total = 0;
     int count = 0;
-
     auto itt_gloden = ptr_inst_vec_all_test->begin();
+
+    int index = 0;
     for(auto it_pre = ptr_predictions->begin(); it_pre != ptr_predictions->end(); ++it_pre, ++itt_gloden){
+        index++;
         LinearCRFInstance *ptr_predict = (LinearCRFInstance *)(*it_pre);
-        LinearCRFInstance *ptr_golden = (LinearCRFInstance *)(*itt_gloden);
-        std::vector<std::string> *ptr_predict_vec = ptr_predict->GetOutPut();
+        LinearCRFInstance *ptr_golden = (LinearCRFInstance *)(*it_pre);
+        std::vector<std::string> *ptr_predict_vec = ptr_predict->GetPrediction();
         std::vector<std::string> *ptr_golden_vec = ptr_golden->GetOutPut();
+        int input_size = ptr_golden->GetInput()->size();
+        int golden_size = ptr_golden_vec->size();
         int inst_size = ptr_predict_vec->size();
         for(int i = 0; i < inst_size; ++i){
             std::string predict_str = (*ptr_predict_vec)[i];
@@ -157,12 +162,14 @@ int main(){
     double accuracy = double(corr) / (double)(total);
     std::cout << "Correct and Total are: "<<corr<<","<<total<<std::endl;
     std::cout <<"Accuracy is: "<< accuracy <<std::endl;
+
     //release the memory
     delete ptr_param_g;
     delete ptr_fm;
     delete ptr_nc;
     delete ptr_nm;
     //BaseInstance<int, int, int> ins(a,b,c,d,e);//*ptr = new LinearCRFInstance(a,b,c);
+
     Release(ptr_inst_vec_all);
     Release(ptr_inst_vec_all_duplicate_);
     Release(ptr_inst_vec_all_test);

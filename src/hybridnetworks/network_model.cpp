@@ -34,11 +34,19 @@ void NetworkModel::Train(std::vector<Instance *> *ptr_all_instances, std::vector
     }
     pptr_learner_ = new LocalNetworkLearnerThread*[this->num_threads_];
     std::vector<std::vector<Instance*>*> *ptr_inst = this->SplitInstanceForTrain();
+
+    int size = ptr_inst->size();
+    for(int i = 0; i<size; ++i ){
+        int ss = (*ptr_inst)[i]->size();
+        std::cout << i << "th thread: "<<ss<<std::endl;
+    }
+
     for (int threadId = 0; threadId < this->num_threads_; ++threadId) {
         pptr_learner_[threadId] = new LocalNetworkLearnerThread(threadId, this->ptr_fm_,
                                                                             (*ptr_inst)[threadId], this->ptr_nc_, -1);
         pptr_learner_[threadId]->Touch();
     }
+
     //
     this->ptr_fm_->GetGlobalParam()->LockIt();
     std::cout <<"tmp cout is: "<<this->ptr_fm_->temp_count_<<std::endl;
@@ -46,16 +54,16 @@ void NetworkModel::Train(std::vector<Instance *> *ptr_all_instances, std::vector
     double obj_old = ComParam::DOUBLE_NEGATIVE_INFINITY;
     //EM algorithm
     long start_time = clock();
-    ptr_learn_thread_vector_ = new std::thread[this->num_threads_];
+    ptr_learn_thread_vector_ = new std::vector<std::thread>;
     for (int i = 0; i < max_num_interations; ++i) {
         long time = clock();
         for (int threadId = 0; threadId < this->num_threads_; ++threadId) {
             //this->pptr_learner_[threadId]
-            ptr_learn_thread_vector_[threadId] = std::thread(&LocalNetworkLearnerThread::Run,pptr_learner_[threadId]);
+            ptr_learn_thread_vector_->push_back(std::thread(&LocalNetworkLearnerThread::Run,pptr_learner_[threadId]));
         }
         for (int threadId = 0; threadId < this->num_threads_; ++threadId) {
             //this->pptr_learner_[threadId]
-            ptr_learn_thread_vector_[threadId].join();
+            (*ptr_learn_thread_vector_)[threadId].join();
         }
         bool done = this->ptr_fm_->Update();
         double obj = this->ptr_fm_->GetGlobalParam()->GetOldObj();

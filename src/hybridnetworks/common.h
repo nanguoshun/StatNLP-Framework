@@ -11,11 +11,20 @@
 #include <list>
 #include <cmath>
 
-#define DEBUG = 2;
+//#define DEBUG = 2;
+
+#ifndef GLOBAL__
+#define GLOBAL__
+#endif
+
+#ifndef GLOBAL_
+#define GLOBAL_
+#endif
+
 
 namespace ComParam{
     const int MAX_LENGTH = 300;
-    const int Num_Of_Threads = 1;
+    const int Num_Of_Threads = 8;
     const bool _CACHE_FEATURES_DURING_TRAINING = true;
     const double DOUBLE_NEGATIVE_INFINITY = -std::numeric_limits<double>::infinity();
     const double TRAIN_MODE_IS_GENERATIVE = false;
@@ -30,7 +39,6 @@ namespace ComParam{
 
     const double OBJTOL = 10e-15;
 }
-
 
 namespace ComType{
 

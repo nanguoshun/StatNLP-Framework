@@ -24,7 +24,8 @@ std::vector<std::vector<Instance*>*> * DiscriminativeNetworkModel::SplitInstance
     }
     threadId = 0;
     //allocate instances to different thread.
-    for(int instId = 0; instId < this->ptr_inst_all_->size(); ++instId){
+    int inst_all_size = this->ptr_inst_all_->size();
+    for(int instId = 0; instId < inst_all_size; ++instId){
         //get the instance from instance vector
         Instance *ptr_inst = (*ptr_inst_all_)[instId];
         Instance *ptr_inst_du = (*ptr_inst_all_du_)[instId];

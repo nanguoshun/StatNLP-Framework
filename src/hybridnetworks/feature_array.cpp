@@ -13,6 +13,8 @@ FeatureArray::FeatureArray() {
     ptr_fs_ = nullptr;
     fs_size_ = 0;
     ptr_next_= nullptr;
+    islocal_ = false;
+
 }
 
 FeatureArray::~FeatureArray() {
@@ -24,6 +26,7 @@ FeatureArray::FeatureArray(int *ptr_fs, int fs_size) {
     ptr_fs_ = ptr_fs;
     fs_size_ = fs_size;
     ptr_next_ = nullptr;
+    islocal_ = false;
 }
 
 FeatureArray::FeatureArray(int *ptr_fs, int fs_size, FeatureArray *ptr_next) {
@@ -31,6 +34,7 @@ FeatureArray::FeatureArray(int *ptr_fs, int fs_size, FeatureArray *ptr_next) {
     ptr_fs_ = ptr_fs;
     fs_size_ = fs_size;
     ptr_next_ = ptr_next;
+    islocal_ = false;
 }
 
 FeatureArray::FeatureArray(double score) {
@@ -92,4 +96,25 @@ void FeatureArray::Update(LocalNetworkParam *ptr_param, double count) {
     if(nullptr != this->ptr_next_){
         this->ptr_next_->Update(ptr_param,count);
     }
+}
+
+FeatureArray* FeatureArray::ToLocal(LocalNetworkParam *ptr_param) {
+    if(islocal_){
+        return this;
+    }
+    int* ptr_fs_local = new int[fs_size_];
+    for (int i = 0; i < fs_size_; ++i){
+        ptr_fs_local[i] = ptr_param->ToLocalFeature(ptr_fs_[i]);
+        if(-1 == ptr_fs_local[i]){
+            std::cerr << "The local feature got an id of -1 for "<<ptr_fs_[i]<<std::endl;
+        }
+    }
+    FeatureArray *ptr_fa;
+    if(this->ptr_next_){
+        ptr_fa = new FeatureArray(ptr_fs_local,fs_size_,ptr_next_->ToLocal(ptr_param));
+    } else{
+        ptr_fa = new FeatureArray(ptr_fs_local,fs_size_);
+    }
+    islocal_ = true;
+    return ptr_fa;
 }

@@ -36,6 +36,8 @@ protected:
     //int word_hal_window_size_;
     int pos_hal_window_size_;
     int num_of_networks_;
+    std::mutex mtx;
+
 };
 
 #endif //STATNLP_FEATUREMANAGER_H

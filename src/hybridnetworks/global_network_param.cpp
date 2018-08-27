@@ -98,6 +98,9 @@ void GlobalNetworkParam::LockIt() {
 
 bool GlobalNetworkParam::Update() {
     bool done;
+#ifdef GLOBAL
+    std::lock_guard<std::mutex> mtx_locker(mtx);
+#endif
     if(this->IsDiscriminative()){
         done = this->UpdateDiscriminative();
     } else{
@@ -113,12 +116,13 @@ bool GlobalNetworkParam::UpdateDiscriminative() {
      * go_on_training equals 0: training finished.
      * go_on_training equals 1: go on next training.
      */
-    int go_on_training = 1; //= this->ptr_opt_->optimize(size_,ptr_weights_,-obj_current_,ptr_counts_, true, 1.0);
+    int go_on_training =  this->ptr_opt_->optimize(size_,ptr_weights_,-obj_current_,ptr_counts_, true, 1.0);
+/*
     for(int i=0; i<size_; ++i){
-        std::cout << i <<"th weights before is: "<<ptr_weights_[i]<<"  gradient is: "<<ptr_counts_[i]<<std::endl;
-        ptr_weights_[i] = ptr_weights_[i] + 0.01 * ptr_counts_[i];
-        std::cout << i << "th weights after is: "<<ptr_weights_[i]<<std::endl;
-    }
+        //std::cout << i <<"th weights before is: "<<ptr_weights_[i]<<"  gradient is: "<<ptr_counts_[i]<<std::endl;
+        ptr_weights_[i] = ptr_weights_[i] - 0.01 * ptr_counts_[i];
+        //std::cout << i << "th weights after is: "<<ptr_weights_[i]<<std::endl;
+    }*/
     double diff = this->obj_current_ - this->obj_prev_;
     //if the objective function converged, finish training
     if(diff >=0 && diff < ComParam::OBJTOL){
@@ -223,6 +227,9 @@ double GlobalNetworkParam::DoubleRandom() {
 }
 
 void GlobalNetworkParam::ResetCountsAndObj() {
+#ifdef GLOBAL
+    std::lock_guard<std::mutex> mtx_locker(mtx);
+#endif
     for(int feature_no = 0; feature_no < size_; ++feature_no){
         ptr_counts_[feature_no] = 0.0;
         //for regulation
@@ -250,10 +257,16 @@ double GlobalNetworkParam::SquareVector(double *vec, int size) {
 }
 
 void GlobalNetworkParam::AddObj(double obj) {
+#ifdef GLOBAL
+    std::lock_guard<std::mutex> mtx_locker(mtx);
+#endif
     this->obj_current_ += obj;
 }
 
 void GlobalNetworkParam::AddCount(int feature_index, double count) {
+#ifdef GLOBAL
+    std::lock_guard<std::mutex> mtx_locker(mtx);
+#endif
     if(isnan(count)){
         std::cerr<<"Error: the count is NAN: @GlobalNetworkParam::AddCount"<<std::endl;
         return;
@@ -264,7 +277,7 @@ void GlobalNetworkParam::AddCount(int feature_index, double count) {
     }
     /**
      *
-     * We set the gradient summation as negative, since the LBFGS that will be used as the optimizer,
+     * We set the gradient summation as negative, since the LBFGS that will be used,
      * aims to minimize the objective function.
      *
      */
@@ -313,6 +326,9 @@ int* GlobalNetworkParam::GetOutsideSharedArraySize() {
 }
 
 void GlobalNetworkParam::AllocateSharedArray(int threadid, int node_count) {
+#ifdef GLOBAL
+    std::lock_guard<std::mutex> mtx_locker(mtx);
+#endif
     ptr_inside_shared_array_[threadid] = new double[node_count];
     ptr_outside_shared_array_[threadid] = new double[node_count];
     ptr_shared_array_size_[threadid] = node_count;

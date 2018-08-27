@@ -8,6 +8,7 @@
 
 LocalNetworkParam::LocalNetworkParam() {
     std::cout << "default constructor of LocalNetworkParam is callded"<<std::endl;
+
 }
 
 LocalNetworkParam::LocalNetworkParam(int threadId, FeatureManager *ptr_fm, int numNetworks) {
@@ -17,16 +18,18 @@ LocalNetworkParam::LocalNetworkParam(int threadId, FeatureManager *ptr_fm, int n
     //this->fs_ = NULL;
     this->isFinalized_ = false;
     this->is_gobal_mode_ = false;
+    ptr_globalFeature2LocalFeature_ = nullptr;
     // to be done for multithread
     if(!ComParam::_CACHE_FEATURES_DURING_TRAINING){
         this->DisableCache();
     }
     if(ComParam::Num_Of_Threads ==1){
         this->is_gobal_mode_ = true;
+    } else{
+        this->ptr_globalFeature2LocalFeature_ = new std::unordered_map<int, int>;
     }
     is_cache_enabled_ = true;
     ptr_cache_ = nullptr;
-    ptr_globalFeature2LocalFeature_ = nullptr;
 }
 
 LocalNetworkParam::~LocalNetworkParam() {
@@ -60,7 +63,6 @@ void LocalNetworkParam::FinalizeIt() {
         this->isFinalized_ = true;
         return;
     }
-    this->ptr_globalFeature2LocalFeature_ = new std::unordered_map<int, int>;
     fs_size_ = this->ptr_globalFeature2LocalFeature_->size();
     this->ptr_fs_ = new int[fs_size_];
     // to be confirmed for this part: global to local feature.
@@ -118,6 +120,10 @@ FeatureArray* LocalNetworkParam::Extract(Network *ptr_network, int parent_k, int
     }
     //if the feature Array is not cached in the ptr_cache, then extract it via feature manager
     FeatureArray *ptr_fa = this->ptr_fm_->Extract(ptr_network,parent_k,ptr_children_k,children_k_index);
+    //convert the global feature array to local if it works in global mode. i.e., multi-thread.
+    if(!is_gobal_mode_){
+        ptr_fa = ptr_fa->ToLocal(this);
+    }
     if(this->isCacheAble()){
         //store the FeatureArray pointer to the cache.
         this->ptr_cache_[ptr_network->GetNetworkID()][parent_k][children_k_index] = ptr_fa;
@@ -173,4 +179,38 @@ void LocalNetworkParam::AddCount(int f_local, double count) {
 
 void LocalNetworkParam::SetGlobalMode() {
     this->is_gobal_mode_ = true;
+}
+
+int* LocalNetworkParam::GetFeatures() {
+    return ptr_fs_;
+}
+
+int LocalNetworkParam::GetFeatureSize() {
+    return fs_size_;
+}
+
+double LocalNetworkParam::GetCount(int f_local) {
+    if(this->is_gobal_mode_){
+        std::cout << "you should not do this in a global mode"<<std::endl;
+    }
+    return this->ptr_counts_[f_local];
+}
+
+double LocalNetworkParam::GetObj() {
+    return this->current_obj_;
+}
+
+int LocalNetworkParam::ToLocalFeature(int f_global) {
+    if (is_gobal_mode_) {
+        std::cout << "Error: The current mode is global mode, converting a global feature to a local feature is not supported. @LocalNetworkParam::ToLocalFeature" << std::endl;
+    }
+    if(-1 == f_global){
+        return  -1;
+    }
+    if(ptr_globalFeature2LocalFeature_->find(f_global) == ptr_globalFeature2LocalFeature_->end()){
+        int size = ptr_globalFeature2LocalFeature_->size();
+        ptr_globalFeature2LocalFeature_->insert(std::make_pair(f_global,size));
+    }
+    int local_fs_id = this->ptr_globalFeature2LocalFeature_->find(f_global)->second;
+    return local_fs_id;
 }

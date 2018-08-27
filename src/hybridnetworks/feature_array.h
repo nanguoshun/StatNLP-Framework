@@ -24,6 +24,7 @@ public:
     int * GetCurrent();
     void Update(LocalNetworkParam *ptr_param, double count);
     static FeatureArray *PTR_EMPTY;
+    FeatureArray *ToLocal(LocalNetworkParam *ptr_param);
 private:
     double score_;
     int *ptr_fs_;
@@ -31,5 +32,7 @@ private:
     //multiple threads, the fs_size_ should be big enough. i.e., 1/2 of the overall feature num.
     int fs_size_;
     FeatureArray *ptr_next_;
+    bool islocal_;
 };
+
 #endif //STATNLP_FEATURE_ARRAY_H

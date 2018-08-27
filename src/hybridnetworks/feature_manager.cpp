@@ -31,8 +31,21 @@ GlobalNetworkParam* FeatureManager::GetGlobalParam() {
 }
 
 bool FeatureManager::Update() {
+#ifdef GLOBAL
+    std::lock_guard<std::mutex> mtx_locker(mtx);
+#endif
     if (this->num_of_threads_ != 1) {
-        //TODO: for multithread.
+        this->ptr_param_g_->ResetCountsAndObj();
+        for(int i=0; i<this->num_of_threads_; ++i){
+            int *ptr_fs = pptr_param_l_[i]->GetFeatures();
+            int fs_size = pptr_param_l_[i]->GetFeatureSize();
+            for(int j = 0; j < fs_size; ++j){
+                int fs_global = ptr_fs[j];
+                double count = pptr_param_l_[i]->GetCount(j);
+                this->ptr_param_g_->AddCount(fs_global,count);
+            }
+            this->ptr_param_g_->AddObj(pptr_param_l_[i]->GetObj());
+        }
     }
     bool done = this->ptr_param_g_->Update();
 

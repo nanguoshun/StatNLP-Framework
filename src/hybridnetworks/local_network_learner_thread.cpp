@@ -13,9 +13,10 @@ LocalNetworkLearnerThread::LocalNetworkLearnerThread(int threadId, FeatureManage
     this->it_no_ = it;
     this->network_capcity_ = ComParam::NETWORK_CAPACITY;
     this->cache_networks_ = true;
+    int size = ptr_ins_vector->size();
     if(this->cache_networks_){
-        this->ptr_network_ = new Network*[ptr_ins_vector->size()];
-        for(int i=0; i<ptr_ins_vector->size(); ++i){
+        this->ptr_network_ = new Network*[size];
+        for(int i=0; i<size; ++i){
             this->ptr_network_[i] = nullptr;
         }
     }

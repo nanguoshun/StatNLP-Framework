@@ -13,7 +13,7 @@
 #include "local_network_learner_thread.h"
 #include "local_network_decoder_thread.h"
 #include <vector>
-#include <thread>
+
 class NetworkModel{
 public:
 NetworkModel(FeatureManager *ptr_fm, NetworkCompiler *ptr_nc);
@@ -32,7 +32,7 @@ protected:
     std::vector<Instance *> *ptr_inst_all_du_;
     LocalNetworkLearnerThread **pptr_learner_;
     LocalNetworkDecoderThread **pptr_decoder_;
-    std::thread *ptr_learn_thread_vector_;
+    std::vector<std::thread> *ptr_learn_thread_vector_;
     std::vector<std::thread> *ptr_decode_thread_vector_;
     std::vector<Instance *> *ptr_inst_all_test_;
     std::vector<std::vector<Instance*>*> *ptr_split_inst_test_;
