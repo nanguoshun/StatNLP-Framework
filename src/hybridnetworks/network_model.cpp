@@ -46,17 +46,18 @@ void NetworkModel::Train(std::vector<Instance *> *ptr_all_instances, std::vector
                                                                             (*ptr_inst)[threadId], this->ptr_nc_, -1);
         pptr_learner_[threadId]->Touch();
     }
-
     //
     this->ptr_fm_->GetGlobalParam()->LockIt();
     std::cout <<"tmp cout is: "<<this->ptr_fm_->temp_count_<<std::endl;
     std::cout <<"tmp cout is: "<<this->ptr_fm_->GetGlobalParam()->tmp_count_<<std::endl;
     double obj_old = ComParam::DOUBLE_NEGATIVE_INFINITY;
     //EM algorithm
-    long start_time = clock();
+//    long start_time = clock();
+    int start_time = GetCurrentMillionSeconds();
     ptr_learn_thread_vector_ = new std::vector<std::thread>;
     for (int i = 0; i < max_num_interations; ++i) {
-        long time = clock();
+//        long time = clock();
+        int time = GetCurrentMillionSeconds();
         for (int threadId = 0; threadId < this->num_threads_; ++threadId) {
             //this->pptr_learner_[threadId]
             ptr_learn_thread_vector_->push_back(std::thread(&LocalNetworkLearnerThread::Run,pptr_learner_[threadId]));
@@ -67,14 +68,21 @@ void NetworkModel::Train(std::vector<Instance *> *ptr_all_instances, std::vector
         }
         bool done = this->ptr_fm_->Update();
         double obj = this->ptr_fm_->GetGlobalParam()->GetOldObj();
-        time = clock() - time;
+        //time = clock() - time;
+        time = GetCurrentMillionSeconds() - time;
+        /*
         std::cout << "Iteration: " << i << " Obj: " << obj << " Time: " << (double) time / (double)CLOCKS_PER_SEC <<
                   " Convergence: " << obj / obj_old << " Total Time: " << (double) (clock() - start_time) / (double)CLOCKS_PER_SEC << std::endl;
+        */
+        std::cout << "Iteration: " << i << " Obj: " << obj << " Time: " << (double) time / (double)1000 <<
+                  " Convergence: " << obj / obj_old << " Total Time: " << (double) (GetCurrentMillionSeconds() - start_time) / (double)1000 << std::endl;
+
         obj_old = obj;
         if (done) {
             std::cout << "Training complete after " << i << " iterations" << std::endl;
             break;
         }
+        ptr_learn_thread_vector_->clear();
     }
 }
 
@@ -130,4 +138,11 @@ void NetworkModel::SplitInstanceForTest() {
         }
         ptr_split_inst_test_->push_back(ptr_vec_inst);
     }
+}
+
+int NetworkModel::GetCurrentMillionSeconds() {
+    milliseconds ms = duration_cast< milliseconds >(
+            system_clock::now().time_since_epoch()
+    );
+    return ms.count();
 }

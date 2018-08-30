@@ -73,7 +73,7 @@ void GlobalNetworkParam::LockIt() {
     for(int feature_no = this->fixed_feature_size_; feature_no < this->size_; ++feature_no ){
         double random_value = DoubleRandom();
         random_value = (random_value - 0.5) / 10;
-        this->ptr_weights_[feature_no] = 0.01; // ComParam::RANDOM_INIT_WEIGHT ? random_value:ComParam::FEATURE_INIT_WEIGHT;
+        this->ptr_weights_[feature_no] = 0.01;// ComParam::RANDOM_INIT_WEIGHT ? random_value:ComParam::FEATURE_INIT_WEIGHT;
 #ifdef DEBUG
         std::cout <<feature_no<<"th feature weight is: "<< this->ptr_weights_[feature_no]<<std::endl;
 #endif
@@ -116,13 +116,19 @@ bool GlobalNetworkParam::UpdateDiscriminative() {
      * go_on_training equals 0: training finished.
      * go_on_training equals 1: go on next training.
      */
-    int go_on_training =  this->ptr_opt_->optimize(size_,ptr_weights_,-obj_current_,ptr_counts_, true, 1.0);
-/*
-    for(int i=0; i<size_; ++i){
-        //std::cout << i <<"th weights before is: "<<ptr_weights_[i]<<"  gradient is: "<<ptr_counts_[i]<<std::endl;
-        ptr_weights_[i] = ptr_weights_[i] - 0.01 * ptr_counts_[i];
-        //std::cout << i << "th weights after is: "<<ptr_weights_[i]<<std::endl;
-    }*/
+
+    int go_on_training =  1;
+
+    if(ComParam::OPT_LBFGS == ComParam::OPTIMIZER){
+        go_on_training = this->ptr_opt_->optimize(size_,ptr_weights_,-obj_current_,ptr_counts_, true, 1.0);
+    } else if(ComParam::OPT_SGD == ComParam::OPTIMIZER){
+        for(int i=0; i<size_; ++i){
+            //std::cout << i <<"th weights before is: "<<ptr_weights_[i]<<"  gradient is: "<<ptr_counts_[i]<<std::endl;
+            ptr_weights_[i] = ptr_weights_[i] - ComParam::LEARNING_RATE * ptr_counts_[i];
+            //std::cout << i << "th weights after is: "<<ptr_weights_[i]<<std::endl;
+        }
+    }
+
     double diff = this->obj_current_ - this->obj_prev_;
     //if the objective function converged, finish training
     if(diff >=0 && diff < ComParam::OBJTOL){

@@ -63,7 +63,7 @@ public:
         }
     }
 
-    inline void UpdateInsideOutside() {
+    inline void UpdateGradient() {
         int num_node = this->CountNodes();
         for (int nodeId = 0; nodeId < num_node; ++nodeId) {
             this->UpdateGradient(nodeId);

@@ -23,8 +23,10 @@
 
 
 namespace ComParam{
+    const int OPT_SGD = 0;
+    const int OPT_LBFGS = 1;
     const int MAX_LENGTH = 300;
-    const int Num_Of_Threads = 8;
+    const int Num_Of_Threads = 1;
     const bool _CACHE_FEATURES_DURING_TRAINING = true;
     const double DOUBLE_NEGATIVE_INFINITY = -std::numeric_limits<double>::infinity();
     const double TRAIN_MODE_IS_GENERATIVE = false;
@@ -36,8 +38,9 @@ namespace ComParam{
     const int FOREST_MAX_WIDTH = 10000;
     const int NETWORK_MAX_DEPTH = 901;
     const int NETWORK_CAPACITY = 1000000;
-
     const double OBJTOL = 10e-15;
+    const int OPTIMIZER = OPT_LBFGS;
+    const double LEARNING_RATE = 0.005;
 }
 
 namespace ComType{

@@ -13,7 +13,7 @@
 #include "local_network_learner_thread.h"
 #include "local_network_decoder_thread.h"
 #include <vector>
-
+using namespace std::chrono;
 class NetworkModel{
 public:
 NetworkModel(FeatureManager *ptr_fm, NetworkCompiler *ptr_nc);
@@ -22,6 +22,7 @@ void Train(std::vector<Instance *> *ptr_all_instances, std::vector<Instance *> *
 std::vector<Instance *>* Decode(std::vector<Instance *> *ptr_test_instences);
 virtual std::vector<std::vector<Instance*>*>* SplitInstanceForTrain() = 0;
 void SplitInstanceForTest();
+int GetCurrentMillionSeconds();
 protected:
     FeatureManager *ptr_fm_;
     NetworkCompiler *ptr_nc_;

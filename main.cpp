@@ -111,9 +111,9 @@ void ReleaseStaticPointer(){
 }
 
 int main(){
-//    std::string train_file_name = "/Users/ngs/Documents/cplusproject/statNLP/data/conll2000/sample_part_train.txt";
-    //std::string test_file_name =  "/Users/ngs/Documents/cplusproject/statNLP/data/conll2000/sample_part_test.txt";
     std::string train_file_name = "/Users/ngs/Documents/cplusproject/statNLP/data/conll2000/sample_train.txt";
+    //std::string test_file_name =  "/Users/ngs/Documents/cplusproject/statNLP/data/conll2000/sample_part_test.txt";
+    //std::string train_file_name = "/Users/ngs/Documents/cplusproject/statNLP/data/conll2000/sample_train.txt";
     //std::string train_file_name = "/Users/ngs/Documents/cplusproject/statNLP/data/conll2000/train.txt";
     std::string test_file_name =  "/Users/ngs/Documents/cplusproject/statNLP/data/conll2000/sample_test.txt";
     std::vector<Instance*> *ptr_inst_vec_all = new std::vector<Instance *>;
@@ -122,7 +122,7 @@ int main(){
     ReadData(train_file_name,ptr_inst_vec_all,ptr_inst_vec_all_duplicate_,false,true,true);
     int size = ptr_inst_vec_all->size();
     ReadData(test_file_name,ptr_inst_vec_all_test, nullptr, true, true, false);
-    int num_iterations = 100;
+    int num_iterations = 200;
     int size_train = ptr_inst_vec_all->size();
     int size_train_du = ptr_inst_vec_all_duplicate_->size();
     int size_test = ptr_inst_vec_all_test->size();

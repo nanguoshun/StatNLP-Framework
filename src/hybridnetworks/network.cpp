@@ -64,10 +64,9 @@ void Network::Train() {
     }
     this->Inside();
     this->Outside();
-    this->UpdateInsideOutside();
+    this->UpdateGradient();
     this->ptr_param_l_->AddObj(this->GetInside(this->CountNodes()-1) * weight_);
 }
-
 
 /**
  *
