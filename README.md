@@ -14,6 +14,11 @@ This document describes how to develop graphical machine learning model using ou
 * Linux
 * Windows
 
+## Build Dynet
+```bash
+cmake .. -DEIGEN3_INCLUDE_DIR=../../eigen -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS="-fsanitize=address"
+```
+
 ## Examples
 ### Linear Condition Random Field (CRF)
 ### Probability Context Free Grammer(PCFG)

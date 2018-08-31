@@ -8,6 +8,7 @@
 #include "src/hybridnetworks/network_model.h"
 #include "src/hybridnetworks/discriminative_network_model.h"
 #include "src/example/linear_crf_nework_compiler.h"
+#include "src/neural/neural_layer.h"
 
 static std::vector<std::string> all_labels;
 
@@ -110,7 +111,10 @@ void ReleaseStaticPointer(){
 //    delete Network::ptr_outside_shared_array_;
 }
 
-int main(){
+int main(int argc, char **argv){
+
+    NeuralLayer *ptr_nl = new NeuralLayer();
+    ptr_nl->Init(argc,argv);
     std::string train_file_name = "/Users/ngs/Documents/cplusproject/statNLP/data/conll2000/sample_train.txt";
     //std::string test_file_name =  "/Users/ngs/Documents/cplusproject/statNLP/data/conll2000/sample_part_test.txt";
     //std::string train_file_name = "/Users/ngs/Documents/cplusproject/statNLP/data/conll2000/sample_train.txt";
