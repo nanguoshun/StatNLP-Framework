@@ -16,7 +16,7 @@ set(cnn_library_SRCS
     gru.cc
     hsm-builder.cc
     init.cc
-    lstm.cc
+        lstm.cc
     mem.cc
     model.cc
     mp.cc
@@ -52,7 +52,7 @@ set(cnn_library_HDRS
     gru.h
     hsm-builder.h
     init.h
-    lstm.h
+        lstm.h
     mem.h
     model.h
     mp.h

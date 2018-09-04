@@ -32,21 +32,27 @@ void NetworkModel::Train(std::vector<Instance *> *ptr_all_instances, std::vector
     for(int inst_id = 0; inst_id < ptr_all_instances->size(); ++inst_id){
         (*ptr_inst_all_)[inst_id]->SetInstanceId(inst_id+1);
     }
+    //set the learning state
+    if(ComParam::USE_HYBRID_NEURAL_FEATURES == NetworkConfig::Feature_Type){
+        ptr_nn_g_ = this->ptr_fm_->GetGlobalParam()->GetNeuralNetworkParam();
+        ptr_nn_g_->SetLearningState();
+    } else if(ComParam::USE_PURE_NEURAL_FEATURES == NetworkConfig::Feature_Type){
+        //TODO:
+    }
+    //extract the features.
     pptr_learner_ = new LocalNetworkLearnerThread*[this->num_threads_];
     std::vector<std::vector<Instance*>*> *ptr_inst = this->SplitInstanceForTrain();
-
-    int size = ptr_inst->size();
-    for(int i = 0; i<size; ++i ){
-        int ss = (*ptr_inst)[i]->size();
-        std::cout << i << "th thread: "<<ss<<std::endl;
-    }
-
     for (int threadId = 0; threadId < this->num_threads_; ++threadId) {
         pptr_learner_[threadId] = new LocalNetworkLearnerThread(threadId, this->ptr_fm_,
                                                                             (*ptr_inst)[threadId], this->ptr_nc_, -1);
         pptr_learner_[threadId]->Touch();
     }
-    //
+    //set the parameters of neural network.
+    if(ComParam::USE_HYBRID_NEURAL_FEATURES == NetworkConfig::Feature_Type){
+        //ptr_nn_g_
+    } else if(ComParam::USE_PURE_NEURAL_FEATURES == NetworkConfig::Feature_Type){
+        //TODO:
+    }
     this->ptr_fm_->GetGlobalParam()->LockIt();
     std::cout <<"tmp cout is: "<<this->ptr_fm_->temp_count_<<std::endl;
     std::cout <<"tmp cout is: "<<this->ptr_fm_->GetGlobalParam()->tmp_count_<<std::endl;
@@ -86,13 +92,17 @@ void NetworkModel::Train(std::vector<Instance *> *ptr_all_instances, std::vector
     }
 }
 
-std::vector<Instance *>* NetworkModel::Decode(std::vector<Instance *> *ptr_test_instences) {
+std::vector<Instance *>* NetworkModel::Decode(std::vector<Instance *> *ptr_test_instences, bool is_cache_features) {
     this->ptr_inst_all_test_ = ptr_test_instences;
     this->num_threads_ = ComParam::Num_Of_Threads;
     this->pptr_decoder_ = new LocalNetworkDecoderThread*[this->num_threads_];
     SplitInstanceForTest();
     for(int threadid = 0; threadid < this->num_threads_; ++threadid){
-        this->pptr_decoder_[threadid] = new LocalNetworkDecoderThread(threadid,(*ptr_split_inst_test_)[threadid],ptr_fm_,ptr_nc_);
+        if(is_cache_features || NetworkConfig::FEATURE_TOUCH_TEST){
+            //TODO:
+        } else{
+            this->pptr_decoder_[threadid] = new LocalNetworkDecoderThread(threadid,(*ptr_split_inst_test_)[threadid],ptr_fm_,ptr_nc_);
+        }
     }
     this->ptr_decode_thread_vector_ = new std::vector<std::thread>;
     for(int threadid = 0; threadid < this->num_threads_; ++threadid){

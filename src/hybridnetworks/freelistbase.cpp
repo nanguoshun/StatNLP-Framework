@@ -5,9 +5,10 @@
 #include "freelistbase.h"
 
 FreeListBase::FreeListBase() {
-
+    //TODO:
 }
 
 FreeListBase::~FreeListBase() {
-
+    //TODO:
 }
+

@@ -9,7 +9,7 @@
 #include "../common/types/instance.h"
 #include "feature_manager.h"
 #include "network_compiler.h"
-#include "common.h"
+#include "src/common/common.h"
 #include "local_network_learner_thread.h"
 #include "local_network_decoder_thread.h"
 #include <vector>
@@ -19,7 +19,7 @@ public:
 NetworkModel(FeatureManager *ptr_fm, NetworkCompiler *ptr_nc);
 ~NetworkModel();
 void Train(std::vector<Instance *> *ptr_all_instances, std::vector<Instance *> *ptr_all_instances_du, int max_num_interations);
-std::vector<Instance *>* Decode(std::vector<Instance *> *ptr_test_instences);
+std::vector<Instance *>* Decode(std::vector<Instance *> *ptr_test_instences, bool is_cache_features);
 virtual std::vector<std::vector<Instance*>*>* SplitInstanceForTrain() = 0;
 void SplitInstanceForTest();
 int GetCurrentMillionSeconds();
@@ -37,6 +37,7 @@ protected:
     std::vector<std::thread> *ptr_decode_thread_vector_;
     std::vector<Instance *> *ptr_inst_all_test_;
     std::vector<std::vector<Instance*>*> *ptr_split_inst_test_;
+    GlobalNeuralNetworkParam *ptr_nn_g_;
 };
 
 #endif //STATNLP_NETWORK_MODEL_H

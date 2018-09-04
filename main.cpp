@@ -2,16 +2,17 @@
 #include <fstream>
 #include <sstream>
 #include <list>
+#include <src/example/LinearCRF/linear_crf_tag_bilstm.h>
+#include <src/neural/neural_factory.h>
 #include "src/hybridnetworks/data_manager.h"
-#include "src/example/linear_crf_instance.h"
-#include "src/example/linear_crf_feature_manager.h"
+#include "src/example/LinearCRF/linear_crf_instance.h"
+#include "src/example/LinearCRF/linear_crf_feature_manager.h"
 #include "src/hybridnetworks/network_model.h"
 #include "src/hybridnetworks/discriminative_network_model.h"
-#include "src/example/linear_crf_nework_compiler.h"
-#include "src/neural/neural_layer.h"
-
+#include "src/example/LinearCRF/linear_crf_nework_compiler.h"
+#include "src/neural/neural_network.h"
+#include "src/common/common.h"
 static std::vector<std::string> all_labels;
-
 /**
  *
  * @param file_name
@@ -93,9 +94,7 @@ void ReadData(std::string file_name, std::vector<Instance*> *ptr_inst_vec_all, s
             }
         }
     }
-    //duplicate the data;
-
-
+    //duplicate the data
 }
 
 void Release(std::vector<Instance*> *ptr_vec_all){
@@ -112,9 +111,6 @@ void ReleaseStaticPointer(){
 }
 
 int main(int argc, char **argv){
-
-    NeuralLayer *ptr_nl = new NeuralLayer();
-    ptr_nl->Init(argc,argv);
     std::string train_file_name = "/Users/ngs/Documents/cplusproject/statNLP/data/conll2000/sample_train.txt";
     //std::string test_file_name =  "/Users/ngs/Documents/cplusproject/statNLP/data/conll2000/sample_part_test.txt";
     //std::string train_file_name = "/Users/ngs/Documents/cplusproject/statNLP/data/conll2000/sample_train.txt";
@@ -130,12 +126,15 @@ int main(int argc, char **argv){
     int size_train = ptr_inst_vec_all->size();
     int size_train_du = ptr_inst_vec_all_duplicate_->size();
     int size_test = ptr_inst_vec_all_test->size();
-    GlobalNetworkParam *ptr_param_g = new GlobalNetworkParam();
+    NetworkConfig::Feature_Type = ComParam::USE_HYBRID_NEURAL_FEATURES;
+    GlobalNetworkParam *ptr_param_g = new GlobalNetworkParam((NeuralFactory*)NeuralFactory::GetLSTMFactory());
+    //Below is the only hand-crafted features, and there are no parameters in the constructor of GlobalNetworkParam
+    // GlobalNetworkParam *ptr_param_g = new GlobalNetworkParam();
     LinearCRFFeatureManager *ptr_fm = new LinearCRFFeatureManager(ptr_param_g, ptr_inst_vec_all);
     LinearCRFNetworkCompiler *ptr_nc = new LinearCRFNetworkCompiler(all_labels);
     NetworkModel *ptr_nm = new DiscriminativeNetworkModel(ptr_fm,ptr_nc);
     ptr_nm->Train(ptr_inst_vec_all, ptr_inst_vec_all_duplicate_,num_iterations);
-    std::vector<Instance *> *ptr_predictions = ptr_nm->Decode(ptr_inst_vec_all_test);
+    std::vector<Instance *> *ptr_predictions = ptr_nm->Decode(ptr_inst_vec_all_test,false);
 
     std::cout << "size of predict instances is: "<<ptr_predictions->size()<<std::endl;
     std::cout << "size of godlen instances is: "<<ptr_inst_vec_all_test->size()<<std::endl;

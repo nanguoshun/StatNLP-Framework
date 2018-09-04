@@ -3,7 +3,7 @@
 //
 
 #include "local_network_param.h"
-#include "common.h"
+#include "src/common/common.h"
 #include "network.h"
 
 LocalNetworkParam::LocalNetworkParam() {

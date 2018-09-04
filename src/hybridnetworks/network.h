@@ -118,7 +118,15 @@ public:
              * calc the score summation of all features in this hyperedge. Each score is the production
              * of feature value and its weight.
              */
-            double score = ptr_fa->GetScore(this->ptr_param_l_);
+            double score = 0;
+            if(ComParam::USE_HANDCRAFTED_FEATURES == NetworkConfig::Feature_Type){
+                score += ptr_fa->GetScore(this->ptr_param_l_);
+            }else if(ComParam::USE_HYBRID_NEURAL_FEATURES == NetworkConfig::Feature_Type){
+                score += ptr_fa->GetScore(this->ptr_param_l_);
+                //TODO:add neural score
+            } else if(ComParam::USE_PURE_NEURAL_FEATURES == NetworkConfig::Feature_Type){
+                //TODO:only add neural score
+            }
             /**
              * for the first hyperedge, no log sum is required.
              * \alpa'_j(s) = \alpha'_{j-1}(s') +  \psi_j(X,s,s')

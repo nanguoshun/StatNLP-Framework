@@ -11,7 +11,6 @@
 #include "feature_array.h"
 
 class Network;
-
 class LocalNetworkParam{
 public:
     LocalNetworkParam();

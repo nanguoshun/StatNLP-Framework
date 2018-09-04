@@ -5,12 +5,15 @@
 #ifndef STATNLP_GLOBAL_NETWORK_PARAM_H
 #define STATNLP_GLOBAL_NETWORK_PARAM_H
 
+#include "src/neural/neural_network.h"
+#include "src/neural/global_neural_network_param.h"
+#include "src/neural/neural_factory.h"
 #include "../common/opt/lbfgs.h"
-#include "common.h"
+#include "src/common/common.h"
 
 class GlobalNetworkParam{
 public:
-    GlobalNetworkParam();
+    GlobalNetworkParam(NeuralFactory* ptr_nf_ = nullptr);
     ~GlobalNetworkParam();
     void LockIt();
     bool IsLocked();
@@ -43,10 +46,16 @@ public:
     int *GetOutsideSharedArraySize();
     //caution: this function should be sychronized in multithread
     void AllocateSharedArray(int threadid, int node_count);
+    void AllocateSpace();
+    GlobalNeuralNetworkParam *GetNeuralNetworkParam();
 private:
     bool is_locked_;
-    //the num of feature (feature size)
-    int size_;
+    //the num of feature (hand-crafted feature size)
+    int h_feature_size_;
+    //neural feature size;
+    int n_feature_size_;
+    //overall_feature size
+    int feature_size_;
     bool is_discriminative_;
     //previous objective value;
     double obj_prev_;
@@ -72,6 +81,11 @@ private:
     int* ptr_shared_array_size_;
     int* ptr_outside_shared_array_size_;
     std::mutex mtx;
+    double *ptr_concat_weights_;
+    double *ptr_concat_counts_;
+    /*neural related param */
+    GlobalNeuralNetworkParam *ptr_nn_g_;
+
 };
 
 #endif //STATNLP_GLOBAL_NETWORK_PARAM_H

@@ -7,9 +7,9 @@
 #include <stdlib.h>
 #include "global_network_param.h"
 
-GlobalNetworkParam::GlobalNetworkParam() {
+GlobalNetworkParam::GlobalNetworkParam(NeuralFactory* ptr_nf) {
     is_locked_ = false;
-    size_ = 0;
+    h_feature_size_ = 0;
     fixed_feature_size_ = 0;
     obj_prev_= ComParam::DOUBLE_NEGATIVE_INFINITY;
     obj_current_ = ComParam::DOUBLE_NEGATIVE_INFINITY;
@@ -36,6 +36,36 @@ GlobalNetworkParam::GlobalNetworkParam() {
         ptr_shared_array_size_[threadid] = 0;
         ptr_outside_shared_array_size_[threadid] = 0;
     }
+    ptr_concat_counts_ = nullptr;
+    ptr_concat_weights_ = nullptr;
+    if(ptr_nf != nullptr){
+        if(ComParam::USE_HANDCRAFTED_FEATURES){
+            std::cerr<< "You are in the hand-crafted mode  and you can not create the neural instances, please configure NetworkConfig::Feature_Type as ComParam::USE_HYBRID_NEURAL_FEATURES or ComParam::USE_PURE_NEURAL_FEATURES"<<std::endl;
+            exit (EXIT_FAILURE);
+        }
+        if(ComParam::USE_HYBRID_NEURAL_FEATURES == NetworkConfig::Feature_Type){
+            //NeuralNetwork *ptr_nl = new NeuralNetwork();
+            //ptr_nl->Initialize(argc,argv);
+            NetworkConfig::FEATURE_TOUCH_TEST = true;
+            std::vector<NeuralNetwork *> *ptr_nn_vec = ptr_nf->GetNeuralInst();
+            ptr_nn_g_ = new GlobalNeuralNetworkParam(ptr_nn_vec);
+            //ptr_nn_vec->push_back(ptr_nn);
+        } else if(ComParam::USE_PURE_NEURAL_FEATURES == NetworkConfig::Feature_Type){
+            NetworkConfig::FEATURE_TOUCH_TEST = true;
+            //TODO:
+        }
+    } else {
+        if (ComParam::USE_HANDCRAFTED_FEATURES != NetworkConfig::Feature_Type) {
+            std::cerr << "you enabled the neural but you did't not create the instances." << std::endl;
+            exit(EXIT_FAILURE);
+        }
+    }
+    /*
+    if(ptr_nn_vec != nullptr){
+        ptr_nn_g_ = new GlobalNeuralNetworkParam(ptr_nn_vec);
+    } else{
+        ptr_nn_g_ = nullptr;
+    }*/
 }
 
 GlobalNetworkParam::~GlobalNetworkParam() {
@@ -55,22 +85,26 @@ GlobalNetworkParam::~GlobalNetworkParam() {
     delete []ptr_outside_shared_array_;
     delete []ptr_shared_array_size_;
     delete []ptr_outside_shared_array_size_;
+    if(ptr_nn_g_ != nullptr){
+        delete ptr_nn_g_;
+    }
     //delete ptr_type2InputMap_;
 }
 /*
  *
  * Lock the features.
  *
+ *
  */
 void GlobalNetworkParam::LockIt() {
-    if(this->IsLocked()){
+    if (this->IsLocked()) {
         return;
     }
-    this->ExpandFeaturesForGenerativeModelDuringTesting();
-    this->ptr_counts_ = new double[size_];
-    this->ptr_weights_ = new double[size_];
+    ExpandFeaturesForGenerativeModelDuringTesting();
+    //the neural feature size should be set beforehand.
+    AllocateSpace();
     //note: no fixed feature size operation in current c++ version.
-    for(int feature_no = this->fixed_feature_size_; feature_no < this->size_; ++feature_no ){
+    for (int feature_no = this->fixed_feature_size_; feature_no < this->h_feature_size_; ++feature_no) {
         double random_value = DoubleRandom();
         random_value = (random_value - 0.5) / 10;
         this->ptr_weights_[feature_no] = 0.01;// ComParam::RANDOM_INIT_WEIGHT ? random_value:ComParam::FEATURE_INIT_WEIGHT;
@@ -79,15 +113,15 @@ void GlobalNetworkParam::LockIt() {
 #endif
     }
     this->ResetCountsAndObj();
-    this->ptr_feature2rep = new std::string*[size_];
-    for(auto type_it = ptr_featureIntMap_->begin(); type_it != ptr_featureIntMap_->end(); ++type_it){
+    this->ptr_feature2rep = new std::string *[h_feature_size_];
+    for (auto type_it = ptr_featureIntMap_->begin(); type_it != ptr_featureIntMap_->end(); ++type_it) {
         std::string type = type_it->first;
-        for(auto output_it = (*type_it).second->begin(); output_it != (*type_it).second->end(); ++output_it){
+        for (auto output_it = (*type_it).second->begin(); output_it != (*type_it).second->end(); ++output_it) {
             std::string output = output_it->first;
-            for(auto input_it = (*output_it).second->begin(); input_it != (*output_it).second->end(); ++input_it){
+            for (auto input_it = (*output_it).second->begin(); input_it != (*output_it).second->end(); ++input_it) {
                 std::string input = input_it->first;
                 int featureId = input_it->second;
-                this->ptr_feature2rep[featureId] = new std::string[3]{type,output,input};
+                this->ptr_feature2rep[featureId] = new std::string[3]{type, output, input};
             }
         }
     }
@@ -116,13 +150,17 @@ bool GlobalNetworkParam::UpdateDiscriminative() {
      * go_on_training equals 0: training finished.
      * go_on_training equals 1: go on next training.
      */
+    if(ComParam::USE_HYBRID_NEURAL_FEATURES == NetworkConfig::Feature_Type){
+        if(nullptr == ptr_concat_weights_){
 
+        }
+    }
     int go_on_training =  1;
 
     if(ComParam::OPT_LBFGS == ComParam::OPTIMIZER){
-        go_on_training = this->ptr_opt_->optimize(size_,ptr_weights_,-obj_current_,ptr_counts_, true, 1.0);
+        go_on_training = this->ptr_opt_->optimize(h_feature_size_,ptr_weights_,-obj_current_,ptr_counts_, true, 1.0);
     } else if(ComParam::OPT_SGD == ComParam::OPTIMIZER){
-        for(int i=0; i<size_; ++i){
+        for(int i=0; i<h_feature_size_; ++i){
             //std::cout << i <<"th weights before is: "<<ptr_weights_[i]<<"  gradient is: "<<ptr_counts_[i]<<std::endl;
             ptr_weights_[i] = ptr_weights_[i] - ComParam::LEARNING_RATE * ptr_counts_[i];
             //std::cout << i << "th weights after is: "<<ptr_weights_[i]<<std::endl;
@@ -145,6 +183,11 @@ bool GlobalNetworkParam::UpdateDiscriminative() {
     if(small_change_count ==3){
         go_on_training = 0;
     }
+
+    if(ComParam::USE_HYBRID_NEURAL_FEATURES == NetworkConfig::Feature_Type){
+        //TODO:
+    }
+
     //the iteration num.
     this->version_++;
     if(0 == go_on_training){
@@ -205,8 +248,8 @@ int GlobalNetworkParam::ToFeature(std::string type, std::string output, std::str
     }
     std::unordered_map<std::string, int> *ptr_map_value_value = ptr_map_value->find(output)->second;
     if(ptr_map_value_value->find(input) == ptr_map_value_value->end()){
-        ptr_map_value_value->insert(std::make_pair(input,this->size_));
-        this->size_++;
+        ptr_map_value_value->insert(std::make_pair(input,this->h_feature_size_));
+        this->h_feature_size_++;
         tmp_count_++;
         //TODO: for type2inputMap.
     }
@@ -236,7 +279,7 @@ void GlobalNetworkParam::ResetCountsAndObj() {
 #ifdef GLOBAL
     std::lock_guard<std::mutex> mtx_locker(mtx);
 #endif
-    for(int feature_no = 0; feature_no < size_; ++feature_no){
+    for(int feature_no = 0; feature_no < h_feature_size_; ++feature_no){
         ptr_counts_[feature_no] = 0.0;
         //for regulation
         if(IsDiscriminative() && kappa_ > 0 &&  feature_no >= fixed_feature_size_){
@@ -249,7 +292,7 @@ std::cout << feature_no<<"th gradient is: "<<this->ptr_counts_[feature_no]<<std:
     obj_current_ = 0.0;
     //for regulation
     if(IsDiscriminative() && kappa_ > 0){
-        obj_current_ += - (kappa_ * SquareVector(ptr_weights_, size_));
+        obj_current_ += - (kappa_ * SquareVector(ptr_weights_, h_feature_size_));
     }
 }
 
@@ -338,4 +381,25 @@ void GlobalNetworkParam::AllocateSharedArray(int threadid, int node_count) {
     ptr_inside_shared_array_[threadid] = new double[node_count];
     ptr_outside_shared_array_[threadid] = new double[node_count];
     ptr_shared_array_size_[threadid] = node_count;
+}
+
+/**
+ * Allocate space for weight and gradient vector.
+ */
+void GlobalNetworkParam::AllocateSpace() {
+    //hybrid features.
+    if (ComParam::USE_HYBRID_NEURAL_FEATURES == NetworkConfig::Feature_Type) {
+        feature_size_ = h_feature_size_ + n_feature_size_;
+    } else if (ComParam::USE_PURE_NEURAL_FEATURES == NetworkConfig::Feature_Type) {
+        feature_size_ = n_feature_size_; /*pure neural features.*/
+    } else {
+        feature_size_ = h_feature_size_; /*pure hand-crafted features*/
+    }
+    /*allocate the space*/
+    ptr_weights_ = new double[feature_size_];
+    ptr_counts_ = new double[feature_size_];
+}
+
+GlobalNeuralNetworkParam* GlobalNetworkParam::GetNeuralNetworkParam() {
+    return ptr_nn_g_;
 }

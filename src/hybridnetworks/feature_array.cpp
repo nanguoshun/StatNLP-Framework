@@ -3,7 +3,7 @@
 //
 
 #include "feature_array.h"
-#include "common.h"
+#include "src/common/common.h"
 #include "local_network_param.h"
 
 FeatureArray * FeatureArray::PTR_EMPTY = new FeatureArray((int*) nullptr,0);

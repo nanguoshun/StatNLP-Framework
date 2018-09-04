@@ -8,7 +8,7 @@
 #include "network.h"
 #include "../common/types/instance.h"
 #include "local_network_param.h"
-#include "../example/linear_crf_network.h"
+#include "src/example/LinearCRF/linear_crf_network.h"
 
 class NetworkCompiler{
 public:
