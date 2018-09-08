@@ -91,6 +91,7 @@ int* FeatureArray::GetCurrent() {
 void FeatureArray::Update(LocalNetworkParam *ptr_param, double count) {
     int *ptr_fs = this->GetCurrent();
     for(int i=0; i<fs_size_; ++i){
+        //changeflag: no feature value here compared with the java version.
         ptr_param->AddCount(ptr_fs[i],count);
     }
     if(nullptr != this->ptr_next_){

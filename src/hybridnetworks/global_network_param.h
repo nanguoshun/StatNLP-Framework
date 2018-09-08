@@ -24,12 +24,12 @@ public:
     bool IsDiscriminative();
     double GetWeight(int featureId);
     double GetOldObj();
+    double GetCurrentObj();
     int ToFeature(std::string type, std::string output, std::string input);
     void ExpandFeaturesForGenerativeModelDuringTesting();
     double DoubleRandom();
     //caution: this function should be sychronized in multithread
     void ResetCountsAndObj();
-    double SquareVector(double* vec, int size);
     //caution: this function should be sychronized in multithread
     void AddObj(double obj);
     int tmp_count_;
@@ -47,7 +47,8 @@ public:
     //caution: this function should be sychronized in multithread
     void AllocateSharedArray(int threadid, int node_count);
     void AllocateSpace();
-    GlobalNeuralNetworkParam *GetNeuralNetworkParam();
+    GlobalNeuralNetworkParam *GetNNParam();
+    void SetOldObj(double obj);
 private:
     bool is_locked_;
     //the num of feature (hand-crafted feature size)

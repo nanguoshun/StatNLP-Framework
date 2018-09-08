@@ -17,13 +17,11 @@ void CNN_Network::Touch() {
 }
 
 void CNN_Network::Forward() {
-    NeuralNetwork::Forward();
+
 }
 
 void CNN_Network::BackWard() {
-    NeuralNetwork::BackWard();
 }
 
-void CNN_Network::Update() {
-    NeuralNetwork::Update();
+void CNN_Network::Update(double count, Network *ptr_network, int parent_k, int children_k_index) {
 }

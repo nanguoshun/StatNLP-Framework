@@ -30,10 +30,15 @@ GlobalNetworkParam* FeatureManager::GetGlobalParam() {
     return ptr_param_g_;
 }
 
-bool FeatureManager::Update() {
+bool FeatureManager::Update(bool just_update_obj_gradient) {
 #ifdef GLOBAL
     std::lock_guard<std::mutex> mtx_locker(mtx);
 #endif
+    //FIXME: why the updating process is different for single thread and mutlithread?? the former will be updated in the current iteration
+    //FIXME: while the latter will updated in the next iteration ( at the beginning of the function).
+    /**
+     * For the multithread mode, update the gradient and then calc the objective.
+     */
     if (this->num_of_threads_ != 1) {
         this->ptr_param_g_->ResetCountsAndObj();
         for(int i=0; i<this->num_of_threads_; ++i){
@@ -47,13 +52,26 @@ bool FeatureManager::Update() {
             this->ptr_param_g_->AddObj(pptr_param_l_[i]->GetObj());
         }
     }
+    /**
+     * we always get the gradient and then the objective based on the weights calculated in the previous
+     * iteration, hence we will have one more iteration compared with the maximum iteration value to get the
+     * last gradient and objective
+     */
+    if(just_update_obj_gradient){
+        double obj = ptr_param_g_->GetCurrentObj();
+        ptr_param_g_->SetOldObj(obj);
+        return false;
+    }
+    //calc the gradient of the NN
+    ptr_param_g_->GetNNParam()->Backward();
+    //update the gradient.
     bool done = this->ptr_param_g_->Update();
-
     if (this->num_of_threads_ != 1) {
         for (int threadId = 0; threadId < this->num_of_threads_; ++threadId) {
             pptr_param_l_[threadId]->Reset();
         }
     } else {
+        //update the objective and reset all gradients to 0 in the vector
         ptr_param_g_->ResetCountsAndObj();
     }
     return done;

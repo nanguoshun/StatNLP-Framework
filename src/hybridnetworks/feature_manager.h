@@ -19,7 +19,7 @@ public:
     ~FeatureManager();
     GlobalNetworkParam * GetGlobalParam();
     //caution: this function should be sychronized in multithread
-    bool Update();
+    bool Update(bool just_update_obj_gradient);
     FeatureArray * Extract(Network *ptr_network, int parent_k, int * ptr_children_k, int children_k_index);
     bool isCacheAble();
     void EnableCache(int numNetworks);

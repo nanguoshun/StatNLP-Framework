@@ -34,7 +34,7 @@ void NetworkModel::Train(std::vector<Instance *> *ptr_all_instances, std::vector
     }
     //set the learning state
     if(ComParam::USE_HYBRID_NEURAL_FEATURES == NetworkConfig::Feature_Type){
-        ptr_nn_g_ = this->ptr_fm_->GetGlobalParam()->GetNeuralNetworkParam();
+        ptr_nn_g_ = this->ptr_fm_->GetGlobalParam()->GetNNParam();
         ptr_nn_g_->SetLearningState();
     } else if(ComParam::USE_PURE_NEURAL_FEATURES == NetworkConfig::Feature_Type){
         //TODO:
@@ -61,9 +61,17 @@ void NetworkModel::Train(std::vector<Instance *> *ptr_all_instances, std::vector
 //    long start_time = clock();
     int start_time = GetCurrentMillionSeconds();
     ptr_learn_thread_vector_ = new std::vector<std::thread>;
-    for (int i = 0; i < max_num_interations; ++i) {
+    for (int i = 0; i <= max_num_interations; ++i) {
 //        long time = clock();
         int time = GetCurrentMillionSeconds();
+        //calc the neural's output, which will be used as the features of CRF.
+        if(ComParam::USE_HYBRID_NEURAL_FEATURES == NetworkConfig::Feature_Type){
+            ptr_nn_g_->Forward();
+            ptr_nn_g_->ResetAllNNGradient();
+        } else if(ComParam::USE_PURE_NEURAL_FEATURES == NetworkConfig::Feature_Type){
+            //TODO:
+        }
+
         for (int threadId = 0; threadId < this->num_threads_; ++threadId) {
             //this->pptr_learner_[threadId]
             ptr_learn_thread_vector_->push_back(std::thread(&LocalNetworkLearnerThread::Run,pptr_learner_[threadId]));
@@ -72,7 +80,13 @@ void NetworkModel::Train(std::vector<Instance *> *ptr_all_instances, std::vector
             //this->pptr_learner_[threadId]
             (*ptr_learn_thread_vector_)[threadId].join();
         }
-        bool done = this->ptr_fm_->Update();
+        bool last_iteration = (i == max_num_interations);
+        bool done = false;
+        if(last_iteration){
+             done = this->ptr_fm_->Update(true);
+        } else{
+             done = this->ptr_fm_->Update(false);
+        }
         double obj = this->ptr_fm_->GetGlobalParam()->GetOldObj();
         //time = clock() - time;
         time = GetCurrentMillionSeconds() - time;
@@ -84,6 +98,10 @@ void NetworkModel::Train(std::vector<Instance *> *ptr_all_instances, std::vector
                   " Convergence: " << obj / obj_old << " Total Time: " << (double) (GetCurrentMillionSeconds() - start_time) / (double)1000 << std::endl;
 
         obj_old = obj;
+        if(last_iteration){
+            std::cout << "Training complete after " << i << " iterations" << std::endl;
+            break;
+        }
         if (done) {
             std::cout << "Training complete after " << i << " iterations" << std::endl;
             break;

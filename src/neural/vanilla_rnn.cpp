@@ -13,15 +13,14 @@ VanillaRNN::~VanillaRNN() {
 }
 
 void VanillaRNN::Forward() {
-    NeuralNetwork::Forward();
+
 }
 
 void VanillaRNN::BackWard() {
-    NeuralNetwork::BackWard();
 }
 
-void VanillaRNN::Update() {
-    NeuralNetwork::Update();
+void VanillaRNN::Update(double count, Network *ptr_network, int parent_k, int children_k_index) {
+
 }
 
 void VanillaRNN::Touch() {

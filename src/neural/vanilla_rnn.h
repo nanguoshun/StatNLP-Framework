@@ -14,11 +14,11 @@ public:
 
     void Touch() override;
 
-    void Forward() override;
+    void Forward();
 
     void BackWard() override;
 
-    void Update() override;
+    void Update(double count, Network *ptr_network, int parent_k, int children_k_index) override;
 };
 
 #endif //STATNLP_VANILLA_RNN_H

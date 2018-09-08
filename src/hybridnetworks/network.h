@@ -10,7 +10,6 @@
 #include "local_network_param.h"
 #include "network_id_manager.h"
 #include <vector>
-
 /**
  *  inside-outside algorithm.
  */
@@ -70,6 +69,83 @@ public:
         }
     }
 
+    /**
+    * Get the score summation for all features of the children_k th hyperedge ( without inside/outside)
+    * @param ptr_fa: the pointer of FeatureArray.
+     * @param nodeId: the parent ID
+    * @param ptr_children_k: the array that contains the children nodes.
+    * @param children_k: the sequence of the hyperedge.
+    * @return: the score
+    */
+    inline double GetScore(FeatureArray *ptr_fa, int nodeId, int *ptr_children_k, int children_k){
+        /**
+         * calc the score summation of all features in this hyperedge. Each score is the production
+         * of feature value and its weight.
+         */
+        double score = 0;
+        //for the hand-crafted mode, for example, only use CRF or PFCFG without neural features.
+        if(ComParam::USE_HANDCRAFTED_FEATURES == NetworkConfig::Feature_Type){
+            score += ptr_fa->GetScore(this->ptr_param_l_);
+        }else if(ComParam::USE_HYBRID_NEURAL_FEATURES == NetworkConfig::Feature_Type){ // for the hybrid mode
+            score += ptr_fa->GetScore(this->ptr_param_l_); // the hand-crafted score
+            score += ptr_param_g_->GetNNParam()->GetNNScore(this,nodeId,children_k); // the nueral score
+        } else if(ComParam::USE_PURE_NEURAL_FEATURES == NetworkConfig::Feature_Type){ // for the pure neural mode
+            //TODO:only add neural score
+        }
+        return score;
+    }
+
+    /**
+     * Get the score summation for all features of the children_k th hyperedge ( without inside/outside)
+     * @param nodeId: the parent ID
+     * @param ptr_children_k: the array that contains the children nodes.
+     * @param children_k: the sequence of the hyperedge.
+     * @return: the score
+     */
+    inline double GetScore(int nodeId, int *ptr_children_k, int children_k){
+        FeatureArray *ptr_fa = this->ptr_param_l_->Extract(this, nodeId, ptr_children_k, children_k);
+        /**
+         * calc the score summation of all features in this hyperedge. Each score is the production
+         * of feature value and its weight.
+         */
+        double score = 0;
+        //for the hand-crafted mode, for example, only use CRF or PFCFG without neural features.
+        if(ComParam::USE_HANDCRAFTED_FEATURES == NetworkConfig::Feature_Type){
+            score += ptr_fa->GetScore(this->ptr_param_l_);
+        }else if(ComParam::USE_HYBRID_NEURAL_FEATURES == NetworkConfig::Feature_Type){ // for the hybrid mode
+            score += ptr_fa->GetScore(this->ptr_param_l_); // the hand-crafted score
+            score += ptr_param_g_->GetNNParam()->GetNNScore(this,nodeId,children_k); // the nueral score
+        } else if(ComParam::USE_PURE_NEURAL_FEATURES == NetworkConfig::Feature_Type){ // for the pure neural mode
+            //TODO:only add neural score
+        }
+        return score;
+    }
+
+    /**
+     * Calc the score for the children_k th hyperedge.
+     * @param nodeId : parent node ID
+     * @param ptr_children_k: the array that contains all children nodes.
+     * @param children_k: the no of the hypedge;
+     * @return: the score for the kth hyperedge
+     */
+    inline double CalcScore(int nodeId, int *ptr_children_k, int children_k){
+        double score = GetScore(nodeId, ptr_children_k, children_k);
+        /**
+         * for the first hyperedge, no log sum is required.
+         * \alpa'_j(s) = \alpha'_{j-1}(s') +  \psi_j(X,s,s')
+         */
+        int child_k_size = (this->GetChildren_Size(nodeId))[children_k];
+        for (int child_no = 0; child_no < child_k_size; ++child_no) {
+            int index = ptr_children_k[child_no];
+            score += ptr_inside_[index];
+        }
+        return score;
+    }
+    /**
+     * Calc the inside value for the nodeId. Noted that for the outside algorithm we calc the the outside value of its children.
+     *
+     * @param nodeId
+     */
     inline void Inside(int nodeId) {
         //check if it is removed?
         if (this->IsRemovded(nodeId)) {
@@ -113,60 +189,29 @@ public:
         if (IsIngored(ptr_children_k, child_k_size)) {
             inside = ComParam::DOUBLE_NEGATIVE_INFINITY;
         } else {
-            FeatureArray *ptr_fa = this->ptr_param_l_->Extract(this, nodeId, ptr_children_k, children_k);
-            /**
-             * calc the score summation of all features in this hyperedge. Each score is the production
-             * of feature value and its weight.
-             */
-            double score = 0;
-            if(ComParam::USE_HANDCRAFTED_FEATURES == NetworkConfig::Feature_Type){
-                score += ptr_fa->GetScore(this->ptr_param_l_);
-            }else if(ComParam::USE_HYBRID_NEURAL_FEATURES == NetworkConfig::Feature_Type){
-                score += ptr_fa->GetScore(this->ptr_param_l_);
-                //TODO:add neural score
-            } else if(ComParam::USE_PURE_NEURAL_FEATURES == NetworkConfig::Feature_Type){
-                //TODO:only add neural score
-            }
-            /**
-             * for the first hyperedge, no log sum is required.
-             * \alpa'_j(s) = \alpha'_{j-1}(s') +  \psi_j(X,s,s')
-             */
-            for (int child_no = 0; child_no < child_k_size; ++child_no) {
-                int index = ptr_children_k[child_no];
-                score += ptr_inside_[index];
-            }
-            inside = score;
+            inside = CalcScore(nodeId,ptr_children_k,children_k);
         }
-        //For each hyper edge that index is bigger than 1. we need log_sum here.
+        //For each hyper edge whose index is bigger than 1. we need log_sum here.
         for (int children_k = 1; children_k < children_size; ++children_k) {
             int *ptr_children_k = ptr_childrens_vec_[children_k];
             int child_k_size = (this->GetChildren_Size(nodeId))[children_k];
             //for each node in a hyper edge.
             if (IsIngored(ptr_children_k, child_k_size)) {
                 continue;
-            }
-            FeatureArray *ptr_fa = this->ptr_param_l_->Extract(this, nodeId, ptr_children_k, children_k);
-            /**
-             *
-             * Calc sore summation for all features in a specific hyper_edge.
-             *
-             */
-            double score = ptr_fa->GetScore(this->ptr_param_l_);
-            for (int child_no = 0; child_no < child_k_size; ++child_no) {
-                int index = ptr_children_k[child_no];
-                score += this->ptr_inside_[index];
-            }
-            //log_sum value;
-            double v1 = inside;
-            double v2 = score;
-            if (v1 == v2 && v2 == ComParam::DOUBLE_NEGATIVE_INFINITY) {
-                inside = ComParam::DOUBLE_NEGATIVE_INFINITY;
-            } else if (v1 == v2 && v2 == ComParam::DOUBLE_NEGATIVE_INFINITY) {
-                inside = ComParam::DOUBLE_NEGATIVE_INFINITY;
-            } else if (v1 > v2) {
-                inside = std::log(std::exp(score - inside) + 1) + inside;
-            } else {
-                inside = std::log(std::exp(inside - score) + 1) + score;
+            } else{
+                double score = CalcScore(nodeId, ptr_children_k, children_k);
+                //log_sum value;
+                double v1 = inside;
+                double v2 = score;
+                if (v1 == v2 && v2 == ComParam::DOUBLE_NEGATIVE_INFINITY) {
+                    inside = ComParam::DOUBLE_NEGATIVE_INFINITY;
+                } else if (v1 == v2 && v2 == ComParam::DOUBLE_NEGATIVE_INFINITY) {
+                    inside = ComParam::DOUBLE_NEGATIVE_INFINITY;
+                } else if (v1 > v2) {
+                    inside = std::log(std::exp(score - inside) + 1) + inside;
+                } else {
+                    inside = std::log(std::exp(inside - score) + 1) + score;
+                }
             }
         }
         ptr_inside_[nodeId] = inside;
@@ -175,7 +220,7 @@ public:
         }
     }
 
-    /**
+/**
  * Calc the outside value for all children nodes, whose hyperedge is rooted by nodeId.
  *
  * @param nodeId
@@ -203,10 +248,8 @@ public:
             if (IsIngored(ptr_children_k, child_k_size)) {
                 continue;
             }
-            FeatureArray *ptr_fa = this->ptr_param_l_->Extract(this, nodeId, ptr_children_k, children_k);
             //calculate the score summation of the hyeredge.
-            double score = ptr_fa->GetScore(ptr_param_l_);
-            //sum the outside value of parent node.
+            double score = GetScore(nodeId, ptr_children_k, children_k);
             score += ptr_outside_[nodeId];
             //sum all inside value of children nodes.
             for (int child_no = 0; child_no < child_k_size; ++child_no) {
@@ -220,7 +263,7 @@ public:
                 double v1 = ptr_outside_[index];
                 /**
                  * recall that in linear CRF, there is only one child node
-                 * and hence the inside value is totally eliminated.
+                 * and hence the inside value is entirely eliminated.
                  */
                 double v2 = score - ptr_inside_[index];
                 if (v1 > v2) {
@@ -260,7 +303,7 @@ public:
                 continue;
             }
             FeatureArray *ptr_fa = this->ptr_param_l_->Extract(this, nodeId, ptr_children_k, children_k);
-            double score = ptr_fa->GetScore(this->ptr_param_l_);
+            double score = GetScore(ptr_fa, nodeId, ptr_children_k, children_k);
             score += this->ptr_outside_[nodeId];
             for (int child_no = 0; child_no < child_k_size; ++child_no) {
                 int index = ptr_children_k[child_no];
@@ -279,34 +322,29 @@ public:
 #ifdef DEBUG
             std::cout <<nodeId<<"th node count is: "<<count<<std::endl;
 #endif
-            //The count for all features in a hyperedge equals to each other.
-            ptr_fa->Update(ptr_param_l_, count);
+            if (ComParam::USE_HANDCRAFTED_FEATURES == NetworkConfig::Feature_Type) {
+                //The count(gradient) for all features in a hyperedge equals to each other.
+                ptr_fa->Update(ptr_param_l_, count);
+            } else if (ComParam::USE_HYBRID_NEURAL_FEATURES == NetworkConfig::Feature_Type) { // for the hybrid mode
+                ptr_fa->Update(ptr_param_l_, count);
+                ptr_param_g_->GetNNParam()->SetNNGradientOutput(count,this,nodeId,children_k);
+            } else if (ComParam::USE_PURE_NEURAL_FEATURES == NetworkConfig::Feature_Type) { // for the pure neural mode
+                //TODO:only add neural score
+            }
         }
     }
-
     double *GetInsideSharedArray();
-
     double *GetOutsideSharedArray();
-
     //Network * GetNetwork(int networkId);
     int GetNetworkID();
-
     Instance *GetInstance();
-
     double GetInside(int nodeId);
-
     std::vector<int> GetNodeArray(int nodeIndex);
-
     int tmp_count_;
-
     bool IsIngored(int *ptr_children, int size);
-
     void Max();
-
     void Max(int nodeId);
-
     bool IsSumNode(int nodeid);
-
     int *GetMaxPath(int nodeid);
 //    static double **ptr_inside_shared_array_;
 //    static double **ptr_outside_shared_array_;

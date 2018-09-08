@@ -4,7 +4,7 @@
 #ifndef STATNLP_NEURAL_LAYER_H
 #define STATNLP_NEURAL_LAYER_H
 #include "../../cnn/cnn/init.h"
-
+class Network;
 namespace neural_layer{
     enum NeuralType{
         LSTM,CNN
@@ -20,20 +20,29 @@ public:
     int GetFeatureSize();
     void AddParam();
     virtual void Touch();
-    virtual void Forward();
+    virtual void Forward() = 0;
     //back propogation;
     virtual void BackWard();
     //update the model
-    virtual void Update();
+    virtual void Update(double count, Network *ptr_network, int parent_k, int children_k_index);
     void SetTraining(bool istraining);
-private:
-    //the neural feature size;
-    int feature_size_;
-    double *ptr_counts_;
-    double *ptr_weights_;
+    double GetL2Param();
+    void ResetGrad();
+    double GetScore(Network *ptr_network, int parent_k, int childeren_k_index);
+
+protected:
+    //double *ptr_counts_;
+    //double *ptr_weights_;
     bool is_training_;
     int argc_;
     char **argv_;
+    double *ptr_params_, *ptr_gradparams_;
+    int param_size_;
+    double *ptr_output_;
+    double *ptr_output_counts_;
+    //the output size;
+    int output_size_;
+
 };
 
 #endif //STATNLP_NEURAL_LAYER_H

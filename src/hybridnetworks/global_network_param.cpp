@@ -6,6 +6,7 @@
 #include <ctime>
 #include <stdlib.h>
 #include "global_network_param.h"
+#include "../common/opt/math_calc.h"
 
 GlobalNetworkParam::GlobalNetworkParam(NeuralFactory* ptr_nf) {
     is_locked_ = false;
@@ -112,7 +113,7 @@ void GlobalNetworkParam::LockIt() {
         std::cout <<feature_no<<"th feature weight is: "<< this->ptr_weights_[feature_no]<<std::endl;
 #endif
     }
-    this->ResetCountsAndObj();
+    this->ResetCountsAndObj(); // neural;
     this->ptr_feature2rep = new std::string *[h_feature_size_];
     for (auto type_it = ptr_featureIntMap_->begin(); type_it != ptr_featureIntMap_->end(); ++type_it) {
         std::string type = type_it->first;
@@ -126,6 +127,9 @@ void GlobalNetworkParam::LockIt() {
         }
     }
     this->version_ = 0;
+    //NOT_DONE:
+    //		int numWeights = this._weights.length + this.getAllNNParamSize();//neural
+    //TODO: change to factory mode
     this->ptr_opt_ = new CRFPP::LBFGS();
     this->is_locked_ = true;
 }
@@ -144,17 +148,19 @@ bool GlobalNetworkParam::Update() {
     return done;
 }
 
+/**
+ * Update the weight;
+ * @return
+ */
 bool GlobalNetworkParam::UpdateDiscriminative() {
     //use lbfgs
     /**
      * go_on_training equals 0: training finished.
      * go_on_training equals 1: go on next training.
      */
-    if(ComParam::USE_HYBRID_NEURAL_FEATURES == NetworkConfig::Feature_Type){
-        if(nullptr == ptr_concat_weights_){
 
-        }
-    }
+    // we have allocated the space for vectors of hand-crafted and neural beforehand in GlobalNetworkParam::LockIt() during
+    // finalizing the features, and it will be much faster without real-time arraycopy as the java-version did.
     int go_on_training =  1;
 
     if(ComParam::OPT_LBFGS == ComParam::OPTIMIZER){
@@ -184,9 +190,7 @@ bool GlobalNetworkParam::UpdateDiscriminative() {
         go_on_training = 0;
     }
 
-    if(ComParam::USE_HYBRID_NEURAL_FEATURES == NetworkConfig::Feature_Type){
-        //TODO:
-    }
+    //changeflag: no memory copy here as the java-version did and will be much more efficient.
 
     //the iteration num.
     this->version_++;
@@ -281,7 +285,7 @@ void GlobalNetworkParam::ResetCountsAndObj() {
 #endif
     for(int feature_no = 0; feature_no < h_feature_size_; ++feature_no){
         ptr_counts_[feature_no] = 0.0;
-        //for regulation
+        //for regulation, update the gradient value;
         if(IsDiscriminative() && kappa_ > 0 &&  feature_no >= fixed_feature_size_){
           ptr_counts_[feature_no] += 2 * kappa_ * ptr_weights_[feature_no];
         }
@@ -290,19 +294,19 @@ std::cout << feature_no<<"th gradient is: "<<this->ptr_counts_[feature_no]<<std:
 #endif
     }
     obj_current_ = 0.0;
-    //for regulation
+    //for regulation, update the objective value;
     if(IsDiscriminative() && kappa_ > 0){
-        obj_current_ += - (kappa_ * SquareVector(ptr_weights_, h_feature_size_));
+        obj_current_ += - (kappa_ * MathCalc::SquareVector(ptr_weights_, h_feature_size_));
+        //add the L2 of neural part.
+        if(ComParam::USE_HYBRID_NEURAL_FEATURES == NetworkConfig::Feature_Type){
+            std::vector<NeuralNetwork *> *ptr_nn_vec = ptr_nn_g_->GetNNVect();
+            for(auto it = ptr_nn_vec->begin(); it != ptr_nn_vec->end(); ++it){
+                obj_current_ += (*it)->GetL2Param();
+            }
+        } else if(ComParam::USE_PURE_NEURAL_FEATURES == NetworkConfig::Feature_Type){
+            //todo:
+        }
     }
-}
-
-double GlobalNetworkParam::SquareVector(double *vec, int size) {
-    double value = 0.0;
-    for(int i = 0; i < size; ++i){
-        double weight = vec[i];
-        value += weight * weight;
-    }
-    return value;
 }
 
 void GlobalNetworkParam::AddObj(double obj) {
@@ -400,6 +404,14 @@ void GlobalNetworkParam::AllocateSpace() {
     ptr_counts_ = new double[feature_size_];
 }
 
-GlobalNeuralNetworkParam* GlobalNetworkParam::GetNeuralNetworkParam() {
+GlobalNeuralNetworkParam* GlobalNetworkParam::GetNNParam() {
     return ptr_nn_g_;
+}
+
+void GlobalNetworkParam::SetOldObj(double obj) {
+    obj_prev_ = obj;
+}
+
+double GlobalNetworkParam::GetCurrentObj() {
+    return obj_current_;
 }
