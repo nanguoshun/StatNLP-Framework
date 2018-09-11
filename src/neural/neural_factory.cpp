@@ -7,6 +7,7 @@
 
 NeuralFactory::NeuralFactory() {
     //NeuralFactory::ptr_nn_vec_ = new std::vector<NeuralNetwork*>;
+
 }
 
 NeuralFactory::~NeuralFactory() {

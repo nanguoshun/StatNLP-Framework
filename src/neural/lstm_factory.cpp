@@ -7,6 +7,7 @@
 LSTMFactory::LSTMFactory() {
     //create neural network instances here.
     ptr_nn_vec_ = new std::vector<NeuralNetwork*>;
+    LSTMNetwork *ptr_lstm = new LSTMNetwork();
 }
 
 LSTMFactory::~LSTMFactory() {

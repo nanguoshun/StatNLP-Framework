@@ -34,8 +34,8 @@ bool FeatureManager::Update(bool just_update_obj_gradient) {
 #ifdef GLOBAL
     std::lock_guard<std::mutex> mtx_locker(mtx);
 #endif
-    //FIXME: why the updating process is different for single thread and mutlithread?? the former will be updated in the current iteration
-    //FIXME: while the latter will updated in the next iteration ( at the beginning of the function).
+    //FIXME: why the updating processes of single thread and mutlithread are different?? the former will be updated in the current iteration
+    //FIXME: while the latter will updated in the next iteration ( at the beginning of the function ).
     /**
      * For the multithread mode, update the gradient and then calc the objective.
      */

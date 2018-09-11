@@ -1,0 +1,593 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="dynet"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="clang"/>
+		<Option virtualFolders="CMake Files\;CMake Files\cmake\;CMake Files\dynet\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/Users/ngs/Documents/cplusproject/dynet/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/ngs/Documents/cplusproject/dynet/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/ngs/Documents/cplusproject/dynet/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/ngs/Documents/cplusproject/dynet/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/ngs/Documents/cplusproject/dynet/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="install/local">
+				<Option working_dir="/Users/ngs/Documents/cplusproject/dynet/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/ngs/Documents/cplusproject/dynet/cmake-build-debug/Makefile&quot;  VERBOSE=1 install/local"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/ngs/Documents/cplusproject/dynet/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/ngs/Documents/cplusproject/dynet/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/ngs/Documents/cplusproject/dynet/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="install/strip">
+				<Option working_dir="/Users/ngs/Documents/cplusproject/dynet/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/ngs/Documents/cplusproject/dynet/cmake-build-debug/Makefile&quot;  VERBOSE=1 install/strip"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/ngs/Documents/cplusproject/dynet/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/ngs/Documents/cplusproject/dynet/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/ngs/Documents/cplusproject/dynet/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="install">
+				<Option working_dir="/Users/ngs/Documents/cplusproject/dynet/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/ngs/Documents/cplusproject/dynet/cmake-build-debug/Makefile&quot;  VERBOSE=1 install"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/ngs/Documents/cplusproject/dynet/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/ngs/Documents/cplusproject/dynet/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/ngs/Documents/cplusproject/dynet/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="list_install_components">
+				<Option working_dir="/Users/ngs/Documents/cplusproject/dynet/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/ngs/Documents/cplusproject/dynet/cmake-build-debug/Makefile&quot;  VERBOSE=1 list_install_components"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/ngs/Documents/cplusproject/dynet/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/ngs/Documents/cplusproject/dynet/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/ngs/Documents/cplusproject/dynet/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/Users/ngs/Documents/cplusproject/dynet/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/ngs/Documents/cplusproject/dynet/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/ngs/Documents/cplusproject/dynet/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/ngs/Documents/cplusproject/dynet/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/ngs/Documents/cplusproject/dynet/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/Users/ngs/Documents/cplusproject/dynet/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/ngs/Documents/cplusproject/dynet/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/ngs/Documents/cplusproject/dynet/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/ngs/Documents/cplusproject/dynet/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/ngs/Documents/cplusproject/dynet/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="dynet">
+				<Option output="/Users/ngs/Documents/cplusproject/dynet/cmake-build-debug/dynet/libdynet.dylib" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/ngs/Documents/cplusproject/dynet/cmake-build-debug/dynet"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="clang"/>
+				<Compiler>
+					<Add directory="/Users/ngs/Documents/cplusproject/eigen"/>
+					<Add directory="/Users/ngs/Documents/cplusproject/dynet"/>
+					<Add directory="/Users/ngs/Documents/cplusproject/dynet/external/easyloggingpp/src"/>
+					<Add directory="/Users/ngs/Documents/cplusproject/dynet/cmake-build-debug"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/8.1.0/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/ngs/Documents/cplusproject/dynet/cmake-build-debug/dynet/Makefile&quot;  VERBOSE=1 dynet"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/ngs/Documents/cplusproject/dynet/cmake-build-debug/dynet/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/ngs/Documents/cplusproject/dynet/cmake-build-debug/dynet/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/ngs/Documents/cplusproject/dynet/cmake-build-debug/dynet/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="dynet/fast">
+				<Option output="/Users/ngs/Documents/cplusproject/dynet/cmake-build-debug/dynet/libdynet.dylib" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/ngs/Documents/cplusproject/dynet/cmake-build-debug/dynet"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="clang"/>
+				<Compiler>
+					<Add directory="/Users/ngs/Documents/cplusproject/eigen"/>
+					<Add directory="/Users/ngs/Documents/cplusproject/dynet"/>
+					<Add directory="/Users/ngs/Documents/cplusproject/dynet/external/easyloggingpp/src"/>
+					<Add directory="/Users/ngs/Documents/cplusproject/dynet/cmake-build-debug"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/8.1.0/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/ngs/Documents/cplusproject/dynet/cmake-build-debug/dynet/Makefile&quot;  VERBOSE=1 dynet/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/ngs/Documents/cplusproject/dynet/cmake-build-debug/dynet/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/ngs/Documents/cplusproject/dynet/cmake-build-debug/dynet/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/ngs/Documents/cplusproject/dynet/cmake-build-debug/dynet/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/aligned-mem-pool.cc">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/aligned-mem-pool.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/c2w.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/cfsm-builder.cc">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/cfsm-builder.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/cuda.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/cudnn-ops.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/deep-lstm.cc">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/deep-lstm.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/device-structs.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/devices.cc">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/devices.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/dict.cc">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/dict.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/dim.cc">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/dim.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/dynet-helper.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/dynet.cc">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/dynet.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/except.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/exec.cc">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/exec.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/expr.cc">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/expr.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/fast-lstm.cc">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/fast-lstm.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/functors.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/globals.cc">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/globals.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/gpu-kernels.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/gpu-ops.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/grad-check.cc">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/grad-check.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/graph.cc">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/graph.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/gru.cc">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/gru.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/hsm-builder.cc">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/hsm-builder.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/index-tensor.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/init.cc">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/init.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/io.cc">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/io.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/lstm.cc">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/lstm.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/matrix-multiply.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/mem.cc">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/mem.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/model.cc">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/model.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/mp.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/nodes-activations.cc">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/nodes-activations.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/nodes-affinetransform.cc">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/nodes-affinetransform.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/nodes-argmax.cc">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/nodes-argmax.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/nodes-arith-const.cc">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/nodes-arith-const.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/nodes-arith-cwise.cc">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/nodes-arith-cwise.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/nodes-arith-sum.cc">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/nodes-arith-sum.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/nodes-arith-unary.cc">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/nodes-arith-unary.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/nodes-concat.cc">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/nodes-concat.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/nodes-const.cc">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/nodes-const.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/nodes-contract.cc">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/nodes-contract.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/nodes-conv.cc">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/nodes-conv.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/nodes-conv2d.cc">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/nodes-conv2d.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/nodes-cumulative.cc">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/nodes-cumulative.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/nodes-def-macros.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/nodes-dropout.cc">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/nodes-dropout.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/nodes-flow.cc">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/nodes-flow.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/nodes-hinge.cc">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/nodes-hinge.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/nodes-impl-macros.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/nodes-linalg.cc">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/nodes-linalg.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/nodes-logsumexp.cc">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/nodes-logsumexp.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/nodes-losses.cc">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/nodes-losses.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/nodes-lstm.cc">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/nodes-lstm.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/nodes-matrixmultiply.cc">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/nodes-matrixmultiply.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/nodes-maxpooling2d.cc">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/nodes-maxpooling2d.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/nodes-minmax.cc">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/nodes-minmax.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/nodes-moments.cc">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/nodes-moments.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/nodes-normalization.cc">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/nodes-normalization.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/nodes-norms.cc">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/nodes-norms.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/nodes-pickneglogsoftmax.cc">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/nodes-pickneglogsoftmax.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/nodes-random.cc">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/nodes-random.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/nodes-select.cc">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/nodes-select.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/nodes-similarities.cc">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/nodes-similarities.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/nodes-softmaxes.cc">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/nodes-softmaxes.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/nodes-to-device.cc">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/nodes-to-device.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/nodes-trig.cc">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/nodes-trig.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/nodes.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/param-init.cc">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/param-init.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/param-nodes.cc">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/param-nodes.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/pretrain.cc">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/pretrain.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/rnn-state-machine.cc">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/rnn-state-machine.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/rnn.cc">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/rnn.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/saxe-init.cc">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/saxe-init.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/shadow-params.cc">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/shadow-params.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/sig.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/simd-functors.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/str-util.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/tensor-eigen.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/tensor.cc">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/tensor.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/timing.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/training.cc">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/training.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/treelstm.cc">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/treelstm.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/virtual-cudnn.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/weight-decay.cc">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/weight-decay.h">
+			<Option target="dynet"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/config.h.cmake">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/cmake/FindEigen3.cmake">
+			<Option virtualFolder="CMake Files\cmake\"/>
+		</Unit>
+		<Unit filename="/Users/ngs/Documents/cplusproject/dynet/dynet/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\dynet\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

@@ -44,6 +44,7 @@ namespace ComParam{
     const double OBJTOL = 10e-15;
     const int OPTIMIZER = OPT_LBFGS;
     const double LEARNING_RATE = 0.005;
+
 }
 
 namespace ComType{
@@ -61,6 +62,18 @@ namespace NetworkConfig{
     // the feature type is set as hand-crafted defaultly.
     static int Feature_Type = ComParam::USE_HANDCRAFTED_FEATURES;
     static bool FEATURE_TOUCH_TEST = false;
+
+    /*neural network related*/
+    static int kSOS = 0;
+    static int kEOS = 0;
+    static float DROP_OUT = 0.3;
+    static unsigned HIDDREN_SIZE = 32;
+    static unsigned INPUT_DIM = 2;
+    static unsigned LSTM_INPUT_DIM = 0;
+    static float DECAY_RATE = 0;
+    static unsigned LAYERS = 1;
+    static unsigned DECAY_ONSET_EPOCH = 10;
+    static unsigned VACB_SIZE = 0;
 }
 
 //typedef std::vector<std::vector<std::string>> Input_Str_Matrix;

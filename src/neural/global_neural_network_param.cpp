@@ -7,6 +7,7 @@
 
 GlobalNeuralNetworkParam::GlobalNeuralNetworkParam(std::vector<NeuralNetwork *> *ptr_nn_vec) {
     ptr_nn_vec_ = ptr_nn_vec;
+    ptr_call_dynet_ = new CallDynetFunction();
 
 }
 
@@ -34,6 +35,13 @@ double GlobalNeuralNetworkParam::GetNNScore(Network *ptr_network, int parent_k, 
     }
 }
 
+/**
+ *
+ * @param count: the gradient for the children_k_index th hyper-edge that is rooted by parent_k
+ * @param ptr_network: the graphical network.
+ * @param parent_k: the rooted node.
+ * @param children_k_index: the no of the hyper-edge that is rooted by parent_k.
+ */
 void GlobalNeuralNetworkParam::SetNNGradientOutput(double count, Network *ptr_network, int parent_k,
                                                    int children_k_index) {
     for(auto it = ptr_nn_vec_->begin(); it != ptr_nn_vec_->end(); ++it){
@@ -58,4 +66,9 @@ void GlobalNeuralNetworkParam::Backward() {
     for(auto it = ptr_nn_vec_->begin(); it != ptr_nn_vec_->end(); ++it){
         (*it)->BackWard();
     }
+}
+
+void GlobalNeuralNetworkParam::InitNNParameter(int &argc, char **&argv, unsigned int random_seed,
+                                               bool shared_parameters) {
+    ptr_call_dynet_->Initialize(argc,argv,random_seed,shared_parameters);
 }

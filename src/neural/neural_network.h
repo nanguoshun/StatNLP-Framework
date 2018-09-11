@@ -3,7 +3,7 @@
 //
 #ifndef STATNLP_NEURAL_LAYER_H
 #define STATNLP_NEURAL_LAYER_H
-#include "../../cnn/cnn/init.h"
+#include "../../dynet/dynet/init.h"
 class Network;
 namespace neural_layer{
     enum NeuralType{
@@ -16,7 +16,7 @@ public:
     NeuralNetwork();
     ~NeuralNetwork();
     void Initialize(int &argc, char **&argv, unsigned random_seed = 0, bool shared_parameters = false);
-    void Initialize();
+    void Initialize(dynet::DynetParams& params);
     int GetFeatureSize();
     void AddParam();
     virtual void Touch();
@@ -42,7 +42,7 @@ protected:
     double *ptr_output_counts_;
     //the output size;
     int output_size_;
-
+    //the dynet
 };
 
 #endif //STATNLP_NEURAL_LAYER_H

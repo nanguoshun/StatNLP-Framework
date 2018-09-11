@@ -11,13 +11,9 @@ class VanillaRNN: public NeuralNetwork{
 public:
     VanillaRNN();
     ~VanillaRNN();
-
     void Touch() override;
-
     void Forward();
-
     void BackWard() override;
-
     void Update(double count, Network *ptr_network, int parent_k, int children_k_index) override;
 };
 

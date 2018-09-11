@@ -13,7 +13,7 @@
 
 class GlobalNetworkParam{
 public:
-    GlobalNetworkParam(NeuralFactory* ptr_nf_ = nullptr);
+    GlobalNetworkParam(NeuralFactory* ptr_nf_ = nullptr, int &argc, char **&argv);
     ~GlobalNetworkParam();
     void LockIt();
     bool IsLocked();
@@ -49,6 +49,8 @@ public:
     void AllocateSpace();
     GlobalNeuralNetworkParam *GetNNParam();
     void SetOldObj(double obj);
+    void SetNNParameter();
+    void InitNNParameter(int &argc, char **&argv, unsigned random_seed = 0, bool shared_parameters = false);
 private:
     bool is_locked_;
     //the num of feature (hand-crafted feature size)

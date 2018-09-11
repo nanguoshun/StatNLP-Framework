@@ -82,6 +82,7 @@ void NetworkModel::Train(std::vector<Instance *> *ptr_all_instances, std::vector
         }
         bool last_iteration = (i == max_num_interations);
         bool done = false;
+        //training done, and update the
         if(last_iteration){
              done = this->ptr_fm_->Update(true);
         } else{

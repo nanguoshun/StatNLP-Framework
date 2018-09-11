@@ -8,7 +8,7 @@
 #include "global_network_param.h"
 #include "../common/opt/math_calc.h"
 
-GlobalNetworkParam::GlobalNetworkParam(NeuralFactory* ptr_nf) {
+GlobalNetworkParam::GlobalNetworkParam(NeuralFactory* ptr_nf,int &argc, char **&argv) {
     is_locked_ = false;
     h_feature_size_ = 0;
     fixed_feature_size_ = 0;
@@ -47,6 +47,8 @@ GlobalNetworkParam::GlobalNetworkParam(NeuralFactory* ptr_nf) {
         if(ComParam::USE_HYBRID_NEURAL_FEATURES == NetworkConfig::Feature_Type){
             //NeuralNetwork *ptr_nl = new NeuralNetwork();
             //ptr_nl->Initialize(argc,argv);
+            //init the parameter
+            InitNNParameter(argc,argv);
             NetworkConfig::FEATURE_TOUCH_TEST = true;
             std::vector<NeuralNetwork *> *ptr_nn_vec = ptr_nf->GetNeuralInst();
             ptr_nn_g_ = new GlobalNeuralNetworkParam(ptr_nn_vec);
@@ -152,13 +154,13 @@ bool GlobalNetworkParam::Update() {
  * Update the weight;
  * @return
  */
+
 bool GlobalNetworkParam::UpdateDiscriminative() {
     //use lbfgs
     /**
      * go_on_training equals 0: training finished.
      * go_on_training equals 1: go on next training.
      */
-
     // we have allocated the space for vectors of hand-crafted and neural beforehand in GlobalNetworkParam::LockIt() during
     // finalizing the features, and it will be much faster without real-time arraycopy as the java-version did.
     int go_on_training =  1;
@@ -414,4 +416,11 @@ void GlobalNetworkParam::SetOldObj(double obj) {
 
 double GlobalNetworkParam::GetCurrentObj() {
     return obj_current_;
+}
+
+void GlobalNetworkParam::SetNNParameter() {
+}
+
+void GlobalNetworkParam::InitNNParameter(int &argc, char **&argv, unsigned int random_seed, bool shared_parameters) {
+    ptr_nn_g_->InitNNParameter(argc,argv,random_seed,shared_parameters);
 }

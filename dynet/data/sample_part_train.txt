@@ -1,0 +1,4 @@
+Confidence ||| NN
+in ||| IN
+the ||| DT
+pound ||| RB

@@ -1,0 +1,5 @@
+The ||| DT
+campaign ||| NN
+so ||| RB
+divided ||| RB
+union ||| NN

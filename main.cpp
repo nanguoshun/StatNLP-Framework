@@ -2,7 +2,7 @@
 #include <fstream>
 #include <sstream>
 #include <list>
-#include <src/example/LinearCRF/linear_crf_tag_bilstm.h>
+#include <src/example/LinearCRF/linear_crf_lstm.h>
 #include <src/neural/neural_factory.h>
 #include "src/hybridnetworks/data_manager.h"
 #include "src/example/LinearCRF/linear_crf_instance.h"
@@ -111,6 +111,10 @@ void ReleaseStaticPointer(){
 }
 
 int main(int argc, char **argv){
+    NetworkConfig::DROP_OUT = 0.3;
+    NetworkConfig::HIDDREN_SIZE = 32;
+    NetworkConfig::INPUT_DIM = 2;
+
     std::string train_file_name = "/Users/ngs/Documents/cplusproject/statNLP/data/conll2000/sample_train.txt";
     //std::string test_file_name =  "/Users/ngs/Documents/cplusproject/statNLP/data/conll2000/sample_part_test.txt";
     //std::string train_file_name = "/Users/ngs/Documents/cplusproject/statNLP/data/conll2000/sample_train.txt";

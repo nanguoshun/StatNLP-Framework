@@ -9,7 +9,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
 
 
 # include the dynet
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/cnn)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/dynet)
 
 # set the directory of eign3
 set( EIGEN3_INCLUDE_DIR "/Users/ngs/Documents/cplusproject/eigen" )
@@ -25,7 +25,7 @@ find_package(Boost COMPONENTS program_options iostreams serialization REQUIRED)
 include_directories(${Boost_INCLUDE_DIR})
 set(LIBS ${LIBS} ${Boost_LIBRARIES})
 
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/cnn/cnn)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/dynet/dynet)
 
 add_executable(statNLP main.cpp src/hybridnetworks/hypergraph.h
         src/hybridnetworks/global_network_param.h src/hybridnetworks/global_network_param.cpp
@@ -43,7 +43,8 @@ add_executable(statNLP main.cpp src/hybridnetworks/hypergraph.h
         src/hybridnetworks/discriminative_network_model.cpp src/hybridnetworks/local_network_learner_thread.h
         src/hybridnetworks/local_network_learner_thread.cpp src/common/opt/lbfgs.h src/common/opt/lbfgs.cpp
         src/hybridnetworks/freelistbase.h src/hybridnetworks/freelistbase.cpp src/hybridnetworks/local_network_decoder_thread.h
-        src/hybridnetworks/local_network_decoder_thread.cpp src/neural/neural_network.h src/neural/neural_network.cpp src/neural/lstm_network.cpp src/neural/lstm_network.h src/neural/cnn_network.cpp src/neural/cnn_network.h src/neural/global_neural_network_param.h src/neural/global_neural_network_param.cpp src/neural/vanilla_rnn.h src/neural/vanilla_rnn.cpp src/example/LinearCRF/linear_crf_tag_bilstm.h src/example/LinearCRF/linear_crf_tag_bilstm.cpp src/neural/neural_factory.h src/neural/neural_factory.cpp src/neural/lstm_factory.h src/neural/lstm_factory.cpp src/neural/lstm_factory.h src/neural/lstm_factory.cpp src/neural/cnn_factory.h src/neural/cnn_factory.cpp src/common/opt/math_calc.h src/common/opt/math_calc.cpp)
+        src/hybridnetworks/local_network_decoder_thread.cpp src/neural/neural_network.h src/neural/neural_network.cpp src/neural/lstm_network.cpp src/neural/lstm_network.h src/neural/cnn_network.cpp src/neural/cnn_network.h src/neural/global_neural_network_param.h src/neural/global_neural_network_param.cpp src/neural/vanilla_rnn.h src/neural/vanilla_rnn.cpp src/example/LinearCRF/linear_crf_lstm.h src/example/LinearCRF/linear_crf_lstm.cpp src/neural/neural_factory.h src/neural/neural_factory.cpp src/neural/lstm_factory.h src/neural/lstm_factory.cpp src/neural/lstm_factory.h src/neural/lstm_factory.cpp src/neural/cnn_factory.h src/neural/cnn_factory.cpp src/common/opt/math_calc.h src/common/opt/math_calc.cpp src/neural/dynet_interface.h src/neural/dynet_interface.cpp)
 
 # link statnlp and dynet
-target_link_libraries(statNLP cnn)
+#target_link_libraries(statNLP cnn)
+target_link_libraries(statNLP dynet)

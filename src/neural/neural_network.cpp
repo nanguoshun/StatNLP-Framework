@@ -20,11 +20,11 @@ NeuralNetwork::~NeuralNetwork() {
 }
 
 void NeuralNetwork::Initialize(int &argc, char **&argv, unsigned int random_seed, bool shared_parameters) {
-    cnn::Initialize(argc,argv);
+    //dynet::initialize(argc,argv);
 }
 
-void NeuralNetwork::Initialize() {
-    Initialize(argc_, argv_);
+void NeuralNetwork::Initialize(dynet::DynetParams& params) {
+    Initialize(params);
 }
 
 void NeuralNetwork::AddParam() {
@@ -45,9 +45,17 @@ void NeuralNetwork::Forward() {
 }*/
 
 void NeuralNetwork::BackWard() {
-
+    //call the back propagation of NN.
 }
 
+/**
+ * Update the gradient of the output.
+ *
+ * @param count
+ * @param ptr_network
+ * @param parent_k
+ * @param children_k_index
+ */
 void NeuralNetwork::Update(double count, Network *ptr_network, int parent_k, int children_k_index) {
     int idex = 0;
     ptr_output_counts_[idex] -= count;
