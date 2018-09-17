@@ -17,17 +17,11 @@ class Network : public HyperGraph {
 
 public:
     Network();
-
     Network(int networkId, Instance *ptr_inst, LocalNetworkParam *ptr_param_l);
-
     ~Network();
-
     void Touch();
-
     void Touch(int k);
-
     void Train();
-
     inline void Inside() {
         //get the number of node of this network
         int num_node = CountNodes();

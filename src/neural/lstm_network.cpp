@@ -96,9 +96,13 @@ void LSTMNetwork::Forward() {
                 GetOutput((*ptr_training_)[i],i,cg, lstm_param_.dropout_rate_ > 0.f);
             }
         }
+        int slen = (*ptr_training_)[i].size();
         std::vector<std::vector<dynet::real>> grad = (*ppptr_gradient_)[i];
         std::vector<dynet::real> grad_i = grad[i];
-        grad_i *
+        std::vector<dynet::Expression> err(slen+1);
+        for(int k=0; k<slen; ++k){
+
+        }
     }
 }
 

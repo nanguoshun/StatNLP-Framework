@@ -3,6 +3,7 @@ project(statNLP)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 # compiler optimization, -O3 is the highest level.
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I /usr/local/include -O3")
@@ -13,7 +14,7 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/dynet)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/Thunder-master)
 
 # set the directory of eign3
-set( EIGEN3_INCLUDE_DIR "/Users/ngs/Documents/cplusproject/eigen" )
+set(EIGEN3_INCLUDE_DIR "/Users/ngs/Documents/cplusproject/eigen" )
 
 IF( NOT EIGEN3_INCLUDE_DIR )
     MESSAGE( FATAL_ERROR "Please point the environment variable EIGEN3_INCLUDE_DIR to the include directory of your Eigen3 installation.")

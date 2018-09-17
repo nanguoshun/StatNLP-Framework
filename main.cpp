@@ -111,11 +111,12 @@ void ReleaseStaticPointer(){
 }
 
 int main(int argc, char **argv){
-    std::string train_file_name = "/Users/ngs/Documents/cplusproject/statNLP/data/conll2000/sample_train.txt";
+    std::string train_file_name = "data/conll2000/sample_train.txt";
+    //std::string train_file_name = "/Users/ngs/Documents/cplusproject/statNLP/data/conll2000/sample_train.txt";
     //std::string test_file_name =  "/Users/ngs/Documents/cplusproject/statNLP/data/conll2000/sample_part_test.txt";
     //std::string train_file_name = "/Users/ngs/Documents/cplusproject/statNLP/data/conll2000/sample_train.txt";
     //std::string train_file_name = "/Users/ngs/Documents/cplusproject/statNLP/data/conll2000/train.txt";
-    std::string test_file_name =  "/Users/ngs/Documents/cplusproject/statNLP/data/conll2000/sample_test.txt";
+    std::string test_file_name =  "data/conll2000/sample_test.txt";
     std::vector<Instance*> *ptr_inst_vec_all = new std::vector<Instance *>;
     std::vector<Instance*> *ptr_inst_vec_all_duplicate_ = new std::vector<Instance *>;
     std::vector<Instance*> *ptr_inst_vec_all_test = new std::vector<Instance*>;
@@ -128,7 +129,7 @@ int main(int argc, char **argv){
     int size_train_du = ptr_inst_vec_all_duplicate_->size();
     int size_test = ptr_inst_vec_all_test->size();
 #endif
-    NetworkConfig::Feature_Type = ComParam::USE_HYBRID_NEURAL_FEATURES;
+   // NetworkConfig::Feature_Type = ComParam::USE_HYBRID_NEURAL_FEATURES;
     GlobalNetworkParam *ptr_param_g = new GlobalNetworkParam(argc,argv,ptr_inst_vec_all->size(),(NeuralFactory*)NeuralFactory::GetLSTMFactory());
     //Below is the only hand-crafted features, and there are no parameters in the constructor of GlobalNetworkParam
     // GlobalNetworkParam *ptr_param_g = new GlobalNetworkParam();

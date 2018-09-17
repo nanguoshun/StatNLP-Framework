@@ -63,7 +63,12 @@ bool FeatureManager::Update(bool just_update_obj_gradient) {
         return false;
     }
     //calc the gradient of the NN
-    ptr_param_g_->GetNNParam()->Backward();
+    if(ComParam::USE_HYBRID_NEURAL_FEATURES == NetworkConfig::Feature_Type){
+        ptr_param_g_->GetNNParam()->Backward();
+    } else if(ComParam::USE_PURE_NEURAL_FEATURES == NetworkConfig::Feature_Type){
+        //TODO:
+        //NetworkConfig::FEATURE_TOUCH_TEST = true;
+    }
     //update the gradient.
     bool done = this->ptr_param_g_->Update();
     if (this->num_of_threads_ != 1) {
