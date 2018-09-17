@@ -24,7 +24,6 @@
 #define DYNET_MAX_TENSOR_DIM 7
 
 namespace dynet {
-
 /**
  * \ingroup dim
  * \struct Dim
@@ -80,10 +79,12 @@ struct Dim {
     for (auto v : x) d[nd++] = static_cast<unsigned int>(v);
   }
   /**
+     *
      * \brief Initialize from a vector of dimensions and a batch size
      *
      * \param x Vector of dimensions
      * \param b Batch size
+     *
      */
   Dim(const std::vector<long> & x, unsigned int b) : nd(0), bd(b) {
     DYNET_ARG_CHECK(

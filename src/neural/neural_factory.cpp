@@ -17,3 +17,7 @@ NeuralFactory::~NeuralFactory() {
 LSTMFactory* NeuralFactory::GetLSTMFactory() {
     return new LSTMFactory();
 }
+
+void NeuralFactory::SetDynetCallFunctionHelper(DynetFunctionHelper *ptr_helper) {
+    ptr_call_dynet_ = ptr_helper;
+}

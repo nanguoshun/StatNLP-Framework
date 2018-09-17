@@ -8,7 +8,7 @@
 #include "global_network_param.h"
 #include "../common/opt/math_calc.h"
 
-GlobalNetworkParam::GlobalNetworkParam(NeuralFactory* ptr_nf,int &argc, char **&argv) {
+GlobalNetworkParam::GlobalNetworkParam(int &argc, char **&argv, int vocab_size,NeuralFactory* ptr_nf) {
     is_locked_ = false;
     h_feature_size_ = 0;
     fixed_feature_size_ = 0;
@@ -45,14 +45,13 @@ GlobalNetworkParam::GlobalNetworkParam(NeuralFactory* ptr_nf,int &argc, char **&
             exit (EXIT_FAILURE);
         }
         if(ComParam::USE_HYBRID_NEURAL_FEATURES == NetworkConfig::Feature_Type){
-            //NeuralNetwork *ptr_nl = new NeuralNetwork();
-            //ptr_nl->Initialize(argc,argv);
-            //init the parameter
-            InitNNParameter(argc,argv);
             NetworkConfig::FEATURE_TOUCH_TEST = true;
+            ptr_nn_g_ = new GlobalNeuralNetworkParam();
+            ptr_nf->SetDynetCallFunctionHelper(ptr_nn_g_->GetDynetFunctionHelper());
+            ptr_nf->InitNNParameter(argc,argv,vocab_size);
+            ptr_nf->CreateNN();
             std::vector<NeuralNetwork *> *ptr_nn_vec = ptr_nf->GetNeuralInst();
-            ptr_nn_g_ = new GlobalNeuralNetworkParam(ptr_nn_vec);
-            //ptr_nn_vec->push_back(ptr_nn);
+            ptr_nn_g_->SetNNVect(ptr_nn_vec);
         } else if(ComParam::USE_PURE_NEURAL_FEATURES == NetworkConfig::Feature_Type){
             NetworkConfig::FEATURE_TOUCH_TEST = true;
             //TODO:

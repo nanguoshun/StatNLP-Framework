@@ -5,10 +5,8 @@
 #include "global_neural_network_param.h"
 #include "../common/opt/math_calc.h"
 
-GlobalNeuralNetworkParam::GlobalNeuralNetworkParam(std::vector<NeuralNetwork *> *ptr_nn_vec) {
-    ptr_nn_vec_ = ptr_nn_vec;
-    ptr_call_dynet_ = new CallDynetFunction();
-
+GlobalNeuralNetworkParam::GlobalNeuralNetworkParam() {
+    ptr_call_dynet_ = new DynetFunctionHelper();
 }
 
 GlobalNeuralNetworkParam::~GlobalNeuralNetworkParam() {
@@ -24,7 +22,7 @@ void GlobalNeuralNetworkParam::SetLearningState() {
 
 void GlobalNeuralNetworkParam::InitNetwork() {
     for(auto it = ptr_nn_vec_->begin(); it != ptr_nn_vec_->end(); ++it){
-        (*it)->Initialize();
+       // (*it)->Initialize();
     }
 }
 
@@ -56,6 +54,10 @@ void GlobalNeuralNetworkParam::ResetAllNNGradient() {
     }
 }
 
+void GlobalNeuralNetworkParam::SetNNVect(std::vector<NeuralNetwork *> *ptr_nn_vec) {
+    ptr_nn_vec_ = ptr_nn_vec;
+}
+
 void GlobalNeuralNetworkParam::Forward() {
     for(auto it = ptr_nn_vec_->begin(); it != ptr_nn_vec_->end(); ++it){
         (*it)->Forward();
@@ -68,7 +70,10 @@ void GlobalNeuralNetworkParam::Backward() {
     }
 }
 
-void GlobalNeuralNetworkParam::InitNNParameter(int &argc, char **&argv, unsigned int random_seed,
-                                               bool shared_parameters) {
+void GlobalNeuralNetworkParam::InitNNParameter(int &argc, char **&argv, unsigned int random_seed, bool shared_parameters) {
     ptr_call_dynet_->Initialize(argc,argv,random_seed,shared_parameters);
+}
+
+DynetFunctionHelper* GlobalNeuralNetworkParam::GetDynetFunctionHelper() {
+    return ptr_call_dynet_;
 }

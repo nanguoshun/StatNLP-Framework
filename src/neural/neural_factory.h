@@ -9,6 +9,7 @@
 #include "lstm_network.h"
 #include <iostream>
 #include <vector>
+#include "dynet_interface.h"
 class LSTMFactory;
 class CNNFactory;
 class NeuralFactory{
@@ -18,8 +19,11 @@ public:
     static LSTMFactory *GetLSTMFactory();
     static CNNFactory *GetCNNFactory();
     virtual std::vector<NeuralNetwork *> *GetNeuralInst() = 0;
+    virtual NeuralNetwork* CreateNN() = 0;
+    void SetDynetCallFunctionHelper(DynetFunctionHelper *ptr_helper);
+    virtual void InitNNParameter(int &argc, char **&argv, int vocab_size, unsigned random_seed = 0, bool shared_parameters = false) = 0;
 protected:
-    //std::vector<NeuralNetwork *> *ptr_nn_vec_;
+    DynetFunctionHelper *ptr_call_dynet_;
 };
 
 #endif //STATNLP_NEURAL_FACTOR_H

@@ -10,8 +10,9 @@ class CNNFactory: public NeuralFactory{
 public:
     CNNFactory();
     ~CNNFactory();
-
     std::vector<NeuralNetwork *> *GetNeuralInst() override;
+    NeuralNetwork *CreateNN() override;
+    void InitNNParameter(int &argc, char **&argv, int vocab_size, unsigned int random_seed, bool shared_parameters) override;
 
 protected:
 

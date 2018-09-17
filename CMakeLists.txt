@@ -5,11 +5,12 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 # compiler optimization, -O3 is the highest level.
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
-
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I /usr/local/include -O3")
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
 
 # include the dynet
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/dynet)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/Thunder-master)
 
 # set the directory of eign3
 set( EIGEN3_INCLUDE_DIR "/Users/ngs/Documents/cplusproject/eigen" )
@@ -25,7 +26,11 @@ find_package(Boost COMPONENTS program_options iostreams serialization REQUIRED)
 include_directories(${Boost_INCLUDE_DIR})
 set(LIBS ${LIBS} ${Boost_LIBRARIES})
 
+set(BLAS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Thunder-master)
+find_package(BLAS REQUIRED)
+
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/dynet/dynet)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Thunder-master/packages)
 
 add_executable(statNLP main.cpp src/hybridnetworks/hypergraph.h
         src/hybridnetworks/global_network_param.h src/hybridnetworks/global_network_param.cpp
@@ -47,4 +52,5 @@ add_executable(statNLP main.cpp src/hybridnetworks/hypergraph.h
 
 # link statnlp and dynet
 #target_link_libraries(statNLP cnn)
-target_link_libraries(statNLP dynet)
+target_link_libraries(statNLP dynet libblas.a)
+#target_link_libraries(statNLP dynet)

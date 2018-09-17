@@ -2,6 +2,10 @@
  * \file cl-args.h
  * \brief This is a **very** minimal command line argument parser
  */
+
+#ifndef DYNET_CL_ARGS_H
+#define DYNET_CL_ARGS_H
+
 #include <iostream>
 #include <stdlib.h>
 #include <string>
@@ -92,7 +96,8 @@ static void usage(std::ostream& os, const char* program, Task task) {
  * \param params Params structure
  * \param task Task
  */
-void get_args(int argc,
+
+static void get_args(int argc,
               char** argv,
               Params& params,
               Task task) {
@@ -287,3 +292,5 @@ void get_args(int argc,
     }
   }
 }
+
+#endif

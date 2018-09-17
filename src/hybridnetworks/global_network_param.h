@@ -13,7 +13,7 @@
 
 class GlobalNetworkParam{
 public:
-    GlobalNetworkParam(NeuralFactory* ptr_nf_ = nullptr, int &argc, char **&argv);
+    GlobalNetworkParam(int &argc, char **&argv, int vocab_size,NeuralFactory* ptr_nf_ = nullptr);
     ~GlobalNetworkParam();
     void LockIt();
     bool IsLocked();
@@ -88,7 +88,6 @@ private:
     double *ptr_concat_counts_;
     /*neural related param */
     GlobalNeuralNetworkParam *ptr_nn_g_;
-
 };
 
 #endif //STATNLP_GLOBAL_NETWORK_PARAM_H

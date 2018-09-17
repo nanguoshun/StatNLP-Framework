@@ -4,23 +4,23 @@
 
 #include "dynet_interface.h"
 
-CallDynetFunction::CallDynetFunction() {
+DynetFunctionHelper::DynetFunctionHelper() {
 }
 
-CallDynetFunction::~CallDynetFunction() {
+DynetFunctionHelper::~DynetFunctionHelper() {
 
 }
 
-void CallDynetFunction::Initialize(int &argc, char **&argv, unsigned int random_seed, bool shared_parameters) {
+void DynetFunctionHelper::Initialize(int &argc, char **&argv, unsigned int random_seed, bool shared_parameters) {
     auto dyparams = dynet::extract_dynet_params(argc, argv);
     dynet::initialize(dyparams);
 }
 
-void CallDynetFunction::SetParameters(int &argc, char **&argv) {
+void DynetFunctionHelper::SetParameters(int &argc, char **&argv) {
     get_args(argc, argv, params_, TRAIN);
 }
 
-SuperNNParameter CallDynetFunction::GetParam() {
+StatNLP::SuperNNParameter DynetFunctionHelper::GetParam() {
     return params_;
 }
 

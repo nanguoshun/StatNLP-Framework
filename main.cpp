@@ -111,10 +111,6 @@ void ReleaseStaticPointer(){
 }
 
 int main(int argc, char **argv){
-    NetworkConfig::DROP_OUT = 0.3;
-    NetworkConfig::HIDDREN_SIZE = 32;
-    NetworkConfig::INPUT_DIM = 2;
-
     std::string train_file_name = "/Users/ngs/Documents/cplusproject/statNLP/data/conll2000/sample_train.txt";
     //std::string test_file_name =  "/Users/ngs/Documents/cplusproject/statNLP/data/conll2000/sample_part_test.txt";
     //std::string train_file_name = "/Users/ngs/Documents/cplusproject/statNLP/data/conll2000/sample_train.txt";
@@ -127,11 +123,13 @@ int main(int argc, char **argv){
     int size = ptr_inst_vec_all->size();
     ReadData(test_file_name,ptr_inst_vec_all_test, nullptr, true, true, false);
     int num_iterations = 200;
+#ifdef DEBUG
     int size_train = ptr_inst_vec_all->size();
     int size_train_du = ptr_inst_vec_all_duplicate_->size();
     int size_test = ptr_inst_vec_all_test->size();
+#endif
     NetworkConfig::Feature_Type = ComParam::USE_HYBRID_NEURAL_FEATURES;
-    GlobalNetworkParam *ptr_param_g = new GlobalNetworkParam((NeuralFactory*)NeuralFactory::GetLSTMFactory());
+    GlobalNetworkParam *ptr_param_g = new GlobalNetworkParam(argc,argv,ptr_inst_vec_all->size(),(NeuralFactory*)NeuralFactory::GetLSTMFactory());
     //Below is the only hand-crafted features, and there are no parameters in the constructor of GlobalNetworkParam
     // GlobalNetworkParam *ptr_param_g = new GlobalNetworkParam();
     LinearCRFFeatureManager *ptr_fm = new LinearCRFFeatureManager(ptr_param_g, ptr_inst_vec_all);
@@ -139,9 +137,10 @@ int main(int argc, char **argv){
     NetworkModel *ptr_nm = new DiscriminativeNetworkModel(ptr_fm,ptr_nc);
     ptr_nm->Train(ptr_inst_vec_all, ptr_inst_vec_all_duplicate_,num_iterations);
     std::vector<Instance *> *ptr_predictions = ptr_nm->Decode(ptr_inst_vec_all_test,false);
-
+#ifdef DEBUG
     std::cout << "size of predict instances is: "<<ptr_predictions->size()<<std::endl;
     std::cout << "size of godlen instances is: "<<ptr_inst_vec_all_test->size()<<std::endl;
+#endif
     int corr = 0;
     int total = 0;
     int count = 0;
