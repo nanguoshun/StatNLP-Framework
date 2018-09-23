@@ -11,6 +11,7 @@
  * @tparam T0: its self type
  * @tparam T1: input type
  * @tparam T2: output type
+ *
  */
 template <class SELF_TYPE, class INPUT_TYPE, class OUTPUT_TYPE>
 class BaseInstance: public Instance{

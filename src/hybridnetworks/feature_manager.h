@@ -9,6 +9,7 @@
 #include "feature_array.h"
 #include <vector>
 //#include "local_network_param.h"
+//#include <boost/any.hpp>
 
 class LocalNetworkParam;
 class Network;
@@ -23,10 +24,11 @@ public:
     FeatureArray * Extract(Network *ptr_network, int parent_k, int * ptr_children_k, int children_k_index);
     bool isCacheAble();
     void EnableCache(int numNetworks);
-    virtual FeatureArray* ExtractHelper(Network *ptr_network, int parent, int *ptr_children) = 0;
+    virtual FeatureArray* ExtractHelper(Network *ptr_network, int parent, int *ptr_children, int children_k_index) = 0;
     void SetLocalNetworkParams(int threadId, LocalNetworkParam *ptr_param_l);
-
     int temp_count_;
+    LocalNetworkParam ** GetLocalParams();
+    void AddNeural(Network *ptr_network, int netId, int parent_K, int children_k_index, ComType::Neural_Input *ptr_edge_input, int output);
 protected:
     GlobalNetworkParam *ptr_param_g_;
     LocalNetworkParam **pptr_param_l_;
@@ -37,7 +39,6 @@ protected:
     int pos_hal_window_size_;
     int num_of_networks_;
     std::mutex mtx;
-
 };
 
 #endif //STATNLP_FEATUREMANAGER_H

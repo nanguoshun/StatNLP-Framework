@@ -30,34 +30,35 @@ void NetworkModel::Train(std::vector<Instance *> *ptr_all_instances, std::vector
     this->ptr_inst_all_ = ptr_all_instances;
     this->ptr_inst_all_du_ = ptr_all_instances_du;
     for(int inst_id = 0; inst_id < ptr_all_instances->size(); ++inst_id){
-        (*ptr_inst_all_)[inst_id]->SetInstanceId(inst_id+1);
-    }
-    //set the learning state
-    if(ComParam::USE_HYBRID_NEURAL_FEATURES == NetworkConfig::Feature_Type){
-        ptr_nn_g_ = this->ptr_fm_->GetGlobalParam()->GetNNParam();
-        ptr_nn_g_->SetLearningState();
-    } else if(ComParam::USE_PURE_NEURAL_FEATURES == NetworkConfig::Feature_Type){
-        //TODO:
+        (*ptr_inst_all_)[inst_id]->SetInstanceId(inst_id+1); /* we have multiple instances and each of them will assigned a unique ID */
     }
     //extract the features.
     pptr_learner_ = new LocalNetworkLearnerThread*[this->num_threads_];
     std::vector<std::vector<Instance*>*> *ptr_inst = this->SplitInstanceForTrain();
     for (int threadId = 0; threadId < this->num_threads_; ++threadId) {
-        pptr_learner_[threadId] = new LocalNetworkLearnerThread(threadId, this->ptr_fm_,
-                                                                            (*ptr_inst)[threadId], this->ptr_nc_, -1);
+        pptr_learner_[threadId] = new LocalNetworkLearnerThread(threadId, this->ptr_fm_, (*ptr_inst)[threadId], this->ptr_nc_, -1);
         pptr_learner_[threadId]->Touch();
     }
-    //set the parameters of neural network.
+
+    //init the parameters of neural network.
     if(ComParam::USE_HYBRID_NEURAL_FEATURES == NetworkConfig::Feature_Type){
-        //ptr_nn_g_
+        ptr_nn_g_ = this->ptr_fm_->GetGlobalParam()->GetNNParam();
+        ptr_nn_g_->SetLearningState();
+        ptr_nn_g_->SetLocalNetworkParams(this->ptr_fm_->GetLocalParams());
+        ptr_nn_g_->PrepareInputId();
+        ptr_nn_g_->SetInstance(ptr_all_instances);
+        if(NetworkConfig::USE_BATCH_TRAINING){
+            //TODO:
+        }
     } else if(ComParam::USE_PURE_NEURAL_FEATURES == NetworkConfig::Feature_Type){
         //TODO:
     }
+
     this->ptr_fm_->GetGlobalParam()->LockIt();
     std::cout <<"tmp cout is: "<<this->ptr_fm_->temp_count_<<std::endl;
     std::cout <<"tmp cout is: "<<this->ptr_fm_->GetGlobalParam()->tmp_count_<<std::endl;
     double obj_old = ComParam::DOUBLE_NEGATIVE_INFINITY;
-    //EM algorithm
+    //EM style algorithm
 //    long start_time = clock();
     int start_time = GetCurrentMillionSeconds();
     ptr_learn_thread_vector_ = new std::vector<std::thread>;
@@ -71,7 +72,6 @@ void NetworkModel::Train(std::vector<Instance *> *ptr_all_instances, std::vector
         } else if(ComParam::USE_PURE_NEURAL_FEATURES == NetworkConfig::Feature_Type){
             //TODO:
         }
-
         for (int threadId = 0; threadId < this->num_threads_; ++threadId) {
             //this->pptr_learner_[threadId]
             ptr_learn_thread_vector_->push_back(std::thread(&LocalNetworkLearnerThread::Run,pptr_learner_[threadId]));
@@ -82,7 +82,7 @@ void NetworkModel::Train(std::vector<Instance *> *ptr_all_instances, std::vector
         }
         bool last_iteration = (i == max_num_interations);
         bool done = false;
-        //training done, and update the
+        //OKya, we have the gradient of all parameters, and then update the weight by optimizer.
         if(last_iteration){
              done = this->ptr_fm_->Update(true);
         } else{
@@ -97,7 +97,6 @@ void NetworkModel::Train(std::vector<Instance *> *ptr_all_instances, std::vector
         */
         std::cout << "Iteration: " << i << " Obj: " << obj << " Time: " << (double) time / (double)1000 <<
                   " Convergence: " << obj / obj_old << " Total Time: " << (double) (GetCurrentMillionSeconds() - start_time) / (double)1000 << std::endl;
-
         obj_old = obj;
         if(last_iteration){
             std::cout << "Training complete after " << i << " iterations" << std::endl;

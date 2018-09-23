@@ -1,5 +1,5 @@
 //
-// Created by  ngs on 02/08/2018.
+// Created by  ngs on 02/08/2018.  nanguoshun@gmail.com
 //
 
 #include "linear_crf_feature_manager.h"
@@ -29,17 +29,14 @@ LinearCRFFeatureManager::~LinearCRFFeatureManager() {
 }
 
 // this function is called LocalNetworkLearnerThread during touch phase.
-FeatureArray* LinearCRFFeatureManager::ExtractHelper(Network *ptr_network, int parent_k, int *ptr_children) {
+FeatureArray* LinearCRFFeatureManager::ExtractHelper(Network *ptr_network, int parent_k, int *ptr_children,int children_k_index) {
     LinearCRFNetwork *ptr_crf_network = (LinearCRFNetwork*) ptr_network;
     //FIXME: should get the instance from (LinearCRFInstance*)ptr_crf_network->GetInstance(), but encounters errors. Alternatively, we use ptr_inst_matrix_ to get instance directly.
     LinearCRFInstance *ptr_instance = (LinearCRFInstance*)ptr_crf_network->GetInstance();
-
     //Instance *ptr_instance = (*ptr_inst_matrix_)[ptr_crf_network->GetNetworkID()];
     //LinearCRFInstance *ptr_crf_instance = (LinearCRFInstance*)ptr_crf_instance;
     int size = ptr_instance->GetSize();
-    //FIXME:
     ComType::Input_Str_Matrix *ptr_input = ptr_instance->GetInput();
-    int input_size = ptr_input->size();
     long curr_node = ptr_crf_network->GetNode(parent_k);
     std::vector<int> array = NetworkIDManager::ToHybridNodeArray(curr_node);
     int pos = array[0] - 1;
@@ -48,6 +45,17 @@ FeatureArray* LinearCRFFeatureManager::ExtractHelper(Network *ptr_network, int p
     if(node_type == ComType::NODE_TYPES::LEAF){
         return FeatureArray::PTR_EMPTY;
     }
+    /* add the features of neural part  */
+    if (ComParam::USE_HYBRID_NEURAL_FEATURES == NetworkConfig::Feature_Type) {
+        /* caution: Do release the space allocated here */
+        ComType::Neural_Input *ptr_nn_input_pair = new ComType::Neural_Input;
+        ptr_nn_input_pair->first = ptr_instance->GetStrVect();
+        ptr_nn_input_pair->second = pos;
+        AddNeural(ptr_network,0,parent_k,children_k_index,ptr_nn_input_pair,tag_id);
+    }else if(ComParam::USE_PURE_NEURAL_FEATURES == NetworkConfig::Feature_Type){
+        //TODO:
+    }
+
     //Only one child for linear CRF.
     int child_tag_id = (ptr_network->GetNodeArray(ptr_children[0]))[1];
     FeatureArray *ptr_features = new FeatureArray((int*) nullptr,0);
@@ -96,5 +104,6 @@ FeatureArray* LinearCRFFeatureManager::ExtractHelper(Network *ptr_network, int p
         ptr_features = new FeatureArray(new int[1]{transition_feature},1,ptr_features);
         temp_count_ ++;
     }
+
     return ptr_features;
 }

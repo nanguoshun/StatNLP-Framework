@@ -5,6 +5,7 @@
 #include "dynet_interface.h"
 
 DynetFunctionHelper::DynetFunctionHelper() {
+
 }
 
 DynetFunctionHelper::~DynetFunctionHelper() {
@@ -24,3 +25,9 @@ StatNLP::SuperNNParameter DynetFunctionHelper::GetParam() {
     return params_;
 }
 
+dynet::ComputationGraph * DynetFunctionHelper::NewGraph(dynet::ComputationGraph *ptr_cg) {
+    if(nullptr != ptr_cg){
+        delete ptr_cg;
+    }
+    return new dynet::ComputationGraph();
+}

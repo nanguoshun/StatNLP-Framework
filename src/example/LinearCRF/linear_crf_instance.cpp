@@ -14,12 +14,14 @@ LinearCRFInstance::LinearCRFInstance(int instance_id, double weight, ComType::In
     //ptr_words_ = ptr_words;
     //ptr_labels_ = ptr_labels;
     //ptr_input_ = ptr_words;
+    ptr_str_vec_ = nullptr;
 
 }
 
 LinearCRFInstance::LinearCRFInstance() {
     //ptr_words_ = nullptr;
     //ptr_output_ = nullptr;
+    ptr_str_vec_ = nullptr;
 }
 
 LinearCRFInstance::~LinearCRFInstance() {
@@ -39,4 +41,15 @@ LinearCRFInstance::~LinearCRFInstance() {
 
 int LinearCRFInstance::GetSize() {
     return ptr_input_->size();
+}
+
+ComType::Input_Str_Vector* LinearCRFInstance::GetStrVect() {
+    if(nullptr == ptr_str_vec_){
+        ptr_str_vec_ = new ComType::Input_Str_Vector;
+        for(auto it = ptr_input_->begin(); it != ptr_input_->end(); ++it){
+            std::string str = (*it)[0];/* the first word is the feature we need */
+            ptr_str_vec_->push_back(str);
+        }
+    }
+    return ptr_str_vec_;
 }

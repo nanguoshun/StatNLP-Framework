@@ -9,22 +9,33 @@
 NeuralNetwork::NeuralNetwork() {
     is_training_ = false;
     ptr_params_ = nullptr;
-    ptr_gradparams_ = nullptr;
+    ptr_grad_params_ = nullptr;
     ptr_output_ = nullptr;
-    ptr_output_counts_ = nullptr;
-
+    ptr_output_grad_ = nullptr;
+    ptr_cg_ = nullptr;
+    is_create_grad_ = false;
+    ptr_model_ = new dynet::ParameterCollection;
+    ptr_nnInput2Id_ = new ComType::Neural_Input_Map;
+    pptr_sent_ = new std::vector<std::vector<std::string>*>;
 }
 
 NeuralNetwork::~NeuralNetwork() {
-
+    delete ptr_model_;
+    delete ptr_nnInput2Id_;
 }
 
 void NeuralNetwork::Initialize(int &argc, char **&argv, unsigned int random_seed, bool shared_parameters) {
     //dynet::initialize(argc,argv);
 }
 
-void NeuralNetwork::Initialize(dynet::DynetParams& params) {
-    Initialize(params);
+void NeuralNetwork::Initialize() {
+    ptr_params_ = new double[param_size_];
+    ptr_grad_params_ = new double[param_size_];
+    //initialize the value of params and corresponding gradient.
+    for(int i = 0; i< param_size_; ++i){
+        ptr_params_[i] = 0;
+        ptr_grad_params_[i] = 0;
+    }
 }
 
 void NeuralNetwork::AddParam() {
@@ -39,13 +50,138 @@ void NeuralNetwork::Touch() {
 
 }
 
-/*
 void NeuralNetwork::Forward() {
     //call back the forward function
-}*/
+    if(is_training_ || NetworkConfig::STATUS == NetworkConfig::ModelStatus::TESTING || NetworkConfig::STATUS == NetworkConfig::ModelStatus::DEV_IN_TRAINING){
+        //copy parames from statNLP to dynet.
+        CopyParams2Dynet();
+    }
+    if(NetworkConfig::USE_BATCH_TRAINING && is_training_){
+        //TODO:
+    } else{
+        ptr_cg_ = DynetFunctionHelper::NewGraph(ptr_cg_);
+        output_expression_ = BuildForwardGraph(pptr_sent_); // is it a completed sentence???
+        dynet::Tensor output_tensor = ptr_cg_->forward(output_expression_);
+        std::vector<dynet::real> output_vect = dynet::as_vector(output_tensor);
+        SetOutputArray(output_vect);
+    }
+}
 
 void NeuralNetwork::BackWard() {
     //call the back propagation of NN.
+    ResetGradient();
+    //allocate the space
+    if(!is_create_grad_){
+        ptr_output_grad_vec_ = new std::vector<float>;
+        ptr_output_grad_ = new double[output_size_];
+        is_create_grad_ = true;
+    } else{
+        ptr_output_grad_vec_->clear();
+    }
+    //copy the gradient of output to ptr_output_grad_vec_
+    for(int i = 0; i< output_size_; ++i){
+       ptr_output_grad_vec_->push_back((float)ptr_output_grad_[i]);
+    }
+    dynet::Expression output_grad_exp = dynet::input(*ptr_cg_,output_expression_.dim(),*ptr_output_grad_vec_);
+    dynet::Expression loss_exp = dynet::sum_elems(dynet::sum_batches(dynet::cmult(output_expression_,output_grad_exp)));
+
+    ptr_cg_->backward(loss_exp);
+    //copy gradient from dynet to our framework.
+    CopyGradientFromDynet();
+    //L2 regularization.
+    if(NetworkConfig::REGULARIZE_NEURAL_FEATURES){
+        AddL2ParamGrad();
+    }
+}
+
+/**
+ * Copy params from statNLP to neural params of dynet.
+ */
+void NeuralNetwork::CopyParams2Dynet() {
+    std::vector<std::shared_ptr<dynet::LookupParameterStorage>> lookup_params = ptr_model_->lookup_parameters_list();
+    std::vector<std::shared_ptr<dynet::ParameterStorage>> params = ptr_model_->parameters_list();
+    int param_index = 0;/* the index of output gradient */
+    // copy lookup params to neural params.
+#ifdef DEBUG_NN
+    int all_param_size = ptr_model_->size();
+    std::cout << "the param size of the model is "<<all_param_size<<std::endl;
+    int count = ptr_model_->parameter_count();
+    std::cout << "the param cout of the model is "<<count<<std::endl;
+    int all_lookup_size = 0;
+    for(auto it = lookup_params.begin(); it != lookup_params.end(); ++it) {
+        dynet::LookupParameterStorage *ptr_lps = (*it).get();
+        int size = ptr_lps->size();
+        std::cout << "lookup params size is: "<<size<<std::endl;
+        all_lookup_size += size;
+    }
+    std::cout << "all lookup size is "<<all_lookup_size<<std::endl;
+    int param_size = 0;
+    for(auto it = params.begin(); it != params.end(); ++it){
+        dynet::ParameterStorage *ptr_ps = (*it).get();
+        int size = ptr_ps->size();
+        std::cout <<"param size is: "<<size<<std::endl;
+        param_size += size;
+    }
+    std::cout << "params size is: "<<param_size<<std::endl;
+#endif
+    int size_lookup = 0;
+    for(auto it = lookup_params.begin(); it != lookup_params.end(); ++it){
+       dynet::LookupParameterStorage *ptr_lps = (*it).get();
+       dynet::Tensor tensor =  ptr_lps->all_values;
+       for(int i = 0; i < ptr_lps->size(); ++i){
+           ++size_lookup;
+           std::cout << size_lookup <<"th lookupparams, param before: "<<ptr_params_[param_index];
+           dynet::TensorTools::set_element(tensor,i,ptr_params_[param_index]);
+           std::cout << " , param after "<<ptr_params_[param_index]<<std::endl;
+           ++param_index;
+       }
+    }
+    //std::cout << "all lookup size is "<<size_lookup<<std::endl;
+    //size_lookup = 0;
+    //copy params to neural params.
+    for(auto it = params.begin(); it != params.end(); ++it){
+        dynet::ParameterStorage *ptr_ps = (*it).get();
+        dynet::Tensor tensor = ptr_ps->values;
+        for(int i =0; i < ptr_ps->size(); ++i){
+            ++size_lookup;
+            std::cout << size_lookup<< "th params before: "<<ptr_params_[param_index];
+            dynet::TensorTools::set_element(tensor,i,ptr_params_[param_index]);
+            std::cout << ", params after: "<<ptr_params_[param_index]<<std::endl;
+            ++param_index;
+        }
+    }
+    std::cout << "all params size is "<<size_lookup<<std::endl;
+
+}
+
+/**
+ * Copy gradient from dynet to StatNLP.
+ */
+void NeuralNetwork::CopyGradientFromDynet() {
+    std::vector<std::shared_ptr<dynet::LookupParameterStorage>> lookup_params = ptr_model_->lookup_parameters_list();
+    std::vector<std::shared_ptr<dynet::ParameterStorage>> params = ptr_model_->parameters_list();
+    int param_index = 0; /* the index of output gradient */
+    //copy the gradient of lookupparam to gradient vector.
+    for(auto it = lookup_params.begin(); it != lookup_params.end(); ++it){
+        dynet::LookupParameterStorage *ptr_lps = (*it).get();
+        dynet::Tensor grad_tensor = ptr_lps->all_grads;
+        std::vector<dynet::real> grad_vec = dynet::as_vector(grad_tensor);
+        int size = grad_vec.size();
+        for(int i=0; i<size; ++i){
+            ptr_grad_params_[param_index++] = (double)grad_vec[i];
+        }
+    }
+    //copy the gradient of params to gradient vector
+    for(auto it = params.begin(); it != params.end(); ++it){
+        dynet::ParameterStorage *ptr_ps = (*it).get();
+        dynet::Tensor grad_tensor = ptr_ps->g;
+        std::vector<dynet::real> grad_vec = dynet::as_vector(grad_tensor);
+        int size = grad_vec.size();
+        for(int i =0; i < size; ++i){
+            ptr_grad_params_[param_index++] = (double)grad_vec[i];
+        }
+    }
+
 }
 
 /**
@@ -58,7 +194,7 @@ void NeuralNetwork::BackWard() {
  */
 void NeuralNetwork::Update(double count, Network *ptr_network, int parent_k, int children_k_index) {
     int idex = 0;
-    ptr_output_counts_[idex] -= count;
+    ptr_output_grad_[idex] -= count;
 }
 
 void NeuralNetwork::SetTraining(bool istraining) {
@@ -79,14 +215,15 @@ double NeuralNetwork::GetL2Param() {
 /**
  * Reset all gradient to zero.
  */
+
 void NeuralNetwork::ResetGrad() {
     //reset the gradient of features that used in CRF
-    if(nullptr != ptr_output_counts_){
-        memset(ptr_output_counts_,0, sizeof(double) * output_size_);
+    if(nullptr != ptr_output_grad_){
+        memset(ptr_output_grad_,0, sizeof(double) * output_size_);
     }
     //reset the neural internal gradient.
-    if(nullptr != ptr_gradparams_){
-        memset(ptr_gradparams_,0, sizeof(double) * param_size_);
+    if(nullptr != ptr_grad_params_){
+        memset(ptr_grad_params_,0, sizeof(double) * param_size_);
     }
 }
 
@@ -98,7 +235,122 @@ void NeuralNetwork::ResetGrad() {
  * @param parent_k: the parent node of the hyperedge
  * @param childeren_k_index: the  childeren_k_index th hyperedge.
  * @return: the score
+ *
  */
 double NeuralNetwork::GetScore(Network *ptr_network, int parent_k, int childeren_k_index) {
-    double score = 0;
+    double val = 0;
+    NeuralIO *ptr_io = GetHyperEdgeInputOutput(ptr_network, parent_k,childeren_k_index);
+    if(nullptr != ptr_io){
+        ComType::Neural_Input *ptr_edge_input = ptr_io->GetInput();
+        int output_label = ptr_io->GetOutput();
+        int index = HyperEdgeInput2OutputRowIndex(ptr_edge_input) * unique_output_size_ * output_label ;
+        val = ptr_output_[index];
+    }
+    return val;
+}
+/**
+ * Copy the output from dynet to an array
+ *
+ * @param output_vec
+ */
+
+void NeuralNetwork::SetOutputArray(std::vector<dynet::real> &output_vec) {
+    //release the space allocated beforehand.
+    if(nullptr != ptr_output_){
+        delete ptr_output_;
+    }
+    output_size_ = output_vec.size();
+    ptr_output_ = new double[output_size_];
+    int i = 0;
+    for(auto it = output_vec.begin(); it != output_vec.end(); ++it){
+        ptr_output_[i++] = (*it);
+    }
+}
+
+/**
+ *
+ * Reset all gradient as zero before execute backpropagation.
+ *
+ */
+void NeuralNetwork::ResetGradient() {
+    std::vector<std::shared_ptr<dynet::LookupParameterStorage>> lookup_params = ptr_model_->lookup_parameters_list();
+    std::vector<std::shared_ptr<dynet::ParameterStorage>> params = ptr_model_->parameters_list();
+
+    for(auto it = lookup_params.begin(); it != lookup_params.end(); ++it){
+        dynet::LookupParameterStorage *ptr_lps = (*it).get();
+        dynet::TensorTools::zero(ptr_lps->all_grads);
+    }
+
+    for(auto it = params.begin(); it != params.end(); ++it){
+        dynet::ParameterStorage *ptr_ps = (*it).get();
+        dynet::TensorTools::zero(ptr_ps->g);
+    }
+}
+
+void NeuralNetwork::AddL2ParamGrad() {
+    if(param_size_ > 0){
+        double kappa = NetworkConfig::L2_REGULARIZATION_CONSTANT;
+        if(kappa <= 0){
+            return;
+        }
+        for(int i = 0; i < param_size_; ++i){
+            ptr_grad_params_[i] += 2 * scale_ * kappa * ptr_params_[i];
+        }
+    }
+}
+
+int NeuralNetwork::GetParamSize() {
+    return param_size_;
+}
+
+void NeuralNetwork::SetScale(double scale) {
+    scale_ = scale;
+}
+
+void NeuralNetwork::SetLocalNetworkParams(LocalNetworkParam **ppr_params) {
+    pptr_param_l_ = ppr_params;
+}
+
+int NeuralNetwork::GetNNInputID(ComType::Input_Str_Vector *ptr_input) {
+    int id = 0;
+    if(NetworkConfig::USE_BATCH_TRAINING && is_training_){
+        //TODO:
+    } else{
+        //int id = ptr_nnInput2Id_->find (*ptr_input)->second;
+        //return id;
+        id = ptr_nnInput2Id_->find(ptr_input)->second;
+    }
+    return id;
+}
+
+NeuralIO* NeuralNetwork::GetHyperEdgeInputOutput(Network *ptr_network, int parent_k, int children_k_index) {
+    //todo:
+}
+
+bool NeuralNetwork::IsTraining() {
+    return is_training_;
+}
+
+void NeuralNetwork::SetNNID(int id) {
+    net_id_ = id;
+}
+
+int NeuralNetwork::GetNNID() {
+    return  net_id_;
+}
+
+ComType::Neural_Input_Map* NeuralNetwork::GetNNInput2IdMap() {
+    return ptr_nnInput2Id_;
+}
+
+int NeuralNetwork::GetMaxSentenceLength() {
+    return max_len_;
+}
+
+void NeuralNetwork::SetMaxSentenceLength(int max_len) {
+    max_len_ = max_len;
+}
+
+void NeuralNetwork::SetWord2IntMap(std::unordered_map<std::string, int> *ptr_map) {
+    ptr_word2int_map_ = ptr_map;
 }

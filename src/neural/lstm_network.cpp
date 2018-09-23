@@ -13,8 +13,8 @@ LSTMNetwork::LSTMNetwork() {
 
 }
 
-LSTMNetwork::LSTMNetwork(dynet::ParameterCollection &model,LSTMSuperParam &param):dynet::LSTMBuilder(param.layers_,param.input_dim_,param.hidden_dim_,model) {
-    AddParameters(model,param);
+LSTMNetwork::LSTMNetwork(LSTMSuperParam &param):dynet::LSTMBuilder(param.layers_,param.input_dim_,param.hidden_dim_,*NeuralNetwork::ptr_model_) {
+    AddParameters(*NeuralNetwork::ptr_model_,param);
     ppptr_output_matrix_ = new std::vector<std::vector<std::vector<dynet::real>>>;
 }
 
@@ -28,11 +28,12 @@ void LSTMNetwork::AddParameters(dynet::ParameterCollection &model, LSTMSuperPara
     p_R_ = model.add_parameters({param.vocab_size_,param.hidden_dim_});
     p_bias_ = model.add_parameters({param.vocab_size_});
     lstm_param_ = param;
+    param_size_ = model.parameter_count();
 }
 
 void LSTMNetwork::Initialize(int &argc, char **&argv) {
     dynet::DynetParams dyparams = ExtractParam(argc,argv);
-    NeuralNetwork::Initialize(dyparams);
+    NeuralNetwork::Initialize();
     Params params;
     get_args(argc,argv,params,Task::TRAIN);
     NetworkConfig::kSOS = dict_.convert("<s>");
@@ -59,52 +60,59 @@ dynet::DynetParams LSTMNetwork::ExtractParam(int &argc, char **&argv) {
 void LSTMNetwork::Touch() {
     NeuralNetwork::Touch();
 }
+
+
 /**
  *
  * step1: update the parameter of LSTM model.
  * step2: calculate the output of LSTM network.
  *
  */
+/*
 void LSTMNetwork::Forward() {
-    //copy the parameter from the optimizer and then get the forward results.
-    //dynet::ParameterStorage storage();
-    //thunder::DoubleTensor *p =  new thunder::DoubleTensor(3,9,7,10);
-    //double a[2] = {1,2};
-    //p->storage().get()->copy(a);
-    std::vector<std::shared_ptr<dynet::ParameterStorage>> param_storage = ptr_model_->get_storage().params;
-    //param_storage[0].get()->copy()
-    //param_storage[1]
-    //dynet::ParameterStorage
-    //std::shared_ptr<dynet::ParameterStorage> *ptr = param_storage[0].get()->copy();
- //   std::vector<long> vec;
+   //copy the parameter from the optimizer and then get the forward results.
+   //dynet::ParameterStorage storage();
+   //thunder::DoubleTensor *p =  new thunder::DoubleTensor(3,9,7,10);
+   //double a[2] = {1,2};
+   //p->storage().get()->copy(a);
+   if(is_training_ || NetworkConfig::STATUS == NetworkConfig::ModelStatus::TESTING || NetworkConfig::STATUS == NetworkConfig::ModelStatus::DEV_IN_TRAINING){
+
+   }
+   std::vector<std::shared_ptr<dynet::ParameterStorage>> param_storage = ptr_model_->get_storage().params;
+   //param_storage[0].get()->copy()
+   //param_storage[1]
+   //dynet::ParameterStorage
+   //std::shared_ptr<dynet::ParameterStorage> *ptr = param_storage[0].get()->copy();
+//   std::vector<long> vec;
 //    dynet::Dim *ptr_d = new dynet::Dim(vec);
 //    dynet::Tensor *ptr_tensor= new dynet::Tensor(&ptr_d,);
-    for(unsigned i = 0; i<report_every_i_; ++i){
-        //build a computation graph for each sentence.
-        dynet::ComputationGraph cg;
-        //construct the parameters of NN model.
-        //dynet::Parameter pw = ptr_model_->add_parameters({8,2});
-        //construct an expression of loss function for each sentence.
+   for(unsigned i = 0; i<report_every_i_; ++i){
+       //build a computation graph for each sentence.
+       dynet::ComputationGraph cg;
+       //construct the parameters of NN model.
+       //dynet::Parameter pw = ptr_model_->add_parameters({8,2});
+       //construct an expression of loss function for each sentence.
 //      dynet::Expression w = dynet::parameter(cg,);
-       // dynet::Expression loss_exr = BuildLSTMGraph((*ptr_training_)[i],cg, lstm_param_.dropout_rate_ > 0.f);
-        //call LSTM forward from dynet and get the output.
-        ptr_output_ = nullptr; // get the output from LSTM output.
-        output_size_ = 0; // should be a value.
-        if(NeuralNetwork::is_training_){
-            if(nullptr == ptr_output_counts_){
-                ptr_output_counts_ = new double[output_size_];
-                GetOutput((*ptr_training_)[i],i,cg, lstm_param_.dropout_rate_ > 0.f);
-            }
-        }
-        int slen = (*ptr_training_)[i].size();
-        std::vector<std::vector<dynet::real>> grad = (*ppptr_gradient_)[i];
-        std::vector<dynet::real> grad_i = grad[i];
-        std::vector<dynet::Expression> err(slen+1);
-        for(int k=0; k<slen; ++k){
+      // dynet::Expression loss_exr = BuildLSTMGraph((*ptr_training_)[i],cg, lstm_param_.dropout_rate_ > 0.f);
+       //call LSTM forward from dynet and get the output.
+       ptr_output_ = nullptr; // get the output from LSTM output.
+       output_size_ = 0; // should be a value.
+       if(NeuralNetwork::is_training_){
+           if(nullptr == ptr_output_grad_){
+               ptr_output_grad_ = new double[output_size_];
+               GetOutput((*ptr_training_)[i],i,cg, lstm_param_.dropout_rate_ > 0.f);
+           }
+       }
+       int slen = (*ptr_training_)[i].size();
+       std::vector<std::vector<dynet::real>> grad = (*ppptr_gradient_)[i];
+       std::vector<dynet::real> grad_i = grad[i];
+       std::vector<dynet::Expression> err(slen+1);
+       for(int k=0; k<slen; ++k){
 
-        }
-    }
+       }
+   }
 }
+*/
 
 /**
  *  1. manually set the output gradient of the LSTM
@@ -190,4 +198,75 @@ unsigned LSTMNetwork::ReadData(const std::string &filename, std::vector<std::vec
         }
     }
     return num_tokens;
+}
+
+dynet::Expression LSTMNetwork::BuildForwardGraph(std::vector<std::vector<std::string>*> *pptr_sent) {
+    dynet::Expression r_exp = dynet::parameter(*ptr_cg_,p_R_);
+    dynet::Expression bais_exp = dynet::parameter(*ptr_cg_,p_bias_);
+    dynet::LSTMBuilder::new_graph(*ptr_cg_); // reset RNN builder for the new graph
+    dynet::LSTMBuilder::start_new_sequence();
+    std::vector<dynet::Expression> err_vec;
+    int num_of_sentence = pptr_sent->size();
+    int word_id = 0;
+    for(int pos = 0; pos < max_len_; ++pos){
+        std::vector<unsigned int> word_id_vec;
+        for(int i = 0; i < num_of_sentence; ++i){
+            int sent_size = (*pptr_sent)[i]->size();
+            if(pos > sent_size){
+                word_id = 0;
+                word_id_vec.push_back(word_id);
+            } else{
+                std::string word = (*((*pptr_sent)[i]))[pos];
+                auto it = ptr_word2int_map_->find(word);
+                if(it != ptr_word2int_map_->end()){
+                    word_id = (*it).second;
+                }else{
+                    word_id = ptr_word2int_map_->find(ComParam::UNK)->second;
+                }
+                word_id_vec.push_back(word_id);
+            }
+        }
+        dynet::Expression expr = dynet::lookup(*ptr_cg_,p_c_,word_id_vec);
+        dynet::Expression expr_predict = dynet::LSTMBuilder::add_input(expr);
+        err_vec.push_back(expr_predict);
+    }
+    dynet::Expression err_sum = dynet::sum(err_vec);
+    return err_sum;
+}
+
+int LSTMNetwork::HyperEdgeInput2OutputRowIndex(void *ptr_edgeInput) {
+    //TODO:
+    return 0;
+}
+
+ComType::Input_Str_Vector *LSTMNetwork::HyperEdgeInput2NNInput(void *ptr_edgeInput) {
+    ComType::Neural_Input *ptr_sent_and_pos = (ComType::Neural_Input *)ptr_edgeInput;
+#ifdef DEBUG_NN
+    std::cout << "sentence is: ";
+    ComType::Input_Str_Vector *ptr_str_vec = ptr_sent_and_pos->first;
+    for(auto it = ptr_str_vec->begin(); it != ptr_str_vec->end(); ++it){
+        std::cout << (*it) << " ";
+    }
+    std::cout << std::endl;
+#endif
+    return ptr_sent_and_pos->first;
+}
+
+/**
+ *
+ * @param ptr_inst
+ */
+void LSTMNetwork::SetInstance(std::vector<Instance *> *ptr_inst) {
+    for(auto it = ptr_inst->begin(); it != ptr_inst->end(); ++it){
+        LSTMNetwork *ptr_base_inst = (LSTMNetwork *)(*it);
+        ComType::Input_Str_Matrix *ptr_input = ptr_base_inst->GetInput();
+        int sent_length = ptr_input->size();
+        std::vector<std::string> *ptr_vec = new std::vector<std::string>;
+        for(auto itt = ptr_input->begin(); itt != ptr_input->end(); ++itt){
+            std::string feature1 = (*itt)[0];
+            std::cout << "feature is "<<feature1<<std::endl;
+            ptr_vec->push_back(feature1);
+        }
+        pptr_sent_->push_back(ptr_vec);
+    }
 }

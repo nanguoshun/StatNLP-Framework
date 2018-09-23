@@ -9,6 +9,7 @@ This is particularly useful to visualise relevant information of different exper
 
 ## Requirements
 - Dynet
+- Crayon 
 - Eigen
 
 For Dynet, the installation details are detailed in the [repository README](../../../README.md). For the Crayon client, you can use `pip` directly:

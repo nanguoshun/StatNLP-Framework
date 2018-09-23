@@ -30,6 +30,6 @@ std::vector<NeuralNetwork *>* LSTMFactory::GetNeuralInst() {
 
 NeuralNetwork *LSTMFactory::CreateNN() {
     ptr_nn_vec_ = new std::vector<NeuralNetwork*>;
-    LSTMNetwork *ptr_lstm = new LSTMNetwork(*ptr_model_,param_);
+    LSTMNetwork *ptr_lstm = new LSTMNetwork(param_);
     ptr_nn_vec_->push_back(ptr_lstm);
 }

@@ -105,7 +105,7 @@ FeatureArray* FeatureManager::Extract(Network *ptr_network, int parent_k, int *p
             return ptr_fa;
         }
     }
-    FeatureArray* ptr_fa = this->ExtractHelper(ptr_network,parent_k,ptr_children_k);
+    FeatureArray* ptr_fa = this->ExtractHelper(ptr_network,parent_k,ptr_children_k,children_k_index);
     if(this->isCacheAble()){
         this->ptr_cache_[ptr_network->GetNetworkID()][parent_k][children_k_index] = ptr_fa;
     }
@@ -117,4 +117,20 @@ bool FeatureManager::isCacheAble() {
 }
 void FeatureManager::SetLocalNetworkParams(int threadId, LocalNetworkParam *ptr_param_l) {
     this->pptr_param_l_[threadId] = ptr_param_l;
+}
+
+LocalNetworkParam** FeatureManager::GetLocalParams() {
+    return pptr_param_l_;
+}
+/**
+ *
+ * @param ptr_network:
+ * @param netId: the neural network ID.
+ * @param parent_K
+ * @param children_k_index
+ * @param ptr_neural_input
+ * @param output
+ */
+void FeatureManager::AddNeural(Network *ptr_network, int netId, int parent_K, int children_k_index, ComType::Neural_Input *ptr_edge_input, int output) {
+    this->pptr_param_l_[ptr_network->GetThreadId()]->AddNeuralHyperEdge(netId,ptr_network,parent_K,children_k_index,ptr_edge_input,output);
 }

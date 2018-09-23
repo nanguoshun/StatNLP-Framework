@@ -63,7 +63,7 @@ long LinearCRFNetworkCompiler::ToNodeLeaf() {
  */
 
 void LinearCRFNetworkCompiler::CompileUnlabeledGeneric() {
-    ptr_generic_network_ = new LinearCRFNetwork();
+    ptr_generic_network_ = new LinearCRFNetwork(); //TODO: /* will replace by builder */
     long leaf = this->ToNodeLeaf();
     ptr_generic_network_->AddNode(leaf);
     std::list<long> prev_nodes_list, curr_nodes_list;

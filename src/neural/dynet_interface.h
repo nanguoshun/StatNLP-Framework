@@ -34,6 +34,7 @@ class DynetFunctionHelper{
     ~DynetFunctionHelper();
     void Initialize(int &argc, char **&argv, unsigned int random_seed,bool shared_parameters);
     void SetParameters(int &argc, char **&argv);
+    static dynet::ComputationGraph* NewGraph(dynet::ComputationGraph* ptr_cg);
     StatNLP::SuperNNParameter GetParam();
 private:
     StatNLP::SuperNNParameter params_;

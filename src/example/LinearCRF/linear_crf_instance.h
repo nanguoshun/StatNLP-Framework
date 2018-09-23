@@ -16,8 +16,9 @@ public:
     LinearCRFInstance(int instance_id, double weight, ComType::Input_Str_Matrix *ptr_words, ComType::Label_Str_Vector *ptr_labels);
     ~LinearCRFInstance();
     int GetSize();
-
+    ComType::Input_Str_Vector * GetStrVect();
 private:
+    ComType::Input_Str_Vector *ptr_str_vec_;
 //    Input_Str_Matrix *ptr_words_;
 //    Label_Str_Vector *ptr_labels_;
 

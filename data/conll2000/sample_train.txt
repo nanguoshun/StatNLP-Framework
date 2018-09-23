@@ -294,30 +294,3 @@ to TO B-VP
 boost VB I-VP
 exports NNS B-NP
 . . O
-
-At IN B-PP
-the DT B-NP
-same JJ I-NP
-time NN I-NP
-, , O
-he PRP B-NP
-remains VBZ B-VP
-fairly RB B-ADJP
-pessimistic JJ I-ADJP
-about IN B-PP
-the DT B-NP
-outlook NN I-NP
-for IN B-PP
-imports NNS B-NP
-, , O
-given VBN B-PP
-continued VBD B-NP
-high JJ I-NP
-consumer NN I-NP
-and CC I-NP
-capital NN I-NP
-goods NNS I-NP
-inflows NNS I-NP
-. . O
-
-

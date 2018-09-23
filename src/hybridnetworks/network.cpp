@@ -20,6 +20,7 @@ Network::Network(int networkId, Instance *ptr_inst, LocalNetworkParam *ptr_param
     this->ptr_param_l_ = ptr_param_l;
     this->ptr_param_g_ = ptr_param_l_->GetFeatureManager()->GetGlobalParam();
     tmp_count_ = 0;
+    neural_feature_inserted_ = false;
 }
 
 Network::~Network() {
@@ -163,7 +164,7 @@ void Network::Max(int nodeId) {
         for(int children_k = 0; children_k < childrens_size; ++children_k){
             int *ptr_children_k = ptr_childrens[children_k];
             int size = ptr_children_size[children_k];
-            if(IsIngored(ptr_children_k,size)){
+            if(IsIgnored(ptr_children_k, size)){
                 continue;
             }
             FeatureArray *ptr_fa = this->ptr_param_l_->Extract(this,nodeId,ptr_children_k,children_k);
@@ -183,7 +184,7 @@ bool Network::IsSumNode(int nodeid) {
     return false;
 }
 
-bool Network::IsIngored(int *ptr_children, int size) {
+bool Network::IsIgnored(int *ptr_children, int size) {
     for(int i = 0; i < size; ++i){
         if(IsRemovded(ptr_children[i])){
             return true;
@@ -195,3 +196,16 @@ bool Network::IsIngored(int *ptr_children, int size) {
 int* Network::GetMaxPath(int nodeid) {
     return ptr_max_children_no_[nodeid];
 }
+
+int Network::GetThreadId() {
+    return thread_id_;
+}
+
+bool Network::GetNeuralInserted() {
+    return neural_feature_inserted_;
+}
+
+void Network::SetNeuralInserted(bool flag) {
+    neural_feature_inserted_ = flag;
+}
+

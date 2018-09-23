@@ -19,6 +19,7 @@ public:
     Network();
     Network(int networkId, Instance *ptr_inst, LocalNetworkParam *ptr_param_l);
     ~Network();
+    //virtual GetVector();
     void Touch();
     void Touch(int k);
     void Train();
@@ -180,7 +181,7 @@ public:
         //the num of nodes in the 0th hyperedge that is rootd by nodeID.
         int child_k_size = (this->GetChildren_Size(nodeId))[children_k];
         //for each node in the 0th hyperedge
-        if (IsIngored(ptr_children_k, child_k_size)) {
+        if (IsIgnored(ptr_children_k, child_k_size)) {
             inside = ComParam::DOUBLE_NEGATIVE_INFINITY;
         } else {
             inside = CalcScore(nodeId,ptr_children_k,children_k);
@@ -190,7 +191,7 @@ public:
             int *ptr_children_k = ptr_childrens_vec_[children_k];
             int child_k_size = (this->GetChildren_Size(nodeId))[children_k];
             //for each node in a hyper edge.
-            if (IsIngored(ptr_children_k, child_k_size)) {
+            if (IsIgnored(ptr_children_k, child_k_size)) {
                 continue;
             } else{
                 double score = CalcScore(nodeId, ptr_children_k, children_k);
@@ -239,7 +240,7 @@ public:
         for (int children_k = 0; children_k < children_size; ++children_k) {
             int *ptr_children_k = ptr_children_vec[children_k];
             int child_k_size = this->GetChildren_Size(nodeId)[children_k];
-            if (IsIngored(ptr_children_k, child_k_size)) {
+            if (IsIgnored(ptr_children_k, child_k_size)) {
                 continue;
             }
             //calculate the score summation of the hyeredge.
@@ -293,7 +294,7 @@ public:
         for (int children_k = 0; children_k < children_k_size; ++children_k) {
             int *ptr_children_k = ptr_children_vec[children_k];
             int child_k_size = this->GetChildren_Size(nodeId)[children_k];
-            if (IsIngored(ptr_children_k, child_k_size)) {
+            if (IsIgnored(ptr_children_k, child_k_size)) {
                 continue;
             }
             FeatureArray *ptr_fa = this->ptr_param_l_->Extract(this, nodeId, ptr_children_k, children_k);
@@ -335,11 +336,14 @@ public:
     double GetInside(int nodeId);
     std::vector<int> GetNodeArray(int nodeIndex);
     int tmp_count_;
-    bool IsIngored(int *ptr_children, int size);
+    bool IsIgnored(int *ptr_children, int size);
     void Max();
     void Max(int nodeId);
     bool IsSumNode(int nodeid);
     int *GetMaxPath(int nodeid);
+    int GetThreadId();
+    bool GetNeuralInserted();
+    void SetNeuralInserted(bool flag);
 //    static double **ptr_inside_shared_array_;
 //    static double **ptr_outside_shared_array_;
     //the array size for each thread;
@@ -358,10 +362,9 @@ protected:
     double *ptr_max_;
     int **ptr_max_children_no_;
     std::mutex mtx;
+    bool neural_feature_inserted_;
 //    int inside_shared_array_size_;
 //    int outside_shared_array_size_;
-
-
 };
 
 #endif //STATNLP_NETWORK_H

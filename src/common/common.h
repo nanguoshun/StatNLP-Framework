@@ -21,6 +21,8 @@
 #define GLOBAL_
 #endif
 
+#define DEBUG_NN;
+
 namespace ComParam{
     const int USE_HANDCRAFTED_FEATURES = 0;
     //use hand-crafted features and neural features.
@@ -34,7 +36,6 @@ namespace ComParam{
     const bool _CACHE_FEATURES_DURING_TRAINING = true;
     const double DOUBLE_NEGATIVE_INFINITY = -std::numeric_limits<double>::infinity();
     const double TRAIN_MODE_IS_GENERATIVE = false;
-    const double  L2_REGULARIZATION_CONSTANT = 0.01;
     const bool RANDOM_INIT_WEIGHT = true;
     const double FEATURE_INIT_WEIGHT = 0.0;
     const int FOREST_MAX_HEIGHT = 10000;
@@ -44,25 +45,37 @@ namespace ComParam{
     const double OBJTOL = 10e-15;
     const int OPTIMIZER = OPT_LBFGS;
     const double LEARNING_RATE = 0.005;
-
+    const std::string UNK = "<unk>";
+    const std::string PAD = "<pad>";
+    const int UNK_ID = 10000000;
+    const int PAD_ID = 10000001;
 }
 
 namespace ComType{
     typedef std::vector<std::vector<std::string>> Input_Str_Matrix;
     typedef std::vector<std::string> Label_Str_Vector;
+    typedef std::vector<std::string> Input_Str_Vector;
+    typedef std::pair<Input_Str_Vector*,int> Neural_Input;
     typedef std::unordered_map<std::string, std::unordered_map<std::string, std::unordered_map<std::string, int>*>*> FeatureIntMap;
     typedef std::unordered_map<std::string, std::unordered_map<std::string, int>*> FeatureInMap_Value;
     typedef std::unordered_map<std::string, std::list<std::string>*> Type2InputMap;
     enum NODE_TYPES{
         LEAF, NODE, ROOT
     };
+//    typedef std::pair<std::string, int> NeuralInput;
+    typedef std::unordered_map<ComType::Input_Str_Vector *, int> Neural_Input_Map;
+    typedef std::vector<std::unordered_map<ComType::Input_Str_Vector *, int> *> Neural_Input_Map_Vect;
 }
+
+static int Feature_TEST = 1;
 
 namespace NetworkConfig{
     // the feature type is set as hand-crafted defaultly.
-    static int Feature_Type = ComParam::USE_HANDCRAFTED_FEATURES;
+    static int Feature_Type = ComParam::USE_HYBRID_NEURAL_FEATURES; //FIXME: the static configuration could not work
     static bool FEATURE_TOUCH_TEST = false;
-
+    static enum ModelStatus { TRAINING, DEV_IN_TRAINING, TESTING };
+    static ModelStatus STATUS = ModelStatus::TRAINING;
+    static bool USE_BATCH_TRAINING = false;
     /*neural network related*/
     static int kSOS = 0;
     static int kEOS = 0;
@@ -74,6 +87,8 @@ namespace NetworkConfig{
     static unsigned LAYERS = 1;
     static unsigned DECAY_ONSET_EPOCH = 10;
     static unsigned VACB_SIZE = 0;
+    static double L2_REGULARIZATION_CONSTANT = 0.01;
+    static bool REGULARIZE_NEURAL_FEATURES = false;
 }
 
 //typedef std::vector<std::vector<std::string>> Input_Str_Matrix;

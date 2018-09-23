@@ -9,6 +9,8 @@
 #include <vector>
 #include <unordered_map>
 #include "feature_array.h"
+#include <boost/any.hpp>
+#include <boost/functional/hash.hpp>
 
 class Network;
 class LocalNetworkParam{
@@ -33,6 +35,9 @@ public:
     int GetFeatureSize();
     double GetCount(int f_local);
     double GetObj();
+    void AddNeuralHyperEdge(int netId, Network *ptr_network, int parent_k, int children_k_index, ComType::Neural_Input *ptr_edgeinput, int output);
+    bool BuildNeuralCache(int netId, Network *ptr_network, int parent_k, int children_k_index,ComType::Neural_Input *ptr_edgeinput, int output);
+    ComType::Neural_Input_Map_Vect *GetLocalNNInput2Id();
 protected:
     int thread_id_;
     FeatureManager *ptr_fm_;
@@ -46,8 +51,12 @@ protected:
     FeatureArray **** ptr_cache_;
     bool is_cache_enabled_;
     int num_networks_;
-    bool is_gobal_mode_;
+    bool is_global_mode_;
     int fs_size_;
+    /*network ID( graphical network based on each instances),  */
+    NeuralIO ***** ptr_neural_cache_;
+    ComType::Neural_Input_Map_Vect *ptr_localNNInput2Id_ ;
+    int neural_net_size_;
 };
 
 #endif //STATNLP_LOCAL_NETWORK_PARAM_H

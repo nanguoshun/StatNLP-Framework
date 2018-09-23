@@ -28,7 +28,7 @@ public:
 //    LinearCRFFeatureManager();
     LinearCRFFeatureManager(GlobalNetworkParam *ptr_param, std::vector<Instance*> *ptr_inst);
     ~LinearCRFFeatureManager();
-    FeatureArray* ExtractHelper(Network *ptr, int parent, int *ptr_children);
+    FeatureArray* ExtractHelper(Network *ptr, int parent, int *ptr_children,int children_k_index);
     static int word_hal_window_size_;
     static std::string feature_type_[5];
 private:

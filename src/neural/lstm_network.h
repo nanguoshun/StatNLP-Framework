@@ -15,15 +15,16 @@
 #include "src/common/common.h"
 //#include "dynet/examples/cpp-utils/cl-args.h"
 #include "dynet_interface.h"
+#include "src/common/types/base_instance.h"
 
-class LSTMNetwork: public VanillaRNN, public dynet::LSTMBuilder{
+class LSTMNetwork: public VanillaRNN, public dynet::LSTMBuilder,public BaseInstance<LSTMNetwork, ComType::Input_Str_Matrix, ComType::Label_Str_Vector>{
 public:
-    LSTMNetwork(dynet::ParameterCollection &model, LSTMSuperParam &param);
+    LSTMNetwork(LSTMSuperParam &param);
     LSTMNetwork();
     //LSTMNetwork(int& argc, char**& argv);
     ~LSTMNetwork();
     void Touch() override;
-    void Forward();
+    //void Forward();
     void BackWard() override;
     void Update(double count, Network *ptr_network, int parent_k, int children_k_index) override;
     dynet::Expression GetOutput(const std::vector<int> &sentence, int sent_idx,dynet::ComputationGraph &cg,
@@ -33,6 +34,16 @@ public:
     void Initialize(int &argc, char **&argv);
     dynet::DynetParams ExtractParam(int& argc, char**& argv);
     void AddParameters(dynet::ParameterCollection &model, LSTMSuperParam &param);
+
+    dynet::Expression BuildForwardGraph(std::vector<std::vector<std::string>*> *ptr_input) override;
+
+    int HyperEdgeInput2OutputRowIndex(void *ptr_edgeInput) override;
+
+    ComType::Input_Str_Vector *HyperEdgeInput2NNInput(void *ptr_edgeInput) override;
+
+    void SetInstance(std::vector<Instance *> *ptr_inst) override;
+
+
 private:
     dynet::LookupParameter p_c_;
     dynet::Parameter p_R_;

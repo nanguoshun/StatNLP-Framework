@@ -17,7 +17,6 @@ public:
 private:
     std::vector<NeuralNetwork*> *ptr_nn_vec_;
     LSTMSuperParam param_;
-    StatNLP::ParamCollection *ptr_model_;
 };
 
 #endif //STATNLP_LSTM_FACTORY_H
