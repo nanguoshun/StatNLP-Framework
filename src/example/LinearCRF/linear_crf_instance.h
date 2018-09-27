@@ -17,6 +17,8 @@ public:
     ~LinearCRFInstance();
     int GetSize();
     ComType::Input_Str_Vector * GetStrVect();
+    void SetStrVect(ComType::Input_Str_Vector *ptr_vec);
+    void ExtractStrVect();
 private:
     ComType::Input_Str_Vector *ptr_str_vec_;
 //    Input_Str_Matrix *ptr_words_;

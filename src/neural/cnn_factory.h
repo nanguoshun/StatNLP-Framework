@@ -12,7 +12,9 @@ public:
     ~CNNFactory();
     std::vector<NeuralNetwork *> *GetNeuralInst() override;
     NeuralNetwork *CreateNN() override;
-    void InitNNParameter(int &argc, char **&argv, int vocab_size, unsigned int random_seed, bool shared_parameters) override;
+
+    void InitNNParameter(int &argc, char **&argv, int vocab_size, int label_size, unsigned int random_seed,
+                         bool shared_parameters) override;
 
 protected:
 

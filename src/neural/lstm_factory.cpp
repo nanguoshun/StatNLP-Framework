@@ -12,7 +12,7 @@ LSTMFactory::~LSTMFactory() {
 
 }
 
-void LSTMFactory::InitNNParameter(int &argc, char **&argv, int vocab_size, unsigned random_seed, bool shared_parameters) {
+void LSTMFactory::InitNNParameter(int &argc, char **&argv, int vocab_size, int label_size, unsigned random_seed, bool shared_parameters) {
     ptr_call_dynet_->Initialize(argc,argv,random_seed,shared_parameters);
     ptr_call_dynet_->SetParameters(argc,argv);
     StatNLP::SuperNNParameter param = ptr_call_dynet_->GetParam();
@@ -22,6 +22,7 @@ void LSTMFactory::InitNNParameter(int &argc, char **&argv, int vocab_size, unsig
     param_.dropout_rate_ = param.dropout_rate;
     param_.decay_rate_ = param.eta_decay_rate;
     param_.vocab_size_ = vocab_size;
+    param_.label_size_ = label_size;
 }
 
 std::vector<NeuralNetwork *>* LSTMFactory::GetNeuralInst() {

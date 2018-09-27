@@ -13,7 +13,7 @@
 
 class GlobalNetworkParam{
 public:
-    GlobalNetworkParam(int &argc, char **&argv, int max_sent_size, int sent_length,NeuralFactory* ptr_nf_ = nullptr,std::unordered_map<std::string,int> *ptr_word2int = nullptr);
+    GlobalNetworkParam(int &argc, char **&argv, int max_sent_size, int sent_length,  std::vector<std::string> *ptr_label, NeuralFactory* ptr_nf_ = nullptr,std::unordered_map<std::string,int> *ptr_word2int = nullptr);
     ~GlobalNetworkParam();
     void LockIt();
     bool IsLocked();

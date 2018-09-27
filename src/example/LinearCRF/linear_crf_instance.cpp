@@ -43,13 +43,28 @@ int LinearCRFInstance::GetSize() {
     return ptr_input_->size();
 }
 
+/**
+ *
+ */
+//FIXME: this is memory expensive
 ComType::Input_Str_Vector* LinearCRFInstance::GetStrVect() {
-    if(nullptr == ptr_str_vec_){
-        ptr_str_vec_ = new ComType::Input_Str_Vector;
-        for(auto it = ptr_input_->begin(); it != ptr_input_->end(); ++it){
+    return ptr_str_vec_;
+}
+
+void LinearCRFInstance::SetStrVect(ComType::Input_Str_Vector *ptr_vec) {
+    ptr_str_vec_ = ptr_vec;
+}
+
+/**
+ *
+ * Extract a completed sentence consisted of the first word of a line of ptr_input,
+ * such as "Confidence" in the line "Confidence NN B-NP"
+ *
+ */
+void LinearCRFInstance::ExtractStrVect() {
+    ptr_str_vec_ = new ComType::Input_Str_Vector;
+    for(auto it = ptr_input_->begin(); it != ptr_input_->end(); ++it){
             std::string str = (*it)[0];/* the first word is the feature we need */
             ptr_str_vec_->push_back(str);
-        }
     }
-    return ptr_str_vec_;
 }

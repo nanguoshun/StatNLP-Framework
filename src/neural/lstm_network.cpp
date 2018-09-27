@@ -16,6 +16,7 @@ LSTMNetwork::LSTMNetwork() {
 LSTMNetwork::LSTMNetwork(LSTMSuperParam &param):dynet::LSTMBuilder(param.layers_,param.input_dim_,param.hidden_dim_,*NeuralNetwork::ptr_model_) {
     AddParameters(*NeuralNetwork::ptr_model_,param);
     ppptr_output_matrix_ = new std::vector<std::vector<std::vector<dynet::real>>>;
+    is_alloc_space_beforehand_ = true;
 }
 
 LSTMNetwork::~LSTMNetwork() {
@@ -25,8 +26,8 @@ LSTMNetwork::~LSTMNetwork() {
 
 void LSTMNetwork::AddParameters(dynet::ParameterCollection &model, LSTMSuperParam &param) {
     p_c_ = model.add_lookup_parameters(param.vocab_size_,{param.input_dim_});
-    p_R_ = model.add_parameters({param.vocab_size_,param.hidden_dim_});
-    p_bias_ = model.add_parameters({param.vocab_size_});
+    p_R_ = model.add_parameters({param.label_size_,param.hidden_dim_});
+    p_bias_ = model.add_parameters({param.label_size_});
     lstm_param_ = param;
     param_size_ = model.parameter_count();
 }
@@ -199,20 +200,58 @@ unsigned LSTMNetwork::ReadData(const std::string &filename, std::vector<std::vec
     }
     return num_tokens;
 }
+/***
+ *
+ * Build LSTM computation graph based the targeting dataset.
+ *
+ * @param pptr_sent: all sentences of the training dataset.
+ * @return
+ */
+
+dynet::Expression LSTMNetwork::BuildLMGraph2(const vector<int>& sent, dynet::ComputationGraph* ptr_cg, bool apply){
+    dynet::LSTMBuilder::new_graph(*ptr_cg);
+    dynet::LSTMBuilder::start_new_sequence();
+    dynet::Expression R = parameter(*ptr_cg,p_R_);
+    std::cout << "the dim of R is "<<R.dim()<<std::endl;
+    dynet::Expression bias = parameter(*ptr_cg,p_bias_);
+    std::cout << "the dim of bias is "<<bias.dim()<<std::endl;
+    vector<dynet::Expression> err_vec;
+    int size =  sent.size();
+    for(int i = 0; i< sent.size(); ++i){
+        dynet::Expression x_t = lookup(*ptr_cg,p_c_,sent[i]);
+        dynet::Expression h_t = dynet::LSTMBuilder::add_input(x_t);
+        std::cout << "the dim of h_t is "<<h_t.dim()<<std::endl;
+        err_vec.push_back(h_t);
+    }
+    dynet::Expression final_exp = concatenate(err_vec);
+    std::cout << "the dim of final_exp is "<<final_exp.dim()<<std::endl;
+    return  final_exp;
+}
 
 dynet::Expression LSTMNetwork::BuildForwardGraph(std::vector<std::vector<std::string>*> *pptr_sent) {
+    std::vector<int> temp;
+    for(int i = 0; i< 14; i++){
+        temp.push_back(i);
+    }
+    return BuildLMGraph2(temp,ptr_cg_,false);
+
     dynet::Expression r_exp = dynet::parameter(*ptr_cg_,p_R_);
     dynet::Expression bais_exp = dynet::parameter(*ptr_cg_,p_bias_);
+    std::cout << "dim of r_exp is:"<<r_exp.dim() <<std::endl;
+    std::cout << "dim of bais_exp is"<<bais_exp.dim() <<std::endl;
     dynet::LSTMBuilder::new_graph(*ptr_cg_); // reset RNN builder for the new graph
     dynet::LSTMBuilder::start_new_sequence();
-    std::vector<dynet::Expression> err_vec;
+    std::vector<dynet::Expression> final_vec;
     int num_of_sentence = pptr_sent->size();
     int word_id = 0;
     for(int pos = 0; pos < max_len_; ++pos){
         std::vector<unsigned int> word_id_vec;
         for(int i = 0; i < num_of_sentence; ++i){
+            int k = random() % 100;
+            word_id_vec.push_back(k);
+            continue;
             int sent_size = (*pptr_sent)[i]->size();
-            if(pos > sent_size){
+            if(pos > sent_size-1){
                 word_id = 0;
                 word_id_vec.push_back(word_id);
             } else{
@@ -226,19 +265,57 @@ dynet::Expression LSTMNetwork::BuildForwardGraph(std::vector<std::vector<std::st
                 word_id_vec.push_back(word_id);
             }
         }
+        std::cout << "dim of lookup p_c is "<<p_c_.dim()<<std::endl;
+        /*get the embedding of the word_id_vec at a position*/
         dynet::Expression expr = dynet::lookup(*ptr_cg_,p_c_,word_id_vec);
-        dynet::Expression expr_predict = dynet::LSTMBuilder::add_input(expr);
-        err_vec.push_back(expr_predict);
+        std::cout << "dim of lookup expression for position "<<pos<<" th is "<<expr.dim()<<std::endl;
+        dynet::Expression predict_exp = dynet::LSTMBuilder::add_input(expr);
+        std::cout << "dim of predict expression is "<<predict_exp.dim()<<std::endl;
+        dynet::Expression output_exp = r_exp * predict_exp + bais_exp;
+        std::cout<< "dim of output expression is "<<output_exp.dim()<<std::endl;
+        final_vec.push_back(output_exp);
     }
-    dynet::Expression err_sum = dynet::sum(err_vec);
-    return err_sum;
+//    dynet::Expression result = dynet::transpose(dynet::concatenate_cols(final_vec));
+    dynet::Expression result = dynet::concatenate(final_vec);
+//    dynet::transpose(result);
+    std::cout << "dim of result is "<<result.dim()<<std::endl;
+    return result;
 }
 
-int LSTMNetwork::HyperEdgeInput2OutputRowIndex(void *ptr_edgeInput) {
-    //TODO:
-    return 0;
+/**
+ * Return the index of an edge input, which consists of a sentence and the position. Here
+ * position indicates the word position when the feature was extracted.
+ *
+ *         S_1, S_2, S_3..., S_N
+ *
+ *  Pos_1  idx
+ *  Pos_2
+ *  ...
+ *
+ *
+ *
+ * @param ptr_edgeInput: a pair which consists of a sentence vector and a position (actually a word) in the sentence.
+ * @return
+ */
+int LSTMNetwork::HyperEdgeInput2OutputRowIndex(void *ptr_edgeInput,int output_label) {
+    ComType::Neural_Input *ptr_sent_and_pos = (ComType::Neural_Input *)ptr_edgeInput;
+    int senId = GetNNInputID(ptr_sent_and_pos->first);
+    int pos = ptr_sent_and_pos->second;
+    int nn_input_size = GetNNInputSize();
+    int pos_index = pos * label_size_ * nn_input_size;
+    int rest_index = output_label * nn_input_size + senId;
+    int row = pos_index + rest_index;
+    //int row = pos * nn_input_size + senId;
+    return row;
 }
 
+/***
+ *
+ * Return the sentence vector in the edge input.
+ *
+ * @param ptr_edgeInput: a pair which consists of a sentence vector and a position (actually a word) in the sentence.
+ * @return
+ */
 ComType::Input_Str_Vector *LSTMNetwork::HyperEdgeInput2NNInput(void *ptr_edgeInput) {
     ComType::Neural_Input *ptr_sent_and_pos = (ComType::Neural_Input *)ptr_edgeInput;
 #ifdef DEBUG_NN
@@ -253,6 +330,8 @@ ComType::Input_Str_Vector *LSTMNetwork::HyperEdgeInput2NNInput(void *ptr_edgeInp
 }
 
 /**
+ *
+ * Extract the sentence matrix from ptr_inst, which contains multiple sentence vectors.
  *
  * @param ptr_inst
  */

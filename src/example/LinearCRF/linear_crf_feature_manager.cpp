@@ -49,7 +49,8 @@ FeatureArray* LinearCRFFeatureManager::ExtractHelper(Network *ptr_network, int p
     if (ComParam::USE_HYBRID_NEURAL_FEATURES == NetworkConfig::Feature_Type) {
         /* caution: Do release the space allocated here */
         ComType::Neural_Input *ptr_nn_input_pair = new ComType::Neural_Input;
-        ptr_nn_input_pair->first = ptr_instance->GetStrVect();
+        ComType::Input_Str_Vector *ptr_input_vec = ptr_instance->GetStrVect();
+        ptr_nn_input_pair->first = ptr_input_vec;
         ptr_nn_input_pair->second = pos;
         AddNeural(ptr_network,0,parent_k,children_k_index,ptr_nn_input_pair,tag_id);
     }else if(ComParam::USE_PURE_NEURAL_FEATURES == NetworkConfig::Feature_Type){

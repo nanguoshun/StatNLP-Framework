@@ -37,12 +37,12 @@ public:
 
     dynet::Expression BuildForwardGraph(std::vector<std::vector<std::string>*> *ptr_input) override;
 
-    int HyperEdgeInput2OutputRowIndex(void *ptr_edgeInput) override;
+    int HyperEdgeInput2OutputRowIndex(void *ptr_edgeInput,int output_label) override;
 
     ComType::Input_Str_Vector *HyperEdgeInput2NNInput(void *ptr_edgeInput) override;
 
     void SetInstance(std::vector<Instance *> *ptr_inst) override;
-
+    dynet::Expression BuildLMGraph2(const vector<int>& sent, dynet::ComputationGraph* ptr_cg, bool apply);
 
 private:
     dynet::LookupParameter p_c_;

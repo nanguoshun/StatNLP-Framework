@@ -12,7 +12,7 @@
 #include "src/example/LinearCRF/linear_crf_nework_compiler.h"
 #include "src/neural/neural_network.h"
 //#include "src/common/common.h"
-static std::vector<std::string> all_labels;
+static std::vector<std::string> all_labels; /*all unique labels*/
 static int max_len = 0;
 /**
  *
@@ -36,7 +36,7 @@ void ReadData(std::string file_name, std::vector<Instance*> *ptr_inst_vec_all, s
         if (is_allocate_vector) {
             ptr_vec_matrix = new ComType::Input_Str_Matrix;
             ptr_labels = new std::vector<std::string>;
-            ptr_list_vect_du = new ComType::Input_Str_Matrix;
+            //ptr_list_vect_du = new ComType::Input_Str_Matrix;
             ptr_labels_du = new std::vector<std::string>;
             is_allocate_vector = false;
         }
@@ -45,9 +45,12 @@ void ReadData(std::string file_name, std::vector<Instance*> *ptr_inst_vec_all, s
                 max_len = ptr_vec_matrix->size();
             }
             LinearCRFInstance *ptr_crf_inst = new LinearCRFInstance(instance_id, 1.0, ptr_vec_matrix, ptr_labels);
+            ptr_crf_inst->ExtractStrVect();
             LinearCRFInstance *ptr_crf_inst_du = nullptr;
             if (!istest) {
-                ptr_crf_inst_du = new LinearCRFInstance(-instance_id, -1.0, ptr_list_vect_du, ptr_labels_du);
+//                ptr_crf_inst_du = new LinearCRFInstance(-instance_id, -1.0, ptr_list_vect_du, ptr_labels_du);
+                ptr_crf_inst_du = new LinearCRFInstance(-instance_id, -1.0, ptr_vec_matrix, ptr_labels_du);
+                ptr_crf_inst_du->SetStrVect(ptr_crf_inst->GetStrVect());
             }
             if (isLabeled) {
                 ptr_crf_inst->SetLabeled();
@@ -78,12 +81,12 @@ void ReadData(std::string file_name, std::vector<Instance*> *ptr_inst_vec_all, s
             words_vec.push_back(feature1);
             words_vec.push_back(feature2);
             if (!istest) {
-                words_vec_du.push_back(feature1);
-                words_vec_du.push_back(feature2);
+                //words_vec_du.push_back(feature1);
+                //words_vec_du.push_back(feature2);
             }
             ptr_vec_matrix->push_back(words_vec);
             if (!istest) {
-                ptr_list_vect_du->push_back(words_vec_du);
+                //ptr_list_vect_du->push_back(words_vec_du);
             }
             //std::cout << feature1 <<" "<< feature2<<" ";
             if (withLabels) {
@@ -129,8 +132,8 @@ void ReleaseStaticPointer(){
 }
 
 int main(int argc, char **argv){
+    //std::string train_file_name = "data/conll2000/sample_train_2.txt";
     std::string train_file_name = "data/conll2000/sample_train.txt";
-    //std::string train_file_name = "/Users/ngs/Documents/cplusproject/statNLP/data/conll2000/sample_train.txt";
     //std::string test_file_name =  "/Users/ngs/Documents/cplusproject/statNLP/data/conll2000/sample_part_test.txt";
     //std::string train_file_name = "/Users/ngs/Documents/cplusproject/statNLP/data/conll2000/sample_train.txt";
     //std::string train_file_name = "/Users/ngs/Documents/cplusproject/statNLP/data/conll2000/train.txt";
@@ -151,11 +154,16 @@ int main(int argc, char **argv){
 #endif
     Feature_TEST = 2;
     std::cout << "feature test is "<<Feature_TEST <<std::endl;
-
     //NetworkConfig::Feature_Type = ComParam::USE_HYBRID_NEURAL_FEATURES;
     //std::cout << "feature type is "<<NetworkConfig::Feature_Type<<std::endl;
 //    GlobalNetworkParam *ptr_param_g = new GlobalNetworkParam(argc,argv,ptr_inst_vec_all->size(),max_len);
-    GlobalNetworkParam *ptr_param_g = new GlobalNetworkParam(argc,argv,max_len,ptr_inst_vec_all->size(),(NeuralFactory*)NeuralFactory::GetLSTMFactory(),ptr_word2int_map);
+    GlobalNetworkParam *ptr_param_g = nullptr;
+    if(ComParam::USE_HANDCRAFTED_FEATURES == NetworkConfig::Feature_Type){
+        ptr_param_g = new GlobalNetworkParam(argc,argv,max_len,ptr_inst_vec_all->size(),&all_labels);
+
+    } else if(ComParam::USE_HYBRID_NEURAL_FEATURES == NetworkConfig::Feature_Type){
+        ptr_param_g = new GlobalNetworkParam(argc,argv,max_len,ptr_inst_vec_all->size(),&all_labels, (NeuralFactory*)NeuralFactory::GetLSTMFactory(),ptr_word2int_map);
+    }
     //std::cout << "feature type is "<<NetworkConfig::Feature_Type<<std::endl;
 
     //Below is the only hand-crafted features, and there are no parameters in the constructor of GlobalNetworkParam

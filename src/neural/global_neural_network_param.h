@@ -25,7 +25,7 @@ public:
     double GetNNScore(Network *ptr_network, int parent_k, int children_k_index);
     void SetNNGradientOutput(double count, Network *ptr_network, int parent_k, int children_k_index);
     void ResetAllNNGradient();
-    void Initialization(std::vector<NeuralNetwork *> *ptr_nn_vec,int max_len,std::unordered_map<std::string,int> *ptr_word2int_map);
+    void Initialization(std::vector<NeuralNetwork *> *ptr_nn_vec,int max_len,std::unordered_map<std::string,int> *ptr_word2int_map, std::vector<std::string> *ptr_label);
     void InitNNParameter(int &argc, char **&argv, unsigned random_seed = 0, bool shared_parameters = false);
     DynetFunctionHelper *GetDynetFunctionHelper();
     void SetLocalNetworkParams( LocalNetworkParam **pptr_param_l);
@@ -35,6 +35,7 @@ public:
     void SetMaxSentenceLength(int max_len);
     int GetMaxSentenceLength(int netId);
     void SetInstance(std::vector<Instance *> *ptr_inst);
+    void AllocateOutSpaceBeforehand();
 private:
     std::vector<NeuralNetwork *> *ptr_nn_vec_;
     LocalNetworkParam **pptr_param_l_;

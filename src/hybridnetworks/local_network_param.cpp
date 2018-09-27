@@ -38,10 +38,10 @@ LocalNetworkParam::LocalNetworkParam(int threadId, FeatureManager *ptr_fm, int n
             ptr_neural_cache_[i] = nullptr;
         }
         /*allocate the space*/
-        ptr_localNNInput2Id_ = new ComType::Neural_Input_Map_Vect;
+        ptr_localNNInput2IdMap_vect_ = new ComType::Neural_Input_Map_Vect;
         for(int i = 0; i < neural_net_size_; ++i){
             ComType::Neural_Input_Map* ptr_map = new ComType::Neural_Input_Map;
-            ptr_localNNInput2Id_->push_back(ptr_map);
+            ptr_localNNInput2IdMap_vect_->push_back(ptr_map);
         }
         if(NetworkConfig::USE_BATCH_TRAINING && ptr_fm_->GetGlobalParam()->GetNNParam()->IsLearningState()){
             //TODO:
@@ -55,15 +55,15 @@ LocalNetworkParam::LocalNetworkParam(int threadId, FeatureManager *ptr_fm, int n
 LocalNetworkParam::~LocalNetworkParam() {
     //TODO for delete
     delete ptr_globalFeature2LocalFeature_;
-    //delete the ptr_localNNInput2Id_ step by step.
+    //delete the ptr_localNNInput2IdMap_vect_ step by step.
     for(int i = 0; i < neural_net_size_; ++i){
-        std::unordered_map<ComType::Input_Str_Vector*, int>* ptr_map = (*ptr_localNNInput2Id_)[i];
+        std::unordered_map<ComType::Input_Str_Vector*, int>* ptr_map = (*ptr_localNNInput2IdMap_vect_)[i];
         for(auto it = ptr_map->begin(); it != ptr_map->end(); ++it){
             delete (*it).first; /* delete the instance of ComType::Input_Str_Vector */
         }
         delete ptr_map; /* delete the instance of std::unordered_map<ComType::Input_Str_Vector*, int>*/
     }
-    delete ptr_localNNInput2Id_; /* delete the map vector finally*/
+    delete ptr_localNNInput2IdMap_vect_; /* delete the map vector finally*/
 }
 
 void LocalNetworkParam::DisableCache() {
@@ -265,12 +265,19 @@ void LocalNetworkParam::AddNeuralHyperEdge(int netId, Network *ptr_network,int p
     }
     std::vector<NeuralNetwork*> *ptr_nn_vec = ptr_fm_->GetGlobalParam()->GetNNParam()->GetNNVect();
     ComType::Input_Str_Vector *ptr_nn_input = (*ptr_nn_vec)[netId]->HyperEdgeInput2NNInput(ptr_edge_input);
-    ComType::Neural_Input_Map *ptr_input_map = (*ptr_localNNInput2Id_)[netId];
+    ComType::Neural_Input_Map *ptr_input_map = (*ptr_localNNInput2IdMap_vect_)[netId];
+#ifdef DEBUG_NN
+    std::cout << "add nerual sentence is: ";
+    for(auto it = ptr_nn_input->begin(); it != ptr_nn_input->end(); ++it){
+        std::cout << (*it) << " ";
+    }
+    std::cout << std::endl;
+#endif
     if(ptr_input_map->find(ptr_nn_input) == ptr_input_map->end()){
-        int size = ptr_localNNInput2Id_->size();
+        int size = ptr_localNNInput2IdMap_vect_->size();
         ptr_input_map->insert(std::make_pair(ptr_nn_input,size));
     } else{
-        std::cout << "the input has been inserted into the has_map ptr_localNNInput2Id_"<<std::endl;
+        std::cout << "the input has been inserted into the has_map ptr_localNNInput2IdMap_vect_"<<std::endl;
     }
     if(NetworkConfig::USE_BATCH_TRAINING && ptr_fm_->GetGlobalParam()->GetNNParam()->IsLearningState()){
         int instId = std::abs(ptr_network->GetInstance()->GetInstanceId());
@@ -324,5 +331,18 @@ bool LocalNetworkParam::BuildNeuralCache(int netId, Network *ptr_network, int pa
 }
 
 ComType::Neural_Input_Map_Vect* LocalNetworkParam::GetLocalNNInput2Id() {
-    return  ptr_localNNInput2Id_;
+    return  ptr_localNNInput2IdMap_vect_;
+}
+
+NeuralIO* LocalNetworkParam::GetHyperEdgeIO(Network *ptr_network, int netId, int parent_k, int children_k_index) {
+    if(nullptr == this->ptr_neural_cache_[netId]){
+        return nullptr;
+    }
+    if(nullptr == this->ptr_neural_cache_[netId][ptr_network->GetNetworkID()]){
+        return nullptr;
+    }
+    if(nullptr == this->ptr_neural_cache_[netId][ptr_network->GetNetworkID()][parent_k]){
+        return nullptr;
+    }
+    return this->ptr_neural_cache_[netId][ptr_network->GetNetworkID()][parent_k][children_k_index];
 }

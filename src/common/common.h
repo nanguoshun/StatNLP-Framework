@@ -111,6 +111,4 @@ enum FeatureType{
     TRANSITION
 };*/
 
-
-
 #endif //STATNLP_COMMON_H

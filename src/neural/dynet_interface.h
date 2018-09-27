@@ -17,6 +17,7 @@ struct LSTMSuperParam{
     unsigned hidden_dim_;
     unsigned layers_;
     unsigned input_dim_;
+    unsigned label_size_;
     float decay_rate_;
     float dropout_rate_;
 };

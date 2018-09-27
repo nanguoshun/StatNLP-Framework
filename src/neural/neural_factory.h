@@ -21,7 +21,7 @@ public:
     virtual std::vector<NeuralNetwork *> *GetNeuralInst() = 0;
     virtual NeuralNetwork* CreateNN() = 0;
     void SetDynetCallFunctionHelper(DynetFunctionHelper *ptr_helper);
-    virtual void InitNNParameter(int &argc, char **&argv, int vocab_size, unsigned random_seed = 0, bool shared_parameters = false) = 0;
+    virtual void InitNNParameter(int &argc, char **&argv, int vocab_size, int label_size,unsigned random_seed = 0, bool shared_parameters = false) = 0;
 protected:
     DynetFunctionHelper *ptr_call_dynet_;
 };

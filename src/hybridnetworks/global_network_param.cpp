@@ -8,7 +8,7 @@
 #include "global_network_param.h"
 #include "../common/opt/math_calc.h"
 
-GlobalNetworkParam::GlobalNetworkParam(int &argc, char **&argv, int max_sent_size, int sent_length, NeuralFactory* ptr_nf,std::unordered_map<std::string,int> *ptr_word2int) {
+GlobalNetworkParam::GlobalNetworkParam(int &argc, char **&argv, int max_sent_size, int sent_length, std::vector<std::string> *ptr_label,  NeuralFactory* ptr_nf,std::unordered_map<std::string,int> *ptr_word2int) {
     is_locked_ = false;
     h_feature_size_ = 0;
     fixed_feature_size_ = 0;
@@ -51,10 +51,10 @@ GlobalNetworkParam::GlobalNetworkParam(int &argc, char **&argv, int max_sent_siz
             ptr_nn_g_ = new GlobalNeuralNetworkParam();
             ptr_nf->SetDynetCallFunctionHelper(ptr_nn_g_->GetDynetFunctionHelper());
             /* init the super-parameters of neural network*/
-            ptr_nf->InitNNParameter(argc,argv,ptr_word2int->size());
+            ptr_nf->InitNNParameter(argc,argv,ptr_word2int->size(),ptr_label->size());
             /* create the neural network*/
             ptr_nf->CreateNN();
-            ptr_nn_g_->Initialization(ptr_nf->GetNeuralInst(),max_sent_size,ptr_word2int);
+            ptr_nn_g_->Initialization(ptr_nf->GetNeuralInst(),max_sent_size,ptr_word2int,ptr_label);
             /* get feature size of NN. */
             n_feature_size_ = ptr_nn_g_->GetNeuralFeatureSize();
         } else if(ComParam::USE_PURE_NEURAL_FEATURES == NetworkConfig::Feature_Type){

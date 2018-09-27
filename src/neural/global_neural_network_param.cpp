@@ -65,7 +65,7 @@ void GlobalNeuralNetworkParam::ResetAllNNGradient() {
     }
 }
 
-void GlobalNeuralNetworkParam::Initialization(std::vector<NeuralNetwork *> *ptr_nn_vec, int max_len,std::unordered_map<std::string,int> *ptr_word2int_map) {
+void GlobalNeuralNetworkParam::Initialization(std::vector<NeuralNetwork *> *ptr_nn_vec, int max_len,std::unordered_map<std::string,int> *ptr_word2int_map,std::vector<std::string> *ptr_label) {
     ptr_nn_vec_ = ptr_nn_vec;
     int id = 0;
     ptr_all_NNInput2Id_ = new ComType::Neural_Input_Map_Vect;
@@ -81,6 +81,7 @@ void GlobalNeuralNetworkParam::Initialization(std::vector<NeuralNetwork *> *ptr_
         n_feature_size_ += (*it)->GetFeatureSize();
         (*it)->SetMaxSentenceLength(max_len);
         (*it)->SetWord2IntMap(ptr_word2int_map);
+        (*it)->SetLabelSize(ptr_label->size());
         ++id;
     }
 }
@@ -181,5 +182,16 @@ void GlobalNeuralNetworkParam::SetMaxSentenceLength(int max_len) {
         (*it)->SetMaxSentenceLength(max_len);
     }
 }
-
+/**
+ *
+ * Allocate the memory for the output array of Neural network
+ *
+ */
+void GlobalNeuralNetworkParam::AllocateOutSpaceBeforehand() {
+    for(auto it = ptr_nn_vec_->begin(); it != ptr_nn_vec_->end(); ++it) {
+        if((*it)->IsAllocateOutputBeforehand()){
+            (*it)->AllocateOutputSpace();
+        }
+    }
+}
 

@@ -39,7 +39,6 @@ void NetworkModel::Train(std::vector<Instance *> *ptr_all_instances, std::vector
         pptr_learner_[threadId] = new LocalNetworkLearnerThread(threadId, this->ptr_fm_, (*ptr_inst)[threadId], this->ptr_nc_, -1);
         pptr_learner_[threadId]->Touch();
     }
-
     //init the parameters of neural network.
     if(ComParam::USE_HYBRID_NEURAL_FEATURES == NetworkConfig::Feature_Type){
         ptr_nn_g_ = this->ptr_fm_->GetGlobalParam()->GetNNParam();
@@ -47,13 +46,13 @@ void NetworkModel::Train(std::vector<Instance *> *ptr_all_instances, std::vector
         ptr_nn_g_->SetLocalNetworkParams(this->ptr_fm_->GetLocalParams());
         ptr_nn_g_->PrepareInputId();
         ptr_nn_g_->SetInstance(ptr_all_instances);
+        ptr_nn_g_->AllocateOutSpaceBeforehand();
         if(NetworkConfig::USE_BATCH_TRAINING){
             //TODO:
         }
     } else if(ComParam::USE_PURE_NEURAL_FEATURES == NetworkConfig::Feature_Type){
         //TODO:
     }
-
     this->ptr_fm_->GetGlobalParam()->LockIt();
     std::cout <<"tmp cout is: "<<this->ptr_fm_->temp_count_<<std::endl;
     std::cout <<"tmp cout is: "<<this->ptr_fm_->GetGlobalParam()->tmp_count_<<std::endl;

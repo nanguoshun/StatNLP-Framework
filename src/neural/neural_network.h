@@ -42,12 +42,13 @@ public:
     void CopyGradientFromDynet();
     virtual dynet::Expression BuildForwardGraph(std::vector<std::vector<std::string>*> *pptr_sent) = 0;
     void SetOutputArray(std::vector<dynet::real> &output_vec);
+    void AllocateOutputSpace();
     void ResetGradient();
     void AddL2ParamGrad();
     int GetParamSize();
     void SetScale(double scale);
     void SetLocalNetworkParams(LocalNetworkParam **ppr_params);
-    virtual int HyperEdgeInput2OutputRowIndex(void *ptr_edgeInput) = 0;
+    virtual int HyperEdgeInput2OutputRowIndex(void *ptr_edgeInput, int output_label) = 0;
     virtual ComType::Input_Str_Vector* HyperEdgeInput2NNInput(void *ptr_edgeInput) = 0;
     NeuralIO *GetHyperEdgeInputOutput(Network *ptr_network, int parent_k, int children_k_index);
     int GetNNInputID(ComType::Input_Str_Vector *ptr_input);
@@ -59,6 +60,11 @@ public:
     int GetMaxSentenceLength();
     virtual void SetInstance(std::vector<Instance *> *ptr_inst) = 0;
     void SetWord2IntMap(std::unordered_map<std::string, int> *ptr_map);
+    int GetNNInputSize();
+    void SetLabelSize(int size);
+    bool IsAllocateOutputBeforehand();
+    void SetAllocateOutputBeforehand(bool flag);
+    //int GetNNInputId(ComType::Neural_Input *ptr_input);
 protected:
     //double *ptr_counts_;
     //double *ptr_weights_;
@@ -74,7 +80,7 @@ protected:
     //output array and its size
     //actually it is the feature size
     int output_size_;
-    int unique_output_size_;
+    int label_size_;
     dynet::ComputationGraph *ptr_cg_;
     dynet::Expression output_expression_;
     std::vector<std::vector<std::string>*> *pptr_sent_;
@@ -90,6 +96,7 @@ protected:
     int net_id_;
     int max_len_;
     std::unordered_map<std::string, int> *ptr_word2int_map_;
+    bool is_alloc_space_beforehand_;
 };
 
 #endif //STATNLP_NEURAL_LAYER_H
