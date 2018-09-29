@@ -40,6 +40,7 @@ bool FeatureManager::Update(bool just_update_obj_gradient) {
      * For the multithread mode, update the gradient and then calc the objective.
      */
     if (this->num_of_threads_ != 1) {
+        //FIXME: need modification for neural networks, what is the local features for NN for multithreads program.
         this->ptr_param_g_->ResetCountsAndObj();
         for(int i=0; i<this->num_of_threads_; ++i){
             int *ptr_fs = pptr_param_l_[i]->GetFeatures();

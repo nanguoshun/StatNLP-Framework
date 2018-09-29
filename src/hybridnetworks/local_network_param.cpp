@@ -56,14 +56,18 @@ LocalNetworkParam::~LocalNetworkParam() {
     //TODO for delete
     delete ptr_globalFeature2LocalFeature_;
     //delete the ptr_localNNInput2IdMap_vect_ step by step.
-    for(int i = 0; i < neural_net_size_; ++i){
-        std::unordered_map<ComType::Input_Str_Vector*, int>* ptr_map = (*ptr_localNNInput2IdMap_vect_)[i];
-        for(auto it = ptr_map->begin(); it != ptr_map->end(); ++it){
-            delete (*it).first; /* delete the instance of ComType::Input_Str_Vector */
+    if(ComParam::USE_HYBRID_NEURAL_FEATURES == NetworkConfig::Feature_Type){
+        for(int i = 0; i < neural_net_size_; ++i){
+            std::unordered_map<ComType::Input_Str_Vector*, int>* ptr_map = (*ptr_localNNInput2IdMap_vect_)[i];
+            for(auto it = ptr_map->begin(); it != ptr_map->end(); ++it){
+                delete (*it).first; /* delete the instance of ComType::Input_Str_Vector */
+            }
+            delete ptr_map; /* delete the instance of std::unordered_map<ComType::Input_Str_Vector*, int>*/
         }
-        delete ptr_map; /* delete the instance of std::unordered_map<ComType::Input_Str_Vector*, int>*/
+        delete ptr_localNNInput2IdMap_vect_; /* delete the map vector finally*/
+    } else if(ComParam::USE_PURE_NEURAL_FEATURES == NetworkConfig::Feature_Type){
+
     }
-    delete ptr_localNNInput2IdMap_vect_; /* delete the map vector finally*/
 }
 
 void LocalNetworkParam::DisableCache() {
@@ -277,7 +281,9 @@ void LocalNetworkParam::AddNeuralHyperEdge(int netId, Network *ptr_network,int p
         int size = ptr_localNNInput2IdMap_vect_->size();
         ptr_input_map->insert(std::make_pair(ptr_nn_input,size));
     } else{
-        std::cout << "the input has been inserted into the has_map ptr_localNNInput2IdMap_vect_"<<std::endl;
+#ifdef DEBUG_NN
+    std::cout << "the input has been inserted into the has_map ptr_localNNInput2IdMap_vect_"<<std::endl;
+#endif
     }
     if(NetworkConfig::USE_BATCH_TRAINING && ptr_fm_->GetGlobalParam()->GetNNParam()->IsLearningState()){
         int instId = std::abs(ptr_network->GetInstance()->GetInstanceId());

@@ -25,6 +25,11 @@ LocalNetworkLearnerThread::LocalNetworkLearnerThread(int threadId, FeatureManage
 
 LocalNetworkLearnerThread::~LocalNetworkLearnerThread() {
     delete ptr_param_l_;
+    if(ComParam::USE_HYBRID_NEURAL_FEATURES == NetworkConfig::Feature_Type){
+
+    }else if(ComParam::USE_PURE_NEURAL_FEATURES == NetworkConfig::Feature_Type){
+
+    }
     for(int i=0; i<ptr_inst_vec_->size(); ++i){
         delete ptr_network_[i];
     }

@@ -11,6 +11,7 @@
 #include "src/hybridnetworks/discriminative_network_model.h"
 #include "src/example/LinearCRF/linear_crf_nework_compiler.h"
 #include "src/neural/neural_network.h"
+#include "dynet/dict.h"
 //#include "src/common/common.h"
 static std::vector<std::string> all_labels; /*all unique labels*/
 static int max_len = 0;
@@ -22,7 +23,7 @@ static int max_len = 0;
  * @param isLabeled
  *
  */
-void ReadData(std::string file_name, std::vector<Instance*> *ptr_inst_vec_all, std::vector<Instance*> *ptr_inst_vec_all_duplicate, bool istest, bool withLabels, bool isLabeled, std::unordered_map<std::string,int> *ptr_word2int) {
+void ReadData(std::string file_name, std::vector<Instance*> *ptr_inst_vec_all, std::vector<Instance*> *ptr_inst_vec_all_duplicate, bool istest, bool withLabels, bool isLabeled, std::unordered_map<std::string,int> *ptr_word2int,dynet::Dict *ptr_dict) {
     std::ifstream ifs(file_name);
     std::string str;
     std::vector<std::string> *ptr_labels = nullptr;
@@ -80,6 +81,7 @@ void ReadData(std::string file_name, std::vector<Instance*> *ptr_inst_vec_all, s
             ss >> feature2;
             words_vec.push_back(feature1);
             words_vec.push_back(feature2);
+            ptr_dict->convert(feature1);
             if (!istest) {
                 //words_vec_du.push_back(feature1);
                 //words_vec_du.push_back(feature2);
@@ -95,6 +97,7 @@ void ReadData(std::string file_name, std::vector<Instance*> *ptr_inst_vec_all, s
                 auto it = std::find(all_labels.begin(), all_labels.end(), label);
                 if (it == all_labels.end()) {
                     all_labels.push_back(label);
+                    ptr_dict->convert(label);
                 }
                 ptr_labels->push_back(label);
                 if (!istest) {
@@ -132,6 +135,7 @@ void ReleaseStaticPointer(){
 }
 
 int main(int argc, char **argv){
+    dynet::Dict *ptr_dict = new dynet::Dict();
     //std::string train_file_name = "data/conll2000/sample_train_2.txt";
     std::string train_file_name = "data/conll2000/sample_train.txt";
     //std::string test_file_name =  "/Users/ngs/Documents/cplusproject/statNLP/data/conll2000/sample_part_test.txt";
@@ -143,9 +147,9 @@ int main(int argc, char **argv){
     std::vector<Instance*> *ptr_inst_vec_all_test = new std::vector<Instance*>;
     std::unordered_map<std::string,int> *ptr_word2int_map = new std::unordered_map<std::string,int>;
 
-    ReadData(train_file_name,ptr_inst_vec_all,ptr_inst_vec_all_duplicate_,false,true,true,ptr_word2int_map);
+    ReadData(train_file_name,ptr_inst_vec_all,ptr_inst_vec_all_duplicate_,false,true,true,ptr_word2int_map,ptr_dict);
     int size = ptr_inst_vec_all->size();
-    ReadData(test_file_name,ptr_inst_vec_all_test, nullptr, true, true, false,ptr_word2int_map);
+    ReadData(test_file_name,ptr_inst_vec_all_test, nullptr, true, true, false,ptr_word2int_map,ptr_dict);
     int num_iterations = 200;
 #ifdef DEBUG
     int size_train = ptr_inst_vec_all->size();
@@ -162,7 +166,7 @@ int main(int argc, char **argv){
         ptr_param_g = new GlobalNetworkParam(argc,argv,max_len,ptr_inst_vec_all->size(),&all_labels);
 
     } else if(ComParam::USE_HYBRID_NEURAL_FEATURES == NetworkConfig::Feature_Type){
-        ptr_param_g = new GlobalNetworkParam(argc,argv,max_len,ptr_inst_vec_all->size(),&all_labels, (NeuralFactory*)NeuralFactory::GetLSTMFactory(),ptr_word2int_map);
+        ptr_param_g = new GlobalNetworkParam(argc,argv,max_len,ptr_inst_vec_all->size(),&all_labels, (NeuralFactory*)NeuralFactory::GetLSTMFactory(),ptr_word2int_map,ptr_dict);
     }
     //std::cout << "feature type is "<<NetworkConfig::Feature_Type<<std::endl;
 

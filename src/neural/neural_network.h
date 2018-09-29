@@ -11,6 +11,7 @@
 #include "neural_input_output.h"
 #include <boost/functional/hash.hpp>
 #include "src/common/types/instance.h"
+#include "../../dynet/dynet/dict.h"
 
 class Network;
 class LocalNetworkParam;
@@ -26,7 +27,7 @@ public:
     ~NeuralNetwork();
     void Initialize(int &argc, char **&argv, unsigned random_seed = 0, bool shared_parameters = false);
     void Initialize();
-    int GetFeatureSize();
+    int GetNNOutputSize();
     void AddParam();
     virtual void Touch();
     virtual void Forward();
@@ -64,6 +65,10 @@ public:
     void SetLabelSize(int size);
     bool IsAllocateOutputBeforehand();
     void SetAllocateOutputBeforehand(bool flag);
+    void SetDict(dynet::Dict *ptr_dict);
+    dynet::Dict *GetDict();
+    void Regularization(double coef, double kappa);
+    void SetMemoryOfParamAndGradient(double *ptr_param, double *ptr_param_grad);
     //int GetNNInputId(ComType::Neural_Input *ptr_input);
 protected:
     //double *ptr_counts_;
@@ -72,7 +77,7 @@ protected:
     bool is_training_;
     int argc_;
     char **argv_;
-    double *ptr_params_, *ptr_grad_params_;
+    double *ptr_params_, *ptr_params_grad_;
     int param_size_;
     double *ptr_output_;
     double *ptr_output_grad_;
@@ -97,6 +102,9 @@ protected:
     int max_len_;
     std::unordered_map<std::string, int> *ptr_word2int_map_;
     bool is_alloc_space_beforehand_;
+    dynet::Dict *ptr_dict_;
+    bool started_forward_;
+    int iteration_count_;
 };
 
 #endif //STATNLP_NEURAL_LAYER_H

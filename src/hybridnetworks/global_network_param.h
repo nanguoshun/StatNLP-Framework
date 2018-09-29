@@ -10,10 +10,10 @@
 #include "src/neural/neural_factory.h"
 #include "../common/opt/lbfgs.h"
 #include "src/common/common.h"
-
+#include "../../dynet/dynet/dict.h"
 class GlobalNetworkParam{
 public:
-    GlobalNetworkParam(int &argc, char **&argv, int max_sent_size, int sent_length,  std::vector<std::string> *ptr_label, NeuralFactory* ptr_nf_ = nullptr,std::unordered_map<std::string,int> *ptr_word2int = nullptr);
+    GlobalNetworkParam(int &argc, char **&argv, int max_sent_size, int sent_length,  std::vector<std::string> *ptr_label, NeuralFactory* ptr_nf_ = nullptr,std::unordered_map<std::string,int> *ptr_word2int = nullptr, dynet::Dict *ptr_dict = nullptr);
     ~GlobalNetworkParam();
     void LockIt();
     bool IsLocked();
@@ -55,10 +55,14 @@ private:
     bool is_locked_;
     //the num of feature (hand-crafted feature size)
     int h_feature_size_;
-    //neural feature size;
-    int n_feature_size_;
+    //neural output size;
+    int nn_output_size_;
     //overall_feature size
-    int feature_size_;
+    //int feature_size_;
+    //overall parameter size, including the CRF parameters and NN parameters.
+    int params_size_;
+    // the parameters size of NN.
+    int nn_params_size_;
     bool is_discriminative_;
     //previous objective value;
     double obj_prev_;

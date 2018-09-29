@@ -17,7 +17,8 @@
 #include "dynet_interface.h"
 #include "src/common/types/base_instance.h"
 
-class LSTMNetwork: public VanillaRNN, public dynet::LSTMBuilder,public BaseInstance<LSTMNetwork, ComType::Input_Str_Matrix, ComType::Label_Str_Vector>{
+//class LSTMNetwork: public VanillaRNN, public dynet::LSTMBuilder,public BaseInstance<LSTMNetwork, ComType::Input_Str_Matrix, ComType::Label_Str_Vector>{
+class LSTMNetwork: public VanillaRNN, public BaseInstance<LSTMNetwork, ComType::Input_Str_Matrix, ComType::Label_Str_Vector>{
 public:
     LSTMNetwork(LSTMSuperParam &param);
     LSTMNetwork();
@@ -42,14 +43,15 @@ public:
     ComType::Input_Str_Vector *HyperEdgeInput2NNInput(void *ptr_edgeInput) override;
 
     void SetInstance(std::vector<Instance *> *ptr_inst) override;
-    dynet::Expression BuildLMGraph2(const vector<int>& sent, dynet::ComputationGraph* ptr_cg, bool apply);
+    dynet::Expression BuildLMGraph2(const vector<float >& sent, dynet::ComputationGraph* ptr_cg, bool apply);
 
 private:
+    dynet::LSTMBuilder *ptr_builder_;
     dynet::LookupParameter p_c_;
     dynet::Parameter p_R_;
     dynet::Parameter p_bias_;
     dynet::Expression *ptr_loss_expr_;
-    dynet::ParameterCollection *ptr_model_;
+    //dynet::ParameterCollection *ptr_model_;
     dynet::Dict dict_;
     float drop_out_;
     unsigned report_every_i_;

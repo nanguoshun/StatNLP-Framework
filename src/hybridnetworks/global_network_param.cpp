@@ -8,7 +8,7 @@
 #include "global_network_param.h"
 #include "../common/opt/math_calc.h"
 
-GlobalNetworkParam::GlobalNetworkParam(int &argc, char **&argv, int max_sent_size, int sent_length, std::vector<std::string> *ptr_label,  NeuralFactory* ptr_nf,std::unordered_map<std::string,int> *ptr_word2int) {
+GlobalNetworkParam::GlobalNetworkParam(int &argc, char **&argv, int max_sent_size, int sent_length, std::vector<std::string> *ptr_label,  NeuralFactory* ptr_nf,std::unordered_map<std::string,int> *ptr_word2int, dynet::Dict *ptr_dict) {
     is_locked_ = false;
     h_feature_size_ = 0;
     fixed_feature_size_ = 0;
@@ -54,9 +54,7 @@ GlobalNetworkParam::GlobalNetworkParam(int &argc, char **&argv, int max_sent_siz
             ptr_nf->InitNNParameter(argc,argv,ptr_word2int->size(),ptr_label->size());
             /* create the neural network*/
             ptr_nf->CreateNN();
-            ptr_nn_g_->Initialization(ptr_nf->GetNeuralInst(),max_sent_size,ptr_word2int,ptr_label);
-            /* get feature size of NN. */
-            n_feature_size_ = ptr_nn_g_->GetNeuralFeatureSize();
+            ptr_nn_g_->Initialization(ptr_nf->GetNeuralInst(),max_sent_size,ptr_word2int,ptr_label,ptr_dict);
         } else if(ComParam::USE_PURE_NEURAL_FEATURES == NetworkConfig::Feature_Type){
             NetworkConfig::FEATURE_TOUCH_TEST = true;
             //TODO:
@@ -171,7 +169,7 @@ bool GlobalNetworkParam::UpdateDiscriminative() {
     int go_on_training =  1;
 
     if(ComParam::OPT_LBFGS == ComParam::OPTIMIZER){
-        go_on_training = this->ptr_opt_->optimize(h_feature_size_,ptr_weights_,-obj_current_,ptr_counts_, true, 1.0);
+        go_on_training = this->ptr_opt_->optimize(params_size_,ptr_weights_,-obj_current_,ptr_counts_, true, 1.0);
     } else if(ComParam::OPT_SGD == ComParam::OPTIMIZER){
         for(int i=0; i<h_feature_size_; ++i){
             //std::cout << i <<"th weights before is: "<<ptr_weights_[i]<<"  gradient is: "<<ptr_counts_[i]<<std::endl;
@@ -297,21 +295,31 @@ void GlobalNetworkParam::ResetCountsAndObj() {
             coef = 1.0;
         }
     }
-    for(int feature_no = 0; feature_no < h_feature_size_; ++feature_no){
-        ptr_counts_[feature_no] = 0.0;
-        //for regulation, update the gradient value;
-        if(IsDiscriminative() && kappa_ > 0 &&  feature_no >= fixed_feature_size_){
-          ptr_counts_[feature_no] += 2 * coef * kappa_ * ptr_weights_[feature_no];
-        }
+    if(IsDiscriminative() && kappa_ > 0){
+        for(int feature_no = 0; feature_no < h_feature_size_; ++feature_no){
+            ptr_counts_[feature_no] = 0.0;
+            //for regulation, update the gradient value;
+            if(feature_no >= fixed_feature_size_){
+                ptr_counts_[feature_no] += 2 * coef * kappa_ * ptr_weights_[feature_no];
+            }
 #ifdef DEBUG
-    std::cout << feature_no<<"th gradient is: "<<this->ptr_counts_[feature_no]<<std::endl;
+            std::cout << feature_no<<"th gradient is: "<<this->ptr_counts_[feature_no]<<std::endl;
 #endif
+        }
+        /*caution:: added by nan, no reguliation in java version*/
+        if(ComParam::USE_HYBRID_NEURAL_FEATURES == NetworkConfig::Feature_Type){
+            ptr_nn_g_->Regulization(coef,kappa_);
+        } else if(ComParam::USE_PURE_NEURAL_FEATURES == NetworkConfig::Feature_Type){
+            ptr_nn_g_->Regulization(coef,kappa_);
+        }
     }
+
     obj_current_ = 0.0;
     //for regulation, update the objective value;
     if(IsDiscriminative() && kappa_ > 0){
+        //regulation for the graphical model.
         obj_current_ += - (kappa_ * MathCalc::SquareVector(ptr_weights_, h_feature_size_));
-        //add the L2 of neural part.
+        //regulation for the neural part.
         if(ComParam::USE_HYBRID_NEURAL_FEATURES == NetworkConfig::Feature_Type){
             std::vector<NeuralNetwork *> *ptr_nn_vec = ptr_nn_g_->GetNNVect();
             for(auto it = ptr_nn_vec->begin(); it != ptr_nn_vec->end(); ++it){
@@ -412,15 +420,28 @@ void GlobalNetworkParam::AllocateSharedArray(int threadid, int node_count) {
 void GlobalNetworkParam::AllocateSpace() {
     //hybrid features.
     if (ComParam::USE_HYBRID_NEURAL_FEATURES == NetworkConfig::Feature_Type) {
-        feature_size_ = h_feature_size_ + n_feature_size_;
+        nn_output_size_ = ptr_nn_g_->GetNeuralOutputSize();
+        nn_params_size_ = ptr_nn_g_->GetNeuralParamsSize();
+        //feature_size_ = h_feature_size_ + nn_output_size_;
+        params_size_ = h_feature_size_ + nn_params_size_;
     } else if (ComParam::USE_PURE_NEURAL_FEATURES == NetworkConfig::Feature_Type) {
-        feature_size_ = n_feature_size_; /*pure neural features.*/
+        nn_output_size_ = ptr_nn_g_->GetNeuralOutputSize();
+        nn_params_size_ = ptr_nn_g_->GetNeuralParamsSize();
+        //feature_size_ = nn_output_size_; /*pure neural features.*/
+        params_size_ = nn_params_size_;
     } else {
-        feature_size_ = h_feature_size_; /*pure hand-crafted features*/
+        //feature_size_ = h_feature_size_; /*pure hand-crafted features*/
+        params_size_ = h_feature_size_; /*the feature size equals to parameter size*/
     }
     /* allocate the space */
-    ptr_weights_ = new double[feature_size_];
-    ptr_counts_ = new double[feature_size_];
+    ptr_weights_ = new double[params_size_];
+    ptr_counts_ = new double[params_size_];
+    /*this is a trick to avoid real-time memory copy, we concatenate two consective memory*/
+    if(ComParam::USE_HYBRID_NEURAL_FEATURES == NetworkConfig::Feature_Type){
+        double *ptr_nn_param = ptr_weights_ + h_feature_size_;
+        double *ptr_nn_param_grad = ptr_counts_ + h_feature_size_;
+        ptr_nn_g_->SetMemoryOfParamAndGradient(ptr_nn_param,ptr_nn_param_grad);
+    }
 }
 
 GlobalNeuralNetworkParam* GlobalNetworkParam::GetNNParam() {

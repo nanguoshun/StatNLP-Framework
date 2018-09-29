@@ -63,7 +63,6 @@ public:
             this->UpdateGradient(nodeId);
         }
     }
-
     /**
     * Get the score summation for all features of the children_k th hyperedge ( without inside/outside)
     * @param ptr_fa: the pointer of FeatureArray.
@@ -322,7 +321,7 @@ public:
                 ptr_fa->Update(ptr_param_l_, count);
             } else if (ComParam::USE_HYBRID_NEURAL_FEATURES == NetworkConfig::Feature_Type) { // for the hybrid mode
                 ptr_fa->Update(ptr_param_l_, count);
-                ptr_param_g_->GetNNParam()->SetNNGradientOutput(count,this,nodeId,children_k);
+                ptr_param_g_->GetNNParam()->UpdateNNGradientOutput(count, this, nodeId, children_k);
             } else if (ComParam::USE_PURE_NEURAL_FEATURES == NetworkConfig::Feature_Type) { // for the pure neural mode
                 //TODO:only add neural score
             }

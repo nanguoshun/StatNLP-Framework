@@ -13,8 +13,13 @@ LSTMNetwork::LSTMNetwork() {
 
 }
 
-LSTMNetwork::LSTMNetwork(LSTMSuperParam &param):dynet::LSTMBuilder(param.layers_,param.input_dim_,param.hidden_dim_,*NeuralNetwork::ptr_model_) {
-    AddParameters(*NeuralNetwork::ptr_model_,param);
+LSTMNetwork::LSTMNetwork(LSTMSuperParam &param) {
+    AddParameters(*ptr_model_,param);
+    ptr_builder_ = new dynet::LSTMBuilder(param.layers_,param.input_dim_,param.hidden_dim_,*NeuralNetwork::ptr_model_);
+//  ptr_builder_ = new dynet::LSTMBuilder(1,2,32,*ptr_model_);
+    //ptr_builder_
+    int lstm_param_size = ptr_builder_->local_model.parameter_count();
+    param_size_ += lstm_param_size;
     ppptr_output_matrix_ = new std::vector<std::vector<std::vector<dynet::real>>>;
     is_alloc_space_beforehand_ = true;
 }
@@ -22,12 +27,18 @@ LSTMNetwork::LSTMNetwork(LSTMSuperParam &param):dynet::LSTMBuilder(param.layers_
 LSTMNetwork::~LSTMNetwork() {
     delete ptr_model_;
     delete ppptr_output_matrix_;
+    delete ptr_builder_;
 }
 
 void LSTMNetwork::AddParameters(dynet::ParameterCollection &model, LSTMSuperParam &param) {
     p_c_ = model.add_lookup_parameters(param.vocab_size_,{param.input_dim_});
     p_R_ = model.add_parameters({param.label_size_,param.hidden_dim_});
     p_bias_ = model.add_parameters({param.label_size_});
+/*
+    p_c_ = model.add_lookup_parameters(100,{2});
+    p_R_ = model.add_parameters({100,32});
+    p_bias_ = model.add_parameters({100});
+    */
     lstm_param_ = param;
     param_size_ = model.parameter_count();
 }
@@ -49,7 +60,7 @@ void LSTMNetwork::Initialize(int &argc, char **&argv) {
         std::cerr << tlc << " lines, " << ttoks << " tokens, " << dict_.size() << " types\n";
     }
     dict_.freeze();
-        dict_.set_unk("<unk>");
+    dict_.set_unk("<unk>");
     //AddParameters(*ptr_model_,dict_.size(),params.LAYERS,params.INPUT_DIM,params.HIDDEN_DIM,params.dropout_rate);
 
 }
@@ -131,6 +142,7 @@ void LSTMNetwork::Update(double count, Network *ptr_network, int parent_k, int c
 
 dynet::Expression LSTMNetwork::GetOutput(const std::vector<int> &sentence, int sent_idx, dynet::ComputationGraph &cg,
                                          bool apply_dropout) {
+    /*
     const unsigned slen = sentence.size();
     if(apply_dropout){
         dynet::LSTMBuilder::set_dropout(drop_out_);
@@ -149,37 +161,38 @@ dynet::Expression LSTMNetwork::GetOutput(const std::vector<int> &sentence, int s
         h_t = dynet::LSTMBuilder::add_input(x_t);
         std::vector<dynet::real> output = dynet::as_vector(h_t.value());
         (*ppptr_output_matrix_)[sent_idx].push_back(output);
-    }
+    }*/
 }
 
 dynet::Expression LSTMNetwork::BuildLSTMGraph(const std::vector<int> &sentence, dynet::ComputationGraph &cg,
-                                              bool apply_dropout) {
-    const unsigned slen = sentence.size();
-    if(apply_dropout){
-        dynet::LSTMBuilder::set_dropout(drop_out_);
-    } else{
-        dynet::LSTMBuilder::disable_dropout();
-    }
-    dynet::LSTMBuilder::new_graph(cg); // reset RNN builder for the new graph
-    dynet::LSTMBuilder::start_new_sequence();
-    dynet::Expression R = dynet::parameter(cg,p_R_);
-    dynet::Expression bias = dynet::parameter(cg,p_bias_);
-    std::vector<dynet::Expression> errs(slen + 1);
-    //add the start as the input
-    dynet::Expression h_t = dynet::LSTMBuilder::add_input(dynet::lookup(cg,p_c_,NetworkConfig::kSOS));
-    for(unsigned t = 0; t < slen; ++t){
-        dynet::Expression u_t = dynet::affine_transform({bias,R,h_t});//bias + R * h_t;
-        errs[t] = dynet::pickneglogsoftmax(u_t,sentence[t]);
-        dynet::Expression x_t = dynet::lookup(cg,p_c_,sentence[t]);
-        //add input for each word?
-        h_t = dynet::LSTMBuilder::add_input(x_t);
-        //get the output for each input x_t;
-        std::vector<dynet::real> output = dynet::as_vector(h_t.value());
-        (*ppptr_output_matrix_)[t].push_back(output);
-    }
-    dynet::Expression u_last = dynet::affine_transform({bias,R,h_t});
-    errs.back() = dynet::pickneglogsoftmax(u_last,NetworkConfig::kEOS);
-    return dynet::sum(errs);
+
+                                         bool apply_dropout) {
+    /*      const unsigned slen = sentence.size();
+     if(apply_dropout){
+         dynet::LSTMBuilder::set_dropout(drop_out_);
+     } else{
+         dynet::LSTMBuilder::disable_dropout();
+     }
+     dynet::LSTMBuilder::new_graph(cg); // reset RNN builder for the new graph
+     dynet::LSTMBuilder::start_new_sequence();
+     dynet::Expression R = dynet::parameter(cg,p_R_);
+     dynet::Expression bias = dynet::parameter(cg,p_bias_);
+     std::vector<dynet::Expression> errs(slen + 1);
+     //add the start as the input
+     dynet::Expression h_t = dynet::LSTMBuilder::add_input(dynet::lookup(cg,p_c_,NetworkConfig::kSOS));
+     for(unsigned t = 0; t < slen; ++t){
+         dynet::Expression u_t = dynet::affine_transform({bias,R,h_t});//bias + R * h_t;
+         errs[t] = dynet::pickneglogsoftmax(u_t,sentence[t]);
+         dynet::Expression x_t = dynet::lookup(cg,p_c_,sentence[t]);
+         //add input for each word?
+         h_t = dynet::LSTMBuilder::add_input(x_t);
+         //get the output for each input x_t;
+         std::vector<dynet::real> output = dynet::as_vector(h_t.value());
+         (*ppptr_output_matrix_)[t].push_back(output);
+     }
+     dynet::Expression u_last = dynet::affine_transform({bias,R,h_t});
+     errs.back() = dynet::pickneglogsoftmax(u_last,NetworkConfig::kEOS);
+     return dynet::sum(errs);*/
 }
 
 // Read the dataset, returns the number of tokens
@@ -208,9 +221,9 @@ unsigned LSTMNetwork::ReadData(const std::string &filename, std::vector<std::vec
  * @return
  */
 
-dynet::Expression LSTMNetwork::BuildLMGraph2(const vector<int>& sent, dynet::ComputationGraph* ptr_cg, bool apply){
-    dynet::LSTMBuilder::new_graph(*ptr_cg);
-    dynet::LSTMBuilder::start_new_sequence();
+dynet::Expression LSTMNetwork::BuildLMGraph2(const vector<float>& sent, dynet::ComputationGraph* ptr_cg, bool apply){
+    ptr_builder_->new_graph(*ptr_cg);
+    ptr_builder_->start_new_sequence();
     dynet::Expression R = parameter(*ptr_cg,p_R_);
     std::cout << "the dim of R is "<<R.dim()<<std::endl;
     dynet::Expression bias = parameter(*ptr_cg,p_bias_);
@@ -219,7 +232,7 @@ dynet::Expression LSTMNetwork::BuildLMGraph2(const vector<int>& sent, dynet::Com
     int size =  sent.size();
     for(int i = 0; i< sent.size(); ++i){
         dynet::Expression x_t = lookup(*ptr_cg,p_c_,sent[i]);
-        dynet::Expression h_t = dynet::LSTMBuilder::add_input(x_t);
+        dynet::Expression h_t = ptr_builder_->add_input(x_t);
         std::cout << "the dim of h_t is "<<h_t.dim()<<std::endl;
         err_vec.push_back(h_t);
     }
@@ -229,33 +242,42 @@ dynet::Expression LSTMNetwork::BuildLMGraph2(const vector<int>& sent, dynet::Com
 }
 
 dynet::Expression LSTMNetwork::BuildForwardGraph(std::vector<std::vector<std::string>*> *pptr_sent) {
-    std::vector<int> temp;
-    for(int i = 0; i< 14; i++){
+    /*std::vector<float> temp;
+    std::string good[3] = {"I", "am", "Good"};
+    for(int i = 0; i< 3; i++){
+//        std::string word = good[i];
+        //float a = dict_.convert(word);
         temp.push_back(i);
     }
-    return BuildLMGraph2(temp,ptr_cg_,false);
 
+    for(int i = 0; i< 3; ++i){
+        if(dict_.contains(good[i])){
+            //p_c_.initialize(dict_.convert(good[i]),temp);
+        } else{
+            std::cout<<"dic doesn't contain the word"<<std::endl;
+        }
+    }
+    return BuildLMGraph2(temp,ptr_cg_,false);
+    */
     dynet::Expression r_exp = dynet::parameter(*ptr_cg_,p_R_);
     dynet::Expression bais_exp = dynet::parameter(*ptr_cg_,p_bias_);
     std::cout << "dim of r_exp is:"<<r_exp.dim() <<std::endl;
     std::cout << "dim of bais_exp is"<<bais_exp.dim() <<std::endl;
-    dynet::LSTMBuilder::new_graph(*ptr_cg_); // reset RNN builder for the new graph
-    dynet::LSTMBuilder::start_new_sequence();
+    ptr_builder_->new_graph(*ptr_cg_); // reset RNN builder for the new graph
+    ptr_builder_->start_new_sequence();
     std::vector<dynet::Expression> final_vec;
     int num_of_sentence = pptr_sent->size();
     int word_id = 0;
     for(int pos = 0; pos < max_len_; ++pos){
         std::vector<unsigned int> word_id_vec;
         for(int i = 0; i < num_of_sentence; ++i){
-            int k = random() % 100;
-            word_id_vec.push_back(k);
-            continue;
             int sent_size = (*pptr_sent)[i]->size();
             if(pos > sent_size-1){
                 word_id = 0;
                 word_id_vec.push_back(word_id);
             } else{
                 std::string word = (*((*pptr_sent)[i]))[pos];
+                //dict_.convert(word);
                 auto it = ptr_word2int_map_->find(word);
                 if(it != ptr_word2int_map_->end()){
                     word_id = (*it).second;
@@ -269,10 +291,10 @@ dynet::Expression LSTMNetwork::BuildForwardGraph(std::vector<std::vector<std::st
         /*get the embedding of the word_id_vec at a position*/
         dynet::Expression expr = dynet::lookup(*ptr_cg_,p_c_,word_id_vec);
         std::cout << "dim of lookup expression for position "<<pos<<" th is "<<expr.dim()<<std::endl;
-        dynet::Expression predict_exp = dynet::LSTMBuilder::add_input(expr);
+        dynet::Expression predict_exp = ptr_builder_->add_input(expr);
         std::cout << "dim of predict expression is "<<predict_exp.dim()<<std::endl;
         dynet::Expression output_exp = r_exp * predict_exp + bais_exp;
-        std::cout<< "dim of output expression is "<<output_exp.dim()<<std::endl;
+        std::cout<< "dim of output expression is "<<output_exp.dim()<<"iteration count is"<<iteration_count_<<std::endl;
         final_vec.push_back(output_exp);
     }
 //    dynet::Expression result = dynet::transpose(dynet::concatenate_cols(final_vec));

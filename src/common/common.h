@@ -21,7 +21,8 @@
 #define GLOBAL_
 #endif
 
-#define DEBUG_NN;
+//#define DEBUG_NN;
+#define DEBUG_NN_;
 
 namespace ComParam{
     const int USE_HANDCRAFTED_FEATURES = 0;
