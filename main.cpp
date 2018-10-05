@@ -134,6 +134,8 @@ void ReleaseStaticPointer(){
 //    delete Network::ptr_outside_shared_array_;
 }
 
+
+
 int main(int argc, char **argv){
     dynet::Dict *ptr_dict = new dynet::Dict();
     //std::string train_file_name = "data/conll2000/sample_train_2.txt";
@@ -167,6 +169,7 @@ int main(int argc, char **argv){
 
     } else if(ComParam::USE_HYBRID_NEURAL_FEATURES == NetworkConfig::Feature_Type){
         ptr_param_g = new GlobalNetworkParam(argc,argv,max_len,ptr_inst_vec_all->size(),&all_labels, (NeuralFactory*)NeuralFactory::GetLSTMFactory(),ptr_word2int_map,ptr_dict);
+//        ptr_param_g = new GlobalNetworkParam(argc,argv,max_len,ptr_inst_vec_all->size(),&all_labels, (NeuralFactory*)NeuralFactory::GetCNNFactory(),ptr_word2int_map,ptr_dict);
     }
     //std::cout << "feature type is "<<NetworkConfig::Feature_Type<<std::endl;
 

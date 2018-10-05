@@ -308,9 +308,9 @@ void GlobalNetworkParam::ResetCountsAndObj() {
         }
         /*caution:: added by nan, no reguliation in java version*/
         if(ComParam::USE_HYBRID_NEURAL_FEATURES == NetworkConfig::Feature_Type){
-            ptr_nn_g_->Regulization(coef,kappa_);
+            ptr_nn_g_->Regularization(coef, kappa_);
         } else if(ComParam::USE_PURE_NEURAL_FEATURES == NetworkConfig::Feature_Type){
-            ptr_nn_g_->Regulization(coef,kappa_);
+            ptr_nn_g_->Regularization(coef, kappa_);
         }
     }
 

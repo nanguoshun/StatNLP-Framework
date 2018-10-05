@@ -63,7 +63,7 @@ public:
 
     int GetNeuralParamsSize();
 
-    void Regulization(double coef, double kappa);
+    void Regularization(double coef, double kappa);
 
     void SetMemoryOfParamAndGradient(double *ptr_param, double *ptr_param_grad);
 

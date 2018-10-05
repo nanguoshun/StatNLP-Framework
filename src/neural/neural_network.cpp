@@ -95,31 +95,31 @@ void NeuralNetwork::BackWard() {
     ResetGradient();
     //copy the gradient of output to ptr_output_grad_vec_
     for(int i = 0; i< output_size_; ++i){
-        ptr_output_grad_vec_->push_back(1);
-//       ptr_output_grad_vec_->push_back((float)ptr_output_grad_[i]);
-//       std::cout << "the value of gradient is"<<ptr_output_grad_[i]<<std::endl;
+//        ptr_output_grad_vec_->push_back(1);
+       ptr_output_grad_vec_->push_back((float)ptr_output_grad_[i]);
+ //      std::cout << "the value of gradient is"<<ptr_output_grad_[i]<<std::endl;
     }
-#ifdef DEBUG_NN_
+#ifdef DEBUG_NN
     std::cout << "dim of output_expression_ is" <<output_expression_.dim()<<std::endl;
 #endif
     dynet::Expression output_grad_exp = dynet::input(*ptr_cg_,output_expression_.dim(),*ptr_output_grad_vec_);
-#ifdef DEBUG_NN_
+#ifdef DEBUG_NN
     std::cout << "dim of output_grad_exp is" <<output_grad_exp.dim()<<std::endl;
 #endif
     dynet::Expression loss_exp = dynet::sum_elems(dynet::sum_batches(dynet::cmult(output_expression_,output_grad_exp)));
 //    dynet::Expression cmult_exp = dynet::cmult(output_expression_,output_grad_exp);
-#ifdef DEBUG_NN_
+#ifdef DEBUG_NN
     std::cout << "dim of cmult_exp is" <<loss_exp.dim()<<std::endl;
 #endif
 //    dynet::Expression loss_exp = dynet::sum_elems(cmult_exp);
 //    dynet::Expression final_loss = dynet::(loss_exp);
-    #ifdef DEBUG_NN_
+#ifdef DEBUG_NN
     std::cout << "dim of loss_exp is" <<loss_exp.dim()<<std::endl;
 #endif
     dynet::Tensor tensor = ptr_cg_->forward(loss_exp);
     dynet::real value = dynet::as_scalar(tensor);
-#ifdef DEBUG_NN
-    std::cout << "dim of tensor is" <<tensor.d<<std::endl;
+#ifdef DEBUG_NN_
+    std::cout << "value of loss is" <<value<<std::endl;
 #endif
     ptr_cg_->backward(loss_exp);
     //copy gradient from dynet to our framework.
@@ -168,13 +168,13 @@ void NeuralNetwork::CopyParams2Dynet() {
        dynet::Tensor tensor =  ptr_lps->all_values;
        for(int i = 0; i < ptr_lps->size(); ++i){
            ++size_lookup;
-           std::cout << size_lookup <<"th lookupparams, param before: "<<ptr_params_[param_index];
+           //std::cout << size_lookup <<"th lookupparams, param before: "<<ptr_params_[param_index];
            dynet::TensorTools::set_element(tensor,i,ptr_params_[param_index]);
-           std::cout << " , param after "<<ptr_params_[param_index]<<std::endl;
+           //std::cout << " , param after "<<ptr_params_[param_index]<<std::endl;
            ++param_index;
        }
     }
-    std::cout << "all lookup size is "<<size_lookup<<std::endl;
+    //std::cout << "all lookup size is "<<size_lookup<<std::endl;
     size_lookup = 0;
     //copy params to neural params.
     for(auto it = params.begin(); it != params.end(); ++it){
@@ -182,17 +182,19 @@ void NeuralNetwork::CopyParams2Dynet() {
         dynet::Tensor tensor = ptr_ps->values;
         for(int i =0; i < ptr_ps->size(); ++i){
             ++size_lookup;
-            std::cout << size_lookup<< "th params before: "<<ptr_params_[param_index];
+           // std::cout << size_lookup<< "th params before: "<<ptr_params_[param_index];
             dynet::TensorTools::set_element(tensor,i,ptr_params_[param_index]);
-            std::cout << ", params after: "<<ptr_params_[param_index]<<std::endl;
+           // std::cout << ", params after: "<<ptr_params_[param_index]<<std::endl;
             ++param_index;
         }
     }
-    std::cout << "all params size is "<<size_lookup<<std::endl;
+    //std::cout << "all params size is "<<size_lookup<<std::endl;
 }
 
 /**
+ *
  * Copy gradient from dynet to StatNLP.
+ *
  */
 void NeuralNetwork::CopyGradientFromDynet() {
     std::vector<std::shared_ptr<dynet::LookupParameterStorage>> lookup_params = ptr_model_->lookup_parameters_list();
@@ -207,7 +209,7 @@ void NeuralNetwork::CopyGradientFromDynet() {
         for(int i=0; i<size; ++i){
             double grad_value = (double)grad_vec[i];
 #ifdef DEBUG_NN_
-            std::cout << i <<"th lookup gradient value is "<<grad_value << std::endl;
+           // std::cout << i <<"th lookup gradient value is "<<grad_value << std::endl;
 #endif
             ptr_params_grad_[param_index++] = grad_value;
         }
@@ -221,12 +223,12 @@ void NeuralNetwork::CopyGradientFromDynet() {
         for(int i =0; i < size; ++i){
             double grad_value = (double)grad_vec[i];
 #ifdef DEBUG_NN_
-            std::cout << i <<"th lookup gradient value is "<<grad_value << std::endl;
+           // std::cout << i <<"th lookup gradient value is "<<grad_value << std::endl;
 #endif
             ptr_params_grad_[param_index++] = grad_value;
         }
     }
-    std::cout << "the size of gradient is "<<param_index<<std::endl;
+    //std::cout << "the size of gradient is "<<param_index<<std::endl;
 }
 
 /**
@@ -341,7 +343,7 @@ void NeuralNetwork::SetOutputArray(std::vector<dynet::real> &output_vec) {
     auto end =  output_vec.end();
     for(auto it = output_vec.begin(); it != end; ++it){
         double value = (*it);
-        std::cout << i<<"th value of the output is "<<value<<std::endl;
+        //std::cout << i<<"th value of the output is "<<value<<std::endl;
         ptr_output_[i++] = (*it);
     }
 }

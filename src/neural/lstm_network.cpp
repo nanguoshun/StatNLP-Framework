@@ -137,7 +137,7 @@ void LSTMNetwork::BackWard() {
 }
 
 void LSTMNetwork::Update(double count, Network *ptr_network, int parent_k, int children_k_index) {
-
+    NeuralNetwork::Update(count,ptr_network,parent_k,children_k_index);
 }
 
 dynet::Expression LSTMNetwork::GetOutput(const std::vector<int> &sentence, int sent_idx, dynet::ComputationGraph &cg,
@@ -261,8 +261,8 @@ dynet::Expression LSTMNetwork::BuildForwardGraph(std::vector<std::vector<std::st
     */
     dynet::Expression r_exp = dynet::parameter(*ptr_cg_,p_R_);
     dynet::Expression bais_exp = dynet::parameter(*ptr_cg_,p_bias_);
-    std::cout << "dim of r_exp is:"<<r_exp.dim() <<std::endl;
-    std::cout << "dim of bais_exp is"<<bais_exp.dim() <<std::endl;
+    //std::cout << "dim of r_exp is:"<<r_exp.dim() <<std::endl;
+    //std::cout << "dim of bais_exp is"<<bais_exp.dim() <<std::endl;
     ptr_builder_->new_graph(*ptr_cg_); // reset RNN builder for the new graph
     ptr_builder_->start_new_sequence();
     std::vector<dynet::Expression> final_vec;
@@ -287,20 +287,20 @@ dynet::Expression LSTMNetwork::BuildForwardGraph(std::vector<std::vector<std::st
                 word_id_vec.push_back(word_id);
             }
         }
-        std::cout << "dim of lookup p_c is "<<p_c_.dim()<<std::endl;
+        //std::cout << "dim of lookup p_c is "<<p_c_.dim()<<std::endl;
         /*get the embedding of the word_id_vec at a position*/
         dynet::Expression expr = dynet::lookup(*ptr_cg_,p_c_,word_id_vec);
-        std::cout << "dim of lookup expression for position "<<pos<<" th is "<<expr.dim()<<std::endl;
+        //std::cout << "dim of lookup expression for position "<<pos<<" th is "<<expr.dim()<<std::endl;
         dynet::Expression predict_exp = ptr_builder_->add_input(expr);
-        std::cout << "dim of predict expression is "<<predict_exp.dim()<<std::endl;
+        //std::cout << "dim of predict expression is "<<predict_exp.dim()<<std::endl;
         dynet::Expression output_exp = r_exp * predict_exp + bais_exp;
-        std::cout<< "dim of output expression is "<<output_exp.dim()<<"iteration count is"<<iteration_count_<<std::endl;
+        //std::cout<< "dim of output expression is "<<output_exp.dim()<<"iteration count is"<<iteration_count_<<std::endl;
         final_vec.push_back(output_exp);
     }
-//    dynet::Expression result = dynet::transpose(dynet::concatenate_cols(final_vec));
+    //dynet::Expression result = dynet::transpose(dynet::concatenate_cols(final_vec));
     dynet::Expression result = dynet::concatenate(final_vec);
-//    dynet::transpose(result);
-    std::cout << "dim of result is "<<result.dim()<<std::endl;
+    //dynet::transpose(result);
+    //std::cout << "dim of result is "<<result.dim()<<std::endl;
     return result;
 }
 
@@ -365,7 +365,7 @@ void LSTMNetwork::SetInstance(std::vector<Instance *> *ptr_inst) {
         std::vector<std::string> *ptr_vec = new std::vector<std::string>;
         for(auto itt = ptr_input->begin(); itt != ptr_input->end(); ++itt){
             std::string feature1 = (*itt)[0];
-            std::cout << "feature is "<<feature1<<std::endl;
+            //std::cout << "feature is "<<feature1<<std::endl;
             ptr_vec->push_back(feature1);
         }
         pptr_sent_->push_back(ptr_vec);

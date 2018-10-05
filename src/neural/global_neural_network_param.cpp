@@ -42,6 +42,7 @@ double GlobalNeuralNetworkParam::GetNNScore(Network *ptr_network, int parent_k, 
     for (auto it = ptr_nn_vec_->begin(); it != ptr_nn_vec_->end(); ++it) {
         score += (*it)->GetScore(ptr_network, parent_k, children_k_index);
     }
+    return score;
 }
 
 /**
@@ -193,7 +194,7 @@ void GlobalNeuralNetworkParam::SetMaxSentenceLength(int max_len) {
 
 /**
  *
- * Allocate the memory for the output array of Neural network
+ * Allocate the memory for the output array of the Neural network
  *
  */
 void GlobalNeuralNetworkParam::AllocateOutSpaceBeforehand() {
@@ -209,12 +210,17 @@ int GlobalNeuralNetworkParam::GetNeuralParamsSize() {
     return nn_params_size_;
 }
 
-void GlobalNeuralNetworkParam::Regulization(double coef, double kappa) {
+void GlobalNeuralNetworkParam::Regularization(double coef, double kappa) {
     for (auto it = ptr_nn_vec_->begin(); it != ptr_nn_vec_->end(); ++it){
         (*it)->Regularization(coef, kappa);
     }
 }
-
+/**
+ * Set the memory adress of param array and gradient array.
+ *
+ * @param ptr_param
+ * @param ptr_param_grad
+ */
 void GlobalNeuralNetworkParam::SetMemoryOfParamAndGradient(double *ptr_param, double *ptr_param_grad) {
     int i = 0;
     int size = ptr_nn_vec_->size();
