@@ -28,10 +28,11 @@ LinearCRFFeatureManager::~LinearCRFFeatureManager() {
     delete []ptr_feature_type_;
 }
 
-// this function is called LocalNetworkLearnerThread during touch phase.
+// this function is called by LocalNetworkLearnerThread during the feature touch phase.
 FeatureArray* LinearCRFFeatureManager::ExtractHelper(Network *ptr_network, int parent_k, int *ptr_children,int children_k_index) {
     LinearCRFNetwork *ptr_crf_network = (LinearCRFNetwork*) ptr_network;
-    //FIXME: should get the instance from (LinearCRFInstance*)ptr_crf_network->GetInstance(), but encounters errors. Alternatively, we use ptr_inst_matrix_ to get instance directly.
+    //FIXME: should get the instance from (LinearCRFInstance*)ptr_crf_network->GetInstance(),
+    // but encounters errors. Alternatively, we use ptr_inst_matrix_ to get instance directly.
     LinearCRFInstance *ptr_instance = (LinearCRFInstance*)ptr_crf_network->GetInstance();
     //Instance *ptr_instance = (*ptr_inst_matrix_)[ptr_crf_network->GetNetworkID()];
     //LinearCRFInstance *ptr_crf_instance = (LinearCRFInstance*)ptr_crf_instance;
@@ -56,7 +57,6 @@ FeatureArray* LinearCRFFeatureManager::ExtractHelper(Network *ptr_network, int p
     }else if(ComParam::USE_PURE_NEURAL_FEATURES == NetworkConfig::Feature_Type){
         //TODO:
     }
-
     //Only one child for linear CRF.
     int child_tag_id = (ptr_network->GetNodeArray(ptr_children[0]))[1];
     FeatureArray *ptr_features = new FeatureArray((int*) nullptr,0);

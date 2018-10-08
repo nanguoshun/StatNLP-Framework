@@ -259,9 +259,18 @@ bool TableLookupNetwork::IsLeaf(int k) {
         return false;
     }
 }
-
+/***
+ * Check if the node is stored in the children_tmp_
+ *
+ * @param node
+ * @return
+ */
 bool TableLookupNetwork::IsContain(long node) {
-    return false;
+    if(ptr_children_tmp_->end() != ptr_children_tmp_->find(node)){
+        return true; /* existed */
+    } else{
+        return false; /* no existed*/
+    }
 }
 
 int* TableLookupNetwork::GetChildrens_Size() {

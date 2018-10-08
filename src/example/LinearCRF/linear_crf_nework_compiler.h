@@ -12,6 +12,7 @@
 #include "linear_crf_instance.h"
 #include "linear_crf_network.h"
 
+
 class LinearCRFNetworkCompiler: public NetworkCompiler {
 public:
     LinearCRFNetworkCompiler(std::vector<std::string> &labels);

@@ -275,7 +275,7 @@ public:
 
     /**
  *
- * Calc the gradient the  node, which is indexed by nodeId.
+ * Calc the gradient of the node, which is indexed by nodeId.
  *
  * Noted that the gradient for all features
  *

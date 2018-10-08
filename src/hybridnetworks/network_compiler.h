@@ -8,13 +8,13 @@
 #include "network.h"
 #include "../common/types/instance.h"
 #include "local_network_param.h"
-#include "src/example/LinearCRF/linear_crf_network.h"
+//#include "src/example/LinearCRF/linear_crf_network.h"
 
 class NetworkCompiler{
 public:
     NetworkCompiler();
     ~NetworkCompiler();
-    virtual LinearCRFNetwork * Compile(int networkId, Instance* ptr_inst, LocalNetworkParam *ptr_param) = 0;
+    virtual Network * Compile(int networkId, Instance* ptr_inst, LocalNetworkParam *ptr_param) = 0;
     virtual Instance *Decompile(Network *ptr_network) = 0;
 };
 

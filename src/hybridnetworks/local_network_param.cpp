@@ -7,8 +7,7 @@
 #include "network.h"
 
 LocalNetworkParam::LocalNetworkParam() {
-    std::cout << "default constructor of LocalNetworkParam is callded" << std::endl;
-
+    std::cout << "default constructor of LocalNetworkParam is called" << std::endl;
 }
 
 LocalNetworkParam::LocalNetworkParam(int threadId, FeatureManager *ptr_fm, int numNetworks) {

@@ -66,6 +66,21 @@ namespace ComType{
 //    typedef std::pair<std::string, int> NeuralInput;
     typedef std::unordered_map<ComType::Input_Str_Vector *, int> Neural_Input_Map;
     typedef std::vector<std::unordered_map<ComType::Input_Str_Vector *, int> *> Neural_Input_Map_Vect;
+    struct FeatureT{
+        std::string type;
+        bool isOn;
+    };
+    enum LinearFeatureType{
+        WORD,
+        WORD_BIGRAM,
+        TAG,
+        TAG_BIGRAM,
+        TRANSITION
+    };
+    enum NeuralType{
+        LSTM,
+        MLP
+    };
 }
 
 static int Feature_TEST = 1;
@@ -73,8 +88,9 @@ static int Feature_TEST = 1;
 namespace NetworkConfig{
     // the feature type is set as hand-crafted defaultly.
     static int Feature_Type = ComParam::USE_HYBRID_NEURAL_FEATURES; //FIXME: the static configuration could not work
+    static int Neural_Type = ComType::NeuralType::LSTM;
     static bool FEATURE_TOUCH_TEST = false;
-    static enum ModelStatus { TRAINING, DEV_IN_TRAINING, TESTING };
+    enum ModelStatus { TRAINING, DEV_IN_TRAINING, TESTING };
     static ModelStatus STATUS = ModelStatus::TRAINING;
     static bool USE_BATCH_TRAINING = false;
     /*neural network related*/
