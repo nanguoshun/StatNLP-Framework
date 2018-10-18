@@ -169,7 +169,8 @@ bool GlobalNetworkParam::UpdateDiscriminative() {
     int go_on_training =  1;
 
     if(ComParam::OPT_LBFGS == ComParam::OPTIMIZER){
-        go_on_training = this->ptr_opt_->optimize(params_size_,ptr_weights_,-obj_current_,ptr_counts_, true, 1.0);
+        /*noted that the parameter orthant should be set as false to avoid duplicated regularization */
+        go_on_training = this->ptr_opt_->optimize(params_size_,ptr_weights_,-obj_current_,ptr_counts_,false, 0);
     } else if(ComParam::OPT_SGD == ComParam::OPTIMIZER){
         for(int i=0; i<h_feature_size_; ++i){
             //std::cout << i <<"th weights before is: "<<ptr_weights_[i]<<"  gradient is: "<<ptr_counts_[i]<<std::endl;
@@ -258,6 +259,7 @@ int GlobalNetworkParam::ToFeature(std::string type, std::string output, std::str
     std::unordered_map<std::string, int> *ptr_map_value_value = ptr_map_value->find(output)->second;
     if(ptr_map_value_value->find(input) == ptr_map_value_value->end()){
         ptr_map_value_value->insert(std::make_pair(input,this->h_feature_size_));
+        //std::cout << h_feature_size_<<"th feature is"<<input<<", "<<ptr_map_value->find(output)->first<<std::endl;
         this->h_feature_size_++;
         tmp_count_++;
         //TODO: for type2inputMap.
@@ -332,7 +334,7 @@ void GlobalNetworkParam::ResetCountsAndObj() {
             //todo:
         }
         //FIXME:need to confirmation the minus sign before coef.
-        this->obj_current_ *= -coef * this->kappa_;
+        //this->obj_current_ *= -coef * this->kappa_;
     }
 }
 
@@ -457,8 +459,14 @@ double GlobalNetworkParam::GetCurrentObj() {
 }
 
 void GlobalNetworkParam::SetNNParameter() {
+
 }
 
 void GlobalNetworkParam::InitNNParameter(int &argc, char **&argv, unsigned int random_seed, bool shared_parameters) {
     ptr_nn_g_->InitNNParameter(argc,argv,random_seed,shared_parameters);
+}
+
+
+int GlobalNetworkParam::GetHandCraftFeatureSize() {
+    return h_feature_size_;
 }

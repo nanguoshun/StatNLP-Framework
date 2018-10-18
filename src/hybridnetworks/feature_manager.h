@@ -26,7 +26,8 @@ public:
     void EnableCache(int numNetworks);
     virtual FeatureArray* ExtractHelper(Network *ptr_network, int parent, int *ptr_children, int children_k_index) = 0;
     void SetLocalNetworkParams(int threadId, LocalNetworkParam *ptr_param_l);
-    int temp_count_;
+    int tmp_count_t_;
+    int tmp_count_e_;
     LocalNetworkParam ** GetLocalParams();
     void AddNeural(Network *ptr_network, int netId, int parent_K, int children_k_index, ComType::Neural_Input *ptr_edge_input, int output);
 protected:

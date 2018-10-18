@@ -12,6 +12,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I /usr/local/include -O3")
 # include the dynet
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/dynet)
 #include_directories(${CMAKE_CURRENT_SOURCE_DIR}/Thunder-master)
+#include_directories(/System/Library/Perl/5.16/darwin-thread-multi-2level/CORE)
 
 # set the directory of eign3
 set(EIGEN3_INCLUDE_DIR "/Users/ngs/Documents/cplusproject/eigen" )
@@ -32,6 +33,8 @@ find_package(BLAS REQUIRED)
 
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/dynet/dynet)
 #add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Thunder-master/packages)
+
+#linearCRF
 #[[
 add_executable(statNLP main.cpp src/hybridnetworks/hypergraph.h
         src/hybridnetworks/global_network_param.h src/hybridnetworks/global_network_param.cpp
@@ -54,9 +57,11 @@ add_executable(statNLP main.cpp src/hybridnetworks/hypergraph.h
         src/neural/vanilla_rnn.h src/neural/vanilla_rnn.cpp src/example/LinearCRF/linear_crf_lstm.h src/example/LinearCRF/linear_crf_lstm.cpp src/neural/neural_factory.h
         src/neural/neural_factory.cpp src/neural/lstm_factory.h src/neural/lstm_factory.cpp src/neural/lstm_factory.h src/neural/lstm_factory.cpp src/neural/cnn_factory.h
         src/neural/cnn_factory.cpp src/common/opt/math_calc.h src/common/opt/math_calc.cpp src/neural/dynet_interface.h src/neural/dynet_interface.cpp src/neural/neural_input_output.h
-        src/neural/neural_input_output.cpp src/common/types/token.h src/common/types/word_token.h)
+        src/neural/neural_input_output.cpp src/common/types/token.h src/common/types/word_token.h src/example/TreeCRF/tree_crf_instance.h)
 ]]
 
+#linearNER
+#[[
 add_executable(statNLP src/example/LinearNER/linear_ne_main.cpp src/hybridnetworks/hypergraph.h
         src/hybridnetworks/global_network_param.h src/hybridnetworks/global_network_param.cpp
         src/hybridnetworks/feature_manager.h src/hybridnetworks/feature_manager.cpp src/hybridnetworks/local_network_param.h
@@ -82,7 +87,39 @@ add_executable(statNLP src/example/LinearNER/linear_ne_main.cpp src/hybridnetwor
         src/example/LinearNER/linear_ne_feature_manager.h src/example/LinearNER/linear_ne_feature_manager.cpp src/example/LinearNER/linear_ne_instance.h src/example/LinearNER/linear_ne_instance.cpp
         src/example/LinearCRF/linear_crf_feature_manager.h src/example/LinearCRF/linear_crf_feature_manager.cpp src/example/LinearCRF/linear_crf_instance.h src/example/LinearCRF/linear_crf_instance.cpp src/example/LinearCRF/linear_crf_network.h
         src/example/LinearCRF/linear_crf_network.cpp src/example/LinearCRF/linear_crf_nework_compiler.h src/example/LinearCRF/linear_crf_network_compiler.cpp src/example/LinearNER/entity.h src/example/LinearNER/entity.cpp
-        src/example/LinearNER/entity_reader.h src/common/types/token.h src/common/types/word_token.h src/common/types/sentence.h src/common/types/linear_chain.h src/common/types/token_array.h src/common/types/dependency_tree.h)
+        src/example/LinearNER/entity_reader.h src/common/types/token.h src/common/types/word_token.h src/common/types/sentence.h src/common/types/linear_chain.h src/common/types/token_array.h
+        src/common/types/dependency_tree.h src/example/LinearNER/evaluate_ner.h)
+]]
+
+add_executable(statNLP src/example/TreeCRF/tree_crf_main.cpp src/hybridnetworks/hypergraph.h
+        src/hybridnetworks/global_network_param.h src/hybridnetworks/global_network_param.cpp
+        src/hybridnetworks/feature_manager.h src/hybridnetworks/feature_manager.cpp src/hybridnetworks/local_network_param.h
+        src/hybridnetworks/local_network_param.cpp src/common/types/instance.h
+        src/common/types/base_instance.h src/common/types/base_instance.h src/common/types/base_instance.cpp
+        src/common/types/instance.cpp src/hybridnetworks/network_model.h
+        src/hybridnetworks/network_model.cpp src/hybridnetworks/data_manager.h src/hybridnetworks/data_manager.cpp
+        src/hybridnetworks/network_compiler.h
+        src/hybridnetworks/network_compiler.cpp src/hybridnetworks/network.h src/hybridnetworks/network.cpp
+        src/hybridnetworks/table_lookup_network.h
+        src/hybridnetworks/table_lookup_network.cpp src/common/common.h src/hybridnetworks/network_id_manager.h
+        src/hybridnetworks/network_id_manager.cpp
+        src/hybridnetworks/feature_array.h src/hybridnetworks/feature_array.cpp src/hybridnetworks/discriminative_network_model.h
+        src/hybridnetworks/discriminative_network_model.cpp src/hybridnetworks/local_network_learner_thread.h
+        src/hybridnetworks/local_network_learner_thread.cpp src/common/opt/lbfgs.h src/common/opt/lbfgs.cpp
+        src/hybridnetworks/freelistbase.h src/hybridnetworks/freelistbase.cpp src/hybridnetworks/local_network_decoder_thread.h
+        src/hybridnetworks/local_network_decoder_thread.cpp src/neural/neural_network.h src/neural/neural_network.cpp src/neural/lstm_network.cpp
+        src/neural/lstm_network.h src/neural/cnn_network.cpp src/neural/cnn_network.h src/neural/global_neural_network_param.h src/neural/global_neural_network_param.cpp
+        src/neural/vanilla_rnn.h src/neural/vanilla_rnn.cpp src/neural/neural_factory.h
+        src/neural/neural_factory.cpp src/neural/lstm_factory.h src/neural/lstm_factory.cpp src/neural/lstm_factory.h src/neural/lstm_factory.cpp src/neural/cnn_factory.h
+        src/neural/cnn_factory.cpp src/common/opt/math_calc.h src/common/opt/math_calc.cpp src/neural/dynet_interface.h src/neural/dynet_interface.cpp src/neural/neural_input_output.h src/neural/neural_input_output.cpp
+        src/example/LinearNER/linear_ne_network.h src/example/LinearNER/linear_ne_network.cpp src/example/LinearNER/linear_ne_network_compiler.h src/example/LinearNER/linear_ne_network_compiler.cpp
+        src/example/LinearNER/linear_ne_feature_manager.h src/example/LinearNER/linear_ne_feature_manager.cpp src/example/LinearNER/linear_ne_instance.h src/example/LinearNER/linear_ne_instance.cpp
+        src/example/LinearCRF/linear_crf_feature_manager.h src/example/LinearCRF/linear_crf_feature_manager.cpp src/example/LinearCRF/linear_crf_instance.h src/example/LinearCRF/linear_crf_instance.cpp src/example/LinearCRF/linear_crf_network.h
+        src/example/LinearCRF/linear_crf_network.cpp src/example/LinearCRF/linear_crf_nework_compiler.h src/example/LinearCRF/linear_crf_network_compiler.cpp src/example/LinearNER/entity.h src/example/LinearNER/entity.cpp
+        src/example/LinearNER/entity_reader.h src/common/types/token.h src/common/types/word_token.h src/common/types/sentence.h src/common/types/linear_chain.h src/common/types/token_array.h
+        src/common/types/dependency_tree.h src/example/LinearNER/evaluate_ner.h src/example/TreeCRF/tree_crf_intance.cpp src/example/TreeCRF/tree_crf_feature_manager.h src/example/TreeCRF/tree_crf_feature_manager.cpp
+        src/common/types/node.h src/common/types/node.cpp src/common/types/binarytree.h src/common/types/binarytree.cpp src/example/TreeCRF/tree_crf_network.h src/example/TreeCRF/tree_crf_network.cpp src/example/TreeCRF/tree_crf_network_compiler.h src/example/TreeCRF/tree_crf_network_compiler.cpp)
+
 # link statnlp and dynet
 #target_link_libraries(statNLP cnn)
 #target_link_libraries(statNLP dynet libblas.a)

@@ -12,9 +12,10 @@ class NetworkIDManager{
 public:
     NetworkIDManager();
     ~NetworkIDManager();
+    static void SetCapacity(std::vector<int> cap);
     static long ToHybridNodeID(std::vector<int> &vec);
     static std::vector<int> ToHybridNodeArray(long NodeId);
-
+    static int BinarySearch(long *ptr_array, int array_size, long value);
 private:
     static std::vector<int> *ptr_capacity_vec_;
 };

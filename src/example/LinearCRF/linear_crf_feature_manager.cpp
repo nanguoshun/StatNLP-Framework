@@ -21,7 +21,8 @@ LinearCRFFeatureManager::LinearCRFFeatureManager(GlobalNetworkParam *ptr_param, 
         }
         ptr_feature_type_[i].type = feature_type_[i];
     }
-    temp_count_ = 0;
+    tmp_count_t_ = 0;
+    tmp_count_e_= 0;
 }
 
 LinearCRFFeatureManager::~LinearCRFFeatureManager() {
@@ -83,7 +84,7 @@ FeatureArray* LinearCRFFeatureManager::ExtractHelper(Network *ptr_network, int p
             std::string type = ptr_feature_type_[0].type + ":" + std::to_string(relIdx);
             std::string output = std::to_string(tag_id);
             ptr_word_window_features[i] =  this->ptr_param_g_->ToFeature(type,output,word);
-            temp_count_ ++;
+            tmp_count_t_ ++;
         }
         FeatureArray *ptr_word_features = new FeatureArray(ptr_word_window_features, word_window_size,ptr_features);
         ptr_features = ptr_word_features;
@@ -103,7 +104,7 @@ FeatureArray* LinearCRFFeatureManager::ExtractHelper(Network *ptr_network, int p
         std::string input = std::to_string(child_tag_id) + " " + std::to_string(tag_id);
         int transition_feature = this->ptr_param_g_->ToFeature(type,output,input);
         ptr_features = new FeatureArray(new int[1]{transition_feature},1,ptr_features);
-        temp_count_ ++;
+        tmp_count_e_++;
     }
 
     return ptr_features;

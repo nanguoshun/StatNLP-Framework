@@ -10,6 +10,7 @@
 #include "linear_ne_instance.h"
 #include "entity.h"
 #include <boost/algorithm/string.hpp>
+#include "entity_reader.h"
 
 class LinearNENetworkCompiler: public NetworkCompiler{
 public:
@@ -35,6 +36,9 @@ private:
     long *ptr_all_nodes_;
     //parent index, HyperEdge no(children), Nodes index
     int *** ptr_all_children_;
+    int max_len_;
+    //for test only
+    int num_of_edge_;
 };
 
 #endif //STATNLP_LINEARNENETWORKCOMPILER_H

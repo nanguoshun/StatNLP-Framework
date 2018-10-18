@@ -5,7 +5,7 @@
 #include "linear_ne_network.h"
 
 LinearNENetwork::LinearNENetwork(){
-
+    num_of_nodes_ = -1;
 }
 
 LinearNENetwork::LinearNENetwork(int networkid, Instance *ptr_inst, LocalNetworkParam *ptr_param):TableLookupNetwork(networkid,ptr_inst,ptr_param) {

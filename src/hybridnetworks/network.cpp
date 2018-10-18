@@ -143,6 +143,7 @@ void Network::Max() {
 }
 
 void Network::Max(int nodeId) {
+
     if(this->IsRemovded(nodeId)){
         this->ptr_max_[nodeId] = ComParam::DOUBLE_NEGATIVE_INFINITY;
         return;
@@ -172,6 +173,12 @@ void Network::Max(int nodeId) {
             for(int i=0; i < size; ++i){
                 score += this->ptr_max_[ptr_children_k[i]];
             }
+            /*the vector of ptr_max is inited as 0, and the score may be nagtive */
+            if(0 == children_k){
+                ptr_max_[nodeId] = score;
+                ptr_max_children_no_[nodeId] = ptr_children_k;
+                continue;
+            }
             if(score > ptr_max_[nodeId]){
                 ptr_max_[nodeId] = score;
                 ptr_max_children_no_[nodeId] = ptr_children_k;
@@ -193,6 +200,12 @@ bool Network::IsIgnored(int *ptr_children, int size) {
     return false;
 }
 
+/**
+ * return the hyperedge;
+ *
+ * @param nodeid
+ * @return
+ */
 int* Network::GetMaxPath(int nodeid) {
     return ptr_max_children_no_[nodeid];
 }

@@ -14,7 +14,7 @@ Instance::Instance(int id, double weight) {
 }
 
 Instance::~Instance() {
-    std::cout << "delete instance"<<std::endl;
+    //std::cout << "delete instance"<<std::endl;
 }
 
 void Instance::SetLabeled() {

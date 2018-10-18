@@ -50,6 +50,10 @@ namespace ComParam{
     const std::string PAD = "<pad>";
     const int UNK_ID = 10000000;
     const int PAD_ID = 10000001;
+    const char LEFT_BRACKET_CHAR = '(';
+    const char RIGHT_BRACKET_CHAR = ')';
+    const std::string SPACE_STRING = " ";
+
 }
 
 namespace ComType{
@@ -81,13 +85,18 @@ namespace ComType{
         LSTM,
         MLP
     };
+    struct Results{
+        int corr_;
+        int erro_;
+        int rest_;
+    };
 }
 
 static int Feature_TEST = 1;
 
 namespace NetworkConfig{
     // the feature type is set as hand-crafted defaultly.
-    static int Feature_Type = ComParam::USE_HYBRID_NEURAL_FEATURES; //FIXME: the static configuration could not work
+    static int Feature_Type = ComParam::USE_HANDCRAFTED_FEATURES; //FIXME: the static configuration could not work
     static int Neural_Type = ComType::NeuralType::LSTM;
     static bool FEATURE_TOUCH_TEST = false;
     enum ModelStatus { TRAINING, DEV_IN_TRAINING, TESTING };

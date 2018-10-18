@@ -54,8 +54,9 @@ void NetworkModel::Train(std::vector<Instance *> *ptr_all_instances, std::vector
         //TODO:
     }
     this->ptr_fm_->GetGlobalParam()->LockIt();
-    std::cout <<"tmp cout is: "<<this->ptr_fm_->temp_count_<<std::endl;
-    std::cout <<"tmp cout is: "<<this->ptr_fm_->GetGlobalParam()->tmp_count_<<std::endl;
+    std::cout <<"The num of adding Transition is: "<<this->ptr_fm_->tmp_count_t_<<std::endl;
+    std::cout <<"The num of adding emission  is: "<<this->ptr_fm_->tmp_count_e_<<std::endl;
+    std::cout <<"Handcrafted Feature Size is: "<<this->ptr_fm_->GetGlobalParam()->tmp_count_<<std::endl;
     double obj_old = ComParam::DOUBLE_NEGATIVE_INFINITY;
     //EM style algorithm
 //    long start_time = clock();

@@ -144,7 +144,7 @@ public:
         //check if it is removed?
         if (this->IsRemovded(nodeId)) {
             ptr_inside_[nodeId] = ComParam::DOUBLE_NEGATIVE_INFINITY;
-            return;;
+            return;
         }
         //get the number of hyperedges rooted by nodeId
         int children_size = this->GetChildrens_Size(nodeId);

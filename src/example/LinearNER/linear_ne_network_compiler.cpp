@@ -3,15 +3,21 @@
 //
 
 #include "linear_ne_network_compiler.h"
+#include <boost/algorithm/string.hpp>
 
 LinearNENetworkCompiler::LinearNENetworkCompiler(bool is_useIOBE, std::vector<Entity *> *ptr_entity) {
+    std::vector<int> capvec{150,50,3};
+    NetworkIDManager::SetCapacity(capvec);
+    max_len_ = capvec[0];
     is_use_IOBE_ = is_useIOBE;
     ptr_entity_ = ptr_entity;
     ptr_entity_id_map_ = new std::unordered_map<Entity *, int>;
     for (int i = 0; i < ptr_entity_->size(); ++i) {
         ptr_entity_id_map_->insert(std::make_pair((*ptr_entity)[i], i));
     }
+    num_of_edge_ = 0;
     CompileUnlabeledGeneric();
+
 }
 
 LinearNENetworkCompiler::~LinearNENetworkCompiler() {
@@ -28,7 +34,40 @@ Network *LinearNENetworkCompiler::Compile(int networkId, Instance *ptr_inst, Loc
 }
 
 Instance *LinearNENetworkCompiler::Decompile(Network *ptr_network) {
-    //todo:
+    LinearNENetwork *ptr_ne_network = (LinearNENetwork *)ptr_network;
+    LinearNEInstance *ptr_inst = (LinearNEInstance*)ptr_ne_network->GetInstance();
+    int sent_len = ptr_inst->GetSize();
+    /*the index of node in the array*/
+    int node_idx = NetworkIDManager::BinarySearch(ptr_all_nodes_,ptr_generic_network_->CountNodes(),ToNodeRoot(sent_len));
+    for(int i = 0; i < ptr_generic_network_->CountNodes(); ++i){
+        //std::cout << i<<"th node is: "<<ptr_all_nodes_[i]<<std::endl;
+    }
+    NER_OutPut_Type *ptr_pred = new NER_OutPut_Type(sent_len); /*the pointer will be released by BaseInstance class*/
+    //for(auto it = ptr_entity_->begin(); it != ptr_entity_->end(); ++it){
+      //  std::cout << "the entity is "<<(*it)->GetForm() <<std::endl;
+    //}
+    int max = EntityReader::max_len_;
+    for(int i = sent_len-1; i >=0; --i){
+        int child_idx = ptr_ne_network->GetMaxPath(node_idx)[0];
+        long child_id = ptr_ne_network->GetNode(child_idx);
+        int tag_id = NetworkIDManager::ToHybridNodeArray(child_id)[1];
+        std::string entity_str = (*ptr_entity_)[tag_id]->GetForm();
+        /* to align with IOB tagging scheme */
+        if(boost::starts_with(entity_str,"S-")){
+            entity_str = "B-"+entity_str.substr(2);
+        }
+        if(boost::starts_with(entity_str,"E-")){
+            entity_str = "I-"+entity_str.substr(2);
+        }
+        if(0 == tag_id || this->ptr_entity_->size() == tag_id){
+            entity_str = "O";
+        }
+        (*ptr_pred)[i] = entity_str;
+        node_idx = child_idx;
+    }
+    LinearNEInstance *ptr_inst_du = new LinearNEInstance(ptr_inst->GetInstanceId(),ptr_inst->GetWeight(),ptr_inst->GetInput(),ptr_inst->GetOutPut());
+    ptr_inst_du->SetPrediction(ptr_pred);
+    return  ptr_inst_du;
 }
 
 
@@ -44,7 +83,8 @@ LinearNENetwork *LinearNENetworkCompiler::CompileLabeled(int networkId, LinearNE
     for (int i = 0; i < inst_size; ++i) {
         std::string entity_str = (*(ptr_inst->GetOutPut()))[i];
         Entity *ptr_et = Entity::Get(entity_str);
-        long nodeId = ToNode(i, ptr_entity_id_map_->find(ptr_et)->second);
+        int tag_id = ptr_entity_id_map_->find(ptr_et)->second;
+        long nodeId = ToNode(i, tag_id);
         ptr_network->AddNode(nodeId);
         ptr_network->AddEdge(nodeId, prev_nodes_vec);
         prev_nodes_vec.clear();
@@ -84,101 +124,137 @@ LinearNENetwork *LinearNENetworkCompiler::CompileUnlabeled(int networkId, Linear
 }
 
 long LinearNENetworkCompiler::ToNode(int pos, int tag_id) {
-    int arr[] = {pos + 1, tag_id, 0, 0, ComType::NODE_TYPES::NODE};
+    int arr[] = {pos, tag_id, ComType::NODE_TYPES::NODE};
     std::vector<int> vec(std::begin(arr), std::end(arr));
     return NetworkIDManager::ToHybridNodeID(vec);
 }
 
 long LinearNENetworkCompiler::ToNodeLeaf() {
-    int arr[] = {0, 0, 0, 0, ComType::NODE_TYPES::LEAF};
+    int arr[] = {0, 0, ComType::NODE_TYPES::LEAF};
     std::vector<int> vec(std::begin(arr), std::end(arr));
     return NetworkIDManager::ToHybridNodeID(vec);
 }
 
 long LinearNENetworkCompiler::ToNodeRoot(int size) {
-    int arr[] = {size, (int) this->ptr_entity_.size(), 0, 0, ComType::NODE_TYPES::ROOT};
+    int arr[] = {size-1, (int) this->ptr_entity_->size()-1, ComType::NODE_TYPES::ROOT};
     std::vector<int> vec(std::begin(arr), std::end(arr));
     return NetworkIDManager::ToHybridNodeID(vec);
 }
 
+/***
+ *
+ * Build generic graph.
+ *
+ */
 void LinearNENetworkCompiler::CompileUnlabeledGeneric() {
+    ptr_generic_network_ = new LinearNENetwork();
     long leaf = ToNodeLeaf();
     ptr_generic_network_->AddNode(leaf);
     std::vector<long> children_vec;
     children_vec.push_back(leaf);
     std::vector<long> cur_node_vec;
-    for (int pos = 0; pos < ComParam::MAX_LENGTH; ++pos) {
+    for (int pos = 0; pos < max_len_; ++pos) {
         /* for the leaf node */
-        if(0 == pos){ continue;}
         /* for each label */
-        CompileUnlabeledGenericNode(pos,children_vec,cur_node_vec);
+        CompileUnlabeledGenericNode(pos, children_vec, cur_node_vec);
         /* root */
-        CompileUnlabeledGenericRoot(pos,cur_node_vec);
+        CompileUnlabeledGenericRoot(pos, cur_node_vec);
         children_vec = cur_node_vec;
         cur_node_vec.clear();
     }
     ptr_generic_network_->FinalizeNetwork();
     this->ptr_all_nodes_ = ptr_generic_network_->GetAllNodes();
     this->ptr_all_children_ = ptr_generic_network_->GetAllChildren();
+    std::cout << "nodes: "<<ptr_generic_network_->CountNodes()<<std::endl;
+    std::cout <<"num of edge is: "<<num_of_edge_<<std::endl;
 }
 
-void LinearNENetworkCompiler::CompileUnlabeledGenericNode(int pos, std::vector<long> &children_vec, std::vector<long>& cur_node_vec) {
+/***
+ *
+ * build the graph for all nodes, except leaf and root nodes.
+ *
+ * @param pos : pos in graph, same as the position in a sentence.
+ * @param children_vec: vector that stores the children node id
+ * @param cur_node_vec: vector that stores parent node id.
+ *
+ */
+void LinearNENetworkCompiler::CompileUnlabeledGenericNode(int pos, std::vector<long> &children_vec,
+                                                          std::vector<long> &cur_node_vec) {
     int labels_length = ptr_entity_->size();
     for (int i = 0; i < labels_length; ++i) {
-        if(i == labels_length -1) continue;
         long parent_node_id = ToNode(pos, i);
+        if(16 == parent_node_id){
+            std::cout << "the node id is 16"<<std::endl;
+        }
         std::string entity_cur_str = (*ptr_entity_)[i]->GetForm();
         /* for each child */
         for (auto it = children_vec.begin(); it != children_vec.end(); ++it) {
             long child_id = (*it);
-            if(-1 == child_id) continue;
+            if (-1 == child_id) continue;
             std::vector<int> child_id_array = NetworkIDManager::ToHybridNodeArray(child_id);
-            std::string entity_child_str = (*ptr_entity_)[child_id_array[1]]->GetForm();
+            std::string entity_child_str = 0 == pos? "O":(*ptr_entity_)[child_id_array[1]]->GetForm();
+            if (0 == i || labels_length -1 == i) { continue; } /*ignore the START_TAG and END_TAG*/
             /*child is B- and I-, parent can be I- and E-*/
             if ((boost::starts_with(entity_child_str, "B-") || boost::starts_with(entity_child_str, "I-")) &&
                 (boost::starts_with(entity_cur_str, "I-") || boost::starts_with(entity_cur_str, "E-")) &&
                 (0 == entity_child_str.substr(2).compare(entity_cur_str.substr(2)))) {
-                if(ptr_generic_network_->IsContain(child_id)){
+                if (ptr_generic_network_->IsContain(child_id)) {
                     std::vector<long> vec;
                     vec.push_back(child_id);
                     ptr_generic_network_->AddNode(parent_node_id);
-                    ptr_generic_network_->AddEdge(parent_node_id,vec);/* build a hyper-edge */
+                    ptr_generic_network_->AddEdge(parent_node_id, vec);/* build a hyper-edge */
+                    num_of_edge_ ++;
                 }
                 /*child is S-, E- and O, parent can be B-, S- and O*/
             } else if ((boost::starts_with(entity_child_str, "S-") || boost::starts_with(entity_child_str, "E-") ||
                         0 == entity_child_str.compare("O")) &&
                        (boost::starts_with(entity_cur_str, "B-") || boost::starts_with(entity_cur_str, "S-") ||
-                        0 == entity_child_str.compare("O"))) {
-                if(ptr_generic_network_->IsContain(child_id)){
+                        0 == entity_cur_str.compare("O"))) {
+                if (ptr_generic_network_->IsContain(child_id)) {
                     std::vector<long> vec;
                     vec.push_back(child_id);
                     ptr_generic_network_->AddNode(parent_node_id);
-                    ptr_generic_network_->AddEdge(parent_node_id,vec);
+                    ptr_generic_network_->AddEdge(parent_node_id, vec);
+                    num_of_edge_++;
                 }
             }
         }
-        if(ptr_generic_network_->IsContain(parent_node_id)){
+        /*if the parent node is selected, then */
+        if (ptr_generic_network_->IsContain(parent_node_id)) {
             cur_node_vec.push_back(parent_node_id);
-        } else{
+            //std::cout << "node id is: "<<parent_node_id<<std::endl;
+        } else {
             cur_node_vec.push_back(-1);
+            //std::cout << "node id is: "<<-1<<std::endl;
         }
     }
 }
 
-void LinearNENetworkCompiler::CompileUnlabeledGenericRoot(int pos,std::vector<long>& cur_node_vec) {
+/***
+ *
+ * Build the graph for root node. We have a root node for each position.
+ *
+ * @param pos : pos in graph, same as the position in a sentence.
+ * @param cur_node_vec: vector that stores parent node id.
+ *
+ */
+void LinearNENetworkCompiler::CompileUnlabeledGenericRoot(int pos, std::vector<long> &cur_node_vec) {
+//    std::cout << "---------"<<std::endl;
     int labels_length = ptr_entity_->size();
-    long root_id = ToNodeRoot(pos+1);
+    long root_id = ToNodeRoot(pos + 1);
     ptr_generic_network_->AddNode(root_id);
-    for(auto it = cur_node_vec.begin(); it != cur_node_vec.end(); ++it){
+    for (auto it = cur_node_vec.begin(); it != cur_node_vec.end(); ++it) {
         long child_id = (*it);
+        if(-1 == child_id) continue;
         std::vector<int> vec = NetworkIDManager::ToHybridNodeArray(child_id);
         std::string entity_child_str = (*ptr_entity_)[vec[1]]->GetForm();
-        /*why vec[1]*/
-        if(false == boost::starts_with(entity_child_str,"B-") && false == boost::starts_with(entity_child_str,"I-")
-           && 0 != vec[1] && labels_length - 1 != vec[1]){
+        //FIXME: why vec[1], should be deleted ???
+        if (false == boost::starts_with(entity_child_str, "B-") && false == boost::starts_with(entity_child_str, "I-")
+            && 0 != vec[1] && labels_length - 1 != vec[1]) { /* the last two conditions are START_TAG and END_TAG*/
             std::vector<long> child_vec;
             child_vec.push_back(child_id);
-            ptr_generic_network_->AddEdge(root_id,child_vec);
+            ptr_generic_network_->AddEdge(root_id, child_vec);
+            num_of_edge_++;
         }
     }
 }

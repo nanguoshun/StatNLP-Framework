@@ -29,6 +29,9 @@ void LocalNetworkDecoderThread::Run() {
         //build the network
         pptr_network_[networkId] = ptr_nc_->Compile(networkId,(*pptr_input_inst_vec_)[networkId],ptr_param_l_);
         //run cky/vertibi like algorithm]
+        if(networkId == 0){
+            std::cout <<"i equals to 0"<<std::endl;
+        }
         this->ptr_param_l_->DisableCache();
         pptr_network_[networkId]->Max();
     }

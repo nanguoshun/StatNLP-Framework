@@ -51,6 +51,7 @@ public:
     void SetOldObj(double obj);
     void SetNNParameter();
     void InitNNParameter(int &argc, char **&argv, unsigned random_seed = 0, bool shared_parameters = false);
+    int GetHandCraftFeatureSize();
 private:
     bool is_locked_;
     //the num of feature (hand-crafted feature size)

@@ -11,6 +11,7 @@
  * @param max_len: the max length of the sentence in a dataset.
  *
  */
+
 GlobalNeuralNetworkParam::GlobalNeuralNetworkParam() {
     ptr_call_dynet_ = new DynetFunctionHelper();
     local_param_size_ = ComParam::Num_Of_Threads;
@@ -215,9 +216,10 @@ void GlobalNeuralNetworkParam::Regularization(double coef, double kappa) {
         (*it)->Regularization(coef, kappa);
     }
 }
+
 /**
  * Set the memory adress of param array and gradient array.
- *
+ *oti
  * @param ptr_param
  * @param ptr_param_grad
  */

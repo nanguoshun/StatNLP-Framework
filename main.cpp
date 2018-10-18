@@ -134,8 +134,6 @@ void ReleaseStaticPointer(){
 //    delete Network::ptr_outside_shared_array_;
 }
 
-
-
 int main(int argc, char **argv){
     dynet::Dict *ptr_dict = new dynet::Dict();
     //std::string train_file_name = "data/conll2000/sample_train_2.txt";
