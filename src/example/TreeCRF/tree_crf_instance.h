@@ -9,10 +9,24 @@
 #include "src/common/types/binarytree.h"
 #include <iostream>
 
-class TreeCRFInstance: public BaseInstance<TreeCRFInstance, std::string *, BinaryTree>{
+class TreeCRFInstance : public BaseInstance<TreeCRFInstance, std::vector<std::string>, BinaryTree> {
 public:
-    TreeCRFInstance();
-    ~TreeCRFInstance();
+    inline TreeCRFInstance();
+
+    inline TreeCRFInstance(int instance_id, double weight, std::vector<std::string> *ptr_input, BinaryTree *ptr_tree)
+            : BaseInstance<TreeCRFInstance, std::vector<std::string>, BinaryTree>(this, ptr_input,
+                                                                                  ptr_tree, instance_id, weight) {
+        ptr_input_ = ptr_input;
+
+    }
+
+    inline ~TreeCRFInstance() {
+
+    }
+
+    inline int GetSize(){
+        return ptr_input_->size();
+    }
 };
 
 

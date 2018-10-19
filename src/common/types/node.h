@@ -15,12 +15,15 @@ public:
     void SetRightNode(Node *ptr_node);
     Node * GetLeftNode();
     Node * GetRightNode();
+    int GetId();
+    void SetId(int id);
     void SetStartIndex(int start);
     void SetEndIndex(int stop);
     int GetStartIndex();
     int GetEndIndex();
 private:
     std::string value_;
+    int id_;
     Node *ptr_l_node_;
     Node *ptr_r_node_;
     int start_index_;

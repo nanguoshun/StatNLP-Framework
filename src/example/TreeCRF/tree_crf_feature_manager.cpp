@@ -8,8 +8,8 @@ TreeCRFFeatureManager::TreeCRFFeatureManager() {
 
 }
 
-TreeCRFFeatureManager::TreeCRFFeatureManager(std::vector<Instance *> *ptr_inst, GlobalNetworkParam *ptr_param) {
-
+TreeCRFFeatureManager::TreeCRFFeatureManager(std::vector<Instance *> *ptr_inst, GlobalNetworkParam *ptr_param):FeatureManager(ptr_param) {
+    ptr_inst_vector_ = ptr_inst;
 }
 
 TreeCRFFeatureManager::~TreeCRFFeatureManager() {
@@ -17,5 +17,5 @@ TreeCRFFeatureManager::~TreeCRFFeatureManager() {
 }
 
 FeatureArray* TreeCRFFeatureManager::ExtractHelper(Network *ptr_network, int parent, int *ptr_children, int children_k_index) {
-
+    TreeCRFNetwork *ptr_tree_crf_network = (TreeCRFNetwork*) ptr_network;
 }

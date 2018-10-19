@@ -45,3 +45,11 @@ int Node::GetStartIndex() {
 int Node::GetEndIndex() {
     return  end_index_;
 }
+
+int Node::GetId() {
+    return id_;
+}
+
+void Node::SetId(int id) {
+    id_ = id;
+}

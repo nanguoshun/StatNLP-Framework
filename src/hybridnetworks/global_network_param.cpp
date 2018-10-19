@@ -7,8 +7,19 @@
 #include <stdlib.h>
 #include "global_network_param.h"
 #include "../common/opt/math_calc.h"
-
-GlobalNetworkParam::GlobalNetworkParam(int &argc, char **&argv, int max_sent_size, int sent_length, std::vector<std::string> *ptr_label,  NeuralFactory* ptr_nf,std::unordered_map<std::string,int> *ptr_word2int, dynet::Dict *ptr_dict) {
+/***
+ *
+ * @param argc
+ * @param argv
+ * @param max_sent_size: the max length of sentence in dataset.
+ * @param num_of_sentence:
+ * @param ptr_label
+ * @param ptr_nf
+ * @param ptr_word2int
+ * @param ptr_dict
+ *
+ */
+GlobalNetworkParam::GlobalNetworkParam(int &argc, char **&argv, int max_sent_size, int num_of_sentence, std::vector<std::string> *ptr_label,  NeuralFactory* ptr_nf,std::unordered_map<std::string,int> *ptr_word2int, dynet::Dict *ptr_dict) {
     is_locked_ = false;
     h_feature_size_ = 0;
     fixed_feature_size_ = 0;
@@ -38,7 +49,7 @@ GlobalNetworkParam::GlobalNetworkParam(int &argc, char **&argv, int max_sent_siz
     }
     ptr_concat_counts_ = nullptr;
     ptr_concat_weights_ = nullptr;
-    num_of_instances_ = sent_length;
+    num_of_instances_ = num_of_sentence;
     //std::cout << "feature type is "<<NetworkConfig::Feature_Type<<std::endl;
     //std::cout << "feature test is "<<Feature_TEST <<std::endl;
     if(ptr_nf != nullptr){

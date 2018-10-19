@@ -100,4 +100,19 @@ std::vector<std::string>* BinaryTree::GetXVector() {
     return ptr_x_vector_;
 }
 
+Node* BinaryTree::LeftNode() {
+    return ptr_root_->GetLeftNode();
+}
+
+Node* BinaryTree::RightNode() {
+    return ptr_root_->GetRightNode();
+}
+
+BinaryTree* BinaryTree::LeftTree() {
+    return ptr_left_tree_;
+}
+
+BinaryTree* BinaryTree::RightTree() {
+    return ptr_right_tree_;
+}
 

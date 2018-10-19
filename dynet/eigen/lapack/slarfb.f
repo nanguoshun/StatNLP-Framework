@@ -46,7 +46,7 @@
 *> \param[in] SIDE
 *> \verbatim
 *>          SIDE is CHARACTER*1
-*>          = 'L': apply H or H**T from the Left
+*>          = 'L': apply H or H**T from the LeftNode
 *>          = 'R': apply H or H**T from the Right
 *> \endverbatim
 *>
@@ -535,7 +535,7 @@
 *
 *              W := W * T**T  or  W * T
 *
-               CALL STRMM( 'Right', 'Upper', TRANST, 'Non-unit',
+               CALL STRMM( 'RightNode', 'Upper', TRANST, 'Non-unit',
      $              LASTC, K, ONE, T, LDT, WORK, LDWORK )
 *
 *              C := C - V**T * W**T

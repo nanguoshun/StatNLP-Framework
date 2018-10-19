@@ -59,6 +59,8 @@ public:
 
     INPUT_TYPE *GetInput();
 
+    void SetInput(INPUT_TYPE *ptr_input);
+
     OUTPUT_TYPE *GetPrediction();
 
     void SetPrediction(OUTPUT_TYPE *ptr_prediction);
@@ -84,6 +86,11 @@ template<class SELF_TYPE, class INPUT_TYPE, class OUTPUT_TYPE>
 INPUT_TYPE *BaseInstance<SELF_TYPE, INPUT_TYPE, OUTPUT_TYPE>::GetInput() {
     return ptr_input_;
     //return (void*) ptr_input_;
+}
+
+template<class SELF_TYPE, class INPUT_TYPE, class OUTPUT_TYPE>
+void BaseInstance<SELF_TYPE, INPUT_TYPE, OUTPUT_TYPE>::SetInput(INPUT_TYPE *ptr_input){
+    ptr_input_ = ptr_input;
 }
 
 template<class SELF_TYPE, class INPUT_TYPE, class OUTPUT_TYPE>

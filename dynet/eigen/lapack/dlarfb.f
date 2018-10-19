@@ -46,7 +46,7 @@
 *> \param[in] SIDE
 *> \verbatim
 *>          SIDE is CHARACTER*1
-*>          = 'L': apply H or H**T from the Left
+*>          = 'L': apply H or H**T from the LeftNode
 *>          = 'R': apply H or H**T from the Right
 *> \endverbatim
 *>
@@ -611,7 +611,7 @@
 *
 *              W := W * V1
 *
-               CALL DTRMM( 'Right', 'Upper', 'No transpose', 'Unit',
+               CALL DTRMM( 'RightNode', 'Upper', 'No transpose', 'Unit',
      $              LASTC, K, ONE, V, LDV, WORK, LDWORK )
 *
 *              C1 := C1 - W

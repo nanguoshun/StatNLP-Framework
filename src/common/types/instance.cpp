@@ -4,7 +4,6 @@
 #include <iostream>
 #include "instance.h"
 
-
 Instance::Instance() {
 }
 

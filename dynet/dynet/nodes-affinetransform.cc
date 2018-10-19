@@ -158,7 +158,7 @@ void AffineTransform::backward_dev_impl(const MyDevice & dev,
 #endif
     }
 
-  // Left argument of matrix multiply
+  // LeftNode argument of matrix multiply
   } else if (i % 2 == 1) {
     int max_b = max(dEdf.d.bd, xs[i+1]->d.bd);
 #ifdef __CUDACC__

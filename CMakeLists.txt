@@ -117,8 +117,8 @@ add_executable(statNLP src/example/TreeCRF/tree_crf_main.cpp src/hybridnetworks/
         src/example/LinearCRF/linear_crf_feature_manager.h src/example/LinearCRF/linear_crf_feature_manager.cpp src/example/LinearCRF/linear_crf_instance.h src/example/LinearCRF/linear_crf_instance.cpp src/example/LinearCRF/linear_crf_network.h
         src/example/LinearCRF/linear_crf_network.cpp src/example/LinearCRF/linear_crf_nework_compiler.h src/example/LinearCRF/linear_crf_network_compiler.cpp src/example/LinearNER/entity.h src/example/LinearNER/entity.cpp
         src/example/LinearNER/entity_reader.h src/common/types/token.h src/common/types/word_token.h src/common/types/sentence.h src/common/types/linear_chain.h src/common/types/token_array.h
-        src/common/types/dependency_tree.h src/example/LinearNER/evaluate_ner.h src/example/TreeCRF/tree_crf_intance.cpp src/example/TreeCRF/tree_crf_feature_manager.h src/example/TreeCRF/tree_crf_feature_manager.cpp
-        src/common/types/node.h src/common/types/node.cpp src/common/types/binarytree.h src/common/types/binarytree.cpp src/example/TreeCRF/tree_crf_network.h src/example/TreeCRF/tree_crf_network.cpp src/example/TreeCRF/tree_crf_network_compiler.h src/example/TreeCRF/tree_crf_network_compiler.cpp)
+        src/common/types/dependency_tree.h src/example/LinearNER/evaluate_ner.h src/example/TreeCRF/tree_crf_feature_manager.h src/example/TreeCRF/tree_crf_feature_manager.cpp
+        src/common/types/node.h src/common/types/node.cpp src/common/types/binarytree.h src/common/types/binarytree.cpp src/example/TreeCRF/tree_crf_network.h src/example/TreeCRF/tree_crf_network_compiler.h src/example/TreeCRF/tree_crf_network_compiler.cpp src/example/TreeCRF/ptb_reader.h src/example/TreeCRF/rule.h src/example/TreeCRF/evaluate.h src/example/TreeCRF/label.h)
 
 # link statnlp and dynet
 #target_link_libraries(statNLP cnn)

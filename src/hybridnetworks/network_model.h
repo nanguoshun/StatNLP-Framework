@@ -13,16 +13,27 @@
 #include "local_network_learner_thread.h"
 #include "local_network_decoder_thread.h"
 #include <vector>
+
 using namespace std::chrono;
-class NetworkModel{
+
+class NetworkModel {
+
 public:
-NetworkModel(FeatureManager *ptr_fm, NetworkCompiler *ptr_nc);
-~NetworkModel();
-void Train(std::vector<Instance *> *ptr_all_instances, std::vector<Instance *> *ptr_all_instances_du, int max_num_interations);
-std::vector<Instance *>* Decode(std::vector<Instance *> *ptr_test_instences, bool is_cache_features);
-virtual std::vector<std::vector<Instance*>*>* SplitInstanceForTrain() = 0;
-void SplitInstanceForTest();
-int GetCurrentMillionSeconds();
+    NetworkModel(FeatureManager *ptr_fm, NetworkCompiler *ptr_nc);
+
+    ~NetworkModel();
+
+    void Train(std::vector<Instance *> *ptr_all_instances, std::vector<Instance *> *ptr_all_instances_du,
+               int max_num_interations);
+
+    std::vector<Instance *> *Decode(std::vector<Instance *> *ptr_test_instences, bool is_cache_features);
+
+    virtual std::vector<std::vector<Instance *> *> *SplitInstanceForTrain() = 0;
+
+    void SplitInstanceForTest();
+
+    int GetCurrentMillionSeconds();
+
 protected:
     FeatureManager *ptr_fm_;
     NetworkCompiler *ptr_nc_;
@@ -36,7 +47,7 @@ protected:
     std::vector<std::thread> *ptr_learn_thread_vector_;
     std::vector<std::thread> *ptr_decode_thread_vector_;
     std::vector<Instance *> *ptr_inst_all_test_;
-    std::vector<std::vector<Instance*>*> *ptr_split_inst_test_;
+    std::vector<std::vector<Instance *> *> *ptr_split_inst_test_;
     GlobalNeuralNetworkParam *ptr_nn_g_;
 };
 

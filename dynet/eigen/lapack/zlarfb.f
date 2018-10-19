@@ -46,7 +46,7 @@
 *> \param[in] SIDE
 *> \verbatim
 *>          SIDE is CHARACTER*1
-*>          = 'L': apply H or H**H from the Left
+*>          = 'L': apply H or H**H from the LeftNode
 *>          = 'R': apply H or H**H from the Right
 *> \endverbatim
 *>
@@ -412,7 +412,7 @@
 *
 *              W := W * T**H  or  W * T
 *
-               CALL ZTRMM( 'Right', 'Lower', TRANST, 'Non-unit',
+               CALL ZTRMM( 'RightNode', 'Lower', TRANST, 'Non-unit',
      $              LASTC, K, ONE, T, LDT, WORK, LDWORK )
 *
 *              C := C - V * W**H
