@@ -9,7 +9,7 @@
 #include <unordered_map>
 #include "src/common/types/instance.h"
 #include "tree_crf_instance.h"
-#include "src/common/types/binarytree.h"
+#include "binarytree.h"
 #include <fstream>
 
 typedef std::vector<Instance *> InstenceVector;
@@ -23,12 +23,12 @@ public:
         InstenceVector *ptr_inst_vec = new InstenceVector;
         InstenceVector *ptr_inst_vec_dup = nullptr;
         if(is_train){
-            InstenceVector *ptr_inst_vec_dup = new InstenceVector;
+            ptr_inst_vec_dup = new InstenceVector;
         }
         std::ifstream ifs(file_name);
         std::string line_str;
         int instanceId = 1;
-        while (std::getline(ifs,file_name)){
+        while (std::getline(ifs,line_str)){
             BinaryTree *ptr_tree = new BinaryTree(line_str);
             if(max_len_ < ptr_tree->GetXVector()->size()){
                 max_len_ = ptr_tree->GetXVector()->size();

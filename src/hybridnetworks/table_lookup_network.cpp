@@ -24,7 +24,6 @@ TableLookupNetwork::~TableLookupNetwork() {
         delete ptr_children_[i];
     }
 
-
     for(int i =0; i<node_size_; ++i){
         delete ptr_children_size_[i];
     }
@@ -84,7 +83,7 @@ bool TableLookupNetwork::AddNode(long nodeId) {
  */
 void TableLookupNetwork::AddEdge(long parent, std::vector<long> &children) {
     this->CheckLinkValidity(parent,children);
-    int size_tmp = ptr_children_tmp_->size();
+    //int size_tmp = ptr_children_tmp_->size();
     auto it = ptr_children_tmp_->find(parent);
     std::vector<long> *ptr_children = new std::vector<long>;
     (*ptr_children) = children;
@@ -112,7 +111,8 @@ void TableLookupNetwork::CheckLinkValidity(long parent, std::vector<long>& child
         }
     }
     CheckNodeValidity(parent);
-    for(int i=0; i<children.size(); ++i){
+    int children_size = children.size();
+    for(int i=0; i<children_size; ++i){
         CheckNodeValidity(children[i]);
     }
 }
@@ -182,14 +182,17 @@ void TableLookupNetwork::FinalizeNetwork() {
             int hyper_edge_no = 0;
             //iterate each hyperedge rooted by parent node. itt is a vector, which stores the nodes in a hpyeredge.
             for(auto itt = ptr_childrens->begin(); itt!=ptr_childrens->end(); ++itt){
-                int *ptr_node_vector = new int[(*itt)->size()];
+                int size = (*itt)->size();
+                int *ptr_node_vector = new int[size];
                 //the num of nodes in each hyperedge.
-                ptr_children_size_[parent_index][hyper_edge_no] = (*itt)->size();
+                ptr_children_size_[parent_index][hyper_edge_no] = size;
                 //ittt is a node ID
                 int node_no = 0;
                 for(auto ittt = (*itt)->begin(); ittt != (*itt)->end(); ++ittt){
                     //find the node index
-                    ptr_node_vector[node_no] = ptr_nodeId2Index_map_tmp->find((*ittt))->second;
+                    long id = (*ittt);
+                    int index = ptr_nodeId2Index_map_tmp->find(id)->second;
+                    ptr_node_vector[node_no] = index;
                     node_no++;
                 }
                 this->ptr_children_[parent_index][hyper_edge_no] = ptr_node_vector;
@@ -232,6 +235,13 @@ int *TableLookupNetwork::GetChildren_Size(int node_index) {
     return ptr_children_size_[node_index];
 }
 
+/**
+ *
+ * @param k the kth node
+ *
+ * @return the node ID.
+ *
+ */
 long TableLookupNetwork::GetNode(int k) {
     return this->ptr_nodes_[k];
 }

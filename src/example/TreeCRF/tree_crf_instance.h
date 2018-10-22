@@ -6,7 +6,7 @@
 #define STATNLP_TREE_CRF_INSTANCE_H
 
 #include "src/common/types/base_instance.h"
-#include "src/common/types/binarytree.h"
+#include "binarytree.h"
 #include <iostream>
 
 class TreeCRFInstance : public BaseInstance<TreeCRFInstance, std::vector<std::string>, BinaryTree> {

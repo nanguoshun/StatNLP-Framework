@@ -4,9 +4,13 @@
 
 #ifndef PCFG_NODE_H
 #define PCFG_NODE_H
+enum TreeNodeType{
+    TERMINAL_NODE,
+    NON_TERMINAL_NODE,
+    WORDS_NODE
+};
 
 #include <iostream>
-
 class Node{
 public:
     Node(std::string value);
@@ -21,6 +25,9 @@ public:
     void SetEndIndex(int stop);
     int GetStartIndex();
     int GetEndIndex();
+    int GetHeight();
+    TreeNodeType GetNodeType();
+    void SetNodeType(TreeNodeType type);
 private:
     std::string value_;
     int id_;
@@ -28,6 +35,8 @@ private:
     Node *ptr_r_node_;
     int start_index_;
     int end_index_;
+    TreeNodeType type_;
+    //BinaryTree *ptr_left_tree_, *ptr_right_tree_;
 };
 
 #endif //PCFG_NODE_H

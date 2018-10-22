@@ -16,7 +16,6 @@
 template <class SELF_TYPE, class INPUT_TYPE, class OUTPUT_TYPE>
 class BaseInstance: public Instance{
 public:
-
     BaseInstance(){
         ptr_input_ = nullptr;
         ptr_output_ = nullptr;
