@@ -34,7 +34,7 @@ int main(int argc, char **argv) {
     TreeCRFNetworkCompiler *ptr_nc = new TreeCRFNetworkCompiler(Label::ptr_label_);
     DiscriminativeNetworkModel *ptr_model = new DiscriminativeNetworkModel(ptr_fm,ptr_nc);
     ptr_model->Train(ptr_inst_vec,ptr_inst_vec_dup,max_iterations);
-    ptr_model->Decode(ptr_inst_vec_test, true);
+    ptr_model->Decode(ptr_inst_vec_test, false);
     Evaluate::EvaluateResult(ptr_inst_vec_test);
     return 0;
     //todo: 1.capacity

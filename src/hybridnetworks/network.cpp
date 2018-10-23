@@ -27,6 +27,7 @@ Network::~Network() {
     delete []ptr_max_;
     //the content of ptr_max_children_no_ are pointers, which are allocated in the class TableLookupNetwork
     delete []ptr_max_children_no_;
+    delete []ptr_max_children_size_;
 }
 
 void Network::Touch() {
@@ -131,6 +132,7 @@ void Network::Max() {
     int num_count = this->CountNodes();
     ptr_max_ = new double[num_count];
     ptr_max_children_no_ = new int*[num_count];
+    ptr_max_children_size_ = new int[num_count];
     //init the value and the pointer.
     for(int nodeid = 0; nodeid < num_count; ++nodeid){
         ptr_max_[nodeid] = 0;
@@ -155,13 +157,13 @@ void Network::Max(int nodeId) {
     if(IsSumNode(nodeId)){
         //TODO:
     } else{
-        //get the hyperedge num of nodeId
+        //get the num of hyperedges of the node represented by nodeId
         int childrens_size = this->GetChildrens_Size(nodeId);
-        //this pointer store the size of children for each hyperedge.
+        //this pointer stores the num of children for each hyperedge.
         int* ptr_children_size = this->GetChildren_Size(nodeId);
         //Get all hyperedges rooted by nodeId.
         int **ptr_childrens = this->GetChildren(nodeId);
-        //Get the max value for each hyperedge rooted by nodeID.
+        //Get the max value among all hyperedges rooted by nodeID.
         for(int children_k = 0; children_k < childrens_size; ++children_k){
             int *ptr_children_k = ptr_childrens[children_k];
             int size = ptr_children_size[children_k];
@@ -173,15 +175,17 @@ void Network::Max(int nodeId) {
             for(int i=0; i < size; ++i){
                 score += this->ptr_max_[ptr_children_k[i]];
             }
-            /*the vector of ptr_max is inited as 0, and the score may be nagtive */
+            /*the vector of ptr_max is inited as 0, since the score may be negative */
             if(0 == children_k){
                 ptr_max_[nodeId] = score;
                 ptr_max_children_no_[nodeId] = ptr_children_k;
+                ptr_max_children_size_[nodeId] = size;
                 continue;
             }
             if(score > ptr_max_[nodeId]){
                 ptr_max_[nodeId] = score;
                 ptr_max_children_no_[nodeId] = ptr_children_k;
+                ptr_max_children_size_[nodeId] = size;
             }
         }
     }
@@ -222,3 +226,11 @@ void Network::SetNeuralInserted(bool flag) {
     neural_feature_inserted_ = flag;
 }
 
+/**
+ * The num of nodes for the max hyperedge of the nodeid.
+ * @param nodeid
+ * @return
+ */
+int Network::GetMaxChildrenSize(int nodeid) {
+    return ptr_max_children_size_[nodeid];
+}

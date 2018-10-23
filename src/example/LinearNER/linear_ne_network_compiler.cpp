@@ -17,7 +17,8 @@ LinearNENetworkCompiler::LinearNENetworkCompiler(bool is_useIOBE, std::vector<En
     }
     num_of_edge_ = 0;
     CompileUnlabeledGeneric();
-
+    std::cout << "nodes: "<<ptr_generic_network_->CountNodes()<<std::endl;
+    std::cout <<"num of edge is: "<<num_of_edge_<<std::endl;
 }
 
 LinearNENetworkCompiler::~LinearNENetworkCompiler() {
@@ -165,8 +166,6 @@ void LinearNENetworkCompiler::CompileUnlabeledGeneric() {
     ptr_generic_network_->FinalizeNetwork();
     this->ptr_all_nodes_ = ptr_generic_network_->GetAllNodes();
     this->ptr_all_children_ = ptr_generic_network_->GetAllChildren();
-    std::cout << "nodes: "<<ptr_generic_network_->CountNodes()<<std::endl;
-    std::cout <<"num of edge is: "<<num_of_edge_<<std::endl;
 }
 
 /***

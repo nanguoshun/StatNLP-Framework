@@ -13,13 +13,15 @@
 #include "rule.h"
 #include <unordered_map>
 
+#define TREE_DEBUG_;
+
 class TreeCRFNetworkCompiler: public NetworkCompiler{
 public:
     TreeCRFNetworkCompiler(std::vector<Label *> *ptr_label);
     ~TreeCRFNetworkCompiler();
     Network * Compile(int networkId, Instance* ptr_inst, LocalNetworkParam *ptr_param);
     Instance *Decompile(Network *ptr_network);
-    BinaryTree *DecompileHelper(TreeCRFNetwork *ptr_network, int parent_k);
+    Node *DecompileHelper(TreeCRFNetwork *ptr_network,int parent_k);
     void CompileUnlabeledGeneric();
     void CompileUnlabeledGenericTerminator(TreeCRFNetwork *ptr_network,int height, int index, long sink);
     void CompileUnlabeledGenericNonTerminator(TreeCRFNetwork *ptr_network, int height, int index);

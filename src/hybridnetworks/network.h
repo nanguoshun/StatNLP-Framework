@@ -343,6 +343,7 @@ public:
     int GetThreadId();
     bool GetNeuralInserted();
     void SetNeuralInserted(bool flag);
+    int GetMaxChildrenSize(int nodeid);
 //    static double **ptr_inside_shared_array_;
 //    static double **ptr_outside_shared_array_;
     //the array size for each thread;
@@ -358,8 +359,13 @@ protected:
     GlobalNetworkParam *ptr_param_g_;
     double *ptr_inside_;
     double *ptr_outside_;
+    /*the max sore, which is indexed by the node id of this network*/
     double *ptr_max_;
+    /*node_id,*/
     int **ptr_max_children_no_;
+    /*it stores the num of nodes for selected hyperedge that has the maximum score.
+     * this array is indexed by the node id of the network.*/
+    int *ptr_max_children_size_;
     std::mutex mtx;
     bool neural_feature_inserted_;
 //    int inside_shared_array_size_;

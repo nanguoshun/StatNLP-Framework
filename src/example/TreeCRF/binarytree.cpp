@@ -4,11 +4,16 @@
 
 #include "binarytree.h"
 
+BinaryTree::BinaryTree() {
+    ptr_x_vector_ = nullptr;
+    ptr_root_ = nullptr;
+}
+
 BinaryTree::BinaryTree(std::string str) {
     //ptr_str_vector_ = new std::vector<std::string>;
     ptr_x_vector_ = new std::vector<std::string>;
     //ConvertToStringVector(str);
-    index_offset_ = 0;
+    //index_offset_ = 0;
     ptr_root_ = BuildBinaryTree(str);
     //PrintTree(ptr_root_);
 }
@@ -16,9 +21,9 @@ BinaryTree::BinaryTree(std::string str) {
 BinaryTree::~BinaryTree() {
     //delete ptr_str_vector_;
     delete ptr_x_vector_;
-    for(std::vector<Node *>::iterator it = node_vector_.begin(); it!=node_vector_.end();++it){
-        delete(*it);
-    }
+    //for(std::vector<Node *>::iterator it = node_vector_.begin(); it!=node_vector_.end();++it){
+      //  delete(*it);
+    //}
 }
 
 /*
@@ -43,7 +48,7 @@ Node *BinaryTree::BuildBinaryTree(std::string str) {
     ptr_node->SetStartIndex(ptr_x_vector_->size());
     int index = -1;
     if (str[0] == ComParam::LEFT_BRACKET_CHAR) {
-        /*insert non-terminor label*/
+        /* insert non-terminator label */
         TagLabel(ptr_node,str,value_str,space_index);
         index = FindNextBracketIndex(str);
     }
@@ -61,7 +66,7 @@ Node *BinaryTree::BuildBinaryTree(std::string str) {
         ptr_x_vector_->push_back(left_str);
         //Label::Get(left_str,true);
     }
-    node_vector_.push_back(ptr_node);
+    //node_vector_.push_back(ptr_node);
     ptr_node->SetEndIndex(ptr_x_vector_->size() - 1);
     return ptr_node;
 }
@@ -124,8 +129,9 @@ Node* BinaryTree::RightNode() {
  */
 
 void BinaryTree::TagLabel(Node *ptr_node, std::string &str, std::string &value_str, int space_index) {
-    /*if( 0 == value_str.compare("In")){
-        std::cout << "the label is PRN"<<std::endl;
+    /*
+    if( 0 == value_str.compare("NN")){
+        std::cout << "the label is NN"<<std::endl;
     }*/
     std::string sub_str = str.substr(1);
     int next_left_bracket_index = sub_str.find_first_of(ComParam::LEFT_BRACKET_CHAR);
@@ -138,4 +144,8 @@ void BinaryTree::TagLabel(Node *ptr_node, std::string &str, std::string &value_s
         ptr_node->SetNodeType(TreeNodeType::TERMINAL_NODE);
         //std::cout << "terminator is "<<value_str<<std::endl;
     }
+}
+
+void BinaryTree::SetRootNode(Node *ptr_root_node) {
+    ptr_root_ = ptr_root_node;
 }

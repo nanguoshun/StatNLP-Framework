@@ -21,6 +21,7 @@ struct LabelWord{
 class BinaryTree{
 public:
     BinaryTree(std::string str);
+    BinaryTree();
     //BinaryTree(std::string str, Node *ptr_node);
     ~BinaryTree();
     //void ConvertToStringVector(std::string str);
@@ -32,13 +33,14 @@ public:
     std::vector<std::string> *GetXVector();
     Node *LeftNode();
     Node *RightNode();
+    void SetRootNode(Node *ptr_root_node);
 private:
     Node *ptr_root_;
-    std::vector<Node *> node_vector_;
+    //std::vector<Node *> node_vector_;
     //std::vector<std::string> *ptr_str_vector_;
     /* vector that stores the sentence */
     std::vector<std::string> *ptr_x_vector_;
-    int index_offset_;
+    //int index_offset_;
     //BinaryTree *ptr_left_tree_, *ptr_right_tree_;
 };
 

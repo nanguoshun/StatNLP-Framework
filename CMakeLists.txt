@@ -40,8 +40,7 @@ add_executable(statNLP main.cpp src/hybridnetworks/hypergraph.h
         src/hybridnetworks/global_network_param.h src/hybridnetworks/global_network_param.cpp
         src/hybridnetworks/feature_manager.h src/hybridnetworks/feature_manager.cpp src/hybridnetworks/local_network_param.h
         src/hybridnetworks/local_network_param.cpp src/example/LinearCRF/linear_crf_instance.h src/common/types/instance.h
-        src/common/types/base_instance.h src/common/types/base_instance.h src/common/types/base_instance.cpp
-        src/common/types/instance.cpp src/example/LinearCRF/linear_crf_instance.cpp src/hybridnetworks/network_model.h
+        src/common/types/base_instance.h src/common/types/instance.cpp src/example/LinearCRF/linear_crf_instance.cpp src/hybridnetworks/network_model.h
         src/hybridnetworks/network_model.cpp src/hybridnetworks/data_manager.h src/hybridnetworks/data_manager.cpp
         src/example/LinearCRF/linear_crf_nework_compiler.h src/example/LinearCRF/linear_crf_network_compiler.cpp src/hybridnetworks/network_compiler.h
         src/hybridnetworks/network_compiler.cpp src/hybridnetworks/network.h src/hybridnetworks/network.cpp
@@ -66,8 +65,7 @@ add_executable(statNLP src/example/LinearNER/linear_ne_main.cpp src/hybridnetwor
         src/hybridnetworks/global_network_param.h src/hybridnetworks/global_network_param.cpp
         src/hybridnetworks/feature_manager.h src/hybridnetworks/feature_manager.cpp src/hybridnetworks/local_network_param.h
         src/hybridnetworks/local_network_param.cpp src/common/types/instance.h
-        src/common/types/base_instance.h src/common/types/base_instance.h src/common/types/base_instance.cpp
-        src/common/types/instance.cpp src/hybridnetworks/network_model.h
+        src/common/types/base_instance.h src/common/types/instance.cpp src/hybridnetworks/network_model.h
         src/hybridnetworks/network_model.cpp src/hybridnetworks/data_manager.h src/hybridnetworks/data_manager.cpp
         src/hybridnetworks/network_compiler.h
         src/hybridnetworks/network_compiler.cpp src/hybridnetworks/network.h src/hybridnetworks/network.cpp
@@ -95,8 +93,7 @@ add_executable(statNLP src/example/TreeCRF/tree_crf_main.cpp src/hybridnetworks/
         src/hybridnetworks/global_network_param.h src/hybridnetworks/global_network_param.cpp
         src/hybridnetworks/feature_manager.h src/hybridnetworks/feature_manager.cpp src/hybridnetworks/local_network_param.h
         src/hybridnetworks/local_network_param.cpp src/common/types/instance.h
-        src/common/types/base_instance.h src/common/types/base_instance.h src/common/types/base_instance.cpp
-        src/common/types/instance.cpp src/hybridnetworks/network_model.h
+        src/common/types/base_instance.h src/common/types/instance.cpp src/hybridnetworks/network_model.h
         src/hybridnetworks/network_model.cpp src/hybridnetworks/data_manager.h src/hybridnetworks/data_manager.cpp
         src/hybridnetworks/network_compiler.h
         src/hybridnetworks/network_compiler.cpp src/hybridnetworks/network.h src/hybridnetworks/network.cpp

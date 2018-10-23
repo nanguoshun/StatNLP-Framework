@@ -12,6 +12,15 @@ Node::Node(std::string value) {
     type_ = TreeNodeType::NON_TERMINAL_NODE;
 }
 
+Node::Node(std::string value, std::string word) {
+    value_ = value;
+    word_ = word;
+    ptr_l_node_ = ptr_r_node_ = nullptr;
+    start_index_ = 0;
+    end_index_ = 0;
+    type_ = TreeNodeType::NON_TERMINAL_NODE;
+}
+
 Node* Node::GetLeftNode() {
     return ptr_l_node_;
 }

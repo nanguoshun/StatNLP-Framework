@@ -19,6 +19,7 @@ public:
     static std::string feature_type_[8];
 private:
     std::vector<Instance*> *ptr_inst_vector_;
+    int root_count_;
 };
 
 #endif //STATNLP_TREE_CRF_FEATUURE_MANAGER_H

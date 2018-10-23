@@ -296,5 +296,8 @@ int** TableLookupNetwork::GetChildren_Size() {
     return ptr_children_size_;
 }
 
+int TableLookupNetwork::GetTempNodeSize() {
+    return ptr_children_tmp_->size();
+}
 
 

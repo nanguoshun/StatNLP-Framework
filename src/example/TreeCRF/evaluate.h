@@ -21,7 +21,7 @@ public:
         int total_pred = 0;
         for(auto it = ptr_test_inst->begin(); it != ptr_test_inst->end(); ++it){
             TreeCRFInstance *ptr_tree_inst = (TreeCRFInstance*) ptr_test_inst;
-            //todo::
+
         }
     }
 };

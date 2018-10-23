@@ -61,8 +61,8 @@ public:
         if (nullptr == ptr_root) return;
         if (nullptr == ptr_root->GetLeftNode()) return;
         if (TreeNodeType::NON_TERMINAL_NODE != ptr_root->GetNodeType()) return;
-        std::string test_str = ptr_root->GetData();
-/*        if (0 == test_str.compare("PRN")){
+/*        std::string test_str = ptr_root->GetData();
+        if (0 == test_str.compare("PP")){
            std::cout << "PRN"<<std::endl;
         }*/
         std::string left_str = ptr_root->GetData();
@@ -72,9 +72,9 @@ public:
         if (nullptr != ptr_root->GetRightNode()){
             right2_str = ptr_root->GetRightNode()->GetData();
         }
-        Label *ptr_label  = Label::Get(left_str,false,false);
-        Label *ptr_right1 = Label::Get(right1_str,false,false);
-        Label *ptr_right2 = Label::Get(right2_str,false,false);
+        Label *ptr_label  = Label::Get(left_str);
+        Label *ptr_right1 = Label::Get(right1_str);
+        Label *ptr_right2 = Label::Get(right2_str);
         std::set<CFG_Rule> *ptr_rule_set = nullptr;
         /* check whether the rule set that rooted by ptr_label exists in the map,
          * if it does not exit, then create it and then insert to the map */

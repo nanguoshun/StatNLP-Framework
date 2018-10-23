@@ -48,7 +48,8 @@ public:
 
     int *GetChildrens_Size();
     int **GetChildren_Size();
-
+    //get the num of nodes during compiling network, this function is for test only.
+    int GetTempNodeSize();
 protected:
     //the parent_id and its hyperedges, each hyperdeg contains multiple nodes_id.
     std::unordered_map<long, std::list<std::vector<long> *> *> *ptr_children_tmp_;

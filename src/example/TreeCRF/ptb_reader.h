@@ -34,7 +34,12 @@ public:
                 max_len_ = ptr_tree->GetXVector()->size();
             }
             TreeCRFInstance *ptr_tree_crf_inst = new TreeCRFInstance(instanceId,1.0,ptr_tree->GetXVector(),ptr_tree);
-            ptr_tree_crf_inst->SetLabeled();
+            if(is_train){
+                ptr_tree_crf_inst->SetLabeled();
+            } else{
+                /* set the network as unlabeled for test instances */
+                ptr_tree_crf_inst->SetUnlabeled();
+            }
             ptr_inst_vec->push_back(ptr_tree_crf_inst);
             instanceId++;
             if(is_train){

@@ -4,13 +4,15 @@
 
 #include "tree_crf_network_compiler.h"
 
+
+
 TreeCRFNetworkCompiler::TreeCRFNetworkCompiler(std::vector<Label *> *ptr_label) {
     num_of_edge_ = 0;
     ptr_label_ = ptr_label;
     max_len_ = 100;
     CompileUnlabeledGeneric();
-    std::cout << "num of edges is "<<num_of_edge_<<std::endl;
     std::cout << "num of nodes is "<<ptr_generic_network_->CountNodes()<<std::endl;
+    std::cout << "num of edges is "<<num_of_edge_<<std::endl;
 }
 
 TreeCRFNetworkCompiler::~TreeCRFNetworkCompiler() {
@@ -72,7 +74,7 @@ long TreeCRFNetworkCompiler::CompileLabeledHelper(TreeCRFNetwork *ptr_network, N
     int height = ptr_node->GetHeight();
     int index = start;
     std::string label_str = ptr_node->GetData();
-    int label_id =  Label::Get(label_str,false,false)->GetId();
+    int label_id =  Label::Get(label_str)->GetId();
     long node_id = ToNode(height, index,label_id);
     ptr_network->AddNode(node_id);
     Node *ptr_left_node = ptr_node->GetLeftNode();
@@ -145,6 +147,10 @@ void TreeCRFNetworkCompiler::CompileUnlabeledGeneric() {
             }
         }
     }
+#ifdef TREE_DEBUG
+    std::cout << "udpate4: num of edge is " <<num_of_edge_<<std::endl;
+    std::cout << "update4: the num of nodes is " << ptr_generic_network_->GetTempNodeSize()<<std::endl;
+#endif
     long super_root = ToNodeSuperRoot(max_len_);
     ptr_generic_network_->AddNode(super_root);
     for(int height = 1; height < max_len_; ++height){
@@ -153,10 +159,22 @@ void TreeCRFNetworkCompiler::CompileUnlabeledGeneric() {
         ptr_generic_network_->AddEdge(super_root,vec);
         num_of_edge_++;
     }
+#ifdef TREE_DEBUG
+    std::cout << "udpate5: num of edge is " <<num_of_edge_<<std::endl;
+    std::cout << "update5: the num of nodes is " << ptr_generic_network_->GetTempNodeSize()<<std::endl;
+#endif
     ptr_generic_network_->FinalizeNetwork();
-
+    ptr_all_nodes_ = ptr_generic_network_->GetAllNodes();
+    ptr_all_children_ = ptr_generic_network_->GetAllChildren();
 }
 
+/**
+ * Build Unlabeled Generic Network for non-terminal labels.
+ *
+ * @param ptr_network
+ * @param height
+ * @param index
+ */
 
 void TreeCRFNetworkCompiler::CompileUnlabeledGenericNonTerminator(TreeCRFNetwork *ptr_network, int height, int index) {
     for (auto it = ptr_label_->begin(); it != ptr_label_->end(); ++it) {
@@ -180,19 +198,30 @@ void TreeCRFNetworkCompiler::CompileUnlabeledGenericNonTerminator(TreeCRFNetwork
             int right2_height = height-1-childIdx;
             int right2_index = index+1+childIdx;
             for(auto itt = ptr_rule_set->begin(); itt != ptr_rule_set->end(); ++itt){
-//                int right1_label_id = (*itt)->GetFirstRight()->GetId();
-//                int right2_label_id = (*itt)->GetSecondRight()->GetId();
-                int right1_label_id = Label::Get((*itt).second.first,false)->GetId();
-                int right2_label_id = Label::Get((*itt).second.second,false)->GetId();
+                std::string right1_str = (*itt).second.first;
+                std::string right2_str = (*itt).second.second;
+#ifdef TREE_DEBUG
+                std::cout << label_str << "->" << right1_str << ","<<right2_str <<std::endl;
+#endif
+                int right1_label_id = Label::Get((*itt).second.first)->GetId();
+                int right2_label_id = Label::Get((*itt).second.second)->GetId();
                 long right1_node_id = ToNode(right1_height,right1_index,right1_label_id);
                 if(false == ptr_network->IsContain(right1_node_id)) continue;
                 long right2_node_id = ToNode(right2_height,right2_index,right2_label_id);
                 if(false == ptr_network->IsContain(right2_node_id)) continue;
                 std::vector<long> vec{right1_node_id,right2_node_id};
                 ptr_network->AddEdge(node_id,vec);
-                num_of_edge_ ++;
+                num_of_edge_++;
             }
+#ifdef TREE_DEBUG
+            std::cout << "udpate1: num of edge is " <<num_of_edge_<<std::endl;
+            std::cout << "update1: the num of nodes is " << ptr_generic_network_->GetTempNodeSize()<<std::endl;
+#endif
         }
+#ifdef TREE_DEBUG
+        std::cout << "udpate2: num of edge is " <<num_of_edge_<<std::endl;
+        std::cout << "update2: the num of nodes is " << ptr_generic_network_->GetTempNodeSize()<<std::endl;
+#endif
     }
 }
 
@@ -211,9 +240,15 @@ void TreeCRFNetworkCompiler::CompileUnlabeledGenericTerminator(TreeCRFNetwork *p
         long leaf_node_id = ToNode(height,index,label_id);
         ptr_network->AddNode(leaf_node_id);
         ptr_network->AddEdge(leaf_node_id,vec); /*the edge between terminator and sink*/
+#ifdef TREE_DEBUG
+        std::cout << num_of_edge_ <<" "<<label_str <<" -> sink, leaf node id is "<< leaf_node_id << std::endl;
+#endif
         num_of_edge_ ++;
     }
-    std::cout << "udpate: num of edge is " <<num_of_edge_<<std::endl;
+#ifdef TREE_DEBUG
+    std::cout << "udpate0: num of edge is " <<num_of_edge_<<std::endl;
+    std::cout << "update0: the num of nodes is " << ptr_generic_network_->GetTempNodeSize()<<std::endl;
+#endif
 }
 
 void TreeCRFNetworkCompiler::CompileUnlabeledGenericRoot(TreeCRFNetwork *ptr_network, int height) {
@@ -227,6 +262,10 @@ void TreeCRFNetworkCompiler::CompileUnlabeledGenericRoot(TreeCRFNetwork *ptr_net
         ptr_network->AddEdge(root,vec);
         num_of_edge_ ++;
     }
+#ifdef TREE_DEBUG
+    std::cout << "udpate3: num of edge is " <<num_of_edge_<<std::endl;
+    std::cout << "update3: the num of nodes is " << ptr_generic_network_->GetTempNodeSize()<<std::endl;
+#endif
 }
 
 Network *TreeCRFNetworkCompiler::Compile(int networkId, Instance *ptr_inst, LocalNetworkParam *ptr_param) {
@@ -242,11 +281,51 @@ Instance *TreeCRFNetworkCompiler::Decompile(Network *ptr_network) {
     TreeCRFNetwork *ptr_tree_crf_network = (TreeCRFNetwork *) ptr_network;
     TreeCRFInstance *ptr_inst = (TreeCRFInstance *) ptr_network->GetInstance();
     int root_k = ptr_tree_crf_network->CountNodes() - 1;
-    BinaryTree *ptr_predict = DecompileHelper(ptr_tree_crf_network,root_k);
+    BinaryTree *ptr_predict = new BinaryTree();
+    Node *ptr_root_node = DecompileHelper(ptr_tree_crf_network,root_k);
+    ptr_predict->SetRootNode(ptr_root_node);
     ptr_inst->SetPrediction(ptr_predict);
     return ptr_inst;
 }
 
-BinaryTree* TreeCRFNetworkCompiler::DecompileHelper(TreeCRFNetwork *ptr_network, int parent_k) {
-    //ptr_network->GetMaxPath();
+Node* TreeCRFNetworkCompiler::DecompileHelper(TreeCRFNetwork *ptr_network, int parent_k) {
+    /*get the */
+    std::vector<int> parent_arr = ptr_network->GetNodeArray(parent_k);
+    int height = parent_arr[1];
+    int index = parent_arr[0] - height;
+    int label_id = parent_arr[2];
+    int node_type = parent_arr[4];
+    /*create a tree node for parent_k*/
+//    std::string label_str = Label::Get(label_id)->GetForm();
+//    Node *ptr_parent_node = new Node(label_str);
+    /*get the max hyperedge*/
+    int *ptr_max_children = ptr_network->GetMaxPath(parent_k);
+    /*get the num of nodes of the hyperedge*/
+    int num_of_childrens = ptr_network->GetMaxChildrenSize(parent_k);
+    if(0 == num_of_childrens){
+        std::cerr << "Trying to evaluate a node without child. This case should not happen."<<std::endl;
+    } else if(1 == num_of_childrens){
+        int child_k = ptr_max_children[0];
+        if(NodeType::ROOT == node_type){
+            return DecompileHelper(ptr_network,child_k);
+        } else{
+            TreeCRFInstance *ptr_inst = (TreeCRFInstance *) ptr_network->GetInstance();
+            std::vector<std::string> *ptr_input_vec = ptr_inst->GetInput();
+            std::vector<int> child_arr = ptr_network->GetNodeArray(child_k);
+            int child_label_id = child_arr[2];
+            std::string label_str = Label::Get(child_label_id)->GetForm();
+            std::string input_str = (*ptr_input_vec)[index];
+            Node *ptr_child_node = new Node(label_str,input_str);
+            return ptr_child_node;
+            //ptr_parent_node->SetLeftNode(ptr_child_node);
+        }
+    } else{
+        std::vector<int> l_child_vec = ptr_network->GetNodeArray(ptr_max_children[0]);
+        std::vector<int> r_child_vec = ptr_network->GetNodeArray(ptr_max_children[1]);
+        std::string label_str = Label::Get(label_id)->GetForm();
+        Node *ptr_node = new Node(label_str,"");
+        ptr_node->SetLeftNode(DecompileHelper(ptr_network,ptr_max_children[0]));
+        ptr_node->SetRightNode(DecompileHelper(ptr_network,ptr_max_children[1]));
+        return ptr_node;
+    }
 }
