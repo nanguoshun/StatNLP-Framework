@@ -35,14 +35,13 @@ public:
     Node *RightNode();
     void SetRootNode(Node *ptr_root_node);
     std::vector<std::string>* GetConstituent();
+    void DeleteNode(Node *ptr_node);
 private:
     Node *ptr_root_;
     //std::vector<Node *> node_vector_;
     //std::vector<std::string> *ptr_str_vector_;
-    /* vector that stores the sentence */
-    std::vector<std::string> *ptr_x_vector_;
-    //int index_offset_;
-    //BinaryTree *ptr_left_tree_, *ptr_right_tree_;
+    /* vector that stores the sentence, and it will be deleted by Base_Instance */
+    std::vector<std::string> *ptr_x_vector_; //
 };
 
 #endif //PCFG_BINARYTREE_H

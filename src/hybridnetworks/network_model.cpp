@@ -16,7 +16,7 @@ NetworkModel::~NetworkModel() {
   }
   delete []pptr_learner_;
   delete []pptr_decoder_;
-  delete []ptr_learn_thread_vector_;
+  delete ptr_learn_thread_vector_;
   delete ptr_decode_thread_vector_;
 
   for(auto it = ptr_split_inst_test_->begin(); it != ptr_split_inst_test_->end(); ++it){

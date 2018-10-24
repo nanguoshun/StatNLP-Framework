@@ -15,8 +15,6 @@ TreeCRFFeatureManager::TreeCRFFeatureManager() {
 TreeCRFFeatureManager::TreeCRFFeatureManager(std::vector<Instance *> *ptr_inst, GlobalNetworkParam *ptr_param)
         : FeatureManager(ptr_param) {
     ptr_inst_vector_ = ptr_inst;
-    root_count_ = 0;
-    zero_count_ = 0;
 }
 
 TreeCRFFeatureManager::~TreeCRFFeatureManager() {
@@ -37,18 +35,7 @@ TreeCRFFeatureManager::ExtractHelper(Network *ptr_network, int parent, int *ptr_
     int start = index;
     int end = index + height; /* the value end - start equals to span size of a tree */
     int children_len = (ptr_network->GetChildren_Size(parent))[children_k_index];
-    //test only
-    //std::cout << "the length is: "<<children_len<<std::endl;
-
-    /*
-    if( 0 == children_len){
-        zero_count_++;
-        std::cout << zero_count_ << "the length is zero"<<std::endl;
-    }
-    */
     if (0 == children_len || node_type == NodeType::ROOT) {
-//        root_count_++;
-//        std::cout << root_count_<<"th root"<<std::endl;
         return FeatureArray::PTR_EMPTY;
     }
 
@@ -74,7 +61,6 @@ TreeCRFFeatureManager::ExtractHelper(Network *ptr_network, int parent, int *ptr_
         FeatureArray *ptr_fa = new FeatureArray(ptr_f, 6);
         return ptr_fa;
     }
-
 
     /* if the children length is larger than 1, then we use 8 features */
     long left_node = ptr_network->GetNode(ptr_children[0]);

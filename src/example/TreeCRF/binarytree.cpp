@@ -20,11 +20,41 @@ BinaryTree::BinaryTree(std::string str) {
 
 BinaryTree::~BinaryTree() {
     //delete ptr_str_vector_;
-    delete ptr_x_vector_;
+    ptr_x_vector_ = nullptr; /* it has been deleted using the ptr_input_ of Base_instance */
     //for(std::vector<Node *>::iterator it = node_vector_.begin(); it!=node_vector_.end();++it){
-      //  delete(*it);
+    //  delete(*it);
     //}
+    DeleteNode(ptr_root_);
+    delete ptr_root_;
 }
+
+/**
+ * Recursively release the memory allocated for a binary tree.
+ *
+ * @param ptr_node
+ */
+void BinaryTree::DeleteNode(Node *ptr_node) {
+    if(nullptr == ptr_node){
+        return;
+    }
+    Node *ptr_l_node = ptr_node->GetLeftNode();
+    Node *ptr_r_node = ptr_node->GetRightNode();
+    if(nullptr == ptr_l_node){
+        return;
+    }
+    DeleteNode(ptr_l_node);
+    delete ptr_l_node;
+    ptr_node->SetLeftNode(nullptr);
+    if(nullptr == ptr_r_node){
+        return;
+    }
+    DeleteNode(ptr_r_node);
+    delete ptr_r_node;
+    ptr_node->SetRightNode(nullptr);
+    //delete ptr_node;
+    return;
+}
+
 
 /*
 void BinaryTree::ConvertToStringVector(std::string str) {
@@ -123,26 +153,28 @@ Node* BinaryTree::RightNode() {
 }
 
 /**
- * Insert Terminal or Non-Terminal label to a label set.
+ *
+ * Set Terminal or Non-Terminal label.
+ *
  * @param str
  * @param space_index
+ *
  */
-
 void BinaryTree::TagLabel(Node *ptr_node, std::string &str, std::string &value_str, int space_index) {
-    /*
-    if( 0 == value_str.compare("NN")){
-        std::cout << "the label is NN"<<std::endl;
-    }*/
     std::string sub_str = str.substr(1);
+    /* next position of "(" */
     int next_left_bracket_index = sub_str.find_first_of(ComParam::LEFT_BRACKET_CHAR);
+    /* non terminal: label + "" */
     if(next_left_bracket_index == space_index){
         Label::Get(value_str,false);
         ptr_node->SetNodeType(TreeNodeType::NON_TERMINAL_NODE);
         ptr_node->SetWord("");
         //std::cout << "non-terminator is "<<value_str<<std::endl;
     } else{
+        /* terminal: label + word */
         int str_size = sub_str.size();
         int word_length = str_size - space_index - 1;
+        /* extract the terminal word*/
         std::string terminal_str = sub_str.substr(space_index,word_length);
         Label::Get(value_str,true);
         ptr_node->SetNodeType(TreeNodeType::TERMINAL_NODE);

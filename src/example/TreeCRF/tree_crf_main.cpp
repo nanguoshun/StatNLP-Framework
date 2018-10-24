@@ -12,6 +12,25 @@
 #include "src/hybridnetworks/discriminative_network_model.h"
 #include <unordered_map>
 
+
+void ReleaseStaticMemory(){
+    /*releaes rule.h*/
+    for(auto it = CFGRule::ptr_rule_label_map_->begin(); it != CFGRule::ptr_rule_label_map_->end(); ++it){
+        std::set<CFG_Rule> *ptr_rule_set = (*it).second;
+        delete ptr_rule_set;
+    }
+    delete CFGRule::ptr_rule_label_map_;
+
+    /*release label.h */
+    for(auto it = Label::ptr_label_->begin(); it != Label::ptr_label_->end(); ++it){
+        delete (*it);
+    }
+    delete Label::ptr_label_;
+    delete Label::ptr_labels_map_;
+    delete Label::ptr_id2label_map_;
+}
+
+
 int main(int argc, char **argv) {
     std::vector<std::string> label_vec;
     std::string file_train = "data/ptb-binary.train.sample";
@@ -36,6 +55,29 @@ int main(int argc, char **argv) {
     ptr_model->Train(ptr_inst_vec,ptr_inst_vec_dup,max_iterations);
     ptr_model->Decode(ptr_inst_vec_test, false);
     Evaluate::EvaluateResult(ptr_inst_vec_test);
+    ReleaseStaticMemory();
+    {
+        /*release global memory*/
+        /*release training sentences*/
+        for(auto it = ptr_inst_vec->begin(); it != ptr_inst_vec->end(); ++it){
+            TreeCRFInstance *ptr_tree_crf_inst = (TreeCRFInstance *)(*it);
+            delete ptr_tree_crf_inst;
+        }
+        delete ptr_inst_vec;
+        /*release training duplicated sentences*/
+        for(auto it = ptr_inst_vec_dup->begin(); it != ptr_inst_vec_dup->end(); ++it){
+            TreeCRFInstance *ptr_tree_crf_inst = (TreeCRFInstance *)(*it);
+            ptr_tree_crf_inst->SetAllPointerNull();
+            delete ptr_tree_crf_inst;
+        }
+        delete ptr_inst_vec_dup;
+        delete ptr_word2int_map;
+        delete ptr_g_param;
+        delete ptr_fm;
+        delete ptr_nc;
+        delete ptr_model;
+    }
+
     return 0;
     //todo: 1.capacity
     //todo: 2.node id should be set when initialize data.
@@ -44,3 +86,4 @@ int main(int argc, char **argv) {
 
     //fixme: 1) the XVector in binarytree may be duplicated and memory consuming.
 }
+

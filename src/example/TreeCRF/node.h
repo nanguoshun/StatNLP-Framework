@@ -41,6 +41,7 @@ public:
     std::vector<LabeledWord>* GetLeaves();
     void FillLeaves();
     void SetWord(std::string word_str);
+    std::string GetWord();
 private:
     std::string value_;
     std::string word_;

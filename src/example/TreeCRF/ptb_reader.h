@@ -11,8 +11,9 @@
 #include "tree_crf_instance.h"
 #include "binarytree.h"
 #include <fstream>
-
+#include <memory.h>
 typedef std::vector<Instance *> InstenceVector;
+//typedef std::vector<std::shared_ptr<Instance>> InstenceVector;
 
 class PTBReader {
 public:

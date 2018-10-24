@@ -17,7 +17,10 @@ LocalNetworkDecoderThread::LocalNetworkDecoderThread(int threadid, std::vector<I
 }
 
 LocalNetworkDecoderThread::~LocalNetworkDecoderThread() {
-    delete ptr_param_l_;
+    if(nullptr != ptr_param_l_){
+        delete ptr_param_l_;
+        ptr_param_l_ = nullptr;
+    }
     for(int i = 0; i < sentence_size_; ++i){
         delete pptr_network_[i];
     }
@@ -28,10 +31,7 @@ void LocalNetworkDecoderThread::Run() {
     for(int networkId = 0; networkId < sentence_size_; ++networkId){
         //build the network
         pptr_network_[networkId] = ptr_nc_->Compile(networkId,(*pptr_input_inst_vec_)[networkId],ptr_param_l_);
-        //run cky/vertibi like algorithm]
-        if(networkId == 0){
-            std::cout <<"i equals to 0"<<std::endl;
-        }
+        //run cky/vertibi like algorithm
         this->ptr_param_l_->DisableCache();
         pptr_network_[networkId]->Max();
     }

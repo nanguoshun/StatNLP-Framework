@@ -9,7 +9,10 @@
 //double **Network::ptr_outside_shared_array_ = new double*[ComParam::Num_Of_Threads];
 
 Network::Network() {
-    std::cout << "no param"<<std::endl;
+//    std::cout << "no param"<<std::endl;
+    ptr_max_ = nullptr;
+    ptr_max_children_size_= nullptr;
+    ptr_max_children_no_ = nullptr;
 }
 
 Network::Network(int networkId, Instance *ptr_inst, LocalNetworkParam *ptr_param_l) {
@@ -21,11 +24,26 @@ Network::Network(int networkId, Instance *ptr_inst, LocalNetworkParam *ptr_param
     this->ptr_param_g_ = ptr_param_l_->GetFeatureManager()->GetGlobalParam();
     tmp_count_ = 0;
     neural_feature_inserted_ = false;
+    ptr_max_ = nullptr;
+    ptr_max_children_size_= nullptr;
+    ptr_max_children_no_ = nullptr;
 }
 
 Network::~Network() {
+    /*if it is for training*/
+    if(nullptr == ptr_max_){
+        return;
+    }
     delete []ptr_max_;
     //the content of ptr_max_children_no_ are pointers, which are allocated in the class TableLookupNetwork
+    /*for(int i = 0; i < node_size_; ++i){
+        if(nullptr != ptr_max_children_no_[i]){
+            delete ptr_max_children_no_[i];
+            ptr_max_children_no_[i] = nullptr;
+        }
+    }*/
+    /*we will not release ptr_max_children_no_[i] here, whose space is allocated by ptr_children_k.
+     * pls refer to void Network::Max(int nodeId) for details */
     delete []ptr_max_children_no_;
     delete []ptr_max_children_size_;
 }
@@ -129,17 +147,17 @@ double Network::GetInside(int nodeId) {
 }
 
 void Network::Max() {
-    int num_count = this->CountNodes();
-    ptr_max_ = new double[num_count];
-    ptr_max_children_no_ = new int*[num_count];
-    ptr_max_children_size_ = new int[num_count];
+    node_size_ = this->CountNodes();
+    ptr_max_ = new double[node_size_];
+    ptr_max_children_no_ = new int*[node_size_];
+    ptr_max_children_size_ = new int[node_size_];
     //init the value and the pointer.
-    for(int nodeid = 0; nodeid < num_count; ++nodeid){
+    for(int nodeid = 0; nodeid < node_size_; ++nodeid){
         ptr_max_[nodeid] = 0;
         ptr_max_children_no_[nodeid] = nullptr;
     }
     //
-    for(int nodeid = 0; nodeid < num_count; ++nodeid){
+    for(int nodeid = 0; nodeid < node_size_; ++nodeid){
         this->Max(nodeid);
     }
 }

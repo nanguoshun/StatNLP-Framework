@@ -21,11 +21,13 @@ public:
         ptr_output_ = nullptr;
         ptr_prediction_ = nullptr;
     }
+
     BaseInstance(SELF_TYPE *ptr_self, INPUT_TYPE *ptr_input, OUTPUT_TYPE *ptr_output){
         ptr_input_ = nullptr;
         ptr_output_ = nullptr;
         ptr_prediction_ = nullptr;
     }
+
     BaseInstance(int id, double weight):Instance(id,weight){
         ptr_input_ = nullptr;
         ptr_output_ = nullptr;
@@ -35,6 +37,7 @@ public:
     BaseInstance(SELF_TYPE *ptr_self, INPUT_TYPE *ptr_input, OUTPUT_TYPE *ptr_output, int id, double weight):Instance(id,weight){
         ptr_input_ = ptr_input;
         ptr_output_ = ptr_output;
+        ptr_prediction_ = nullptr;
     }
 
     ~BaseInstance(){
@@ -63,6 +66,11 @@ public:
     OUTPUT_TYPE *GetPrediction();
 
     void SetPrediction(OUTPUT_TYPE *ptr_prediction);
+
+    /**
+     * this function is only for duplicate
+     */
+    void SetAllPointerNull();
 protected:
     INPUT_TYPE *ptr_input_;
     OUTPUT_TYPE *ptr_output_;
@@ -105,6 +113,13 @@ SELF_TYPE* BaseInstance<SELF_TYPE, INPUT_TYPE, OUTPUT_TYPE>::Duplicate(INPUT_TYP
 template<class SELF_TYPE, class INPUT_TYPE, class OUTPUT_TYPE>
 void BaseInstance<SELF_TYPE, INPUT_TYPE, OUTPUT_TYPE>::SetPrediction(OUTPUT_TYPE *ptr_prediction) {
     ptr_prediction_ = ptr_prediction;
+}
+
+template<class SELF_TYPE, class INPUT_TYPE, class OUTPUT_TYPE>
+void BaseInstance<SELF_TYPE, INPUT_TYPE, OUTPUT_TYPE>::SetAllPointerNull() {
+    ptr_input_ = nullptr;
+    ptr_output_ = nullptr;
+    ptr_prediction_ = nullptr;
 }
 
 #endif //STATNLP_BASE_INSTANCE_H

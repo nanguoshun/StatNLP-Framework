@@ -16,7 +16,6 @@
 
 typedef std::pair<std::string, std::pair<std::string, std::string>> CFG_Rule;
 typedef std::unordered_map<Label *, std::set<CFG_Rule> *> CFG_Rule_Label_Map;
-//typedef std::unordered_map<CFG_Rule, int, boost::> CFG_Rule_Map;
 const std::string TERMINATOR_FLAG = "TERNMINATOR";
 
 enum NodeType{
@@ -27,9 +26,7 @@ enum NodeType{
 };
 class CFGRule {
 public:
-    inline static std::unordered_map<std::string, int> *ptr_non_terminator_map_ = new std::unordered_map<std::string, int>;
     inline static CFG_Rule_Label_Map *ptr_rule_label_map_ = new CFG_Rule_Label_Map;
-    //inline static CFG_Rule_Map *ptr_rule_map_ = new CFG_Rule_Map; /* a map that stores all rules*/
     inline CFGRule(Label *ptr_left_side, Label *ptr_first_right, Label *ptr_second_right) {
         ptr_left_side_ = ptr_left_side;
         ptr_first_right_ = ptr_first_right;

@@ -53,7 +53,10 @@ LocalNetworkParam::LocalNetworkParam(int threadId, FeatureManager *ptr_fm, int n
 
 LocalNetworkParam::~LocalNetworkParam() {
     //TODO for delete
-    delete ptr_globalFeature2LocalFeature_;
+    if(nullptr != ptr_globalFeature2LocalFeature_){
+        delete ptr_globalFeature2LocalFeature_;
+        ptr_globalFeature2LocalFeature_ = nullptr;
+    }
     //delete the ptr_localNNInput2IdMap_vect_ step by step.
     if(ComParam::USE_HYBRID_NEURAL_FEATURES == NetworkConfig::Feature_Type){
         for(int i = 0; i < neural_net_size_; ++i){

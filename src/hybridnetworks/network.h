@@ -368,6 +368,7 @@ protected:
     int *ptr_max_children_size_;
     std::mutex mtx;
     bool neural_feature_inserted_;
+    int node_size_;
 //    int inside_shared_array_size_;
 //    int outside_shared_array_size_;
 };

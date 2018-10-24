@@ -99,6 +99,7 @@ TreeNodeType Node::GetNodeType() {
 
 /**
  * Get the constituent of the node.
+ *
  * @return
  */
 std::vector<std::string>* Node::GetConstituent() {
@@ -176,5 +177,9 @@ void Node::FillLeaves() {
 
 void Node::SetWord(std::string word_str) {
     word_ = word_str;
+}
+
+std::string Node::GetWord() {
+    return word_;
 }
 
