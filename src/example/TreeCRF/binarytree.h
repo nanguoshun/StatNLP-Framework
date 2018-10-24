@@ -1,5 +1,5 @@
 //
-// Created by  ngs on 06/07/2018.
+// Created by  ngs on 19/10/2018.
 //
 
 #ifndef PCFG_BINARYTREE_H
@@ -34,6 +34,7 @@ public:
     Node *LeftNode();
     Node *RightNode();
     void SetRootNode(Node *ptr_root_node);
+    std::vector<std::string>* GetConstituent();
 private:
     Node *ptr_root_;
     //std::vector<Node *> node_vector_;

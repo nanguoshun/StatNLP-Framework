@@ -19,9 +19,22 @@ public:
         int corr = 0;
         int total_gold = 0;
         int total_pred = 0;
+        int k = 0;
         for(auto it = ptr_test_inst->begin(); it != ptr_test_inst->end(); ++it){
-            TreeCRFInstance *ptr_tree_inst = (TreeCRFInstance*) ptr_test_inst;
-
+            TreeCRFInstance *ptr_tree_inst = (TreeCRFInstance*) (*it);
+            std::vector<std::string> *ptr_gold_constituent = ptr_tree_inst->GetOutPut()->GetConstituent();
+            std::vector<std::string> *ptr_predict_constituent = ptr_tree_inst->GetPrediction()->GetConstituent();
+            std::cout << "prediction is: ";
+            for(auto it = ptr_predict_constituent->begin(); it != ptr_predict_constituent->end(); ++it){
+                std::cout << (*it) << " | ";
+            }
+            std::cout << std::endl;
+            std::cout << "gold is: ";
+            for(auto it = ptr_gold_constituent->begin(); it != ptr_gold_constituent->end(); ++it){
+                std::cout << (*it) << " | ";
+            }
+            std::cout << std::endl;
+            k++;
         }
     }
 };

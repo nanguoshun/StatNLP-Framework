@@ -19,7 +19,10 @@ public:
     static std::string feature_type_[8];
 private:
     std::vector<Instance*> *ptr_inst_vector_;
+    //for test only
     int root_count_;
+    int zero_count_;
+    //above parameters are for test only
 };
 
 #endif //STATNLP_TREE_CRF_FEATUURE_MANAGER_H

@@ -1,5 +1,5 @@
 //
-// Created by  ngs on 06/07/2018.
+// Created by  ngs on 19/10/2018.
 //
 
 #include "binarytree.h"
@@ -138,14 +138,24 @@ void BinaryTree::TagLabel(Node *ptr_node, std::string &str, std::string &value_s
     if(next_left_bracket_index == space_index){
         Label::Get(value_str,false);
         ptr_node->SetNodeType(TreeNodeType::NON_TERMINAL_NODE);
+        ptr_node->SetWord("");
         //std::cout << "non-terminator is "<<value_str<<std::endl;
     } else{
+        int str_size = sub_str.size();
+        int word_length = str_size - space_index - 1;
+        std::string terminal_str = sub_str.substr(space_index,word_length);
         Label::Get(value_str,true);
         ptr_node->SetNodeType(TreeNodeType::TERMINAL_NODE);
+        ptr_node->SetWord(terminal_str);
         //std::cout << "terminator is "<<value_str<<std::endl;
     }
 }
 
 void BinaryTree::SetRootNode(Node *ptr_root_node) {
     ptr_root_ = ptr_root_node;
+}
+
+std::vector<std::string>* BinaryTree::GetConstituent() {
+    //int k = ptr_root_->GetId();
+    return ptr_root_->GetConstituent();
 }

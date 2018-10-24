@@ -170,7 +170,7 @@ void TableLookupNetwork::FinalizeNetwork() {
                 this->ptr_children_[parent_index][0][0] = 0;
                 this->ptr_childrens_size_[parent_index] = 1;
                 this->ptr_children_size_[parent_index] = new int[1];
-                ptr_children_size_[parent_index][0] = 1;
+                ptr_children_size_[parent_index][0] = 0;
         }else{
             //num of hyper-edges rooted by node parent.
             int childrens_size = ptr_childrens->size();

@@ -311,21 +311,25 @@ Node* TreeCRFNetworkCompiler::DecompileHelper(TreeCRFNetwork *ptr_network, int p
         } else{
             TreeCRFInstance *ptr_inst = (TreeCRFInstance *) ptr_network->GetInstance();
             std::vector<std::string> *ptr_input_vec = ptr_inst->GetInput();
-            std::vector<int> child_arr = ptr_network->GetNodeArray(child_k);
-            int child_label_id = child_arr[2];
-            std::string label_str = Label::Get(child_label_id)->GetForm();
+//            std::vector<int> child_arr = ptr_network->GetNodeArray(child_k);
+//            int child_label_id = child_arr[2];
+            std::string label_str = Label::Get(label_id)->GetForm();
             std::string input_str = (*ptr_input_vec)[index];
             Node *ptr_child_node = new Node(label_str,input_str);
             return ptr_child_node;
             //ptr_parent_node->SetLeftNode(ptr_child_node);
         }
     } else{
-        std::vector<int> l_child_vec = ptr_network->GetNodeArray(ptr_max_children[0]);
-        std::vector<int> r_child_vec = ptr_network->GetNodeArray(ptr_max_children[1]);
+        int l_child_id = ptr_max_children[0];
+        int r_child_id = ptr_max_children[1];
+//        std::vector<int> l_child_vec = ptr_network->GetNodeArray(l_child_id);
+//        std::vector<int> r_child_vec = ptr_network->GetNodeArray(r_child_id);
+        Node *ptr_l_node = DecompileHelper(ptr_network,l_child_id);
+        Node *ptr_r_node = DecompileHelper(ptr_network,r_child_id);
         std::string label_str = Label::Get(label_id)->GetForm();
         Node *ptr_node = new Node(label_str,"");
-        ptr_node->SetLeftNode(DecompileHelper(ptr_network,ptr_max_children[0]));
-        ptr_node->SetRightNode(DecompileHelper(ptr_network,ptr_max_children[1]));
+        ptr_node->SetLeftNode(ptr_l_node);
+        ptr_node->SetRightNode(ptr_r_node);
         return ptr_node;
     }
 }
