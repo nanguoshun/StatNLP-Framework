@@ -7,7 +7,7 @@
 
 #include <vector>
 #include "src/common/types/base_instance.h"
-#include "src/common/common.h"
+#include "src/common/types/common.h"
 //template <class SELF_TYPE, class INPUT_TYPE, class OUTPUT_TYPE>
 class LinearCRFInstance: public BaseInstance<LinearCRFInstance, ComType::Input_Str_Matrix, ComType::Label_Str_Vector>{
 public:

@@ -60,7 +60,7 @@ namespace CRFPP {
          */
         int optimize(size_t size, double *x, double f,
                      double *g, bool orthant, double C) {
-            static const int msize = 5;
+            static const int msize = 4; //nan: 5 to 4
             if (w_.empty()) {
                 iflag_ = 0;
                 w_.resize(size * (2 * msize + 1) + 2 * msize);

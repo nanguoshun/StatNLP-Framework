@@ -5,7 +5,7 @@
 #ifndef STATNLP_LINEAR_NE_FEATURE_MANAGER_H
 #define STATNLP_LINEAR_NE_FEATURE_MANAGER_H
 
-#include "src/common/common.h"
+#include "src/common/types/common.h"
 #include "src/hybridnetworks/feature_manager.h"
 #include "linear_ne_instance.h"
 #include "linear_ne_network.h"

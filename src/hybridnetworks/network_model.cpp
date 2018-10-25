@@ -95,7 +95,7 @@ void NetworkModel::Train(std::vector<Instance *> *ptr_all_instances, std::vector
         std::cout << "Iteration: " << i << " Obj: " << obj << " Time: " << (double) time / (double)CLOCKS_PER_SEC <<
                   " Convergence: " << obj / obj_old << " Total Time: " << (double) (clock() - start_time) / (double)CLOCKS_PER_SEC << std::endl;
         */
-        std::cout << "Iteration: " << i << " Obj: " << obj << " Time: " << (double) time / (double)1000 <<
+        std::cout << "Iteration: " << i << " Obj: " << std::setprecision(16) <<obj << " Time: " << (double) time / (double)1000 <<
                   " Convergence: " << obj / obj_old << " Total Time: " << (double) (GetCurrentMillionSeconds() - start_time) / (double)1000 << std::endl;
         obj_old = obj;
         if(last_iteration){

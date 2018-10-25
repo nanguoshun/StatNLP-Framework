@@ -15,6 +15,11 @@ public:
     inline ~Evaluate(){
 
     }
+    /**
+     * Evaluate the results and compute the precision, recall and f1 score.
+     *
+     * @param ptr_test_inst
+     */
     inline static void EvaluateResult(std::vector<Instance *> *ptr_test_inst){
         int total_corr = 0;
         int total_gold = 0;
@@ -53,7 +58,7 @@ public:
     }
     /**
      *
-     * Get the overlap counts between golden constituent and predicted constituent.
+     * Get the overlap counts between golden constituents and predicted constituents.
      *
      * @param ptr_gold
      * @param pr_predict
@@ -75,7 +80,7 @@ public:
     }
 
     /**
-     * Print the gloden and predicted constituents.
+     * Print the golden and predicted constituents.
      *
      * @param ptr_gold
      * @param pr_predict

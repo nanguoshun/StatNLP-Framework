@@ -9,7 +9,7 @@
 #include "src/neural/global_neural_network_param.h"
 #include "src/neural/neural_factory.h"
 #include "../common/opt/lbfgs.h"
-#include "src/common/common.h"
+#include "src/common/types/common.h"
 #include "../../dynet/dynet/dict.h"
 class GlobalNetworkParam{
 public:

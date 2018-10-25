@@ -5,7 +5,7 @@
 #ifndef STATNLP_NETWORKIDMANAGER_H
 #define STATNLP_NETWORKIDMANAGER_H
 
-#include "src/common/common.h"
+#include "src/common/types/common.h"
 
 
 class NetworkIDManager{

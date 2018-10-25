@@ -20,7 +20,7 @@ BinaryTree::BinaryTree(std::string str) {
 
 BinaryTree::~BinaryTree() {
     //delete ptr_str_vector_;
-    ptr_x_vector_ = nullptr; /* it has been deleted using the ptr_input_ of Base_instance */
+    ptr_x_vector_ = nullptr; /* it has been deleted via Base_instance::ptr_input_ */
     //for(std::vector<Node *>::iterator it = node_vector_.begin(); it!=node_vector_.end();++it){
     //  delete(*it);
     //}

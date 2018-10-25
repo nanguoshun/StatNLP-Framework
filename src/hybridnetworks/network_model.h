@@ -9,10 +9,11 @@
 #include "../common/types/instance.h"
 #include "feature_manager.h"
 #include "network_compiler.h"
-#include "src/common/common.h"
+#include "src/common/types/common.h"
 #include "local_network_learner_thread.h"
 #include "local_network_decoder_thread.h"
 #include <vector>
+#include <iomanip>
 
 using namespace std::chrono;
 

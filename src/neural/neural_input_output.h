@@ -6,7 +6,7 @@
 #define STATNLP_NUERAL_INPUT_OUTPUT_H
 
 #include <iostream>
-#include "../common/common.h"
+#include "src/common/types/common.h"
 #include <boost/any.hpp>
 class NeuralIO{
 public:

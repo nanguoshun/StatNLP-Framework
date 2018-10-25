@@ -1,0 +1,10 @@
+cmake_minimum_required(VERSION 3.10)
+set(SHARED_STATNLP_OPT_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
+if(TARGET statnlp_opt_lib)
+    message("statnlp_opt_lib is already defined")
+else()
+    include_directories(${SHARED_STATNLP_OPT_INCLUDE_DIR})
+    set(LIB_OPT_SRCS lbfgs.cpp math_calc.cpp)
+    add_library(statnlp_opt_lib STATIC ${LIB_OPT_SRCS})
+endif()
+

@@ -6,7 +6,7 @@
 #define STATNLP_GLOBAL_NN_PARAM_H
 
 #include "neural_network.h"
-#include "src/common/common.h"
+#include "src/common/types/common.h"
 #include "dynet_interface.h"
 #include "neural_factory.h"
 #include "src/common/types/instance.h"

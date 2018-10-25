@@ -6,7 +6,7 @@
 
 #include <dynet/dynet/dynet.h>
 #include "../../dynet/dynet/init.h"
-#include "../common/common.h"
+#include "src/common/types/common.h"
 #include "dynet_interface.h"
 #include "neural_input_output.h"
 #include <boost/functional/hash.hpp>

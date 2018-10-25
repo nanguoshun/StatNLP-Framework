@@ -9,7 +9,7 @@
 #include <vector>
 #include <stack>
 #include "node.h"
-#include "src/common/common.h"
+#include "src/common/types/common.h"
 #include <sstream>
 #include "label.h"
 

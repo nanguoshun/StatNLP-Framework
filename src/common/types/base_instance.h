@@ -68,7 +68,7 @@ public:
     void SetPrediction(OUTPUT_TYPE *ptr_prediction);
 
     /**
-     * this function is only for duplicate
+     * this function is only for duplicate instances to avoid the memory releasing problem.
      */
     void SetAllPointerNull();
 protected:

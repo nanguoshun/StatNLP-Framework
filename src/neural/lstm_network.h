@@ -12,7 +12,7 @@
 #include "neural_network.h"
 #include "vanilla_rnn.h"
 #include "dynet/lstm.h"
-#include "src/common/common.h"
+#include "src/common/types/common.h"
 //#include "dynet/examples/cpp-utils/cl-args.h"
 #include "dynet_interface.h"
 #include "src/common/types/base_instance.h"

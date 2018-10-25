@@ -19,9 +19,6 @@ public:
     bool IsRemovded(int k) override;
 
     void Remove(int k) override;
-
-
-
 private:
 
     int num_of_nodes_;

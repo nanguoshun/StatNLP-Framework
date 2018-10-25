@@ -14,14 +14,13 @@
 
 
 void ReleaseStaticMemory(){
-    /*releaes rule.h*/
+    /* release memory allocated in rule.h */
     for(auto it = CFGRule::ptr_rule_label_map_->begin(); it != CFGRule::ptr_rule_label_map_->end(); ++it){
         std::set<CFG_Rule> *ptr_rule_set = (*it).second;
         delete ptr_rule_set;
     }
     delete CFGRule::ptr_rule_label_map_;
-
-    /*release label.h */
+    /* release memory allocated in label.h */
     for(auto it = Label::ptr_label_->begin(); it != Label::ptr_label_->end(); ++it){
         delete (*it);
     }
@@ -29,7 +28,6 @@ void ReleaseStaticMemory(){
     delete Label::ptr_labels_map_;
     delete Label::ptr_id2label_map_;
 }
-
 
 int main(int argc, char **argv) {
     std::vector<std::string> label_vec;
@@ -47,18 +45,20 @@ int main(int argc, char **argv) {
     /* build rule based on training and test data */
     CFGRule::BuildCFGRules(ptr_inst_vec);
     CFGRule::BuildCFGRules(ptr_inst_vec_test);
-    /* */
+    /* Init parameter body */
     GlobalNetworkParam *ptr_g_param = new GlobalNetworkParam(argc,argv,PTBReader::max_len_,ptr_inst_vec->size(),&label_vec);
     TreeCRFFeatureManager *ptr_fm = new TreeCRFFeatureManager(ptr_inst_vec,ptr_g_param);
     TreeCRFNetworkCompiler *ptr_nc = new TreeCRFNetworkCompiler(Label::ptr_label_);
     DiscriminativeNetworkModel *ptr_model = new DiscriminativeNetworkModel(ptr_fm,ptr_nc);
+    /* Train and Decode */
     ptr_model->Train(ptr_inst_vec,ptr_inst_vec_dup,max_iterations);
     ptr_model->Decode(ptr_inst_vec_test, false);
     Evaluate::EvaluateResult(ptr_inst_vec_test);
+    /* release memory */
     ReleaseStaticMemory();
     {
-        /*release global memory*/
-        /*release training sentences*/
+        /* release global memory */
+        /* release training sentences */
         for(auto it = ptr_inst_vec->begin(); it != ptr_inst_vec->end(); ++it){
             TreeCRFInstance *ptr_tree_crf_inst = (TreeCRFInstance *)(*it);
             delete ptr_tree_crf_inst;
@@ -70,6 +70,7 @@ int main(int argc, char **argv) {
             ptr_tree_crf_inst->SetAllPointerNull();
             delete ptr_tree_crf_inst;
         }
+        /*release user-defined instances*/
         delete ptr_inst_vec_dup;
         delete ptr_word2int_map;
         delete ptr_g_param;
@@ -77,13 +78,6 @@ int main(int argc, char **argv) {
         delete ptr_nc;
         delete ptr_model;
     }
-
     return 0;
-    //todo: 1.capacity
-    //todo: 2.node id should be set when initialize data.
-    //todo: 3.binary tree ->left node to tree, right node to tree
-    //todo: rule from map to a class
-
-    //fixme: 1) the XVector in binarytree may be duplicated and memory consuming.
 }
 

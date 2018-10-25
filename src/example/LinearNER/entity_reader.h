@@ -9,7 +9,7 @@
 #include <fstream>
 #include <sstream>
 #include "src/common/types/instance.h"
-#include "src/common/common.h"
+#include "src/common/types/common.h"
 #include "linear_ne_instance.h"
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/algorithm/string.hpp>

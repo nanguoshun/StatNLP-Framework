@@ -34,8 +34,8 @@
 
 namespace {
     static const double ftol = 1e-4;
-    static const double xtol = 1e-16;
-    static const double eps = 1e-7;
+    static const double xtol = 10e-16;//nan: 1e-16
+    static const double eps = 10e-10;//nan:1e-7
     static const double lb3_1_gtol = 0.9;
     static const double lb3_1_stpmin = 1e-20;
     static const double lb3_1_stpmax = 1e20;
@@ -253,7 +253,7 @@ namespace CRFPP {
             static const double p5 = 0.5;
             static const double p66 = 0.66;
             static const double xtrapf = 4.0;
-            static const int maxfev = 20;
+            static const int maxfev = 200;//20 to 200
 
             /* Parameter adjustments */
             --wa;

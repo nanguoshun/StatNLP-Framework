@@ -4,7 +4,7 @@
 
 #include <vector>
 #include "linear_crf_nework_compiler.h"
-#include "src/common/common.h"
+#include "src/common/types/common.h"
 #include "src/hybridnetworks/network_id_manager.h"
 
 

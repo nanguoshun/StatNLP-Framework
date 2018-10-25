@@ -63,7 +63,7 @@ public:
      *
      * @param ground_truth_entity_str
      * @param predict_entity_str
-     * @param reslut_vec
+     * @param result_vec
      * @return
      */
     inline static bool Accumulate(std::string ground_truth_entity_str, std::string predict_entity_str,

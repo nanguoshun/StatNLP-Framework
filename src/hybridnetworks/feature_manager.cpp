@@ -3,7 +3,7 @@
 //
 
 #include "feature_manager.h"
-#include "src/common/common.h"
+#include "src/common/types/common.h"
 #include "network.h"
 
 FeatureManager::FeatureManager() {

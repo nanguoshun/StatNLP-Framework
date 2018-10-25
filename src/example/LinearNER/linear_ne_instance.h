@@ -6,7 +6,7 @@
 #define STATNLP_LINEAR_NE_INSTANCE_H
 
 #include "src/common/types/base_instance.h"
-#include "src/common/common.h"
+#include "src/common/types/common.h"
 #include "src/common/types/sentence.h"
 
 typedef ComType::Label_Str_Vector NER_OutPut_Type;

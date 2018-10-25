@@ -3,7 +3,7 @@
 //
 
 #include "network.h"
-#include "src/common/common.h"
+#include "src/common/types/common.h"
 
 //double **Network::ptr_inside_shared_array_ = new double*[ComParam::Num_Of_Threads];
 //double **Network::ptr_outside_shared_array_ = new double*[ComParam::Num_Of_Threads];
