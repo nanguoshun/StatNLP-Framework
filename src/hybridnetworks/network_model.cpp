@@ -35,6 +35,9 @@ void NetworkModel::Train(std::vector<Instance *> *ptr_all_instances, std::vector
     //extract the features.
     pptr_learner_ = new LocalNetworkLearnerThread*[this->num_threads_];
     std::vector<std::vector<Instance*>*> *ptr_inst = this->SplitInstanceForTrain();
+
+    pre_memory_size_ = CommonTool::PrintMemoryUsed("Before Touch",pre_memory_size_);
+
     for (int threadId = 0; threadId < this->num_threads_; ++threadId) {
         pptr_learner_[threadId] = new LocalNetworkLearnerThread(threadId, this->ptr_fm_, (*ptr_inst)[threadId], this->ptr_nc_, -1);
         pptr_learner_[threadId]->Touch();
@@ -53,7 +56,13 @@ void NetworkModel::Train(std::vector<Instance *> *ptr_all_instances, std::vector
     } else if(ComParam::USE_PURE_NEURAL_FEATURES == NetworkConfig::Feature_Type){
         //TODO:
     }
+
+    pre_memory_size_ = CommonTool::PrintMemoryUsed("After Touch",pre_memory_size_);
+
     this->ptr_fm_->GetGlobalParam()->LockIt();
+
+    pre_memory_size_ = CommonTool::PrintMemoryUsed("After Lock",pre_memory_size_);
+
     std::cout <<"The num of adding Transition is: "<<this->ptr_fm_->tmp_count_t_<<std::endl;
     std::cout <<"The num of adding emission  is: "<<this->ptr_fm_->tmp_count_e_<<std::endl;
     std::cout <<"Handcrafted Feature Size is: "<<this->ptr_fm_->GetGlobalParam()->tmp_count_<<std::endl;
@@ -123,12 +132,18 @@ std::vector<Instance *>* NetworkModel::Decode(std::vector<Instance *> *ptr_test_
         }
     }
     this->ptr_decode_thread_vector_ = new std::vector<std::thread>;
+
+    pre_memory_size_ = CommonTool::PrintMemoryUsed("Before Decode",pre_memory_size_);
+
     for(int threadid = 0; threadid < this->num_threads_; ++threadid){
         ptr_decode_thread_vector_->push_back(std::thread(&LocalNetworkDecoderThread::Run,pptr_decoder_[threadid]));
     }
     for(int threadid = 0; threadid < this->num_threads_; ++threadid) {
         (*ptr_decode_thread_vector_)[threadid].join();
     }
+
+    pre_memory_size_ = CommonTool::PrintMemoryUsed("After Decode",pre_memory_size_);
+
     std::cout <<"decode done"<<std::endl;
     std::vector<Instance *> *ptr_result = new std::vector<Instance *>;
     for(int threadid = 0; threadid < this->num_threads_; ++threadid){
@@ -173,4 +188,8 @@ int NetworkModel::GetCurrentMillionSeconds() {
             system_clock::now().time_since_epoch()
     );
     return ms.count();
+}
+
+void NetworkModel::SetPreMemorySize(long size) {
+    pre_memory_size_ = size;
 }

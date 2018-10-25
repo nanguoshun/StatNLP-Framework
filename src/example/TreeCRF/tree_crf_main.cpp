@@ -11,7 +11,7 @@
 #include "src/hybridnetworks/feature_manager.h"
 #include "src/hybridnetworks/discriminative_network_model.h"
 #include <unordered_map>
-
+#include "src/common/opt/tools.h"
 
 void ReleaseStaticMemory(){
     /* release memory allocated in rule.h */
@@ -34,6 +34,7 @@ int main(int argc, char **argv) {
     std::string file_train = "data/ptb-binary.train.sample";
     std::string file_test = "data/ptb-binary.test.sample";
     int max_iterations = 200;
+    long pre_memory_size = CommonTool::PrintMemoryInfo("at the beginning of program");
     /* read PTB data */
     std::unordered_map<std::string, int> *ptr_word2int_map = new std::unordered_map<std::string, int>;;
     std::pair<InstenceVector *, InstenceVector *> train_data = PTBReader::ReadPTB(file_train,ptr_word2int_map,true);
@@ -50,6 +51,7 @@ int main(int argc, char **argv) {
     TreeCRFFeatureManager *ptr_fm = new TreeCRFFeatureManager(ptr_inst_vec,ptr_g_param);
     TreeCRFNetworkCompiler *ptr_nc = new TreeCRFNetworkCompiler(Label::ptr_label_);
     DiscriminativeNetworkModel *ptr_model = new DiscriminativeNetworkModel(ptr_fm,ptr_nc);
+    ptr_model->SetPreMemorySize(pre_memory_size);
     /* Train and Decode */
     ptr_model->Train(ptr_inst_vec,ptr_inst_vec_dup,max_iterations);
     ptr_model->Decode(ptr_inst_vec_test, false);

@@ -42,7 +42,7 @@ public:
         for(auto it = ptr_inst->begin(); it != ptr_inst->end(); ++it){
             TreeCRFInstance *ptr_tree_inst = (TreeCRFInstance *)(*it);
             BinaryTree *ptr_tree = ptr_tree_inst->GetOutPut();
-            std::cout << sent_no <<"th sentence CFG rules "<<std::endl;
+            //std::cout << sent_no <<"th sentence CFG rules "<<std::endl;
             BuildCFGRules(ptr_tree->GetRootNode());
             sent_no++;
         }

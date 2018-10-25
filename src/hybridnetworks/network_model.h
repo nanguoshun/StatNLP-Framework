@@ -14,6 +14,7 @@
 #include "local_network_decoder_thread.h"
 #include <vector>
 #include <iomanip>
+#include "src/common/opt/tools.h"
 
 using namespace std::chrono;
 
@@ -35,6 +36,7 @@ public:
 
     int GetCurrentMillionSeconds();
 
+    void SetPreMemorySize(long size);
 protected:
     FeatureManager *ptr_fm_;
     NetworkCompiler *ptr_nc_;
@@ -50,6 +52,9 @@ protected:
     std::vector<Instance *> *ptr_inst_all_test_;
     std::vector<std::vector<Instance *> *> *ptr_split_inst_test_;
     GlobalNeuralNetworkParam *ptr_nn_g_;
+    /*for memory testing*/
+    long pre_memory_size_;
+    long cur_memory_size_;
 };
 
 #endif //STATNLP_NETWORK_MODEL_H
