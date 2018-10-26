@@ -6,7 +6,7 @@
 #define STATNLP_EVALUATE_H
 
 #include <vector>
-#include "tree_crf_instance.h"
+#include "parsing_crf_instance.h"
 class Evaluate{
 public:
     inline Evaluate(){
@@ -27,7 +27,7 @@ public:
         int sent_no = 0;
         for(auto it = ptr_test_inst->begin(); it != ptr_test_inst->end(); ++it){
             sent_no++;
-            TreeCRFInstance *ptr_tree_inst = (TreeCRFInstance*) (*it);
+            ParsingCRFInstance *ptr_tree_inst = (ParsingCRFInstance*) (*it);
             std::vector<std::string> *ptr_gold_constituent = ptr_tree_inst->GetOutPut()->GetConstituent();
             std::vector<std::string> *ptr_predict_constituent = ptr_tree_inst->GetPrediction()->GetConstituent();
             int num_of_gold = ptr_gold_constituent->size();

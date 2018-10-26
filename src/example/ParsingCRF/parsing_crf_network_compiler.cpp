@@ -2,9 +2,9 @@
 // Created by  ngs on 18/10/2018.
 //
 
-#include "tree_crf_network_compiler.h"
+#include "parsing_crf_network_compiler.h"
 
-TreeCRFNetworkCompiler::TreeCRFNetworkCompiler(std::vector<Label *> *ptr_label) {
+ParsingCRFNetworkCompiler::ParsingCRFNetworkCompiler(std::vector<Label *> *ptr_label) {
     num_of_edge_ = 0;
     ptr_label_ = ptr_label;
     max_len_ = 100;
@@ -13,36 +13,36 @@ TreeCRFNetworkCompiler::TreeCRFNetworkCompiler(std::vector<Label *> *ptr_label) 
     std::cout << "num of edges is "<<num_of_edge_<<std::endl;
 }
 
-TreeCRFNetworkCompiler::~TreeCRFNetworkCompiler() {
+ParsingCRFNetworkCompiler::~ParsingCRFNetworkCompiler() {
     if (nullptr != ptr_generic_network_){
         delete ptr_generic_network_;
     }
 }
 
-long TreeCRFNetworkCompiler::ToNodeRoot(int height) {
+long ParsingCRFNetworkCompiler::ToNodeRoot(int height) {
     return ToNode(height, 0, ptr_label_->size(), NodeType::ROOT);
 }
 
-long TreeCRFNetworkCompiler::ToNode(int height, int index, int label_id) {
+long ParsingCRFNetworkCompiler::ToNode(int height, int index, int label_id) {
     return ToNode(height, index, label_id, NodeType::NODE);
 }
 
-long TreeCRFNetworkCompiler::ToNode(int height, int index, int label_id, NodeType type) {
+long ParsingCRFNetworkCompiler::ToNode(int height, int index, int label_id, NodeType type) {
     std::vector<int> vec{height + index, height, label_id, 0, type};
     return NetworkIDManager::ToHybridNodeID(vec);
 }
 
-long TreeCRFNetworkCompiler::ToNodeSuperRoot(int height) {
+long ParsingCRFNetworkCompiler::ToNodeSuperRoot(int height) {
     return ToNode(height, 0, ptr_label_->size(), NodeType::SUPER_ROOT);
 }
 
-long TreeCRFNetworkCompiler::ToNodeSink() {
+long ParsingCRFNetworkCompiler::ToNodeSink() {
     return ToNode(0, 0, 0, NodeType::SINK);
 }
 
-TreeCRFNetwork *TreeCRFNetworkCompiler::CompileLabeled(int networkId, TreeCRFInstance *ptr_inst,
+ParsingCRFNetwork *ParsingCRFNetworkCompiler::CompileLabeled(int networkId, ParsingCRFInstance *ptr_inst,
                                                        LocalNetworkParam *ptr_param) {
-    TreeCRFNetwork *ptr_network = new TreeCRFNetwork(networkId, ptr_inst, ptr_param);
+    ParsingCRFNetwork *ptr_network = new ParsingCRFNetwork(networkId, ptr_inst, ptr_param);
 
     BinaryTree *ptr_tree = ptr_inst->GetOutPut();
     int size = ptr_inst->GetSize();
@@ -70,7 +70,7 @@ TreeCRFNetwork *TreeCRFNetworkCompiler::CompileLabeled(int networkId, TreeCRFIns
  * @return
  *
  */
-long TreeCRFNetworkCompiler::CompileLabeledHelper(TreeCRFNetwork *ptr_network, Node *ptr_node, int start) {
+long ParsingCRFNetworkCompiler::CompileLabeledHelper(ParsingCRFNetwork *ptr_network, Node *ptr_node, int start) {
     int height = ptr_node->GetHeight();
     int index = start;
     std::string label_str = ptr_node->GetData();
@@ -107,7 +107,7 @@ long TreeCRFNetworkCompiler::CompileLabeledHelper(TreeCRFNetwork *ptr_network, N
  * @param ptr_param
  * @return
  */
-TreeCRFNetwork *TreeCRFNetworkCompiler::CompileUnlabeled(int networkId, TreeCRFInstance *ptr_inst,
+ParsingCRFNetwork *ParsingCRFNetworkCompiler::CompileUnlabeled(int networkId, ParsingCRFInstance *ptr_inst,
                                                          LocalNetworkParam *ptr_param) {
     int size = ptr_inst->GetSize();
     long root = ToNodeRoot(size - 1);
@@ -118,7 +118,7 @@ TreeCRFNetwork *TreeCRFNetworkCompiler::CompileUnlabeled(int networkId, TreeCRFI
     int num_nodes = pos + 1;
     int *childrens_size = ptr_generic_network_->GetChildrens_Size();
     int **children_size = ptr_generic_network_->GetChildren_Size();
-    TreeCRFNetwork *ptr_tree_crf_network = new TreeCRFNetwork(networkId, ptr_inst, this->ptr_all_nodes_,
+    ParsingCRFNetwork *ptr_tree_crf_network = new ParsingCRFNetwork(networkId, ptr_inst, this->ptr_all_nodes_,
                                                               this->ptr_all_children_, childrens_size,
                                                               children_size, ptr_param, num_nodes);
     return ptr_tree_crf_network;
@@ -129,8 +129,8 @@ TreeCRFNetwork *TreeCRFNetworkCompiler::CompileUnlabeled(int networkId, TreeCRFI
  * build a generic network from bottom to top.
  *
  */
-void TreeCRFNetworkCompiler::CompileUnlabeledGeneric() {
-    ptr_generic_network_ = new TreeCRFNetwork();
+void ParsingCRFNetworkCompiler::CompileUnlabeledGeneric() {
+    ptr_generic_network_ = new ParsingCRFNetwork();
     long sink = ToNodeSink(); /*only one sink node for a graph*/
     ptr_generic_network_->AddNode(sink);
     for (int col = 0; col < max_len_; ++col) {
@@ -176,7 +176,7 @@ void TreeCRFNetworkCompiler::CompileUnlabeledGeneric() {
  * @param index
  */
 
-void TreeCRFNetworkCompiler::CompileUnlabeledGenericNonTerminator(TreeCRFNetwork *ptr_network, int height, int index) {
+void ParsingCRFNetworkCompiler::CompileUnlabeledGenericNonTerminator(ParsingCRFNetwork *ptr_network, int height, int index) {
     /*for each label*/
     for (auto it = ptr_label_->begin(); it != ptr_label_->end(); ++it) {
         if (LabelType::NON_TERMINAL != (*it)->GetType()) continue;
@@ -234,7 +234,7 @@ void TreeCRFNetworkCompiler::CompileUnlabeledGenericNonTerminator(TreeCRFNetwork
  * @param index
  * @param sink
  */
-void TreeCRFNetworkCompiler::CompileUnlabeledGenericTerminator(TreeCRFNetwork *ptr_network,int height,int index,long sink) {
+void ParsingCRFNetworkCompiler::CompileUnlabeledGenericTerminator(ParsingCRFNetwork *ptr_network,int height,int index,long sink) {
     std::vector<long> vec;
     vec.push_back(sink);
     for (auto it = ptr_label_->begin(); it != ptr_label_->end(); ++it) {
@@ -254,7 +254,7 @@ void TreeCRFNetworkCompiler::CompileUnlabeledGenericTerminator(TreeCRFNetwork *p
 #endif
 }
 
-void TreeCRFNetworkCompiler::CompileUnlabeledGenericRoot(TreeCRFNetwork *ptr_network, int height) {
+void ParsingCRFNetworkCompiler::CompileUnlabeledGenericRoot(ParsingCRFNetwork *ptr_network, int height) {
     long root = ToNodeRoot(height);
     ptr_network->AddNode(root);
     for(auto it = ptr_label_->begin(); it != ptr_label_->end(); ++it){
@@ -271,8 +271,8 @@ void TreeCRFNetworkCompiler::CompileUnlabeledGenericRoot(TreeCRFNetwork *ptr_net
 #endif
 }
 
-Network *TreeCRFNetworkCompiler::Compile(int networkId, Instance *ptr_inst, LocalNetworkParam *ptr_param) {
-    TreeCRFInstance *ptr_tree_crf_inst = (TreeCRFInstance*) ptr_inst;
+Network *ParsingCRFNetworkCompiler::Compile(int networkId, Instance *ptr_inst, LocalNetworkParam *ptr_param) {
+    ParsingCRFInstance *ptr_tree_crf_inst = (ParsingCRFInstance*) ptr_inst;
     if(ptr_tree_crf_inst->IS_Labeled()){
         return CompileLabeled(networkId,ptr_tree_crf_inst,ptr_param);
     } else{
@@ -280,9 +280,9 @@ Network *TreeCRFNetworkCompiler::Compile(int networkId, Instance *ptr_inst, Loca
     }
 }
 
-Instance *TreeCRFNetworkCompiler::Decompile(Network *ptr_network) {
-    TreeCRFNetwork *ptr_tree_crf_network = (TreeCRFNetwork *) ptr_network;
-    TreeCRFInstance *ptr_inst = (TreeCRFInstance *) ptr_network->GetInstance();
+Instance *ParsingCRFNetworkCompiler::Decompile(Network *ptr_network) {
+    ParsingCRFNetwork *ptr_tree_crf_network = (ParsingCRFNetwork *) ptr_network;
+    ParsingCRFInstance *ptr_inst = (ParsingCRFInstance *) ptr_network->GetInstance();
     int root_k = ptr_tree_crf_network->CountNodes() - 1;
     BinaryTree *ptr_predict = new BinaryTree();
     Node *ptr_root_node = DecompileHelper(ptr_tree_crf_network,root_k);
@@ -300,7 +300,7 @@ Instance *TreeCRFNetworkCompiler::Decompile(Network *ptr_network) {
  *
  * @return
  */
-Node* TreeCRFNetworkCompiler::DecompileHelper(TreeCRFNetwork *ptr_network, int parent_k) {
+Node* ParsingCRFNetworkCompiler::DecompileHelper(ParsingCRFNetwork *ptr_network, int parent_k) {
     /*get the */
     std::vector<int> parent_arr = ptr_network->GetNodeArray(parent_k);
     int height = parent_arr[1];
@@ -320,7 +320,7 @@ Node* TreeCRFNetworkCompiler::DecompileHelper(TreeCRFNetwork *ptr_network, int p
             return DecompileHelper(ptr_network,child_k);
         } else{
             /*for terminal with label and words*/
-            TreeCRFInstance *ptr_inst = (TreeCRFInstance *) ptr_network->GetInstance();
+            ParsingCRFInstance *ptr_inst = (ParsingCRFInstance *) ptr_network->GetInstance();
             std::vector<std::string> *ptr_input_vec = ptr_inst->GetInput();
             std::string label_str = Label::Get(label_id)->GetForm();
             std::string input_str = (*ptr_input_vec)[index];

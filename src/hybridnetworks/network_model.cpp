@@ -36,12 +36,19 @@ void NetworkModel::Train(std::vector<Instance *> *ptr_all_instances, std::vector
     pptr_learner_ = new LocalNetworkLearnerThread*[this->num_threads_];
     std::vector<std::vector<Instance*>*> *ptr_inst = this->SplitInstanceForTrain();
 
+    int before_touch_time = GetCurrentMillionSeconds();
+
     pre_memory_size_ = CommonTool::PrintMemoryUsed("Before Touch",pre_memory_size_);
 
     for (int threadId = 0; threadId < this->num_threads_; ++threadId) {
         pptr_learner_[threadId] = new LocalNetworkLearnerThread(threadId, this->ptr_fm_, (*ptr_inst)[threadId], this->ptr_nc_, -1);
         pptr_learner_[threadId]->Touch();
     }
+
+    pre_memory_size_ = CommonTool::PrintMemoryUsed("After Touch",pre_memory_size_);
+
+    std::cout << "Touch time: " << (double) (GetCurrentMillionSeconds() - before_touch_time) / (double)1000 << std::endl;
+
     //init the parameters of neural network.
     if(ComParam::USE_HYBRID_NEURAL_FEATURES == NetworkConfig::Feature_Type){
         ptr_nn_g_ = this->ptr_fm_->GetGlobalParam()->GetNNParam();
@@ -57,7 +64,6 @@ void NetworkModel::Train(std::vector<Instance *> *ptr_all_instances, std::vector
         //TODO:
     }
 
-    pre_memory_size_ = CommonTool::PrintMemoryUsed("After Touch",pre_memory_size_);
 
     this->ptr_fm_->GetGlobalParam()->LockIt();
 

@@ -7,14 +7,14 @@
 
 #include "src/hybridnetworks/feature_manager.h"
 #include "src/hybridnetworks/global_network_param.h"
-#include "tree_crf_network.h"
+#include "parsing_crf_network.h"
 #include "rule.h"
 
-class TreeCRFFeatureManager: public FeatureManager{
+class ParsingCRFFeatureManager: public FeatureManager{
 public:
-    TreeCRFFeatureManager();
-    ~TreeCRFFeatureManager();
-    TreeCRFFeatureManager(std::vector<Instance*> *ptr_inst, GlobalNetworkParam* ptr_param);
+    ParsingCRFFeatureManager();
+    ~ParsingCRFFeatureManager();
+    ParsingCRFFeatureManager(std::vector<Instance*> *ptr_inst, GlobalNetworkParam* ptr_param);
     FeatureArray* ExtractHelper(Network *ptr_network, int parent, int *ptr_children, int children_k_index);
     static std::string feature_type_[8];
 private:

@@ -4,8 +4,8 @@
 #include <iostream>
 #include "ptb_reader.h"
 #include "rule.h"
-#include "tree_crf_feature_manager.h"
-#include "tree_crf_network_compiler.h"
+#include "parsing_crf_feature_manager.h"
+#include "parsing_crf_network_compiler.h"
 #include "evaluate.h"
 #include "src/hybridnetworks/global_network_param.h"
 #include "src/hybridnetworks/feature_manager.h"
@@ -48,8 +48,8 @@ int main(int argc, char **argv) {
     CFGRule::BuildCFGRules(ptr_inst_vec_test);
     /* Init parameter body */
     GlobalNetworkParam *ptr_g_param = new GlobalNetworkParam(argc,argv,PTBReader::max_len_,ptr_inst_vec->size(),&label_vec);
-    TreeCRFFeatureManager *ptr_fm = new TreeCRFFeatureManager(ptr_inst_vec,ptr_g_param);
-    TreeCRFNetworkCompiler *ptr_nc = new TreeCRFNetworkCompiler(Label::ptr_label_);
+    ParsingCRFFeatureManager *ptr_fm = new ParsingCRFFeatureManager(ptr_inst_vec,ptr_g_param);
+    ParsingCRFNetworkCompiler *ptr_nc = new ParsingCRFNetworkCompiler(Label::ptr_label_);
     DiscriminativeNetworkModel *ptr_model = new DiscriminativeNetworkModel(ptr_fm,ptr_nc);
     ptr_model->SetPreMemorySize(pre_memory_size);
     /* Train and Decode */
@@ -62,13 +62,13 @@ int main(int argc, char **argv) {
         /* release global memory */
         /* release training sentences */
         for(auto it = ptr_inst_vec->begin(); it != ptr_inst_vec->end(); ++it){
-            TreeCRFInstance *ptr_tree_crf_inst = (TreeCRFInstance *)(*it);
+            ParsingCRFInstance *ptr_tree_crf_inst = (ParsingCRFInstance *)(*it);
             delete ptr_tree_crf_inst;
         }
         delete ptr_inst_vec;
         /*release training duplicated sentences*/
         for(auto it = ptr_inst_vec_dup->begin(); it != ptr_inst_vec_dup->end(); ++it){
-            TreeCRFInstance *ptr_tree_crf_inst = (TreeCRFInstance *)(*it);
+            ParsingCRFInstance *ptr_tree_crf_inst = (ParsingCRFInstance *)(*it);
             ptr_tree_crf_inst->SetAllPointerNull();
             delete ptr_tree_crf_inst;
         }

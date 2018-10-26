@@ -2,29 +2,29 @@
 // Created by  ngs on 18/10/2018.
 //
 
-#include "tree_crf_feature_manager.h"
+#include "parsing_crf_feature_manager.h"
 
-std::string TreeCRFFeatureManager::feature_type_[8] = {"LEFT_RIGHT", "FIRST_WORD", "SPLIT_WORD", "LAST_WORD",
+std::string ParsingCRFFeatureManager::feature_type_[8] = {"LEFT_RIGHT", "FIRST_WORD", "SPLIT_WORD", "LAST_WORD",
                                                        "LAST_WORD_ENDING_1", "LAST_WORD_ENDING_2", "LAST_WORD_ENDING_3",
                                                        "FIRST_CAPITAL"};
 
-TreeCRFFeatureManager::TreeCRFFeatureManager() {
+ParsingCRFFeatureManager::ParsingCRFFeatureManager() {
 
 }
 
-TreeCRFFeatureManager::TreeCRFFeatureManager(std::vector<Instance *> *ptr_inst, GlobalNetworkParam *ptr_param)
+ParsingCRFFeatureManager::ParsingCRFFeatureManager(std::vector<Instance *> *ptr_inst, GlobalNetworkParam *ptr_param)
         : FeatureManager(ptr_param) {
     ptr_inst_vector_ = ptr_inst;
 }
 
-TreeCRFFeatureManager::~TreeCRFFeatureManager() {
+ParsingCRFFeatureManager::~ParsingCRFFeatureManager() {
 
 }
 
 FeatureArray *
-TreeCRFFeatureManager::ExtractHelper(Network *ptr_network, int parent, int *ptr_children, int children_k_index) {
-    TreeCRFNetwork *ptr_tree_crf_network = (TreeCRFNetwork *) ptr_network;
-    TreeCRFInstance *ptr_tree_crf_inst = (TreeCRFInstance *) ptr_network->GetInstance();
+ParsingCRFFeatureManager::ExtractHelper(Network *ptr_network, int parent, int *ptr_children, int children_k_index) {
+    ParsingCRFNetwork *ptr_tree_crf_network = (ParsingCRFNetwork *) ptr_network;
+    ParsingCRFInstance *ptr_tree_crf_inst = (ParsingCRFInstance *) ptr_network->GetInstance();
     std::vector<std::string> *ptr_words_vec = ptr_tree_crf_inst->GetInput();
     long parent_id = ptr_tree_crf_network->GetNode(parent);
     std::vector<int> parent_vec = NetworkIDManager::ToHybridNodeArray(parent_id);

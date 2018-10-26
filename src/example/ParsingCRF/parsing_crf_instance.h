@@ -9,18 +9,18 @@
 #include "binarytree.h"
 #include <iostream>
 
-class TreeCRFInstance : public BaseInstance<TreeCRFInstance, std::vector<std::string>, BinaryTree> {
+class ParsingCRFInstance : public BaseInstance<ParsingCRFInstance, std::vector<std::string>, BinaryTree> {
 public:
-    inline TreeCRFInstance();
+    inline ParsingCRFInstance();
 
-    inline TreeCRFInstance(int instance_id, double weight, std::vector<std::string> *ptr_input, BinaryTree *ptr_tree)
-            : BaseInstance<TreeCRFInstance, std::vector<std::string>, BinaryTree>(this, ptr_input,
+    inline ParsingCRFInstance(int instance_id, double weight, std::vector<std::string> *ptr_input, BinaryTree *ptr_tree)
+            : BaseInstance<ParsingCRFInstance, std::vector<std::string>, BinaryTree>(this, ptr_input,
                                                                                   ptr_tree, instance_id, weight) {
         ptr_input_ = ptr_input;
 
     }
 
-    inline ~TreeCRFInstance() {
+    inline ~ParsingCRFInstance() {
 
     }
 

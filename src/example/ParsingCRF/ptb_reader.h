@@ -8,7 +8,7 @@
 #include <iostream>
 #include <unordered_map>
 #include "src/common/types/instance.h"
-#include "tree_crf_instance.h"
+#include "parsing_crf_instance.h"
 #include "binarytree.h"
 #include <fstream>
 #include <memory.h>
@@ -34,7 +34,7 @@ public:
             if(max_len_ < ptr_tree->GetXVector()->size()){
                 max_len_ = ptr_tree->GetXVector()->size();
             }
-            TreeCRFInstance *ptr_tree_crf_inst = new TreeCRFInstance(instanceId,1.0,ptr_tree->GetXVector(),ptr_tree);
+            ParsingCRFInstance *ptr_tree_crf_inst = new ParsingCRFInstance(instanceId,1.0,ptr_tree->GetXVector(),ptr_tree);
             if(is_train){
                 ptr_tree_crf_inst->SetLabeled();
             } else{
@@ -44,7 +44,7 @@ public:
             ptr_inst_vec->push_back(ptr_tree_crf_inst);
             instanceId++;
             if(is_train){
-                TreeCRFInstance *ptr_tree_crf_inst_dup =new TreeCRFInstance(-instanceId,-1.0,ptr_tree->GetXVector(), nullptr);
+                ParsingCRFInstance *ptr_tree_crf_inst_dup =new ParsingCRFInstance(-instanceId,-1.0,ptr_tree->GetXVector(), nullptr);
                 ptr_tree_crf_inst_dup->SetUnlabeled();
                 ptr_inst_vec_dup->push_back(ptr_tree_crf_inst_dup);
             }

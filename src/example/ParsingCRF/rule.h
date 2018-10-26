@@ -12,7 +12,7 @@
 #include "binarytree.h"
 #include "label.h"
 #include "src/common/types/base_instance.h"
-#include "tree_crf_instance.h"
+#include "parsing_crf_instance.h"
 
 typedef std::pair<std::string, std::pair<std::string, std::string>> CFG_Rule;
 typedef std::unordered_map<Label *, std::set<CFG_Rule> *> CFG_Rule_Label_Map;
@@ -40,7 +40,7 @@ public:
     inline static void BuildCFGRules(std::vector<Instance *> *ptr_inst){
         int sent_no = 0;
         for(auto it = ptr_inst->begin(); it != ptr_inst->end(); ++it){
-            TreeCRFInstance *ptr_tree_inst = (TreeCRFInstance *)(*it);
+            ParsingCRFInstance *ptr_tree_inst = (ParsingCRFInstance *)(*it);
             BinaryTree *ptr_tree = ptr_tree_inst->GetOutPut();
             //std::cout << sent_no <<"th sentence CFG rules "<<std::endl;
             BuildCFGRules(ptr_tree->GetRootNode());
