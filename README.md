@@ -20,21 +20,6 @@ cmake .. -DEIGEN3_INCLUDE_DIR=../../eigen -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_F
 ```
 The function get_args in file cl-args.h should be static.
 
-## Install Thunder as a Tensor library 
-1. Install BLAS library (copy libblas.so to /usr/local/include)
-2. Install and Compile Thunder: https://github.com/thunder-nyc/Thunder
-
-
-```bash
-
-git clone https://github.com/thunder-nyc/Thunder.git
-cd thunder-master
-cmake ./
-make
-make install
-
-```
-
 ## Examples
 ### Linear Condition Random Field (CRF)
 ### Probability Context Free Grammer(PCFG)
