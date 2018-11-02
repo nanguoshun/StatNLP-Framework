@@ -13,6 +13,7 @@
 
 class LocalNetworkParam;
 class Network;
+class LocalNetworkLearnerThread;
 class FeatureManager{
 public:
     FeatureManager();
@@ -29,6 +30,7 @@ public:
     int tmp_count_t_;
     int tmp_count_e_;
     LocalNetworkParam ** GetLocalParams();
+    LocalNetworkLearnerThread ** GetLocalNetworkLearnerThread();
     void AddNeural(Network *ptr_network, int netId, int parent_K, int children_k_index, ComType::Neural_Input *ptr_edge_input, int output);
 protected:
     GlobalNetworkParam *ptr_param_g_;

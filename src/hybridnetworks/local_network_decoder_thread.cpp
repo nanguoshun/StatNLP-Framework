@@ -25,6 +25,13 @@ LocalNetworkDecoderThread::~LocalNetworkDecoderThread() {
         delete pptr_network_[i];
     }
     delete []pptr_network_;
+
+    /*
+    for(auto it = pptr_output_inst_vec_->begin(); it != pptr_output_inst_vec_->end(); ++it){
+        delete (*it);
+    }*/
+    /*just release the instance vector that is allocated in this class, the instances are released in main function*/
+    delete pptr_output_inst_vec_;
 }
 
 void LocalNetworkDecoderThread::Run() {

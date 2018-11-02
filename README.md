@@ -14,9 +14,17 @@ This document describes how to develop graphical machine learning model using ou
 * Linux
 * Windows
 
-## Build Dynet
+## Configure Eigen
+
+Set the eigen directory in CMakeLists.txt.
 ```bash
-cmake .. -DEIGEN3_INCLUDE_DIR=../../eigen -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS="-fsanitize=address"
+set(EIGEN3_INCLUDE_DIR YOUR_PATH_TO_EIGEN)
+```
+
+## Build Dynet (Option)
+The dynet source code has been placed in project folder, and it will be automatically built when you compile the StatNLP. Meanwhile, you can also build dynet manually via command line.
+```bash
+cmake .. -DEIGEN3_INCLUDE_DIR=YOUR_PATH_TO EIGN -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS="-fsanitize=address"
 ```
 The function get_args in file cl-args.h should be static.
 

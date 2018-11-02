@@ -97,30 +97,33 @@ void LinearCRFNetworkCompiler::CompileUnlabeledGeneric() {
         }
     }
     ptr_generic_network_->FinalizeNetwork();
-    this->ptr_all_nodes_ = ptr_generic_network_->GetAllNodes();
-    this->ptr_all_children_ = ptr_generic_network_->GetAllChildren();
+//    this->ptr_all_nodes_ = ptr_generic_network_->GetAllNodes();
+//    this->ptr_all_children_ = ptr_generic_network_->GetAllChildren();
 }
 
 LinearCRFNetwork* LinearCRFNetworkCompiler::CompileUnlabeled(int networkId, LinearCRFInstance *ptr_inst,
                                                              LocalNetworkParam *ptr_param) {
     int size = ptr_inst->GetSize();
     long root = this->ToNodeRoot(size);
-    int pos  = 0;
+    //int pos  = 0;
     //FIXME: this finding code in an array can be further optimized by binary search.
     int all_node_size = ptr_generic_network_->CountNodes();
-    for(int i=0; i< all_node_size; ++i){
+    int pos = ptr_generic_network_->BinarySearch(all_node_size,root);
+/*    for(int i=0; i< all_node_size; ++i){
         //std::cout <<"node value is:"<<std::endl;
         if(root == ptr_all_nodes_[i]){
             pos = i;
             break;
         }
-    }
+    }*/
     int num_nodes = pos + 1;
     //this pointer will be stored and manageed in local_network_learner_thread.
-    int *childrens_size = ptr_generic_network_->GetChildrens_Size();
-    int **children_size = ptr_generic_network_->GetChildren_Size();
+//    int *ptr_childrens_size = ptr_generic_network_->GetChildrens_Size();
+//    int **pptr_children_size = ptr_generic_network_->GetChildren_Size();
+//
+//    LinearCRFNetwork *ptr_linear_crf_network = new LinearCRFNetwork(networkId,ptr_inst, this->ptr_all_nodes_, this->ptr_all_children_, ptr_childrens_size, pptr_children_size,ptr_param,num_nodes);
 
-    LinearCRFNetwork *ptr_linear_crf_network = new LinearCRFNetwork(networkId,ptr_inst, this->ptr_all_nodes_, this->ptr_all_children_, childrens_size, children_size,ptr_param,num_nodes);
+    LinearCRFNetwork *ptr_linear_crf_network = new LinearCRFNetwork(networkId,ptr_inst, ptr_generic_network_,ptr_param,num_nodes);
 
     return ptr_linear_crf_network;
 }
@@ -166,14 +169,14 @@ LinearCRFInstance* LinearCRFNetworkCompiler::Decompile(Network *ptr_network) {
     int size = ptr_inst->GetSize();
     std::vector<std::string> *ptr_prediction = new std::vector<std::string>(size);
     long root = ToNodeRoot(size);
-    int node_k = 0;
-    for(int i=0; i< num_node; ++i){
+    int node_k = ptr_generic_network_->BinarySearch(ptr_generic_network_->CountNodes(),root);
+/*    for(int i=0; i< num_node; ++i){
         //std::cout <<"node value is:"<<std::endl;
         if(root == ptr_all_nodes_[i]){
             node_k = i;
             break;
         }
-    }
+    }*/
     for(int i = size - 1; i >=0; --i){
         int* ptr_nodes = ptr_network->GetMaxPath(node_k);
         int child_k = ptr_nodes[0];

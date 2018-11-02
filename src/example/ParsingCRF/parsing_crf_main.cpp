@@ -66,14 +66,23 @@ int main(int argc, char **argv) {
             delete ptr_tree_crf_inst;
         }
         delete ptr_inst_vec;
+
         /*release training duplicated sentences*/
         for(auto it = ptr_inst_vec_dup->begin(); it != ptr_inst_vec_dup->end(); ++it){
             ParsingCRFInstance *ptr_tree_crf_inst = (ParsingCRFInstance *)(*it);
             ptr_tree_crf_inst->SetAllPointerNull();
             delete ptr_tree_crf_inst;
         }
-        /*release user-defined instances*/
         delete ptr_inst_vec_dup;
+
+        /*release test instance */
+        for(auto it = ptr_inst_vec_test->begin(); it != ptr_inst_vec_test->end(); ++it){
+            ParsingCRFInstance *ptr_tree_crf_inst = (ParsingCRFInstance *)(*it);
+            delete ptr_tree_crf_inst;
+        }
+        delete ptr_inst_vec_test;
+
+        /* release user-defined instances */
         delete ptr_word2int_map;
         delete ptr_g_param;
         delete ptr_fm;

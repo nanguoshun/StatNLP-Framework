@@ -47,7 +47,7 @@ FeatureArray* LinearNEFeatureManager::ExtractHelper(Network *ptr_network, int pa
     std::vector<int> child_vev = NetworkIDManager::ToHybridNodeArray(ptr_ne_network->GetNode(ptr_children[0]));
     /* transition */
     std::string entity_str = std::to_string(tag_Id);
-    /*index 1 is tag */
+    /* index 1 is tag */
     std::string prev_entity_str = std::to_string(child_vev[1]);// + " "+std::to_string(tag_Id);
     std::string type = ptr_feature_type_[4].type + ":" + std::to_string(0);
     int featureID =  this->ptr_param_g_->ToFeature(type,entity_str,prev_entity_str);
@@ -55,7 +55,7 @@ FeatureArray* LinearNEFeatureManager::ExtractHelper(Network *ptr_network, int pa
     tmp_count_t_++;
     ptr_features = ptr_word_features;
 
-    /*the root node has no emission feature*/
+    /* the root node has no emission feature */
     if(node_type == ComType::NODE_TYPES::ROOT){
         return ptr_features;
     }

@@ -64,6 +64,15 @@ TableLookupNetwork::TableLookupNetwork(int networkId, Instance *ptr_inst, long *
     ptr_children_ = ptr_children;
 }
 
+TableLookupNetwork::TableLookupNetwork(int networkId, Instance *ptr_inst, TableLookupNetwork *ptr_network,
+                                       LocalNetworkParam *ptr_param):Network(networkId,ptr_inst,ptr_param) {
+    ptr_children_tmp_ = new std::unordered_map<long, std::list<std::vector<long>*>*>;
+    ptr_nodes_ = ptr_network->GetAllNodes();
+    ptr_children_ = ptr_network->GetAllChildren();
+    ptr_children_size_ = ptr_network->GetChildren_Size();
+    ptr_childrens_size_ = ptr_network->GetChildrens_Size();
+}
+
 bool TableLookupNetwork::AddNode(long nodeId) {
     if(ptr_children_tmp_->find(nodeId) != ptr_children_tmp_->end()){
         return false;
@@ -300,4 +309,7 @@ int TableLookupNetwork::GetTempNodeSize() {
     return ptr_children_tmp_->size();
 }
 
+int TableLookupNetwork::BinarySearch(int array_size, long value) {
+    return NetworkIDManager::BinarySearch(this->GetAllNodes(),array_size,value);
+}
 

@@ -15,9 +15,6 @@ int main(int argc, char **argv) {
     std::string file_name_test = "data/conll2003/eng.testb-1";
     int train_num = -100;
     int test_num = -100;
-
-//    EntityReader::ReadData();
-
     std::unordered_map<std::string, int> *ptr_word2int_map = new std::unordered_map<std::string, int>;
     std::pair<InstenceVector *, InstenceVector *> training_data_pair = EntityReader::ReadData(file_name_train,
                                                                                               ptr_word2int_map, "IOBES",
@@ -33,7 +30,7 @@ int main(int argc, char **argv) {
                                                                                           false,false);
     std::vector<Instance *> *ptr_inst_vec_test = test_data_pair.first;
     size = ptr_inst_vec_test->size();
-    int num_iterations = 200;
+    int num_iterations = 400;
     GlobalNetworkParam *ptr_g_param = nullptr;
     if (ComParam::USE_HYBRID_NEURAL_FEATURES == NetworkConfig::Feature_Type) {
         ptr_g_param = new GlobalNetworkParam(argc, argv, EntityReader::max_len_, ptr_inst_vec_train->size(),
@@ -61,12 +58,19 @@ int main(int argc, char **argv) {
         for(auto it = ptr_inst_vec_train_dup->begin(); it != ptr_inst_vec_train_dup->end(); ++it){if(nullptr != (*it)) delete (*it);}
         delete ptr_inst_vec_train_dup;
     }
-    /*
+
     //error for release ptr_inst_vec_test
     if(nullptr != ptr_inst_vec_test){
         for(auto it = ptr_inst_vec_test->begin(); it != ptr_inst_vec_test->end(); ++it){if(nullptr != (*it)) delete (*it);}
         delete ptr_inst_vec_test;
-    }*/
+    }
+    /*release the instances created*/
+    {
+        delete ptr_g_param;
+        delete ptr_fm;
+        delete ptr_nc;
+        delete ptr_nm;
+    }
     return 0;
 }
 

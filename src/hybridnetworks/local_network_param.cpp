@@ -67,6 +67,18 @@ LocalNetworkParam::~LocalNetworkParam() {
             delete ptr_map; /* delete the instance of std::unordered_map<ComType::Input_Str_Vector*, int>*/
         }
         delete ptr_localNNInput2IdMap_vect_; /* delete the map vector finally*/
+
+        /*delete nerual IO*/
+        for(int net = 0; net < neural_net_size_; ++net){
+            for(int num_of_network = 0; num_of_network < num_networks_; ++num_of_network){
+                int count_nodes = 1;//ptr_network->CountNodes();
+                for(int node_no = 0; node_no < count_nodes; ++node_no){
+                    //ptr_cache_[net][num_of_network][node_no]
+                }
+            }
+            delete ptr_neural_cache_[net];
+        }
+
     } else if(ComParam::USE_PURE_NEURAL_FEATURES == NetworkConfig::Feature_Type){
 
     }
@@ -298,7 +310,7 @@ void LocalNetworkParam::AddNeuralHyperEdge(int netId, Network *ptr_network,int p
  * Allocate the space for neural cache.
  *
  * @param ptr_network
- * @param netId
+ * @param netId: neural network
  * @param parent_k
  * @param children_k_index
  * @return
@@ -315,6 +327,7 @@ bool LocalNetworkParam::BuildNeuralCache(int netId, Network *ptr_network, int pa
         }
     }
     int networkID = ptr_network->GetNetworkID();
+    std::cout << "network id is: "<<networkID<<std::endl;
     if (nullptr == ptr_neural_cache_[netId][networkID]) {
         int count_nodes = ptr_network->CountNodes();
         ptr_neural_cache_[netId][networkID] = new NeuralIO **[count_nodes];

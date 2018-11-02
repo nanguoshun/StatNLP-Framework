@@ -8,19 +8,29 @@
 #include "src/hybridnetworks/table_lookup_network.h"
 #include "linear_crf_instance.h"
 
-class LinearCRFNetwork: public TableLookupNetwork{
+class LinearCRFNetwork : public TableLookupNetwork {
 public:
     LinearCRFNetwork();
+
     ~LinearCRFNetwork();
+
     LinearCRFNetwork(int NetworkId, Instance *ptr_inst, LocalNetworkParam *ptr_param);
-    LinearCRFNetwork(int networkId, LinearCRFInstance *ptr_inst, long *ptr_nodes, int ***ptr_children,int *ptr_childrens_size, int **ptr_children_size, LocalNetworkParam *ptr_param, int num_nodes);
+
+    LinearCRFNetwork(int networkId, LinearCRFInstance *ptr_inst, long *ptr_nodes, int ***ptr_children,
+                     int *ptr_childrens_size, int **ptr_children_size, LocalNetworkParam *ptr_param, int num_nodes);
+
+    LinearCRFNetwork(int networkid, LinearCRFInstance *ptr_inst, TableLookupNetwork *ptr_table_network,
+                     LocalNetworkParam *ptr_param, int num_nodes);
+
     int CountNodes() override;
 
     bool IsRemovded(int k) override;
 
     void Remove(int k) override;
+
 private:
 
     int num_of_nodes_;
 };
+
 #endif //STATNLP_LINEAR_CRF_NETWORK_H

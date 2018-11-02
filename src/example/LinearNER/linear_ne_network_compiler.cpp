@@ -170,7 +170,7 @@ void LinearNENetworkCompiler::CompileUnlabeledGeneric() {
 
 /***
  *
- * build the graph for all nodes, except leaf and root nodes.
+ * build a graph for all nodes, except leaf and root nodes.
  *
  * @param pos : pos in graph, same as the position in a sentence.
  * @param children_vec: vector that stores the children node id

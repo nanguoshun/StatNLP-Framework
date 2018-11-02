@@ -13,6 +13,7 @@ public:
     TableLookupNetwork();
     TableLookupNetwork(int networkId, Instance *ptr_inst, LocalNetworkParam *ptr_param);
     TableLookupNetwork(int networkId, Instance *ptr_inst, long *ptr_nodes, int ***ptr_children, LocalNetworkParam *ptr_param);
+    TableLookupNetwork(int networkId, Instance *ptr_inst, TableLookupNetwork *ptr_network, LocalNetworkParam *ptr_param);
     ~TableLookupNetwork();
     void EarlyRelease();
     bool AddNode(long nodeId);
@@ -50,6 +51,8 @@ public:
     int **GetChildren_Size();
     //get the num of nodes during compiling network, this function is for test only.
     int GetTempNodeSize();
+
+    int BinarySearch(int array_size, long value);
 protected:
     //the parent_id and its hyperedges, each hyperdeg contains multiple nodes_id.
     std::unordered_map<long, std::list<std::vector<long> *> *> *ptr_children_tmp_;

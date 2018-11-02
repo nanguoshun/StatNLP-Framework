@@ -38,8 +38,6 @@ LocalNetworkLearnerThread::~LocalNetworkLearnerThread() {
 
 void LocalNetworkLearnerThread::Touch() {
 //    int tmp_cout[4] = {0,0,0,0};
-    int tmp_coun_value = 0;
-    int size = ptr_inst_vec_->size();
     int max_size_node_count=0;
     for(int networkId=0; networkId < this->ptr_inst_vec_->size(); ++networkId){
         this->GetNetwork(networkId)->Touch();

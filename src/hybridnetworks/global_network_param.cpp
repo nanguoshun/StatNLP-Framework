@@ -98,6 +98,12 @@ GlobalNetworkParam::~GlobalNetworkParam() {
         delete []ptr_inside_shared_array_[threadId];
         delete []ptr_outside_shared_array_[threadId];
     }
+    /*delete feature representative*/
+    for(int i = 0; i < h_feature_size_; ++i){
+        delete []ptr_feature2rep[i];
+    }
+    delete []ptr_feature2rep;
+
     delete []ptr_inside_shared_array_;
     delete []ptr_outside_shared_array_;
     delete []ptr_shared_array_size_;
@@ -105,6 +111,10 @@ GlobalNetworkParam::~GlobalNetworkParam() {
     if(ptr_nn_g_ != nullptr){
         delete ptr_nn_g_;
     }
+
+    delete []ptr_weights_;
+    delete []ptr_counts_;
+
     //delete ptr_type2InputMap_;
 }
 /*
