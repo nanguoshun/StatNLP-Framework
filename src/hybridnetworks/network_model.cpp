@@ -163,7 +163,7 @@ std::vector<Instance *>* NetworkModel::Decode(std::vector<Instance *> *ptr_test_
 
 /**
  *
- * Allocate training instences to different threads.
+ * Allocate training instances to different threads.
  *
  * @return
  */

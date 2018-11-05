@@ -148,7 +148,13 @@ public:
         PrintResults("ORG",result_vec,2);
         PrintResults("PER",result_vec,3);
     }
-
+    /**
+     * print the decoding results.
+     *
+     * @param str :  LOC, MISC, ORG and PER
+     * @param result_vec
+     * @param index: the index of entity type
+     */
     inline static void PrintResults(std::string str, std::vector<ComType::Results> &result_vec, int index){
         double pre = 0;
         double recall = 0;

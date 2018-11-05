@@ -214,7 +214,7 @@ void LocalNetworkParam::AddCount(int f_local, double count) {
         std::cerr << "Error: the feature id is -1. @LocalNetworkParam::AddCount " << std::endl;
         return;
     }
-    if (isnan(count)) {
+    if (std::isnan(count)) {
         std::cerr << "Error: the count is NAN. @LocalNetworkParam::AddCount" << std::endl;
     }
     if (this->is_global_mode_) {

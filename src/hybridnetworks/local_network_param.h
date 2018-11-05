@@ -11,6 +11,8 @@
 #include "feature_array.h"
 #include <boost/any.hpp>
 #include <boost/functional/hash.hpp>
+#include <mutex>
+#include<cmath>
 
 class Network;
 class LocalNetworkParam{

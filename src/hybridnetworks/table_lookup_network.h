@@ -6,7 +6,7 @@
 
 
 #include "network.h"
-
+#include <algorithm>
 
 class TableLookupNetwork: public Network{
 public:

@@ -2,6 +2,7 @@ project(dynet)
 cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
 
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
+set(CMAKE_CXX_FLAGS -pthread)
 
 # DYNET uses Eigen which exploits modern CPU architectures. To get the
 # best possible performance, the following are recommended:
@@ -16,11 +17,12 @@ set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 #       suit our model of not installing the library most of the time.
 set(CMAKE_MACOSX_RPATH 0)
 
-set( EIGEN3_INCLUDE_DIR "/Users/ngs/Documents/cplusproject/eigen" )
+set( EIGEN3_INCLUDE_DIR "dynet/eigen" )
 IF( NOT EIGEN3_INCLUDE_DIR )
   MESSAGE( FATAL_ERROR "Please point the environment variable EIGEN3_INCLUDE_DIR to the include directory of your Eigen3 installation.")
 ENDIF()
 include_directories ( "${EIGEN3_INCLUDE_DIR}" )
+
 
 function(find_mkl)
   set(MKL_ARCH intel64)

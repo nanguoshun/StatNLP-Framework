@@ -39,7 +39,7 @@ bool FeatureManager::Update(bool just_update_obj_gradient) {
     //FIXME: why the updating processes of single thread and mutlithread are different?? the former will be updated in the current iteration
     //FIXME: while the latter will updated in the next iteration ( at the beginning of the function ).
     /**
-     * For the multithread mode, update the gradient and then calc the objective.
+     * For the multi-thread mode, update the gradient and then calc the objective.
      */
     if (this->num_of_threads_ != 1) {
         //FIXME: need modification for neural networks, what is the local features for NN for multithreads program.

@@ -54,11 +54,11 @@ FeatureArray* LinearNEFeatureManager::ExtractHelper(Network *ptr_network, int pa
     FeatureArray *ptr_word_features = new FeatureArray(new int[1]{featureID}, 1, ptr_features);
     tmp_count_t_++;
     ptr_features = ptr_word_features;
-
     /* the root node has no emission feature */
     if(node_type == ComType::NODE_TYPES::ROOT){
         return ptr_features;
     }
+
     /* neural or emission */
     if(ComParam::USE_HYBRID_NEURAL_FEATURES == NetworkConfig::Feature_Type){ /* neural */
         if(ComType::NeuralType::LSTM == NetworkConfig::Neural_Type){
@@ -67,7 +67,7 @@ FeatureArray* LinearNEFeatureManager::ExtractHelper(Network *ptr_network, int pa
             ComType::Input_Str_Vector *ptr_input_vec = ptr_sent->GetSentence();
             ptr_nn_input_pair->first = ptr_input_vec;
             ptr_nn_input_pair->second = pos;
-            /* noted that the ouput is tag_id - 1, why tag_Id - 1 ????? */
+            /* noted that the output is tag_id - 1, why tag_Id - 1 ????? */
             AddNeural(ptr_network,0,parent,children_k_index,ptr_nn_input_pair,tag_Id - 1);
         }
     } else if(ComParam::USE_HANDCRAFTED_FEATURES == NetworkConfig::Feature_Type){ /* emission */

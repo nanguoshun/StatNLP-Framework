@@ -11,6 +11,7 @@
 #include "../common/opt/lbfgs.h"
 #include "src/common/types/common.h"
 #include "../../dynet/dynet/dict.h"
+#include <mutex>
 class GlobalNetworkParam{
 public:
     GlobalNetworkParam(int &argc, char **&argv, int max_sent_size, int num_of_sentence,  std::vector<std::string> *ptr_label, NeuralFactory* ptr_nf_ = nullptr,std::unordered_map<std::string,int> *ptr_word2int = nullptr, dynet::Dict *ptr_dict = nullptr);

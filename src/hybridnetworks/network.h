@@ -10,6 +10,7 @@
 #include "local_network_param.h"
 #include "network_id_manager.h"
 #include <vector>
+#include <mutex>
 /**
  *  inside-outside algorithm.
  */
