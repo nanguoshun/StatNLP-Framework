@@ -60,6 +60,7 @@ long LinearCRFNetworkCompiler::ToNodeLeaf() {
 
 /**
  *  Build the generic network
+ *
  */
 
 void LinearCRFNetworkCompiler::CompileUnlabeledGeneric() {

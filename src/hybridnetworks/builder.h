@@ -14,7 +14,7 @@ public:
         /*all of the memory will be released in main class*/
         ptr_network_vec_ = new std::vector<TableLookupNetwork *>;
         ptr_str_vec_ = new std::vector<std::vector<std::string> *>;
-
+        ptr_inst_vec_ = new std::vector<Instance *>;
     }
     inline ~Builder(){
         /*
@@ -31,7 +31,9 @@ public:
         }
         delete ptr_inst_vec_;
          */
-
+        delete ptr_network_vec_;
+        delete ptr_str_vec_;
+        delete ptr_inst_vec_;
     }
 
     inline Network *CreateNetwork(){
