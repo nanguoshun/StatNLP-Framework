@@ -13,7 +13,7 @@ public:
     TableLookupNetwork();
     TableLookupNetwork(int networkId, Instance *ptr_inst, LocalNetworkParam *ptr_param);
     TableLookupNetwork(int networkId, Instance *ptr_inst, long *ptr_nodes, int ***ptr_children, LocalNetworkParam *ptr_param);
-    TableLookupNetwork(int networkId, Instance *ptr_inst, TableLookupNetwork *ptr_network, LocalNetworkParam *ptr_param);
+    TableLookupNetwork(int networkId, Instance *ptr_inst, TableLookupNetwork *ptr_network, LocalNetworkParam *ptr_param,int node_size);
     ~TableLookupNetwork();
     void EarlyRelease();
     bool AddNode(long nodeId);

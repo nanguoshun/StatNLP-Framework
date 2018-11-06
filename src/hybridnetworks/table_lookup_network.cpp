@@ -65,12 +65,13 @@ TableLookupNetwork::TableLookupNetwork(int networkId, Instance *ptr_inst, long *
 }
 
 TableLookupNetwork::TableLookupNetwork(int networkId, Instance *ptr_inst, TableLookupNetwork *ptr_network,
-                                       LocalNetworkParam *ptr_param):Network(networkId,ptr_inst,ptr_param) {
+                                       LocalNetworkParam *ptr_param, int node_size):Network(networkId,ptr_inst,ptr_param) {
     ptr_children_tmp_ = new std::unordered_map<long, std::list<std::vector<long>*>*>;
     ptr_nodes_ = ptr_network->GetAllNodes();
     ptr_children_ = ptr_network->GetAllChildren();
     ptr_children_size_ = ptr_network->GetChildren_Size();
     ptr_childrens_size_ = ptr_network->GetChildrens_Size();
+    node_size_ = node_size;
 }
 
 bool TableLookupNetwork::AddNode(long nodeId) {
