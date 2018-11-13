@@ -20,7 +20,8 @@ LinearCRFNetwork::LinearCRFNetwork(int networkid, LinearCRFInstance *ptr_inst, T
                                    LocalNetworkParam *ptr_param, int num_nodes) : TableLookupNetwork(networkid,
                                                                                                      ptr_inst,
                                                                                                      ptr_table_network,
-                                                                                                     ptr_param) {
+                                                                                                     ptr_param,
+                                                                                                     num_nodes) {
 
     num_of_nodes_ = num_nodes;
     node_size_ = num_nodes;

@@ -41,16 +41,16 @@ int main(int argc, char **argv){
     int num_iterations = 200;
     GlobalNetworkParam *ptr_param_g = nullptr;
     if(ComParam::USE_HANDCRAFTED_FEATURES == NetworkConfig::Feature_Type){
-        ptr_param_g = new GlobalNetworkParam(argc,argv,DataReader::max_len_,ptr_inst_vec_all->size(),&DataReader::all_labels_);
+        ptr_param_g = new GlobalNetworkParam(argc,argv,DataReader::max_len_,ptr_inst_vec_all->size(),DataReader::ptr_all_labels_);
 
     } else if(ComParam::USE_HYBRID_NEURAL_FEATURES == NetworkConfig::Feature_Type){
-        ptr_param_g = new GlobalNetworkParam(argc,argv,DataReader::max_len_,ptr_inst_vec_all->size(),&DataReader::all_labels_, (NeuralFactory*)NeuralFactory::GetLSTMFactory(),ptr_word2int_map,ptr_dict);
+        ptr_param_g = new GlobalNetworkParam(argc,argv,DataReader::max_len_,ptr_inst_vec_all->size(),DataReader::ptr_all_labels_, (NeuralFactory*)NeuralFactory::GetLSTMFactory(),ptr_word2int_map,ptr_dict);
 //        ptr_param_g = new GlobalNetworkParam(argc,argv,max_len,ptr_inst_vec_all->size(),&all_labels, (NeuralFactory*)NeuralFactory::GetCNNFactory(),ptr_word2int_map,ptr_dict);
     }
     //Below is the only hand-crafted features, and there are no parameters in the constructor of GlobalNetworkParam
     // GlobalNetworkParam *ptr_param_g = new GlobalNetworkParam();
     LinearCRFFeatureManager *ptr_fm = new LinearCRFFeatureManager(ptr_param_g, ptr_inst_vec_all);
-    LinearCRFNetworkCompiler *ptr_nc = new LinearCRFNetworkCompiler(DataReader::all_labels_);
+    LinearCRFNetworkCompiler *ptr_nc = new LinearCRFNetworkCompiler(*(DataReader::ptr_all_labels_));
     NetworkModel *ptr_nm = new DiscriminativeNetworkModel(ptr_fm,ptr_nc);
     ptr_nm->Train(ptr_inst_vec_all, ptr_inst_vec_all_duplicate_,num_iterations);
     std::vector<Instance *> *ptr_predictions = ptr_nm->Decode(ptr_inst_vec_all_test,false);

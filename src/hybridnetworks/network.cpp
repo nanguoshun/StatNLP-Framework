@@ -153,7 +153,7 @@ void Network::Max() {
     ptr_max_children_size_ = new int[node_size_];
     //init the value and the pointer.
     for(int nodeid = 0; nodeid < node_size_; ++nodeid){
-        ptr_max_[nodeid] = 0;
+        ptr_max_[nodeid] = ComParam::DOUBLE_NEGATIVE_INFINITY;
         ptr_max_children_no_[nodeid] = nullptr;
     }
     //
@@ -169,9 +169,10 @@ void Network::Max(int nodeId) {
         return;
     }
     //for the leaf node.
+    /*
     if(0 == nodeId){
         return;
-    }
+    }*/
     if(IsSumNode(nodeId)){
         //TODO:
     } else{

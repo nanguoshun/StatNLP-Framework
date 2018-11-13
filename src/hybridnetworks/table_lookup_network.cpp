@@ -12,6 +12,7 @@ TableLookupNetwork::TableLookupNetwork() {
     ptr_children_size_ = nullptr;
     ptr_nodes_ = nullptr;
     ptr_children_ = nullptr;
+    ptr_vec_matrix_ = nullptr;
 }
 
 TableLookupNetwork::~TableLookupNetwork() {
@@ -32,6 +33,15 @@ TableLookupNetwork::~TableLookupNetwork() {
     //delete ptr_children_tmp_;
     delete ptr_children_;
     delete ptr_nodes_;
+    if(nullptr != ptr_vec_matrix_){
+        for(auto it = ptr_vec_matrix_->begin(); it != ptr_vec_matrix_->end(); ++it){
+            std::vector<long> *ptr_vec = (*it);
+            if(nullptr != ptr_vec){
+                delete ptr_vec;
+            }
+        }
+        delete ptr_vec_matrix_;
+    }
 }
 
 void TableLookupNetwork::EarlyRelease() {
@@ -55,6 +65,7 @@ TableLookupNetwork::TableLookupNetwork(int networkId, Instance *ptr_inst, LocalN
     ptr_children_size_ = nullptr;
     ptr_nodes_ = nullptr;
     ptr_children_ = nullptr;
+    ptr_vec_matrix_ = nullptr;
 }
 
 TableLookupNetwork::TableLookupNetwork(int networkId, Instance *ptr_inst, long *ptr_nodes, int ***ptr_children,
@@ -62,6 +73,8 @@ TableLookupNetwork::TableLookupNetwork(int networkId, Instance *ptr_inst, long *
     ptr_children_tmp_ = new std::unordered_map<long, std::list<std::vector<long>*>*>;
     ptr_nodes_ = ptr_nodes;
     ptr_children_ = ptr_children;
+    ptr_vec_matrix_ = nullptr;
+
 }
 
 TableLookupNetwork::TableLookupNetwork(int networkId, Instance *ptr_inst, TableLookupNetwork *ptr_network,
@@ -72,6 +85,8 @@ TableLookupNetwork::TableLookupNetwork(int networkId, Instance *ptr_inst, TableL
     ptr_children_size_ = ptr_network->GetChildren_Size();
     ptr_childrens_size_ = ptr_network->GetChildrens_Size();
     node_size_ = node_size;
+    ptr_vec_matrix_ = nullptr;
+
 }
 
 bool TableLookupNetwork::AddNode(long nodeId) {
@@ -314,3 +329,72 @@ int TableLookupNetwork::BinarySearch(int array_size, long value) {
     return NetworkIDManager::BinarySearch(this->GetAllNodes(),array_size,value);
 }
 
+bool TableLookupNetwork::Contain(TableLookupNetwork *ptr_network) {
+    if(this->CountNodes() < ptr_network->CountNodes()){
+        std::cout << "size of this is less than the size of network"<<std::endl;
+        return false;
+    }
+    int start = 0;
+    /*check each node in the targeting ptr_network*/
+    for(int j = 0; j < ptr_network->CountNodes(); ++j){
+        long node1 = ptr_network->GetNode(j);
+        /*hyberedge no (eg, 0th, 1st, 2nd...), and nodeId in each hyperedge*/
+        int **ptr_children1 = ptr_network->GetChildren(j);
+        /*number of hyperedge for the j th node*/
+        int num_of_hyperedge1 = ptr_network->GetChildrens_Size(j);
+        /*number of nodes in each hyperedge, the index of the pointer is the no of the hyperedge*/
+        int *ptr_num_of_children1 = ptr_network->GetChildren_Size(j);
+        bool found = false;
+        for(int k = start; k<this->CountNodes(); ++k){
+            long node2 = this->GetNode(k);
+            int **ptr_children2 = this->GetChildren(k);
+            int num_of_hyperedge2 = this->GetChildrens_Size(k);
+            int *ptr_num_of_children2 = this->GetChildren_Size(k);
+            if(node1 == node2){
+                /*compare the nodes for two hyperedges*/
+                for(int c1 = 0; c1 < num_of_hyperedge1; ++c1){
+                    std::vector<long> *ptr_child1_nodes_vec  = ptr_network->ToNodes(ptr_children1[c1],ptr_num_of_children1[c1]);
+                    bool child_found = false;
+                    for(int c2 = 0; c2 < num_of_hyperedge2; ++c2){
+                        std::vector<long> *ptr_child2_nodes_vec = this->ToNodes(ptr_children2[c2],ptr_num_of_children2[c2]);
+                        if(std::equal(ptr_child1_nodes_vec->begin(),ptr_child1_nodes_vec->end(),ptr_child2_nodes_vec->begin())){
+                            child_found = true;
+                        }
+//                        int temp_size = ptr_child2_nodes_vec->size();
+//                        std::vector<int> vec = NetworkIDManager::ToHybridNodeArray((*ptr_child2_nodes_vec)[0]);
+//                        std::cout << "c2 unlabeled: " <<vec[0]<<" "<<vec[1]<<" "<<vec[2]<<" "<<vec[3]<<std::endl;
+                    }
+                    if(false == child_found){
+                        std::vector<int> vec = NetworkIDManager::ToHybridNodeArray(node1);
+                        std::cout << "Error: NOT FOUND: " <<vec[0]<<" "<<vec[1]<<" "<<vec[2]<<" "<<vec[3]<<std::endl;
+                        vec = NetworkIDManager::ToHybridNodeArray((*ptr_child1_nodes_vec)[0]);
+                        std::cout << "c1 labeled: " <<vec[0]<<" "<<vec[1]<<" "<<vec[2]<<" "<<vec[3]<<std::endl;
+                        //std::cout << "Error: NOT FOUND: " <<node1<<std::endl;
+                        return false;
+                    }
+                }
+                found = true;
+                start = k;
+                break;
+            }
+        }
+        if(false == found){
+            std::cout << "Error: NOT FOUND" <<node1<<std::endl;
+            return  false;
+        }
+    }
+    return true;
+}
+
+std::vector<long>* TableLookupNetwork::ToNodes(int *ptr_ks, int size) {
+    if(nullptr == ptr_vec_matrix_){
+        ptr_vec_matrix_ = new std::vector<std::vector<long>*>;
+    }
+    std::vector<long>* ptr_nodes_vec = new std::vector<long>;
+    for(int i = 0; i < size; ++i){
+        long nodeid = this->GetNode(ptr_ks[i]);
+        ptr_nodes_vec->push_back(nodeid);
+    }
+    ptr_vec_matrix_->push_back(ptr_nodes_vec);
+    return ptr_nodes_vec;
+}

@@ -14,8 +14,8 @@ class DataReader {
 public:
     inline DataReader() {}
     inline  ~DataReader() {}
-    inline static std::vector<std::string> all_labels_; /*all unique labels*/
-    inline static int max_len_ = 0;
+    static std::vector<std::string> *ptr_all_labels_; /*all unique labels*/
+    static int max_len_;
     /**
  *
  * @param file_name
@@ -80,9 +80,9 @@ public:
                 if (withLabels) {
                     std::string label;
                     ss >> label;
-                    auto it = std::find(all_labels_.begin(), all_labels_.end(), label);
-                    if (it == all_labels_.end()) {
-                        all_labels_.push_back(label);
+                    auto it = std::find(ptr_all_labels_->begin(), ptr_all_labels_->end(), label);
+                    if (it == ptr_all_labels_->end()) {
+                        ptr_all_labels_->push_back(label);
                         //ptr_dict->convert(label);
                     }
                     ptr_labels->push_back(label);
@@ -108,4 +108,6 @@ public:
     }
 };
 
+int DataReader::max_len_ = 0;
+std::vector<std::string> * DataReader::ptr_all_labels_ = new std::vector<std::string>;
 #endif //STATNLP_DATA_READER_H

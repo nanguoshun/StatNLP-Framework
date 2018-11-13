@@ -53,6 +53,10 @@ public:
     int GetTempNodeSize();
 
     int BinarySearch(int array_size, long value);
+
+    bool Contain(TableLookupNetwork *ptr_network);
+
+    std::vector<long>* ToNodes(int *ptr_ks, int size);
 protected:
     //the parent_id and its hyperedges, each hyperdeg contains multiple nodes_id.
     std::unordered_map<long, std::list<std::vector<long> *> *> *ptr_children_tmp_;
@@ -70,7 +74,8 @@ protected:
     //the parent index, the num of node in each hyperedge that is rooted by parent node.
     int **ptr_children_size_;
     int network_size_;
-
+    //this matrix is for contain check between labeled network and unlabeled network only.
+    std::vector<std::vector<long>*> *ptr_vec_matrix_;
 };
 
 #endif //STATNLP_TABLE_LOOKUP_NETWORK_H

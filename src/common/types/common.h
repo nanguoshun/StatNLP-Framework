@@ -116,6 +116,7 @@ namespace NetworkConfig{
     static unsigned VACB_SIZE = 0;
     static double L2_REGULARIZATION_CONSTANT = 0.01;
     static bool REGULARIZE_NEURAL_FEATURES = false;
+    static bool NETWORK_CONTAIN_TEST = false;
 }
 
 //typedef std::vector<std::vector<std::string>> Input_Str_Matrix;

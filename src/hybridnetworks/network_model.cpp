@@ -64,7 +64,6 @@ void NetworkModel::Train(std::vector<Instance *> *ptr_all_instances, std::vector
         //TODO:
     }
 
-
     this->ptr_fm_->GetGlobalParam()->LockIt();
 
     pre_memory_size_ = CommonTool::PrintMemoryUsed("After Lock",pre_memory_size_);

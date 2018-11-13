@@ -257,3 +257,4 @@ void LinearNENetworkCompiler::CompileUnlabeledGenericRoot(int pos, std::vector<l
         }
     }
 }
+

@@ -16,6 +16,7 @@ LinearCRFNetworkCompiler::LinearCRFNetworkCompiler(std::vector<std::string> &lab
         ++i;
     }
     this->CompileUnlabeledGeneric();
+    ptr_contain_test_network_ = nullptr;
 }
 
 LinearCRFNetworkCompiler::~LinearCRFNetworkCompiler() {
@@ -23,6 +24,9 @@ LinearCRFNetworkCompiler::~LinearCRFNetworkCompiler() {
 
     //the delete the network
     delete ptr_generic_network_;
+    if(nullptr != ptr_contain_test_network_){
+        delete ptr_contain_test_network_;
+    }
 }
 
 LinearCRFNetwork* LinearCRFNetworkCompiler::Compile(int networkId, Instance* ptr_inst, LocalNetworkParam *ptr_param) {
@@ -156,6 +160,14 @@ LinearCRFNetwork* LinearCRFNetworkCompiler::CompileLabeled(int networkId, Linear
     ptr_network->AddNode(root);
     ptr_network->AddEdge(root,prev_nodes_vec);
     ptr_network->FinalizeNetwork();
+    if(true == NetworkConfig::NETWORK_CONTAIN_TEST){
+        //ptr_contain_test_network_ = CompileUnlabeled(networkId,ptr_inst,ptr_param);
+        if(true == ptr_generic_network_->Contain(ptr_network)){
+            std::cout << "The contain test for Network: "<<networkId<<" is passed"<<std::endl;
+        }
+//        delete ptr_contain_test_network_;
+//        ptr_contain_test_network_ = nullptr;
+    }
     return ptr_network;
 }
 

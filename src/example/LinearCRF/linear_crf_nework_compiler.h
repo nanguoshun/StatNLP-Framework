@@ -30,6 +30,7 @@ private:
     std::vector<std::string> labels_;
     std::map<std::string, int> labels_id_map_;
     LinearCRFNetwork *ptr_generic_network_;
+    LinearCRFNetwork *ptr_contain_test_network_;
     //contains node Id
     long *ptr_all_nodes_;
     //parent index, HyperEdge no(children), Nodes index
