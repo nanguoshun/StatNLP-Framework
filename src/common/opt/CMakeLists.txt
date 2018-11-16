@@ -4,7 +4,7 @@ if(TARGET statnlp_opt_lib)
     message("statnlp_opt_lib is already defined")
 else()
     include_directories(${SHARED_STATNLP_OPT_INCLUDE_DIR})
-    set(LIB_OPT_SRCS lbfgs.cpp math_calc.cpp tools.h)
+    set(LIB_OPT_SRCS lbfgs.cpp math_calc.cpp tools.h ctpl.h)
     add_library(statnlp_opt_lib STATIC ${LIB_OPT_SRCS})
 endif()
 

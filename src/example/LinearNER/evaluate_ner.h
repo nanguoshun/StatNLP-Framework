@@ -63,14 +63,14 @@ public:
     }
 
     /**
-     *
-     * Compare the prediction entity with the groundtruth for each line.
-     *
-     * @param ground_truth_entity_str
-     * @param predict_entity_str
-     * @param result_vec
-     * @return  true: correct, false: incorrect
-     */
+  *
+  * Compare the prediction entity with the groundtruth for each line.
+  *
+  * @param ground_truth_entity_str
+  * @param predict_entity_str
+  * @param result_vec
+  * @return  true: correct, false: incorrect
+  */
     inline static bool Accumulate(std::string ground_truth_entity_str, std::string predict_entity_str,
                                   std::vector<ComType::Results> &result_vec) {
         int size = result_vec.size();
@@ -117,6 +117,7 @@ public:
             return false;
         }
     }
+
 
     /***
      *

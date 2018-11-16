@@ -15,6 +15,7 @@
 #include <vector>
 #include <iomanip>
 #include "src/common/opt/tools.h"
+#include "src/common/opt/ctpl.h"
 
 using namespace std::chrono;
 

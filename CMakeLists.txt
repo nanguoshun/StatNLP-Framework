@@ -1,13 +1,13 @@
 cmake_minimum_required(VERSION 3.10)
 project(statNLP)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 # compiler optimization, -O3 is the highest level.
 set(CMAKE_CXX_FLAGS -pthread)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I /usr/local/include -O0")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I /usr/local/include -O3")
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -O0")
 
 # include the dynet
@@ -28,7 +28,7 @@ find_package(Boost COMPONENTS program_options iostreams serialization REQUIRED)
 include_directories(${Boost_INCLUDE_DIR})
 set(LIBS ${LIBS} ${Boost_LIBRARIES})
 
-find_package(BLAS REQUIRED)
+#find_package(BLAS REQUIRED)
 
 # add subdirectory and the library
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/dynet/dynet)
@@ -39,5 +39,5 @@ add_subdirectory(${PROJECT_SOURCE_DIR}/src/common/types statnlp_type_lib)
 add_subdirectory(${PROJECT_SOURCE_DIR}/src/example/LinearCRF)
 add_subdirectory(${PROJECT_SOURCE_DIR}/src/example/LinearNER)
 add_subdirectory(${PROJECT_SOURCE_DIR}/src/example/ParsingCRF)
-#add_subdirectory(${PROJECT_SOURCE_DIR}/src/example/LatentNER)
+add_subdirectory(${PROJECT_SOURCE_DIR}/src/example/LatentNER)
 

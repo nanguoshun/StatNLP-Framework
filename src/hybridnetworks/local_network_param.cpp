@@ -184,7 +184,7 @@ FeatureManager *LocalNetworkParam::GetFeatureManager() {
 
 void LocalNetworkParam::AddObj(double obj) {
     if (this->is_global_mode_) {
-        this->ptr_fm_->GetGlobalParam()->AddObj(obj);
+        this->ptr_fm_->GetGlobalParam()->AddObj(obj); /*should be syncronized*/
         return;
     }
     this->current_obj_ += obj;

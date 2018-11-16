@@ -162,7 +162,7 @@ void GlobalNetworkParam::LockIt() {
 
 bool GlobalNetworkParam::Update() {
     bool done;
-#ifdef GLOBAL
+#ifdef NON_LOCKER
     std::lock_guard<std::mutex> mtx_locker(mtx);
 #endif
     if(this->IsDiscriminative()){
@@ -318,25 +318,28 @@ void GlobalNetworkParam::ResetCountsAndObj() {
             coef = 1.0;
         }
     }
-    if(IsDiscriminative() && kappa_ > 0){
+    if(IsDiscriminative()){
         for(int feature_no = 0; feature_no < h_feature_size_; ++feature_no){
             ptr_counts_[feature_no] = 0.0;
             //for regulation, update the gradient value;
-            if(feature_no >= fixed_feature_size_){
-                ptr_counts_[feature_no] += 2 * coef * kappa_ * ptr_weights_[feature_no];
+            if(kappa_ > 0){
+                if(feature_no >= fixed_feature_size_){
+                    ptr_counts_[feature_no] += 2 * coef * kappa_ * ptr_weights_[feature_no];
+                }
             }
 #ifdef DEBUG
             std::cout << feature_no<<"th gradient is: "<<this->ptr_counts_[feature_no]<<std::endl;
 #endif
         }
         /*caution:: added by nan, no reguliation in java version*/
-        if(ComParam::USE_HYBRID_NEURAL_FEATURES == NetworkConfig::Feature_Type){
-            ptr_nn_g_->Regularization(coef, kappa_);
-        } else if(ComParam::USE_PURE_NEURAL_FEATURES == NetworkConfig::Feature_Type){
-            ptr_nn_g_->Regularization(coef, kappa_);
+        if(kappa_ > 0){
+            if(ComParam::USE_HYBRID_NEURAL_FEATURES == NetworkConfig::Feature_Type){
+                ptr_nn_g_->Regularization(coef, kappa_);
+            } else if(ComParam::USE_PURE_NEURAL_FEATURES == NetworkConfig::Feature_Type){
+                ptr_nn_g_->Regularization(coef, kappa_);
+            }
         }
     }
-
     obj_current_ = 0.0;
     //for regulation, update the objective value;
     if(IsDiscriminative() && kappa_ > 0){
@@ -360,14 +363,14 @@ void GlobalNetworkParam::ResetCountsAndObj() {
 }
 
 void GlobalNetworkParam::AddObj(double obj) {
-#ifdef GLOBAL
-    std::lock_guard<std::mutex> mtx_locker(mtx);
+#ifdef NON_LOCKER
+    std::lock_guard<std::mutex> lock(mtx);
 #endif
     this->obj_current_ += obj;
 }
 
 void GlobalNetworkParam::AddCount(int feature_index, double count) {
-#ifdef GLOBAL
+#ifdef NON_LOCKER
     std::lock_guard<std::mutex> mtx_locker(mtx);
 #endif
     if(isnan(count)){
@@ -429,7 +432,7 @@ int* GlobalNetworkParam::GetOutsideSharedArraySize() {
 }
 
 void GlobalNetworkParam::AllocateSharedArray(int threadid, int node_count) {
-#ifdef GLOBAL
+#ifdef NON_LOCKER
     std::lock_guard<std::mutex> mtx_locker(mtx);
 #endif
     ptr_inside_shared_array_[threadid] = new double[node_count];

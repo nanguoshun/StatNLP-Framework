@@ -16,8 +16,12 @@ NetworkModel::~NetworkModel() {
   }
   delete []pptr_learner_;
   delete []pptr_decoder_;
-  delete ptr_learn_thread_vector_;
-  delete ptr_decode_thread_vector_;
+  if(nullptr != ptr_learn_thread_vector_){
+      delete ptr_learn_thread_vector_;
+  }
+  if(nullptr != ptr_decode_thread_vector_){
+        delete ptr_decode_thread_vector_;
+  }
 
   for(auto it = ptr_split_inst_test_->begin(); it != ptr_split_inst_test_->end(); ++it){
       delete (*it);
@@ -75,7 +79,10 @@ void NetworkModel::Train(std::vector<Instance *> *ptr_all_instances, std::vector
     //EM style algorithm
 //    long start_time = clock();
     int start_time = GetCurrentMillionSeconds();
+
     ptr_learn_thread_vector_ = new std::vector<std::thread>;
+
+    std::cout << "Totally, we have "<<num_threads_<<" threads"<<std::endl;
     for (int i = 0; i <= max_num_interations; ++i) {
 //        long time = clock();
         int time = GetCurrentMillionSeconds();

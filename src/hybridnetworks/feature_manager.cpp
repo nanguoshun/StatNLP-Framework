@@ -32,14 +32,23 @@ GlobalNetworkParam* FeatureManager::GetGlobalParam() {
     return ptr_param_g_;
 }
 
+/**
+ *
+ * Update the objective and gradient. Note that this function is called after calculation of the gradient and objective and hence  *
+ * it always performs in a single thread, and hence no sycronization for multithreads are needed.
+ *
+ * @param just_update_obj_gradient
+ * @return
+ *
+ */
 bool FeatureManager::Update(bool just_update_obj_gradient) {
-#ifdef GLOBAL
+#ifdef NON_LOCKER
     std::lock_guard<std::mutex> mtx_locker(mtx);
 #endif
     //FIXME: why the updating processes of single thread and mutlithread are different?? the former will be updated in the current iteration
     //FIXME: while the latter will updated in the next iteration ( at the beginning of the function ).
     /**
-     * For the multi-thread mode, update the gradient and then calc the objective.
+     * For the multi-thread mode, update the gradient and then calc the objective. However, these actions are performed in a single thread
      */
     if (this->num_of_threads_ != 1) {
         //FIXME: need modification for neural networks, what is the local features for NN for multithreads program.

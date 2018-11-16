@@ -7,7 +7,7 @@
 ParsingCRFNetworkCompiler::ParsingCRFNetworkCompiler(std::vector<Label *> *ptr_label) {
     num_of_edge_ = 0;
     ptr_label_ = ptr_label;
-    max_len_ = 100;
+    max_len_ = 150;
     CompileUnlabeledGeneric();
     std::cout << "num of nodes is "<<ptr_generic_network_->CountNodes()<<std::endl;
     std::cout << "num of edges is "<<num_of_edge_<<std::endl;

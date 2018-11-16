@@ -40,6 +40,9 @@ void NetworkIDManager::SetCapacity(std::vector<int> cap) {
  *
  */
 long NetworkIDManager::ToHybridNodeID(std::vector<int> &vec) {
+//    for(int i = 0; i < 5; ++i){
+//        std::cout << (*ptr_capacity_vec_)[i] <<std::endl;
+//    }
     long value = vec[0];
     for(int i = 1; i < vec.size(); ++i){
         if(vec[i] >= (*ptr_capacity_vec_)[i]){

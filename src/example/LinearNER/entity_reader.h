@@ -71,10 +71,14 @@ public:
                 ptr_entity_vec = new std::vector<std::string>;
                 prev_line = "";
                 prev_entity_str = "O";
-                sent_id++;
                 if(sent_length > max_len_){
                      max_len_ = sent_length;
                 }
+                if(sent_id > NetworkConfig::MAXIMUM_SENT_NUM){
+                    std::cout << "we have read "<<sent_id<<" sentences"<<std::endl;
+                    return std::make_pair(ptr_inst_vec, ptr_inst_vec_dup);
+                }
+                sent_id++;
                 sent_length = 0;
                 if (number != -1 && ptr_inst->GetSize() == number) break;
                 continue;
