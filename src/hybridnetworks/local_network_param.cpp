@@ -68,24 +68,15 @@ LocalNetworkParam::~LocalNetworkParam() {
         }
         delete ptr_localNNInput2IdMap_vect_; /* delete the map vector finally*/
 
-        /*delete nerual IO*/
-        for(int net = 0; net < neural_net_size_; ++net){
-            for(int num_of_network = 0; num_of_network < num_networks_; ++num_of_network){
-                int count_nodes = 1;//ptr_network->CountNodes();
-                for(int node_no = 0; node_no < count_nodes; ++node_no){
-                    //ptr_cache_[net][num_of_network][node_no]
-                }
-            }
-            delete ptr_neural_cache_[net];
-        }
-
     } else if(ComParam::USE_PURE_NEURAL_FEATURES == NetworkConfig::Feature_Type){
 
     }
+    delete []ptr_fs_;
+    delete []ptr_counts_;
 }
 
 void LocalNetworkParam::DisableCache() {
-    this->ptr_cache_ = nullptr;
+    //this->ptr_cache_ = nullptr;
     this->is_cache_enabled_ = false;
 }
 
@@ -366,4 +357,16 @@ NeuralIO* LocalNetworkParam::GetHyperEdgeIO(Network *ptr_network, int netId, int
         return nullptr;
     }
     return this->ptr_neural_cache_[netId][ptr_network->GetNetworkID()][parent_k][children_k_index];
+}
+
+FeatureArray**** LocalNetworkParam::GetCache() {
+    return ptr_cache_;
+}
+
+NeuralIO***** LocalNetworkParam::GetNeuralIO() {
+    return ptr_neural_cache_;
+}
+
+int LocalNetworkParam::GetNerualNetSize() {
+    return neural_net_size_;
 }

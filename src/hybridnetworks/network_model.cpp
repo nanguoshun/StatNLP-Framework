@@ -27,6 +27,21 @@ NetworkModel::~NetworkModel() {
       delete (*it);
   }
   delete ptr_split_inst_test_;
+  delete ptr_decoding_result_;
+    if(nullptr != ptr_inst_all_){
+        for(auto it = ptr_inst_all_->begin(); it != ptr_inst_all_->end(); ++it){if(nullptr != (*it)) delete (*it);}
+        delete ptr_inst_all_;
+    }
+    if(nullptr != ptr_inst_all_du_){
+        for(auto it = ptr_inst_all_du_->begin(); it != ptr_inst_all_du_->end(); ++it){if(nullptr != (*it)) delete (*it);}
+        delete ptr_inst_all_du_;
+    }
+    /*error for release ptr_inst_vec_test*/
+    if(nullptr != ptr_inst_all_test_){
+        for(auto it = ptr_inst_all_test_->begin(); it != ptr_inst_all_test_->end(); ++it){ if(nullptr != (*it)) { delete (*it); }
+        }
+        delete ptr_inst_all_test_;
+    }
 }
 
 void NetworkModel::Train(std::vector<Instance *> *ptr_all_instances, std::vector<Instance *> *ptr_all_instances_du, int max_num_interations) {
@@ -158,14 +173,14 @@ std::vector<Instance *>* NetworkModel::Decode(std::vector<Instance *> *ptr_test_
     pre_memory_size_ = CommonTool::PrintMemoryUsed("After Decode",pre_memory_size_);
 
     std::cout <<"decode done"<<std::endl;
-    std::vector<Instance *> *ptr_result = new std::vector<Instance *>;
+    ptr_decoding_result_ = new std::vector<Instance *>;
     for(int threadid = 0; threadid < this->num_threads_; ++threadid){
         std::vector<Instance *> *ptr_outputs = pptr_decoder_[threadid]->GetOutPuts();
         for(auto it = ptr_outputs->begin(); it != ptr_outputs->end(); ++it){
-            ptr_result->push_back((*it));
+            ptr_decoding_result_->push_back((*it));
         }
     }
-    return ptr_result;
+    return ptr_decoding_result_;
 }
 
 /**

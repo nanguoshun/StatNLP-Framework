@@ -17,6 +17,8 @@ TableLookupNetwork::TableLookupNetwork() {
 
 TableLookupNetwork::~TableLookupNetwork() {
 
+    delete []ptr_nodes_;
+
     for(int i =0; i < node_size_; ++i){
         int childrens_size = ptr_childrens_size_[i];
         for(int j=0; j < childrens_size; ++j){
@@ -24,15 +26,15 @@ TableLookupNetwork::~TableLookupNetwork() {
         }
         delete ptr_children_[i];
     }
+    delete []ptr_children_;
 
     for(int i =0; i<node_size_; ++i){
-        delete ptr_children_size_[i];
+        delete []ptr_children_size_[i];
     }
+    delete []ptr_children_size_;
 
-    delete ptr_childrens_size_;
+    delete []ptr_childrens_size_;
     //delete ptr_children_tmp_;
-    delete ptr_children_;
-    delete ptr_nodes_;
     if(nullptr != ptr_vec_matrix_){
         for(auto it = ptr_vec_matrix_->begin(); it != ptr_vec_matrix_->end(); ++it){
             std::vector<long> *ptr_vec = (*it);
@@ -239,7 +241,7 @@ int TableLookupNetwork::CountNodes() {
 
 /**
  *
- * return the number of hyperedges root by a parent node, which is indexed by node_index (not the nodeID)..
+ * Return the number of hyperedges root by a parent node, which is indexed by node_index (not the nodeID)..
  *
  * @param node_index
  * @return
@@ -252,11 +254,19 @@ int TableLookupNetwork::GetChildrens_Size(int node_index) {
     return ptr_childrens_size_[node_index];
 }
 
+
+/**
+ * Return an array, which contains the the number nodes for each hyperedge.
+ *
+ * @param node_index
+ * @return
+ */
 int *TableLookupNetwork::GetChildren_Size(int node_index) {
     if(node_index > node_size_){
         std::cerr << "Error: the index is bigger than the node size"<<std::endl;
         return nullptr;
     }
+    //the pointer stores the num of children for each hyperedge
     return ptr_children_size_[node_index];
 }
 

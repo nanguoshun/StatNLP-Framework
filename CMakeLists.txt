@@ -39,5 +39,5 @@ add_subdirectory(${PROJECT_SOURCE_DIR}/src/common/types statnlp_type_lib)
 add_subdirectory(${PROJECT_SOURCE_DIR}/src/example/LinearCRF)
 add_subdirectory(${PROJECT_SOURCE_DIR}/src/example/LinearNER)
 add_subdirectory(${PROJECT_SOURCE_DIR}/src/example/ParsingCRF)
-#add_subdirectory(${PROJECT_SOURCE_DIR}/src/example/LatentNER)
+add_subdirectory(${PROJECT_SOURCE_DIR}/src/example/LatentNER)
 

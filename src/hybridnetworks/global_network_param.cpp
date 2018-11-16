@@ -50,6 +50,7 @@ GlobalNetworkParam::GlobalNetworkParam(int &argc, char **&argv, int max_sent_siz
     ptr_concat_counts_ = nullptr;
     ptr_concat_weights_ = nullptr;
     num_of_instances_ = num_of_sentence;
+    ptr_nn_g_ = nullptr;
     //std::cout << "feature type is "<<NetworkConfig::Feature_Type<<std::endl;
     //std::cout << "feature test is "<<Feature_TEST <<std::endl;
     if(ptr_nf != nullptr){
@@ -86,6 +87,7 @@ GlobalNetworkParam::GlobalNetworkParam(int &argc, char **&argv, int max_sent_siz
 }
 
 GlobalNetworkParam::~GlobalNetworkParam() {
+    std::cout << "start to release GlobalNetworkParam"<<std::endl;
     delete ptr_opt_;
     for(auto type_it = ptr_featureIntMap_->begin(); type_it != ptr_featureIntMap_->end(); ++type_it){
         for(auto output_it = (*type_it).second->begin(); output_it != (*type_it).second->end(); ++output_it){
@@ -111,9 +113,9 @@ GlobalNetworkParam::~GlobalNetworkParam() {
     if(ptr_nn_g_ != nullptr){
         delete ptr_nn_g_;
     }
-
     delete []ptr_weights_;
     delete []ptr_counts_;
+    std::cout << " Releasing GlobalNetworkParam Done!"<<std::endl;
 
     //delete ptr_type2InputMap_;
 }

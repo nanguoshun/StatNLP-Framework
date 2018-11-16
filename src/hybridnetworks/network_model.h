@@ -56,6 +56,7 @@ protected:
     /*for memory testing*/
     long pre_memory_size_;
     long cur_memory_size_;
+    std::vector<Instance *> *ptr_decoding_result_;
 };
 
 #endif //STATNLP_NETWORK_MODEL_H

@@ -16,6 +16,8 @@ public:
     void Touch();
     Network* GetNetwork(int networkId);
     void Run();
+    void ReleaseLocalParamCache();
+    void ReleaseLocalParamNeuralCache();
 protected:
     int thread_id_;
     LocalNetworkParam *ptr_param_l_;

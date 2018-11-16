@@ -114,10 +114,11 @@ namespace NetworkConfig{
     static unsigned LAYERS = 1;
     static unsigned DECAY_ONSET_EPOCH = 10;
     static unsigned VACB_SIZE = 0;
-    static double L2_REGULARIZATION_CONSTANT = 0.0;
+    static double L2_REGULARIZATION_CONSTANT = 0.01;
     static bool REGULARIZE_NEURAL_FEATURES = false;
     static bool NETWORK_CONTAIN_TEST = false;
-    static int MAXIMUM_SENT_NUM = 10;
+    static int MAXIMUM_SENT_NUM = 40;
+
     static bool USE_THREAD_POOL = true;
 }
 

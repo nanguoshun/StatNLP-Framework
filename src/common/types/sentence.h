@@ -22,7 +22,7 @@ public:
         for(int i = 0; i < length_; ++i){
             delete pptr_tokens_[i];
         }
-        delete pptr_tokens_;
+        delete []pptr_tokens_;
         if(nullptr != ptr_str_vec_){
             delete ptr_str_vec_;
             ptr_str_vec_ = nullptr;

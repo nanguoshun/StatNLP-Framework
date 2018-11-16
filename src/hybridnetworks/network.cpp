@@ -35,14 +35,8 @@ Network::~Network() {
         return;
     }
     delete []ptr_max_;
-    //the content of ptr_max_children_no_ are pointers, which are allocated in the class TableLookupNetwork
-    /*for(int i = 0; i < node_size_; ++i){
-        if(nullptr != ptr_max_children_no_[i]){
-            delete ptr_max_children_no_[i];
-            ptr_max_children_no_[i] = nullptr;
-        }
-    }*/
-    /*we will not release ptr_max_children_no_[i] here, whose space is allocated by ptr_children_k.
+    /* We will not release ptr_max_children_no_[i] here, whose space is pointed to ptr_children_k.
+     * These spaces are allocated and will be released by TableLookupNetwork::ptr_children.
      * pls refer to void Network::Max(int nodeId) for details */
     delete []ptr_max_children_no_;
     delete []ptr_max_children_size_;

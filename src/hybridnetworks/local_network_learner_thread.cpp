@@ -24,6 +24,8 @@ LocalNetworkLearnerThread::LocalNetworkLearnerThread(int threadId, FeatureManage
 }
 
 LocalNetworkLearnerThread::~LocalNetworkLearnerThread() {
+    ReleaseLocalParamCache();
+    ReleaseLocalParamNeuralCache();
     delete ptr_param_l_;
     if(ComParam::USE_HYBRID_NEURAL_FEATURES == NetworkConfig::Feature_Type){
 
@@ -75,5 +77,69 @@ void LocalNetworkLearnerThread::Run() {
     for(int networkId = 0; networkId < size ; ++networkId){
         Network *ptr_network = this->GetNetwork(networkId);
         ptr_network->Train();
+    }
+}
+
+/**
+ *
+ * Release the feature array cache allocated in LocalNetworkParam.
+ *
+ */
+void LocalNetworkLearnerThread::ReleaseLocalParamCache() {
+    /*delete ptr_cache*/
+    FeatureArray ****ptr_cache = ptr_param_l_->GetCache();
+    int num_of_network = ptr_inst_vec_->size();
+    for(int networkID =0; networkID < num_of_network; ++networkID){
+        Network *ptr_network = ptr_network_[networkID];
+        int num_of_node = ptr_network->CountNodes();
+        for(int node_no = 0; node_no < num_of_node; ++node_no){
+            if(0 != node_no){ /* the first node is the Leaf node and it is a static memory, and no need release here*/
+                int num_of_hyperedge = ptr_network->GetChildrens_Size(node_no);
+                for(int hyperedgeNo = 0; hyperedgeNo < num_of_hyperedge; ++hyperedgeNo){
+                    FeatureArray *ptr_fa = ptr_cache[networkID][node_no][hyperedgeNo];
+                    if(nullptr != ptr_fa){
+                        delete ptr_fa;
+                    }
+                }
+                delete []ptr_cache[networkID][node_no];
+            }
+        }
+        delete []ptr_cache[networkID];
+    }
+    delete []ptr_cache;
+}
+/**
+ * Release the neural cache allocated in LocalNetworkParam
+ */
+void LocalNetworkLearnerThread::ReleaseLocalParamNeuralCache() {
+    /*delete ptr_cache and ptr_nerualIO in localParam*/
+    NeuralIO ***** ptr_neuralIO = ptr_param_l_->GetNeuralIO();
+    int num_of_network = ptr_inst_vec_->size();
+    /*delete ptr_nerualIO*/
+    if(ComParam::USE_HYBRID_NEURAL_FEATURES == NetworkConfig::Feature_Type){
+        /*delete nerual IO*/
+        int neural_net_size = ptr_param_l_->GetNerualNetSize();
+        for(int net = 0; net < neural_net_size; ++net){
+            for(int networkID = 0; networkID < num_of_network; ++networkID){
+                Network *ptr_network = ptr_network_[networkID];
+                int num_of_node = ptr_network->CountNodes();
+                for(int node_no = 0; node_no < num_of_node; ++node_no){
+                    /*please check the leaf node, i.e, node_no ==0*/
+                    int num_of_hyperedge = ptr_network->GetChildrens_Size(node_no);
+                    for(int hyperedgeNo = 0; hyperedgeNo < num_of_hyperedge; ++hyperedgeNo){
+                        NeuralIO *ptr_io = ptr_neuralIO[net][networkID][node_no][hyperedgeNo];
+                        if(nullptr != ptr_io){
+                            delete ptr_io;
+                        }
+                    }
+                    delete []ptr_neuralIO[net][networkID][node_no];
+                }
+                delete []ptr_neuralIO[net][networkID];
+            }
+            delete []ptr_neuralIO[net];
+        }
+        delete []ptr_neuralIO;
+    } else if(ComParam::USE_PURE_NEURAL_FEATURES == NetworkConfig::Feature_Type){
+        //to be done;
     }
 }

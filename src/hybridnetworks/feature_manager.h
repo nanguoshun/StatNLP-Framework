@@ -37,6 +37,7 @@ protected:
     LocalNetworkParam **pptr_param_l_;
     int num_of_threads_;
     bool cache_enabled_;
+    /*current we don't use this pointer*/
     FeatureArray ****ptr_cache_;
     //int word_hal_window_size_;
     int pos_hal_window_size_;

@@ -41,6 +41,9 @@ public:
     bool BuildNeuralCache(int netId, Network *ptr_network, int parent_k, int children_k_index,ComType::Neural_Input *ptr_edgeinput, int output);
     ComType::Neural_Input_Map_Vect *GetLocalNNInput2Id();
     NeuralIO * GetHyperEdgeIO(Network *ptr_network,int netId, int parent_k, int children_k_index);
+    FeatureArray **** GetCache();
+    NeuralIO ***** GetNeuralIO();
+    int GetNerualNetSize();
 protected:
     int thread_id_;
     FeatureManager *ptr_fm_;
@@ -50,13 +53,13 @@ protected:
     double *ptr_counts_;
     std::unordered_map<int ,int> *ptr_globalFeature2LocalFeature_;
     bool isFinalized_;
-    //a hyperedge, which consists of networkId, parent Id, Child IDs, note that each
+    //a hyperedge, which consists of networkId, parent no, hyperedge no, note that each
     FeatureArray **** ptr_cache_;
     bool is_cache_enabled_;
     int num_networks_;
     bool is_global_mode_;
     int fs_size_;
-    /*network ID( graphical network based on each instances),  */
+    /*neural network ID, graph networkId, parent Id, Child IDs, (graphical network based on each instances),  */
     NeuralIO ***** ptr_neural_cache_;
     /*input map vector for all neural networks, which stores the input vector map, and the output*/
     ComType::Neural_Input_Map_Vect *ptr_localNNInput2IdMap_vect_ ;

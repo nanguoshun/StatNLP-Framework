@@ -26,11 +26,10 @@ LocalNetworkDecoderThread::~LocalNetworkDecoderThread() {
     }
     delete []pptr_network_;
 
-    /*
     for(auto it = pptr_output_inst_vec_->begin(); it != pptr_output_inst_vec_->end(); ++it){
         delete (*it);
-    }*/
-    /*just release the instance vector that is allocated in this class, the instances are released in main function*/
+    }
+    /*just release the instance vector allocated in this class, and instances in vector will be released in main function*/
     delete pptr_output_inst_vec_;
 }
 
@@ -38,7 +37,7 @@ void LocalNetworkDecoderThread::Run() {
     for(int networkId = 0; networkId < sentence_size_; ++networkId){
         //build the network
         pptr_network_[networkId] = ptr_nc_->Compile(networkId,(*pptr_input_inst_vec_)[networkId],ptr_param_l_);
-        //run cky/vertibi like algorithm
+        //run cky/viterbi like algorithm
         this->ptr_param_l_->DisableCache();
         pptr_network_[networkId]->Max();
     }
