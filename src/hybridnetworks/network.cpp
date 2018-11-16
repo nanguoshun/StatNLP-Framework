@@ -49,7 +49,7 @@ Network::~Network() {
 }
 
 void Network::Touch() {
-#ifdef GLOBAL
+#ifdef NON_LOCKER
     std::lock_guard<std::mutex> mtx_locker(mtx);
 #endif
     for (int k = 0; k < this->CountNodes(); ++k) {

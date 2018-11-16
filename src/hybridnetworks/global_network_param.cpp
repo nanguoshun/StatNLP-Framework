@@ -249,16 +249,20 @@ bool GlobalNetworkParam::IsLocked() {
 }
 
 int GlobalNetworkParam::ToFeature(std::string type, std::string output, std::string input) {
+
     if(this->IsLocked()){
         if(ptr_featureIntMap_->end() == ptr_featureIntMap_->find(type)){
+            //std::cerr << "ERRO: the feature is not found in the map after locked"<<std::endl;
             return  -1;
         } else{
             ComType::FeatureInMap_Value *ptr_output2input = ptr_featureIntMap_->find(type)->second;
             if(ptr_output2input->end() == ptr_output2input->find(output)){
+                //std::cerr << "ERRO: the feature is not found in the map after locked"<<std::endl;
                 return  -1;
             } else{
                 std::unordered_map<std::string, int> *ptr_input2id = ptr_output2input->find(output)->second;
                 if(ptr_input2id->end() == ptr_input2id->find(input)){
+                    //std::cerr << "ERRO: the feature is not found in the map after locked"<<std::endl;
                     return  -1;
                 } else{
                     int featureId = ptr_input2id->find(input)->second;
@@ -283,6 +287,7 @@ int GlobalNetworkParam::ToFeature(std::string type, std::string output, std::str
         //std::cout << h_feature_size_<<"th feature is"<<input<<", "<<ptr_map_value->find(output)->first<<std::endl;
         this->h_feature_size_++;
         tmp_count_++;
+        //return this->h_feature_size_;
         //TODO: for type2inputMap.
     }
     int featureId =  ptr_map_value_value->find(input)->second;

@@ -10,9 +10,9 @@
 #include "entity_reader.h"
 #include "evaluate_ner.h"
 int main(int argc, char **argv) {
-    std::string file_name_train = "data/conll2003/eng.train-1";
-    std::string file_name_dev = "data/conll2003/en.testa-1";
-    std::string file_name_test = "data/conll2003/eng.testb-1";
+    std::string file_name_train = "data/conll2003/eng.train";
+    std::string file_name_dev = "data/conll2003/en.testa";
+    std::string file_name_test = "data/conll2003/eng.testb";
     int train_num = -100;
     int test_num = -100;
     std::unordered_map<std::string, int> *ptr_word2int_map = new std::unordered_map<std::string, int>;

@@ -80,6 +80,7 @@ void NetworkModel::Train(std::vector<Instance *> *ptr_all_instances, std::vector
 //    long start_time = clock();
     int start_time = GetCurrentMillionSeconds();
 
+
     ptr_learn_thread_vector_ = new std::vector<std::thread>;
 
     std::cout << "Totally, we have "<<num_threads_<<" threads"<<std::endl;

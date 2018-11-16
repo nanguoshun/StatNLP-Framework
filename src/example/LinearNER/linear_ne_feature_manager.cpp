@@ -34,6 +34,9 @@ FeatureArray* LinearNEFeatureManager::ExtractHelper(Network *ptr_network, int pa
                                                     int children_k_index) {
     LinearNENetwork *ptr_ne_network = (LinearNENetwork *)ptr_network;
     LinearNEInstance *ptr_inst = (LinearNEInstance*)ptr_ne_network->GetInstance();
+    if(ptr_inst->GetInstanceId() > 0){
+        //std::cout << "Extracting features for the sentence: "<<ptr_inst->GetInstanceId()<<std::endl;
+    }
     Sentence *ptr_sent = ptr_inst->GetInput();
     int inst_size = ptr_inst->GetSize();
     long node_id = ptr_ne_network->GetNode(parent);

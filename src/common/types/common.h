@@ -14,8 +14,9 @@
 
 //#define DEBUG = 2;
 
-#ifndef GLOBAL__
-#define GLOBAL__
+
+#ifndef MULTI_THREAD
+#define MULTI_THREAD
 #endif
 
 #ifndef GLOBAL_
@@ -54,7 +55,6 @@ namespace ComParam{
     const char LEFT_BRACKET_CHAR = '(';
     const char RIGHT_BRACKET_CHAR = ')';
     const std::string SPACE_STRING = " ";
-
 }
 
 namespace ComType{
@@ -117,7 +117,7 @@ namespace NetworkConfig{
     static double L2_REGULARIZATION_CONSTANT = 0.0;
     static bool REGULARIZE_NEURAL_FEATURES = false;
     static bool NETWORK_CONTAIN_TEST = false;
-    static int MAXIMUM_SENT_NUM = 40;
+    static int MAXIMUM_SENT_NUM = 10;
     static bool USE_THREAD_POOL = true;
 }
 
