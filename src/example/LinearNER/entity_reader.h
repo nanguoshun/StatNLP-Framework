@@ -21,9 +21,9 @@ typedef std::vector<Instance *> InstenceVector;
 class EntityReader {
 public:
     //the maximum number of the sentence in dataset, and it is used for the feature indexing for neural networks.
-    inline static int max_len_ = 0;
-    inline static std::vector<std::string> all_labels; /*all unique labels*/
-    inline static bool ner_test_flag_ = false;
+    static int max_len_;
+    static std::vector<std::string> *ptr_all_labels_; /*all unique labels*/
+    static bool ner_test_flag_;
     /**
      *
      * Read the dataset and convert them into a specific labeling schemes,
@@ -377,6 +377,11 @@ public:
         }
     }
 };
+
+int EntityReader::max_len_ = 0;
+std::vector<std::string>* EntityReader::ptr_all_labels_ = new std::vector<std::string>; /*all unique labels*/
+bool EntityReader::ner_test_flag_ = false;
+
 
 //int EntityReader::max_len_ = 0;
 

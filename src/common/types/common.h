@@ -117,7 +117,7 @@ namespace NetworkConfig{
     static double L2_REGULARIZATION_CONSTANT = 0.01;
     static bool REGULARIZE_NEURAL_FEATURES = false;
     static bool NETWORK_CONTAIN_TEST = false;
-    static int MAXIMUM_SENT_NUM = 40;
+    static int MAXIMUM_SENT_NUM = 20;
 
     static bool USE_THREAD_POOL = true;
 }

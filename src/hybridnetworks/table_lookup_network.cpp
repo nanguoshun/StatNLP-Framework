@@ -22,9 +22,9 @@ TableLookupNetwork::~TableLookupNetwork() {
     for(int i =0; i < node_size_; ++i){
         int childrens_size = ptr_childrens_size_[i];
         for(int j=0; j < childrens_size; ++j){
-                delete ptr_children_[i][j];
+                delete []ptr_children_[i][j];
         }
-        delete ptr_children_[i];
+        delete []ptr_children_[i];
     }
     delete []ptr_children_;
 

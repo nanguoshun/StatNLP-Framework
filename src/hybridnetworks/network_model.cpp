@@ -10,6 +10,7 @@ NetworkModel::NetworkModel(FeatureManager *ptr_fm, NetworkCompiler *ptr_nc) {
 }
 
 NetworkModel::~NetworkModel() {
+    std::cout << "Start to release NetworkModel"<<std::endl;
   for(int threadId = 0; threadId < this->num_threads_; ++threadId){
       delete pptr_learner_[threadId];
       delete pptr_decoder_[threadId];
@@ -42,6 +43,8 @@ NetworkModel::~NetworkModel() {
         }
         delete ptr_inst_all_test_;
     }
+    std::cout << "Releasing NetworkModel Done!"<<std::endl;
+
 }
 
 void NetworkModel::Train(std::vector<Instance *> *ptr_all_instances, std::vector<Instance *> *ptr_all_instances_du, int max_num_interations) {

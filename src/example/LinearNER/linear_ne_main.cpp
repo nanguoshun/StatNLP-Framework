@@ -9,9 +9,20 @@
 #include "linear_ne_network_compiler.h"
 #include "entity_reader.h"
 #include "evaluate_ner.h"
+
+void ReleaseStaticMemory() {
+    for(auto it = Entity::ptr_entity_->begin(); it != Entity::ptr_entity_->end(); ++it){
+        delete (*it);
+    }
+    delete Entity::ptr_entities_map_;
+    delete Entity::ptr_entity_;
+    delete EntityReader::ptr_all_labels_;
+    delete FeatureArray::PTR_EMPTY;
+}
+
 int main(int argc, char **argv) {
     std::string file_name_train = "data/conll2003/eng.train";
-    std::string file_name_dev = "data/conll2003/en.testa";
+    std::string file_name_dev = "data/conll2003/eng.testa";
     std::string file_name_test = "data/conll2003/eng.testb";
     int train_num = -100;
     int test_num = -100;
@@ -34,11 +45,11 @@ int main(int argc, char **argv) {
     GlobalNetworkParam *ptr_g_param = nullptr;
     if (ComParam::USE_HYBRID_NEURAL_FEATURES == NetworkConfig::Feature_Type) {
         ptr_g_param = new GlobalNetworkParam(argc, argv, EntityReader::max_len_, ptr_inst_vec_train->size(),
-                                             &EntityReader::all_labels,
+                                             EntityReader::ptr_all_labels_,
                                              (NeuralFactory *) NeuralFactory::GetLSTMFactory(), ptr_word2int_map);
     } else if (ComParam::USE_HANDCRAFTED_FEATURES == NetworkConfig::Feature_Type) {
         ptr_g_param = new GlobalNetworkParam(argc, argv, EntityReader::max_len_, ptr_inst_vec_train->size(),
-                                             &EntityReader::all_labels);
+                                             EntityReader::ptr_all_labels_);
     }
     LinearNEFeatureManager *ptr_fm = new LinearNEFeatureManager(ptr_inst_vec_train, ptr_g_param);
     LinearNENetworkCompiler *ptr_nc = new LinearNENetworkCompiler(true, Entity::ptr_entity_);
@@ -46,23 +57,10 @@ int main(int argc, char **argv) {
     ptr_nm->Train(ptr_inst_vec_train, ptr_inst_vec_train_dup, num_iterations);
     std::vector<Instance *> *ptr_predictions = ptr_nm->Decode(ptr_inst_vec_test, false);
     EvaluateNER::Evaluate(ptr_predictions,"data/conll2003/output/neroutput");
+    ReleaseStaticMemory();
     //release memory allocated in main function.
     if(nullptr != ptr_word2int_map){
         delete ptr_word2int_map;
-    }
-    if(nullptr != ptr_inst_vec_train){
-        for(auto it = ptr_inst_vec_train->begin(); it != ptr_inst_vec_train->end(); ++it){if(nullptr != (*it)) delete (*it);}
-        delete ptr_inst_vec_test;
-    }
-    if(nullptr != ptr_inst_vec_train_dup){
-        for(auto it = ptr_inst_vec_train_dup->begin(); it != ptr_inst_vec_train_dup->end(); ++it){if(nullptr != (*it)) delete (*it);}
-        delete ptr_inst_vec_train_dup;
-    }
-
-    //error for release ptr_inst_vec_test
-    if(nullptr != ptr_inst_vec_test){
-        for(auto it = ptr_inst_vec_test->begin(); it != ptr_inst_vec_test->end(); ++it){if(nullptr != (*it)) delete (*it);}
-        delete ptr_inst_vec_test;
     }
     /*release the instances created*/
     {

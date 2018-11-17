@@ -8,6 +8,7 @@
 #include "feature_manager.h"
 #include "../common/types/instance.h"
 #include "network_compiler.h"
+#include <thread>
 
 class LocalNetworkLearnerThread{
 public:

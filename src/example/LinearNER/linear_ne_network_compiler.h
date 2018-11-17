@@ -10,7 +10,7 @@
 #include "linear_ne_instance.h"
 #include "entity.h"
 #include <boost/algorithm/string.hpp>
-#include "entity_reader.h"
+//#include "entity_reader.h"
 
 class LinearNENetworkCompiler: public NetworkCompiler{
 public:

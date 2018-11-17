@@ -22,7 +22,7 @@ LinearNENetworkCompiler::LinearNENetworkCompiler(bool is_useIOBE, std::vector<En
 }
 
 LinearNENetworkCompiler::~LinearNENetworkCompiler() {
-
+    delete ptr_entity_id_map_;
 }
 
 Network *LinearNENetworkCompiler::Compile(int networkId, Instance *ptr_inst, LocalNetworkParam *ptr_param) {
@@ -47,7 +47,6 @@ Instance *LinearNENetworkCompiler::Decompile(Network *ptr_network) {
     //for(auto it = ptr_entity_->begin(); it != ptr_entity_->end(); ++it){
       //  std::cout << "the entity is "<<(*it)->GetForm() <<std::endl;
     //}
-    int max = EntityReader::max_len_;
     for(int i = sent_len-1; i >=0; --i){
         int child_idx = ptr_ne_network->GetMaxPath(node_idx)[0];
         long child_id = ptr_ne_network->GetNode(child_idx);

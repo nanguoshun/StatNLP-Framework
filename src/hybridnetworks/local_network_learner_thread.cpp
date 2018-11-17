@@ -86,7 +86,8 @@ void LocalNetworkLearnerThread::Run() {
  *
  */
 void LocalNetworkLearnerThread::ReleaseLocalParamCache() {
-    /*delete ptr_cache*/
+    /* delete ptr_cache */
+    std::cout << "ThreadID: "<<std::this_thread::get_id()<< " is starting to release the localNetworkParam cache"<<std::endl;
     FeatureArray ****ptr_cache = ptr_param_l_->GetCache();
     int num_of_network = ptr_inst_vec_->size();
     for(int networkID =0; networkID < num_of_network; ++networkID){
@@ -107,17 +108,19 @@ void LocalNetworkLearnerThread::ReleaseLocalParamCache() {
         delete []ptr_cache[networkID];
     }
     delete []ptr_cache;
+    std::cout << "Done!! ThreadID: "<<std::this_thread::get_id()<<" released the localNetworkParam cache"<<std::endl;
 }
 /**
  * Release the neural cache allocated in LocalNetworkParam
  */
 void LocalNetworkLearnerThread::ReleaseLocalParamNeuralCache() {
     /*delete ptr_cache and ptr_nerualIO in localParam*/
-    NeuralIO ***** ptr_neuralIO = ptr_param_l_->GetNeuralIO();
-    int num_of_network = ptr_inst_vec_->size();
     /*delete ptr_nerualIO*/
     if(ComParam::USE_HYBRID_NEURAL_FEATURES == NetworkConfig::Feature_Type){
+        std::cout << "Start to release the ptr_nerualIO cache"<<std::endl;
         /*delete nerual IO*/
+        NeuralIO ***** ptr_neuralIO = ptr_param_l_->GetNeuralIO();
+        int num_of_network = ptr_inst_vec_->size();
         int neural_net_size = ptr_param_l_->GetNerualNetSize();
         for(int net = 0; net < neural_net_size; ++net){
             for(int networkID = 0; networkID < num_of_network; ++networkID){
@@ -139,6 +142,7 @@ void LocalNetworkLearnerThread::ReleaseLocalParamNeuralCache() {
             delete []ptr_neuralIO[net];
         }
         delete []ptr_neuralIO;
+        std::cout << "Releasing the ptr_nerualIO cache Done!"<<std::endl;
     } else if(ComParam::USE_PURE_NEURAL_FEATURES == NetworkConfig::Feature_Type){
         //to be done;
     }
