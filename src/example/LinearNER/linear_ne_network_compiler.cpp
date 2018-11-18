@@ -14,6 +14,7 @@ LinearNENetworkCompiler::LinearNENetworkCompiler(bool is_useIOBE, std::vector<En
     ptr_entity_id_map_ = new std::unordered_map<Entity *, int>;
     for (int i = 0; i < ptr_entity_->size(); ++i) {
         ptr_entity_id_map_->insert(std::make_pair((*ptr_entity)[i], i));
+        std::cout << "tag and id are: " << (*ptr_entity)[i]->GetForm() << "," << i << std::endl;
     }
     num_of_edge_ = 0;
     CompileUnlabeledGeneric();

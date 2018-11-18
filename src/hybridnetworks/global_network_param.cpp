@@ -105,7 +105,6 @@ GlobalNetworkParam::~GlobalNetworkParam() {
         delete []ptr_feature2rep[i];
     }
     delete []ptr_feature2rep;
-
     delete []ptr_inside_shared_array_;
     delete []ptr_outside_shared_array_;
     delete []ptr_shared_array_size_;
@@ -133,13 +132,27 @@ void GlobalNetworkParam::LockIt() {
     //the neural feature size should be set beforehand.
     AllocateSpace();
     //note: no fixed feature size operation in current c++ version.
-    for (int feature_no = this->fixed_feature_size_; feature_no < this->h_feature_size_; ++feature_no) {
-        double random_value = DoubleRandom();
-        random_value = (random_value - 0.5) / 10;
-        this->ptr_weights_[feature_no] = 0.01;// ComParam::RANDOM_INIT_WEIGHT ? random_value:ComParam::FEATURE_INIT_WEIGHT;
+    if(true == NetworkConfig::READ_MODEL){
+        std::ifstream ifs(NetworkConfig::MODEL_FILE);
+        double weight = 0;
+        int index = 0;
+        while (ifs >> weight){
+            if(index >= h_feature_size_){
+                std::cout << "Read Model ERROR: the size of model weight in file is larger than current model"<<std::endl;
+            }
+            ptr_weights_[index] = weight;
+            ++index;
+        }
+        ifs.close();
+    } else {
+        for (int feature_no = this->fixed_feature_size_; feature_no < this->h_feature_size_; ++feature_no) {
+            double random_value = DoubleRandom();
+            random_value = (random_value - 0.5) / 10;
+            ptr_weights_[feature_no] = 0.01;// ComParam::RANDOM_INIT_WEIGHT ? random_value:ComParam::FEATURE_INIT_WEIGHT;
 #ifdef DEBUG
-        std::cout <<feature_no<<"th feature weight is: "<< this->ptr_weights_[feature_no]<<std::endl;
+            std::cout <<feature_no<<"th feature weight is: "<< this->ptr_weights_[feature_no]<<std::endl;
 #endif
+        }
     }
     this->ResetCountsAndObj(); // neural;
     this->ptr_feature2rep = new std::string *[h_feature_size_];
@@ -462,7 +475,7 @@ void GlobalNetworkParam::AllocateSpace() {
         nn_params_size_ = ptr_nn_g_->GetNeuralParamsSize();
         //feature_size_ = nn_output_size_; /*pure neural features.*/
         params_size_ = nn_params_size_;
-    } else {
+    } else if(ComParam::USE_HANDCRAFTED_FEATURES == NetworkConfig::Feature_Type){
         //feature_size_ = h_feature_size_; /*pure hand-crafted features*/
         params_size_ = h_feature_size_; /*the feature size equals to parameter size*/
     }
@@ -500,4 +513,12 @@ void GlobalNetworkParam::InitNNParameter(int &argc, char **&argv, unsigned int r
 
 int GlobalNetworkParam::GetHandCraftFeatureSize() {
     return h_feature_size_;
+}
+
+int GlobalNetworkParam::GetModelParamSize() {
+    return params_size_;
+}
+
+double* GlobalNetworkParam::GetModelWeight() {
+    return ptr_weights_;
 }

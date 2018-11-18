@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.5)
 set(SHARED_STATNLP_TYPE_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 if(TARGET statnlp_type_lib)
     message("statnlp_type_lib is already defined")

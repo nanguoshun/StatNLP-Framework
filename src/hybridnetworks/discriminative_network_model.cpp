@@ -9,14 +9,22 @@ DiscriminativeNetworkModel::DiscriminativeNetworkModel(FeatureManager *ptr_fm, N
 }
 
 DiscriminativeNetworkModel::~DiscriminativeNetworkModel() {
+    std::cout<<"start to release DiscriminativeNetworkModel"<<std::endl;
+    int size = pptr_insts_->size();
     for(auto it = pptr_insts_->begin(); it != pptr_insts_->end(); ++it){
-        delete (*it);
+        std::vector<Instance*> *ptr = (*it);
+        if(nullptr != ptr){
+            //delete ptr;
+        }
     }
     delete pptr_insts_;
+
     for(auto it = ptr_inst_matrix_->begin(); it != ptr_inst_matrix_->end(); ++it){
         delete (*it);
     }
     delete ptr_inst_matrix_;
+    std::cout<<"Releasing DiscriminativeNetworkModel done"<<std::endl;
+
 }
 
 std::vector<std::vector<Instance*>*> * DiscriminativeNetworkModel::SplitInstanceForTrain() {

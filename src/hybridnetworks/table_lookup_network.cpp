@@ -131,10 +131,15 @@ void TableLookupNetwork::AddEdge(long parent, std::vector<long> &children) {
     }
 }
 
-void TableLookupNetwork::CheckLinkValidity(long parent, std::vector<long>& children) {
+bool TableLookupNetwork::CheckLinkValidity(long parent, std::vector<long>& children) {
     for(int i=0, size = children.size(); i<size; ++i){
         if(children[i] >= parent){
             std::cerr << "This link seems to be invalid:"<<std::endl;
+            std::cerr << "Instance ID and Network ID is: "<<GetInstance()->GetInstanceId()<<", "<<GetNetworkID()<<std::endl;
+            std::vector<int> c_vec = NetworkIDManager::ToHybridNodeArray(children[i]);
+            std::vector<int> p_vec = NetworkIDManager::ToHybridNodeArray(parent);
+            std::cout << "children node array is: "<<children[i]<<" "<<c_vec[0]<<","<<c_vec[1]<<","<<c_vec[2]<<","<<c_vec[3]<<std::endl;
+            std::cout << "parent node array is: "<<parent<<" "<<p_vec[0]<<","<<p_vec[1]<<","<<p_vec[2]<<","<<p_vec[3]<<std::endl;
         }
     }
     CheckNodeValidity(parent);
@@ -142,6 +147,7 @@ void TableLookupNetwork::CheckLinkValidity(long parent, std::vector<long>& child
     for(int i=0; i<children_size; ++i){
         CheckNodeValidity(children[i]);
     }
+    return true;
 }
 
 void TableLookupNetwork::CheckNodeValidity(long node) {

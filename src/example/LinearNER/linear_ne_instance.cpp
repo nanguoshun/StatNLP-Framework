@@ -12,10 +12,13 @@ LinearNEInstance::LinearNEInstance(int instance_id, double weight, Sentence *ptr
                                    NER_OutPut_Type *ptr_labels)
         :BaseInstance<LinearNEInstance, Sentence, NER_OutPut_Type>(this, ptr_sent, ptr_labels, instance_id, weight) {
     ptr_input_ = ptr_sent;
+    ptr_str_vec_ = nullptr;
 }
 
 LinearNEInstance::~LinearNEInstance() {
-
+    if(nullptr != ptr_str_vec_){
+        delete ptr_str_vec_;
+    }
 }
 
 int LinearNEInstance::GetSize() {

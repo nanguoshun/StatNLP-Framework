@@ -18,6 +18,7 @@ void ReleaseStaticMemory() {
     delete Entity::ptr_entity_;
     delete EntityReader::ptr_all_labels_;
     delete FeatureArray::PTR_EMPTY;
+    delete NetworkIDManager::ptr_capacity_vec_;
 }
 
 int main(int argc, char **argv) {
@@ -40,8 +41,8 @@ int main(int argc, char **argv) {
                                                                                           ptr_word2int_map, "IOB", test_num,
                                                                                           false,false);
     std::vector<Instance *> *ptr_inst_vec_test = test_data_pair.first;
-    size = ptr_inst_vec_test->size();
-    int num_iterations = 400;
+    //size = ptr_inst_vec_test->size();
+    int num_iterations = 50;
     GlobalNetworkParam *ptr_g_param = nullptr;
     if (ComParam::USE_HYBRID_NEURAL_FEATURES == NetworkConfig::Feature_Type) {
         ptr_g_param = new GlobalNetworkParam(argc, argv, EntityReader::max_len_, ptr_inst_vec_train->size(),
@@ -57,7 +58,6 @@ int main(int argc, char **argv) {
     ptr_nm->Train(ptr_inst_vec_train, ptr_inst_vec_train_dup, num_iterations);
     std::vector<Instance *> *ptr_predictions = ptr_nm->Decode(ptr_inst_vec_test, false);
     EvaluateNER::Evaluate(ptr_predictions,"data/conll2003/output/neroutput");
-    ReleaseStaticMemory();
     //release memory allocated in main function.
     if(nullptr != ptr_word2int_map){
         delete ptr_word2int_map;
@@ -69,6 +69,7 @@ int main(int argc, char **argv) {
         delete ptr_nc;
         delete ptr_nm;
     }
+    ReleaseStaticMemory();
     return 0;
 }
 

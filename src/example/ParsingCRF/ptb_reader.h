@@ -17,7 +17,7 @@ typedef std::vector<Instance *> InstenceVector;
 
 class PTBReader {
 public:
-    inline static int max_len_ = 0; // max length for a sentence;
+    static int max_len_; // max length for a sentence;
     inline static std::pair<InstenceVector *, InstenceVector *>
     ReadPTB(std::string file_name, std::unordered_map<std::string, int> *ptr_word2int_map,
             bool is_train) {
@@ -44,7 +44,7 @@ public:
             ptr_inst_vec->push_back(ptr_tree_crf_inst);
             instanceId++;
             if(is_train){
-                ParsingCRFInstance *ptr_tree_crf_inst_dup =new ParsingCRFInstance(-instanceId,-1.0,ptr_tree->GetXVector(), nullptr);
+                ParsingCRFInstance *ptr_tree_crf_inst_dup = new ParsingCRFInstance(-instanceId,-1.0,ptr_tree->GetXVector(), nullptr);
                 ptr_tree_crf_inst_dup->SetUnlabeled();
                 ptr_inst_vec_dup->push_back(ptr_tree_crf_inst_dup);
             }
@@ -53,5 +53,7 @@ public:
         return pair_pointer;
     }
 };
+
+int PTBReader::max_len_ = 0; // max length for a sentence;
 
 #endif //STATNLP_TREE_READER_H

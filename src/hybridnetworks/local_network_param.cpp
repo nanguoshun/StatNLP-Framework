@@ -18,6 +18,8 @@ LocalNetworkParam::LocalNetworkParam(int threadId, FeatureManager *ptr_fm, int n
     this->isFinalized_ = false;
     this->is_global_mode_ = false;
     ptr_globalFeature2LocalFeature_ = nullptr;
+    ptr_fs_ = nullptr;
+    ptr_counts_ = nullptr;
     // to be done for multithread
     if (!ComParam::_CACHE_FEATURES_DURING_TRAINING) {
         this->DisableCache();
@@ -53,6 +55,8 @@ LocalNetworkParam::LocalNetworkParam(int threadId, FeatureManager *ptr_fm, int n
 
 LocalNetworkParam::~LocalNetworkParam() {
     //TODO for delete
+    delete []ptr_fs_;
+    delete []ptr_counts_;
     if(nullptr != ptr_globalFeature2LocalFeature_){
         delete ptr_globalFeature2LocalFeature_;
         ptr_globalFeature2LocalFeature_ = nullptr;
@@ -71,8 +75,6 @@ LocalNetworkParam::~LocalNetworkParam() {
     } else if(ComParam::USE_PURE_NEURAL_FEATURES == NetworkConfig::Feature_Type){
 
     }
-    delete []ptr_fs_;
-    delete []ptr_counts_;
 }
 
 void LocalNetworkParam::DisableCache() {
@@ -102,6 +104,9 @@ void LocalNetworkParam::FinalizeIt() {
         return;
     }
     fs_size_ = this->ptr_globalFeature2LocalFeature_->size();
+    if(fs_size_ == 0){
+        std::cout << "globalFeature size is 0"<<std::endl;
+    }
     this->ptr_fs_ = new int[fs_size_];
     // to be confirmed for this part: global to local feature.
     for (auto it = this->ptr_globalFeature2LocalFeature_->begin(); it != ptr_globalFeature2LocalFeature_->end(); ++it) {
@@ -147,16 +152,25 @@ FeatureArray *LocalNetworkParam::Extract(Network *ptr_network, int parent_k, int
         if (!this->ptr_cache_[networkId][parent_k]) {
             //size indicates the num of hyperedges rooted by node parent_k;
             int size = ptr_network->GetChildrens_Size(parent_k);
+//            if(1 == networkId && 9 == parent_k){
+//                std::cout <<"network id is 1 and parent no is 9"<<std::endl;
+//            }
             this->ptr_cache_[networkId][parent_k] = new FeatureArray *[size];
             for (int hyperedge_no = 0; hyperedge_no < size; ++hyperedge_no) {
                 this->ptr_cache_[networkId][parent_k][hyperedge_no] = nullptr;
             }
         }
         if (this->ptr_cache_[networkId][parent_k][children_k_index]) {
+//            if(1 == networkId && 9 == parent_k){
+//                std::cout <<"network id, parent no, and child_k_index is"<<networkId<<" "<<parent_k<<" "<<children_k_index<<std::endl;
+//            }
             return ptr_cache_[networkId][parent_k][children_k_index];
         }
     }
     //if the feature Array is not cached in the ptr_cache, then extract it via feature manager
+//    if(1 == ptr_network->GetNetworkID() && 9 == parent_k){
+//        std::cout <<"network id, parent no, and child_k_index is"<<ptr_network->GetNetworkID()<<" "<<parent_k<<" "<<children_k_index<<std::endl;
+//    }
     FeatureArray *ptr_fa = this->ptr_fm_->Extract(ptr_network, parent_k, ptr_children_k, children_k_index);
     //convert the global feature array to local if it works in global mode. i.e., multi-thread.
     if (!is_global_mode_) {

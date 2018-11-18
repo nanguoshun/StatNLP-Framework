@@ -12,6 +12,7 @@
 #include "src/common/types/common.h"
 #include "../../dynet/dynet/dict.h"
 #include <mutex>
+#include <fstream>
 class GlobalNetworkParam{
 public:
     GlobalNetworkParam(int &argc, char **&argv, int max_sent_size, int num_of_sentence,  std::vector<std::string> *ptr_label, NeuralFactory* ptr_nf_ = nullptr,std::unordered_map<std::string,int> *ptr_word2int = nullptr, dynet::Dict *ptr_dict = nullptr);
@@ -53,6 +54,8 @@ public:
     void SetNNParameter();
     void InitNNParameter(int &argc, char **&argv, unsigned random_seed = 0, bool shared_parameters = false);
     int GetHandCraftFeatureSize();
+    int GetModelParamSize();
+    double *GetModelWeight();
 private:
     bool is_locked_;
     //the num of feature (hand-crafted feature size)

@@ -18,9 +18,9 @@ enum LabelType {
 class Label {
 public:
     //rember to release these pointers.
-    inline static std::unordered_map<std::string, Label *> *ptr_labels_map_ = new std::unordered_map<std::string, Label *>;
-    inline static std::unordered_map<int, Label *> *ptr_id2label_map_ = new std::unordered_map<int, Label *>;
-    inline static std::vector<Label *> *ptr_label_ = new std::vector<Label *>;
+    static std::unordered_map<std::string, Label *> *ptr_labels_map_;
+    static std::unordered_map<int, Label *> *ptr_id2label_map_;
+    static std::vector<Label *> *ptr_label_;
     //inline static std::unordered_map<Label*, int> *ptr_lebel2id_map_ = new std::unordered_map<Label*, int>;
     //inline static std::vector<std::string> *ptr_form_vec_ = new std::vector<std::string>;
 
@@ -112,5 +112,6 @@ private:
     LabelType type_;
 
 };
+
 
 #endif //STATNLP_LABEL_H

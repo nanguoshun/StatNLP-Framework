@@ -26,7 +26,7 @@ enum NodeType{
 };
 class CFGRule {
 public:
-    inline static CFG_Rule_Label_Map *ptr_rule_label_map_ = new CFG_Rule_Label_Map;
+    static CFG_Rule_Label_Map *ptr_rule_label_map_;
     inline CFGRule(Label *ptr_left_side, Label *ptr_first_right, Label *ptr_second_right) {
         ptr_left_side_ = ptr_left_side;
         ptr_first_right_ = ptr_first_right;

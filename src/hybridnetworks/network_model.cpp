@@ -7,6 +7,9 @@ NetworkModel::NetworkModel(FeatureManager *ptr_fm, NetworkCompiler *ptr_nc) {
     this->ptr_fm_ = ptr_fm;
     this->ptr_nc_ = ptr_nc;
     this->num_threads_ = ComParam::Num_Of_Threads;
+    this->ptr_inst_all_ = nullptr;
+    this->ptr_inst_all_du_ = nullptr;
+    this->ptr_inst_all_test_ = nullptr;
 }
 
 NetworkModel::~NetworkModel() {
@@ -24,11 +27,6 @@ NetworkModel::~NetworkModel() {
         delete ptr_decode_thread_vector_;
   }
 
-  for(auto it = ptr_split_inst_test_->begin(); it != ptr_split_inst_test_->end(); ++it){
-      delete (*it);
-  }
-  delete ptr_split_inst_test_;
-  delete ptr_decoding_result_;
     if(nullptr != ptr_inst_all_){
         for(auto it = ptr_inst_all_->begin(); it != ptr_inst_all_->end(); ++it){if(nullptr != (*it)) delete (*it);}
         delete ptr_inst_all_;
@@ -43,6 +41,12 @@ NetworkModel::~NetworkModel() {
         }
         delete ptr_inst_all_test_;
     }
+    delete ptr_decoding_result_;
+    for(auto it = ptr_split_inst_test_->begin(); it != ptr_split_inst_test_->end(); ++it){
+        delete (*it);
+    }
+    delete ptr_split_inst_test_;
+
     std::cout << "Releasing NetworkModel Done!"<<std::endl;
 
 }
@@ -57,6 +61,8 @@ void NetworkModel::Train(std::vector<Instance *> *ptr_all_instances, std::vector
     //extract the features.
     pptr_learner_ = new LocalNetworkLearnerThread*[this->num_threads_];
     std::vector<std::vector<Instance*>*> *ptr_inst = this->SplitInstanceForTrain();
+
+  //  std::cout << "the size of ptr_inst is "<<ptr_inst->size()<<std::endl;
 
     int before_touch_time = GetCurrentMillionSeconds();
 
@@ -148,7 +154,12 @@ void NetworkModel::Train(std::vector<Instance *> *ptr_all_instances, std::vector
         }
         ptr_learn_thread_vector_->clear();
     }
+    if(true == NetworkConfig::SAVE_MODEL){
+        SaveModel();
+    }
 }
+
+
 
 std::vector<Instance *>* NetworkModel::Decode(std::vector<Instance *> *ptr_test_instences, bool is_cache_features) {
     this->ptr_inst_all_test_ = ptr_test_instences;
@@ -223,4 +234,15 @@ int NetworkModel::GetCurrentMillionSeconds() {
 
 void NetworkModel::SetPreMemorySize(long size) {
     pre_memory_size_ = size;
+}
+
+void NetworkModel::SaveModel() {
+    std::ofstream ofs(NetworkConfig::MODEL_FILE);
+    int model_param_size = ptr_fm_->GetGlobalParam()->GetModelParamSize();
+    double *ptr_weight = ptr_fm_->GetGlobalParam()->GetModelWeight();
+    for(int i = 0; i < model_param_size; ++i){
+        ofs << ptr_weight[i];
+        ofs << std::endl;
+    }
+    ofs.close();
 }

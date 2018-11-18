@@ -18,9 +18,13 @@ FeatureArray::FeatureArray() {
 }
 
 FeatureArray::~FeatureArray() {
-    delete []ptr_fs_;
+    if(nullptr != ptr_fs_){
+        delete ptr_fs_;
+        ptr_fs_ = nullptr;
+    }
     if(nullptr != ptr_next_){
         delete ptr_next_;
+        ptr_next_ = nullptr;
     }
 }
 

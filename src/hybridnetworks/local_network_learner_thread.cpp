@@ -94,7 +94,12 @@ void LocalNetworkLearnerThread::ReleaseLocalParamCache() {
         Network *ptr_network = ptr_network_[networkID];
         int num_of_node = ptr_network->CountNodes();
         for(int node_no = 0; node_no < num_of_node; ++node_no){
+            long node_id = ptr_network->GetNode(node_no);
             if(0 != node_no){ /* the first node is the Leaf node and it is a static memory, and no need release here*/
+                std::vector<int> vec = NetworkIDManager::ToHybridNodeArray(node_id);
+                int type = vec[vec.size()-1];
+                if(type == ComType::ROOT){ continue;} /*if the */
+                //std::cout << "word, pos, tag, type"<<vec[0]<<" "<<vec[1]<<" "<<vec[2]<<" "<<vec[3]<<std::endl;
                 int num_of_hyperedge = ptr_network->GetChildrens_Size(node_no);
                 for(int hyperedgeNo = 0; hyperedgeNo < num_of_hyperedge; ++hyperedgeNo){
                     FeatureArray *ptr_fa = ptr_cache[networkID][node_no][hyperedgeNo];

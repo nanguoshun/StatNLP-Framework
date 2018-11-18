@@ -6,10 +6,12 @@
 #define STATNLP_TOOLS_H
 
 #include <iostream>
+/*
 #include <mach/vm_statistics.h>
 #include <mach/mach_types.h>
 #include <mach/mach_init.h>
 #include <mach/mach_host.h>
+ */
 class CommonTool{
 public:
 
@@ -32,7 +34,7 @@ public:
      * @return
      */
     inline static long PrintMemoryInfo(std::string info_str){
-        vm_size_t page_size;
+        /*vm_size_t page_size;
         mach_port_t mach_port;
         mach_msg_type_number_t count;
         vm_statistics64_data_t vm_stats;
@@ -52,7 +54,9 @@ public:
             free_memory = free_memory/(1024.0*1024);
             used_memory = used_memory/(1024.0*1024);
             std::cout << info_str <<", the size of free memory: "<< free_memory <<"MB,  the size of used memory: "<<used_memory<<"MB"<<std::endl;
-        }
+        }*/
+        long  free_memory;
+
         return free_memory;
     }
 };

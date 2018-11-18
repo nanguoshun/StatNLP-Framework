@@ -16,6 +16,7 @@
 #include <iomanip>
 #include "src/common/opt/tools.h"
 #include "src/common/opt/ctpl.h"
+#include <fstream>
 
 using namespace std::chrono;
 
@@ -38,6 +39,8 @@ public:
     int GetCurrentMillionSeconds();
 
     void SetPreMemorySize(long size);
+
+    void SaveModel();
 protected:
     FeatureManager *ptr_fm_;
     NetworkCompiler *ptr_nc_;

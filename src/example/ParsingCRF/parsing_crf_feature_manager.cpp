@@ -4,6 +4,11 @@
 
 #include "parsing_crf_feature_manager.h"
 
+CFG_Rule_Label_Map* CFGRule::ptr_rule_label_map_ = new CFG_Rule_Label_Map;
+std::unordered_map<std::string, Label *> *Label::ptr_labels_map_ = new std::unordered_map<std::string, Label *>;
+std::unordered_map<int, Label *> *Label::ptr_id2label_map_ = new std::unordered_map<int, Label *>;
+std::vector<Label *> *Label::ptr_label_ = new std::vector<Label *>;
+
 std::string ParsingCRFFeatureManager::feature_type_[8] = {"LEFT_RIGHT", "FIRST_WORD", "SPLIT_WORD", "LAST_WORD",
                                                        "LAST_WORD_ENDING_1", "LAST_WORD_ENDING_2", "LAST_WORD_ENDING_3",
                                                        "FIRST_CAPITAL"};
@@ -53,7 +58,6 @@ ParsingCRFFeatureManager::ExtractHelper(Network *ptr_network, int parent, int *p
     bool is_first_capital = std::isupper(start_word[0]);
     int first_capital_feature = ptr_param_g_->ToFeature(feature_type_[7], std::to_string(label_id),
                                                         std::to_string(is_first_capital));
-
     /* if the children length equals to 1, then we use 6 features */
     if (1 == children_len) {
         int *ptr_f = new int[6]{first_word_feature, last_word_feature, last1_feature, last2_feature, last3_feature,

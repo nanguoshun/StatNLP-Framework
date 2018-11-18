@@ -35,7 +35,7 @@ namespace ComParam{
     const int OPT_SGD = 0;
     const int OPT_LBFGS = 1;
     const int MAX_LENGTH = 300;
-    const int Num_Of_Threads = 8;
+    const int Num_Of_Threads = 1;
     const bool _CACHE_FEATURES_DURING_TRAINING = true;
     const double DOUBLE_NEGATIVE_INFINITY = -std::numeric_limits<double>::infinity();
     const double TRAIN_MODE_IS_GENERATIVE = false;
@@ -117,9 +117,11 @@ namespace NetworkConfig{
     static double L2_REGULARIZATION_CONSTANT = 0.01;
     static bool REGULARIZE_NEURAL_FEATURES = false;
     static bool NETWORK_CONTAIN_TEST = false;
-    static int MAXIMUM_SENT_NUM = 20;
-
+    static bool SAVE_MODEL = true;
+    static bool READ_MODEL = true;
     static bool USE_THREAD_POOL = true;
+    static std::string MODEL_FILE = "data/model/model.m";
+    static int MAXIMUM_SENT_NUM = 40;
 }
 
 //typedef std::vector<std::vector<std::string>> Input_Str_Matrix;

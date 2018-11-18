@@ -11,7 +11,7 @@ LinearNEFeatureManager::LinearNEFeatureManager() {
 }
 
 LinearNEFeatureManager::~LinearNEFeatureManager() {
-
+    delete []ptr_feature_type_;
 }
 
 LinearNEFeatureManager::LinearNEFeatureManager(std::vector<Instance*> *ptr_inst, GlobalNetworkParam *ptr_param):FeatureManager(ptr_param){

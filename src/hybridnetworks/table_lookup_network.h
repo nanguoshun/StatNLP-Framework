@@ -18,7 +18,7 @@ public:
     void EarlyRelease();
     bool AddNode(long nodeId);
     void AddEdge(long parent, std::vector<long> &children);
-    void CheckLinkValidity(long parentId, std::vector<long> &children);
+    bool CheckLinkValidity(long parentId, std::vector<long> &children);
     void CheckNodeValidity(long nodeId);
     void FinalizeNetwork();
     std::unordered_map<long, int> * FinalizeNodes();
