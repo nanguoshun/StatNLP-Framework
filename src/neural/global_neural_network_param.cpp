@@ -12,16 +12,30 @@
  *
  */
 
+
 GlobalNeuralNetworkParam::GlobalNeuralNetworkParam() {
     ptr_call_dynet_ = new DynetFunctionHelper();
-    local_param_size_ = ComParam::Num_Of_Threads;
+    thread_num_ = ComParam::Num_Of_Threads;//????
+    ptr_all_NNInput2Id_ = new ComType::Neural_Input_Map_Vect;
+    pptr_param_l_ = nullptr;
+    ptr_nn_vec_ = nullptr;
+}
+
+GlobalNeuralNetworkParam::GlobalNeuralNetworkParam(std::vector<NeuralNetwork *> *ptr_nn_vec, DynetFunctionHelper *ptr_dynet_helper) {
+    ptr_nn_vec_ = ptr_nn_vec;
+    ptr_call_dynet_ = ptr_dynet_helper;
+    thread_num_ = ComParam::Num_Of_Threads;//????
+    ptr_all_NNInput2Id_ = new ComType::Neural_Input_Map_Vect;
+    pptr_param_l_ = nullptr;
 }
 
 GlobalNeuralNetworkParam::~GlobalNeuralNetworkParam() {
-    delete ptr_all_NNInput2Id_;
     for (auto it = ptr_all_NNInput2Id_->begin(); it != ptr_all_NNInput2Id_->end(); ++it) {
         /* caution: only release the map */
         delete (*it);
+    }
+    if(nullptr != ptr_all_NNInput2Id_){
+        delete ptr_all_NNInput2Id_;
     }
 }
 
@@ -70,19 +84,23 @@ void GlobalNeuralNetworkParam::ResetAllNNGradient() {
     }
 }
 
-void GlobalNeuralNetworkParam::Initialization(std::vector<NeuralNetwork *> *ptr_nn_vec, int max_len,
-                                              std::unordered_map<std::string, int> *ptr_word2int_map,
+/**
+ * Init the neural network.
+ *
+ * @param ptr_nn_vec
+ * @param max_len
+ * @param ptr_word2int_map
+ * @param ptr_label
+ * @param ptr_dict
+ */
+void GlobalNeuralNetworkParam::Initialization(int max_len, std::unordered_map<std::string, int> *ptr_word2int_map,
                                               std::vector<std::string> *ptr_label, dynet::Dict *ptr_dict) {
-    ptr_nn_vec_ = ptr_nn_vec;
     int id = 0;
-    ptr_all_NNInput2Id_ = new ComType::Neural_Input_Map_Vect;
-    for (auto it = ptr_nn_vec->begin(); it != ptr_nn_vec->end(); ++it) {
+    for (auto it = ptr_nn_vec_->begin(); it != ptr_nn_vec_->end(); ++it) {
         /*set the id of each neural network*/
         (*it)->SetNNID(id);
         /*allocate the space for output and the corresponding gradient*/
-        (*it)->Initialize();
-        /*allocate the space of neural input*/
-        ptr_all_NNInput2Id_->push_back(new ComType::Neural_Input_Map);
+        (*it)->AllocateNeuralParamSpace();
         /* sum the feature size of all neural networks, i.e., the output_size*/
         nn_params_size_ += (*it)->GetParamSize();
         (*it)->SetMaxSentenceLength(max_len);
@@ -91,6 +109,10 @@ void GlobalNeuralNetworkParam::Initialization(std::vector<NeuralNetwork *> *ptr_
         (*it)->SetDict(ptr_dict);
         ++id;
     }
+}
+
+void GlobalNeuralNetworkParam::SetNeuralNetwork(std::vector<NeuralNetwork *> *ptr_nn_vec) {
+    ptr_nn_vec_ = ptr_nn_vec;
 }
 
 void GlobalNeuralNetworkParam::Forward() {
@@ -130,13 +152,22 @@ void GlobalNeuralNetworkParam::SetLocalNetworkParams(LocalNetworkParam **pptr_pa
  */
 void GlobalNeuralNetworkParam::PrepareInputId() {
     int net_size = ptr_nn_vec_->size();
-    for (int param_idx = 0; param_idx < local_param_size_; ++param_idx) {
+
+    for (auto it = ptr_all_NNInput2Id_->begin(); it != ptr_all_NNInput2Id_->end(); ++it) {
+        /* caution: only release the map */
+        delete (*it);
+    }
+    ptr_all_NNInput2Id_->clear();
+    for(int net_id =0; net_id < net_size; ++net_id){
+        ptr_all_NNInput2Id_->push_back(new ComType::Neural_Input_Map);
+    }
+    for (int thread_no = 0; thread_no < thread_num_; ++thread_no) {
         for (int net_id = 0; net_id < net_size; ++net_id) {
             /* we need to copy all maps of NN2ID from LocalNetworkParam */
-            LocalNetworkParam *ptr_pram_l = pptr_param_l_[param_idx];
+            LocalNetworkParam *ptr_pram_l = pptr_param_l_[thread_no];
             ComType::Neural_Input_Map_Vect *ptr_local = ptr_pram_l->GetLocalNNInput2Id();
             ComType::Neural_Input_Map *ptr_local_map = (*ptr_local)[net_id];
-#ifdef DEBUG_NN
+#ifdef DEBUG_NN_
             for (auto it = ptr_local_map->begin(); it != ptr_local_map->end(); ++it) {
                 std::cout << "prepareInput: map value is " << (*it).second << " , sentence is: ";
                 for (auto itt = (*it).first->begin(); itt != (*it).first->end(); ++itt) {
@@ -145,17 +176,23 @@ void GlobalNeuralNetworkParam::PrepareInputId() {
                 std::cout << std::endl;
             }
 #endif
-            /* copy from ptr_local_map to (*ptr_all_NNInput2Id_)[net_id] */
+            /* copy from ptr_local_map to global map (*ptr_all_NNInput2Id_)[net_id] */
             (*ptr_all_NNInput2Id_)[net_id]->insert(ptr_local_map->begin(), ptr_local_map->end());
         }
     }
     /* copy all map of NNInput2Id to the neural network */
     for (int net_id = 0; net_id < net_size; ++net_id) {
         ComType::Neural_Input_Map *ptr_map = (*ptr_nn_vec_)[net_id]->GetNNInput2IdMap();
+        ptr_map->clear();
         ComType::Neural_Input_Map *ptr_all_map_id = (*ptr_all_NNInput2Id_)[net_id];
         int input_id = 0;
         for (auto it = ptr_all_map_id->begin(); it != ptr_all_map_id->end(); ++it) {
             ComType::Input_Str_Vector *ptr_input = (*it).first;
+            for (auto itt = (*it).first->begin(); itt != (*it).first->end(); ++itt) {
+                std::cout << (*itt) << " ";
+            }
+            std::cout << std::endl;
+
             ptr_map->insert(std::make_pair(ptr_input, input_id));
             ++input_id;
         }
@@ -182,6 +219,7 @@ int GlobalNeuralNetworkParam::GetMaxSentenceLength(int netId) {
 }
 
 void GlobalNeuralNetworkParam::SetInstance(std::vector<Instance *> *ptr_inst) {
+    std::cout << "the size of sentence is"<<ptr_inst->size()<<std::endl;
     for (auto it = ptr_nn_vec_->begin(); it != ptr_nn_vec_->end(); ++it) {
         (*it)->SetInstance(ptr_inst);
     }
@@ -237,5 +275,14 @@ void GlobalNeuralNetworkParam::SetMemoryOfParamAndGradient(double *ptr_param, do
             ptr_param_grad += (*ptr_nn_vec_)[i]->GetParamSize();
             ++i;
         }
+    }
+}
+
+/**
+ * set the decoding flag in the decoding phase
+ */
+void GlobalNeuralNetworkParam::SetDecodeState() {
+    for(auto it = ptr_nn_vec_->begin(); it != ptr_nn_vec_->end(); ++it){
+        (*it)->SetTraining(false);
     }
 }

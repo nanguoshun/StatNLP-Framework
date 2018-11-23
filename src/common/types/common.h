@@ -24,7 +24,7 @@
 #endif
 
 //#define DEBUG_NN;
-#define DEBUG_NN_;
+//#define DEBUG_NN;
 
 namespace ComParam{
     const int USE_HANDCRAFTED_FEATURES = 0;
@@ -83,25 +83,31 @@ namespace ComType{
         TRANSITION
     };
     enum NeuralType{
+        NON_NEURAL,
         LSTM,
-        MLP
+        BILSTM,
+        MLP,
+        CNN,
+        CNNBiLSTM,
+        SELF_DEFINED
     };
     struct Results{
         int corr_;
         int erro_;
         int rest_;
     };
+    enum ModelStatus { TRAINING, DEV_IN_TRAINING, TESTING };
+
 }
 
 static int Feature_TEST = 1;
 
 namespace NetworkConfig{
     // the feature type is set as hand-crafted defaultly.
-    static int Feature_Type = ComParam::USE_HANDCRAFTED_FEATURES; //FIXME: the static configuration could not work
+    static int Feature_Type = ComParam::USE_HYBRID_NEURAL_FEATURES; //FIXME: the static configuration could not work
     static int Neural_Type = ComType::NeuralType::LSTM;
     static bool FEATURE_TOUCH_TEST = false;
-    enum ModelStatus { TRAINING, DEV_IN_TRAINING, TESTING };
-    static ModelStatus STATUS = ModelStatus::TRAINING;
+    static ComType::ModelStatus STATUS = ComType::ModelStatus::TRAINING;
     static bool USE_BATCH_TRAINING = false;
     /*neural network related*/
     static int kSOS = 0;
@@ -118,10 +124,11 @@ namespace NetworkConfig{
     static bool REGULARIZE_NEURAL_FEATURES = false;
     static bool NETWORK_CONTAIN_TEST = false;
     static bool SAVE_MODEL = true;
-    static bool READ_MODEL = true;
+    static bool READ_MODEL = false;
     static bool USE_THREAD_POOL = true;
-    static std::string MODEL_FILE = "data/model/model.m";
-    static int MAXIMUM_SENT_NUM = 40;
+    static bool ONLY_WORD_LEVEL_FEAUTER = false;
+    static std::string MODEL_FILE = "data/model/newmodel.m";
+    static int MAXIMUM_SENT_NUM = 30;
 }
 
 //typedef std::vector<std::vector<std::string>> Input_Str_Matrix;

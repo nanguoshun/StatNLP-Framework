@@ -24,6 +24,7 @@ public:
     virtual void InitNNParameter(int &argc, char **&argv, int vocab_size, int label_size,unsigned random_seed = 0, bool shared_parameters = false) = 0;
 protected:
     DynetFunctionHelper *ptr_call_dynet_;
+    std::vector<NeuralNetwork*> *ptr_nn_vec_;
 };
 
 #endif //STATNLP_NEURAL_FACTOR_H

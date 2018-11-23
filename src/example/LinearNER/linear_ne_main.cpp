@@ -42,12 +42,12 @@ int main(int argc, char **argv) {
                                                                                           false,false);
     std::vector<Instance *> *ptr_inst_vec_test = test_data_pair.first;
     //size = ptr_inst_vec_test->size();
-    int num_iterations = 50;
+    int num_iterations = 1000;
     GlobalNetworkParam *ptr_g_param = nullptr;
     if (ComParam::USE_HYBRID_NEURAL_FEATURES == NetworkConfig::Feature_Type) {
-        ptr_g_param = new GlobalNetworkParam(argc, argv, EntityReader::max_len_, ptr_inst_vec_train->size(),
-                                             EntityReader::ptr_all_labels_,
-                                             (NeuralFactory *) NeuralFactory::GetLSTMFactory(), ptr_word2int_map);
+//        ptr_g_param = new GlobalNetworkParam(argc, argv, EntityReader::max_len_, ptr_inst_vec_train->size(),
+//                                             EntityReader::ptr_all_labels_,
+//                                             (NeuralFactory *) NeuralFactory::GetLSTMFactory(), ptr_word2int_map);
     } else if (ComParam::USE_HANDCRAFTED_FEATURES == NetworkConfig::Feature_Type) {
         ptr_g_param = new GlobalNetworkParam(argc, argv, EntityReader::max_len_, ptr_inst_vec_train->size(),
                                              EntityReader::ptr_all_labels_);

@@ -15,7 +15,6 @@ public:
     NeuralNetwork *CreateNN() override;
     void InitNNParameter(int &argc, char **&argv, int vocab_size, int label_size, unsigned random_seed = 0, bool shared_parameters = false) override;
 private:
-    std::vector<NeuralNetwork*> *ptr_nn_vec_;
     LSTMSuperParam param_;
 };
 

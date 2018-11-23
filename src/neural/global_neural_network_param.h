@@ -19,6 +19,8 @@ class GlobalNeuralNetworkParam {
 public:
     GlobalNeuralNetworkParam();
 
+    GlobalNeuralNetworkParam(std::vector<NeuralNetwork *> *ptr_nn_vec, DynetFunctionHelper *ptr_dynet_helper);
+
     ~GlobalNeuralNetworkParam();
 
     void SetLearningState();
@@ -37,9 +39,10 @@ public:
 
     void ResetAllNNGradient();
 
-    void Initialization(std::vector<NeuralNetwork *> *ptr_nn_vec, int max_len,
-                        std::unordered_map<std::string, int> *ptr_word2int_map, std::vector<std::string> *ptr_label,
+    void Initialization(int max_len, std::unordered_map<std::string, int> *ptr_word2int_map, std::vector<std::string> *ptr_label,
                         dynet::Dict *ptr_dict);
+
+    void SetNeuralNetwork(std::vector<NeuralNetwork *> *ptr_nn_vec);
 
     void InitNNParameter(int &argc, char **&argv, unsigned random_seed = 0, bool shared_parameters = false);
 
@@ -67,11 +70,13 @@ public:
 
     void SetMemoryOfParamAndGradient(double *ptr_param, double *ptr_param_grad);
 
+    void SetDecodeState();
 private:
+    /*the number of neural networks, such as two networks including an LSTM and a CNN*/
     std::vector<NeuralNetwork *> *ptr_nn_vec_;
     LocalNetworkParam **pptr_param_l_;
     //instance of LocalNetworkParam, equals to thread number.
-    int local_param_size_;
+    int thread_num_;
     //the neural net's internal weight and gradient;
     StatNLP::NeuralParameter *ptr_nn_param_;
     DynetFunctionHelper *ptr_call_dynet_;

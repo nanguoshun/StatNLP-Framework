@@ -14,7 +14,7 @@ LinearCRFFeatureManager::LinearCRFFeatureManager(GlobalNetworkParam *ptr_param, 
     ptr_feature_type_ = new FeatureT[NUM_FEATURE_TYPE];
     //init the feature type and its ID.
     for(int i = 0; i < NUM_FEATURE_TYPE; ++i){
-        if(i == 0 || i == 4){
+        if(i == 0 || i == 4){ //1123
             ptr_feature_type_[i].isOn = true;
         } else{
             ptr_feature_type_[i].isOn = false;
@@ -35,8 +35,6 @@ FeatureArray* LinearCRFFeatureManager::ExtractHelper(Network *ptr_network, int p
     //FIXME: should get the instance from (LinearCRFInstance*)ptr_crf_network->GetInstance(),
     // but encounters errors. Alternatively, we use ptr_inst_matrix_ to get instance directly.
     LinearCRFInstance *ptr_instance = (LinearCRFInstance*)ptr_crf_network->GetInstance();
-    //Instance *ptr_instance = (*ptr_inst_matrix_)[ptr_crf_network->GetNetworkID()];
-    //LinearCRFInstance *ptr_crf_instance = (LinearCRFInstance*)ptr_crf_instance;
     int size = ptr_instance->GetSize();
     ComType::Input_Str_Matrix *ptr_input = ptr_instance->GetInput();
     long curr_node = ptr_crf_network->GetNode(parent_k);
@@ -52,6 +50,10 @@ FeatureArray* LinearCRFFeatureManager::ExtractHelper(Network *ptr_network, int p
         /* caution: Do release the space allocated here */
         ComType::Neural_Input *ptr_nn_input_pair = new ComType::Neural_Input;
         ComType::Input_Str_Vector *ptr_input_vec = ptr_instance->GetStrVect();
+        for(auto it = ptr_input_vec->begin(); it != ptr_input_vec->end(); ++it){
+            std::cout << (*it) << " ";
+        }
+        std::cout << endl;
         ptr_nn_input_pair->first = ptr_input_vec;
         ptr_nn_input_pair->second = pos;
         AddNeural(ptr_network,0,parent_k,children_k_index,ptr_nn_input_pair,tag_id);

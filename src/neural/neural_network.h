@@ -26,7 +26,7 @@ public:
     NeuralNetwork();
     ~NeuralNetwork();
     void Initialize(int &argc, char **&argv, unsigned random_seed = 0, bool shared_parameters = false);
-    void Initialize();
+    void AllocateNeuralParamSpace();
     int GetNNOutputSize();
     void AddParam();
     virtual void Touch();
@@ -39,7 +39,7 @@ public:
     double GetL2Param();
     void ResetGrad();
     double GetScore(Network *ptr_network, int parent_k, int childeren_k_index);
-    void CopyParams2Dynet();
+    void CopyParams2Dynet(bool printtest = false);
     void CopyGradientFromDynet();
     virtual dynet::Expression BuildForwardGraph(std::vector<std::vector<std::string>*> *pptr_sent) = 0;
     void SetOutputArray(std::vector<dynet::real> &output_vec);

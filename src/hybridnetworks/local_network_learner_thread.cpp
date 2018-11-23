@@ -133,11 +133,13 @@ void LocalNetworkLearnerThread::ReleaseLocalParamNeuralCache() {
                 int num_of_node = ptr_network->CountNodes();
                 for(int node_no = 0; node_no < num_of_node; ++node_no){
                     /*please check the leaf node, i.e, node_no ==0*/
-                    int num_of_hyperedge = ptr_network->GetChildrens_Size(node_no);
-                    for(int hyperedgeNo = 0; hyperedgeNo < num_of_hyperedge; ++hyperedgeNo){
-                        NeuralIO *ptr_io = ptr_neuralIO[net][networkID][node_no][hyperedgeNo];
-                        if(nullptr != ptr_io){
-                            delete ptr_io;
+                    if(0 != node_no){
+                        int num_of_hyperedge = ptr_network->GetChildrens_Size(node_no);
+                        for(int hyperedgeNo = 0; hyperedgeNo < num_of_hyperedge; ++hyperedgeNo){
+                            NeuralIO *ptr_io = ptr_neuralIO[net][networkID][node_no][hyperedgeNo];
+                            if(nullptr != ptr_io){
+                                delete ptr_io;
+                            }
                         }
                     }
                     delete []ptr_neuralIO[net][networkID][node_no];

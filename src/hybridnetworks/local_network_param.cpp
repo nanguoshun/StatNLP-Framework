@@ -273,7 +273,7 @@ int LocalNetworkParam::ToLocalFeature(int f_global) {
  * brief: Add the input and output to a hyper-edge.
  *
  * @param ptr_network: the graphical network that based on each sentence.
- * @param netId: the neural network
+ * @param netId: the neural network ID.
  * @param parent_k: the root node of the hyper-edge
  * @param children_k_index: the kth children
  * @param ptr_input:
@@ -290,7 +290,7 @@ void LocalNetworkParam::AddNeuralHyperEdge(int netId, Network *ptr_network,int p
     ComType::Input_Str_Vector *ptr_nn_input = (*ptr_nn_vec)[netId]->HyperEdgeInput2NNInput(ptr_edge_input);
     ComType::Neural_Input_Map *ptr_input_map = (*ptr_localNNInput2IdMap_vect_)[netId];
 #ifdef DEBUG_NN
-    std::cout << "add nerual sentence is: ";
+    std::cout << "the neural sentence added is: ";
     for(auto it = ptr_nn_input->begin(); it != ptr_nn_input->end(); ++it){
         std::cout << (*it) << " ";
     }
@@ -315,9 +315,9 @@ void LocalNetworkParam::AddNeuralHyperEdge(int netId, Network *ptr_network,int p
  * Allocate the space for neural cache.
  *
  * @param ptr_network
- * @param netId: neural network
- * @param parent_k
- * @param children_k_index
+ * @param netId: neural network ID
+ * @param parent_k: the root node of a set of hyperedges
+ * @param children_k_index: the kth hyperedge which is rooted by the root node.
  * @return
  *
  */
@@ -332,7 +332,7 @@ bool LocalNetworkParam::BuildNeuralCache(int netId, Network *ptr_network, int pa
         }
     }
     int networkID = ptr_network->GetNetworkID();
-    std::cout << "network id is: "<<networkID<<std::endl;
+//    std::cout << "network id is: "<<networkID<<std::endl;
     if (nullptr == ptr_neural_cache_[netId][networkID]) {
         int count_nodes = ptr_network->CountNodes();
         ptr_neural_cache_[netId][networkID] = new NeuralIO **[count_nodes];

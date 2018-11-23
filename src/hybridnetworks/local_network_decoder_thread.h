@@ -15,6 +15,7 @@ public:
     ~LocalNetworkDecoderThread();
     void Run();
     std::vector<Instance*> * GetOutPuts();
+    void Touch();
 private:
     int thread_id_;
     LocalNetworkParam *ptr_param_l_;

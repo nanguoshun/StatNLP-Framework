@@ -13,6 +13,7 @@ LinearCRFNetworkCompiler::LinearCRFNetworkCompiler(std::vector<std::string> &lab
     int i = 0;
     for(std::string label: labels){
         labels_id_map_.insert(std::make_pair(label,i));
+        std::cout << i << "th label is: "<<label << std::endl;
         ++i;
     }
     this->CompileUnlabeledGeneric();
@@ -123,7 +124,7 @@ LinearCRFNetwork* LinearCRFNetworkCompiler::CompileUnlabeled(int networkId, Line
     }*/
     int num_nodes = pos + 1;
     //this pointer will be stored and manageed in local_network_learner_thread.
-//    int *ptr_childrens_size = ptr_generic_network_->GetChildrens_Size();
+    //    int *ptr_childrens_size = ptr_generic_network_->GetChildrens_Size();
 //    int **pptr_children_size = ptr_generic_network_->GetChildren_Size();
 //
 //    LinearCRFNetwork *ptr_linear_crf_network = new LinearCRFNetwork(networkId,ptr_inst, this->ptr_all_nodes_, this->ptr_all_children_, ptr_childrens_size, pptr_children_size,ptr_param,num_nodes);

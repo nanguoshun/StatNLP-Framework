@@ -19,7 +19,7 @@
  * @param ptr_dict
  *
  */
-GlobalNetworkParam::GlobalNetworkParam(int &argc, char **&argv, int max_sent_size, int num_of_sentence, std::vector<std::string> *ptr_label,  NeuralFactory* ptr_nf,std::unordered_map<std::string,int> *ptr_word2int, dynet::Dict *ptr_dict) {
+GlobalNetworkParam::GlobalNetworkParam(int &argc, char **&argv, int max_sent_size, int num_of_sentence, std::vector<std::string> *ptr_label, ComType::NeuralType  neural_type,std::unordered_map<std::string,int> *ptr_word2int, dynet::Dict *ptr_dict) {
     is_locked_ = false;
     h_feature_size_ = 0;
     fixed_feature_size_ = 0;
@@ -53,12 +53,24 @@ GlobalNetworkParam::GlobalNetworkParam(int &argc, char **&argv, int max_sent_siz
     ptr_nn_g_ = nullptr;
     //std::cout << "feature type is "<<NetworkConfig::Feature_Type<<std::endl;
     //std::cout << "feature test is "<<Feature_TEST <<std::endl;
-    if(ptr_nf != nullptr){
+    if(ComType::NeuralType::NON_NEURAL == neural_type){
+        std::cout << "you are using only handcrafted features"<<std::endl;
+    } else{
         if(ComParam::USE_HANDCRAFTED_FEATURES == NetworkConfig::Feature_Type){
             std::cerr<< "You are in the hand-crafted mode  and you can not create the neural instances, please configure NetworkConfig::Feature_Type as ComParam::USE_HYBRID_NEURAL_FEATURES or ComParam::USE_PURE_NEURAL_FEATURES"<<std::endl;
             return;
             //exit (EXIT_FAILURE);
         } else if(ComParam::USE_HYBRID_NEURAL_FEATURES == NetworkConfig::Feature_Type){ /*create neural instances*/
+            NeuralFactory* ptr_nf;
+            if(ComType::NeuralType::LSTM == neural_type) {
+                ptr_nf = (NeuralFactory*)NeuralFactory::GetLSTMFactory();
+            } else if(ComType::NeuralType::BILSTM == neural_type) {
+                //todo::
+            } else if(ComType::NeuralType::CNN == neural_type) {
+                //todo::
+            } else if(ComType::NeuralType::CNNBiLSTM == neural_type) {
+               //todo
+            }
             NetworkConfig::FEATURE_TOUCH_TEST = true;
             ptr_nn_g_ = new GlobalNeuralNetworkParam();
             ptr_nf->SetDynetCallFunctionHelper(ptr_nn_g_->GetDynetFunctionHelper());
@@ -66,16 +78,11 @@ GlobalNetworkParam::GlobalNetworkParam(int &argc, char **&argv, int max_sent_siz
             ptr_nf->InitNNParameter(argc,argv,ptr_word2int->size(),ptr_label->size());
             /* create the neural network*/
             ptr_nf->CreateNN();
-            ptr_nn_g_->Initialization(ptr_nf->GetNeuralInst(),max_sent_size,ptr_word2int,ptr_label,ptr_dict);
+            ptr_nn_g_->SetNeuralNetwork(ptr_nf->GetNeuralInst());
+            ptr_nn_g_->Initialization(max_sent_size,ptr_word2int,ptr_label,ptr_dict);
         } else if(ComParam::USE_PURE_NEURAL_FEATURES == NetworkConfig::Feature_Type){
             NetworkConfig::FEATURE_TOUCH_TEST = true;
             //TODO:
-        }
-    } else {
-        if (ComParam::USE_HANDCRAFTED_FEATURES != NetworkConfig::Feature_Type) {
-            std::cerr << "you enabled the neural but you did't not create the instances." << std::endl;
-            return;
-            //exit(EXIT_FAILURE);
         }
     }
     /*
@@ -215,12 +222,15 @@ bool GlobalNetworkParam::UpdateDiscriminative() {
         }
     }
 
+    for(int i = 0; i < params_size_; ++i){
+        std::cout << i <<"th weight of the neural network is: "<<ptr_weights_[i]<< std::endl;
+    }
+
     double diff = this->obj_current_ - this->obj_prev_;
     //if the objective function converged, finish training
     if(diff >=0 && diff < ComParam::OBJTOL){
         go_on_training = 0;
     }
-
     //if there are 3 consecutive times the decrease in objective function is less than 0.01%.
     double diff_ratio = std::abs(diff/obj_prev_);
     if(diff_ratio < 1e-4){
@@ -502,14 +512,13 @@ double GlobalNetworkParam::GetCurrentObj() {
     return obj_current_;
 }
 
-void GlobalNetworkParam::SetNNParameter() {
-
+void GlobalNetworkParam::SetNNParameter(GlobalNeuralNetworkParam *ptr_nn_g) {
+    ptr_nn_g_ = ptr_nn_g;
 }
 
 void GlobalNetworkParam::InitNNParameter(int &argc, char **&argv, unsigned int random_seed, bool shared_parameters) {
     ptr_nn_g_->InitNNParameter(argc,argv,random_seed,shared_parameters);
 }
-
 
 int GlobalNetworkParam::GetHandCraftFeatureSize() {
     return h_feature_size_;

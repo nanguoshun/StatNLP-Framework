@@ -55,7 +55,8 @@ protected:
     std::vector<std::thread> *ptr_decode_thread_vector_;
     std::vector<Instance *> *ptr_inst_all_test_;
     std::vector<std::vector<Instance *> *> *ptr_split_inst_test_;
-    GlobalNeuralNetworkParam *ptr_nn_g_;
+    GlobalNeuralNetworkParam *ptr_nn_learner_g_;
+    GlobalNeuralNetworkParam *ptr_nn_decoder_g_;
     /*for memory testing*/
     long pre_memory_size_;
     long cur_memory_size_;

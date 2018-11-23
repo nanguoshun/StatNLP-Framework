@@ -28,9 +28,7 @@ public:
     //void Forward();
     void BackWard() override;
     void Update(double count, Network *ptr_network, int parent_k, int children_k_index) override;
-    dynet::Expression GetOutput(const std::vector<int> &sentence, int sent_idx,dynet::ComputationGraph &cg,
                                                   bool apply_dropout);
-    dynet::Expression BuildLSTMGraph(const std::vector<int>& sentence, dynet::ComputationGraph &cg, bool apply_dropout);
     unsigned ReadData(const std::string& filename, std::vector<std::vector<int>>& data);
     void Initialize(int &argc, char **&argv);
     dynet::DynetParams ExtractParam(int& argc, char**& argv);
@@ -43,7 +41,6 @@ public:
     ComType::Input_Str_Vector *HyperEdgeInput2NNInput(void *ptr_edgeInput) override;
 
     void SetInstance(std::vector<Instance *> *ptr_inst) override;
-    dynet::Expression BuildLMGraph2(const vector<float >& sent, dynet::ComputationGraph* ptr_cg, bool apply);
 
 private:
     dynet::LSTMBuilder *ptr_builder_;

@@ -15,7 +15,8 @@
 #include <fstream>
 class GlobalNetworkParam{
 public:
-    GlobalNetworkParam(int &argc, char **&argv, int max_sent_size, int num_of_sentence,  std::vector<std::string> *ptr_label, NeuralFactory* ptr_nf_ = nullptr,std::unordered_map<std::string,int> *ptr_word2int = nullptr, dynet::Dict *ptr_dict = nullptr);
+//    GlobalNetworkParam(int &argc, char **&argv, int max_sent_size, int num_of_sentence,  std::vector<std::string> *ptr_label, std::string ,std::unordered_map<std::string,int> *ptr_word2int = nullptr, dynet::Dict *ptr_dict = nullptr);
+    GlobalNetworkParam(int &argc, char **&argv, int max_sent_size, int num_of_sentence,  std::vector<std::string> *ptr_label, ComType::NeuralType  neural_type = ComType::NeuralType::NON_NEURAL,std::unordered_map<std::string,int> *ptr_word2int = nullptr, dynet::Dict *ptr_dict = nullptr);
     ~GlobalNetworkParam();
     void LockIt();
     bool IsLocked();
@@ -51,7 +52,7 @@ public:
     void AllocateSpace();
     GlobalNeuralNetworkParam *GetNNParam();
     void SetOldObj(double obj);
-    void SetNNParameter();
+    void SetNNParameter(GlobalNeuralNetworkParam *ptr_nn_g);
     void InitNNParameter(int &argc, char **&argv, unsigned random_seed = 0, bool shared_parameters = false);
     int GetHandCraftFeatureSize();
     int GetModelParamSize();

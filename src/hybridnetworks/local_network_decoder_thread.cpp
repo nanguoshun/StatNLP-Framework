@@ -36,9 +36,9 @@ LocalNetworkDecoderThread::~LocalNetworkDecoderThread() {
 void LocalNetworkDecoderThread::Run() {
     for(int networkId = 0; networkId < sentence_size_; ++networkId){
         //build the network
-        pptr_network_[networkId] = ptr_nc_->Compile(networkId,(*pptr_input_inst_vec_)[networkId],ptr_param_l_);
+//        pptr_network_[networkId] = ptr_nc_->Compile(networkId,(*pptr_input_inst_vec_)[networkId],ptr_param_l_);
         //run cky/viterbi like algorithm
-        this->ptr_param_l_->DisableCache();
+//        this->ptr_param_l_->DisableCache();
         pptr_network_[networkId]->Max();
     }
     this->pptr_output_inst_vec_ = new std::vector<Instance *>;
@@ -49,6 +49,14 @@ void LocalNetworkDecoderThread::Run() {
     }
 }
 
+
 std::vector<Instance*> *LocalNetworkDecoderThread::GetOutPuts() {
     return this->pptr_output_inst_vec_;
+}
+
+void LocalNetworkDecoderThread::Touch() {
+    for (int networkId = 0; networkId < sentence_size_; ++networkId) {
+        pptr_network_[networkId] = ptr_nc_->Compile(networkId,(*pptr_input_inst_vec_)[networkId],ptr_param_l_);
+        pptr_network_[networkId]->Touch();
+    }
 }

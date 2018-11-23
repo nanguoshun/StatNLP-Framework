@@ -48,7 +48,10 @@ public:
                            ground_truth_entity_str +
                            " " + predict_entity_str;
                 } else {
-                    line = "erro " + ptr_sent->Get(i)->GetForm() + " " + ptr_sent->Get(i)->GetTag() + " " +
+//                    line = "erro " + ptr_sent->Get(i)->GetForm() + " " + ptr_sent->Get(i)->GetTag() + " " +
+//                           ground_truth_entity_str +
+//                           " " + predict_entity_str;
+                    line = ptr_sent->Get(i)->GetForm() + " " + ptr_sent->Get(i)->GetTag() + " " +
                            ground_truth_entity_str +
                            " " + predict_entity_str;
                 }

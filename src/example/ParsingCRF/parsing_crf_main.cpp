@@ -61,8 +61,6 @@ int main(int argc, char **argv) {
     ptr_model->Decode(ptr_inst_vec_test, false);
     Evaluate::EvaluateResult(ptr_inst_vec_test);
     /* release memory */
-
-
     if (nullptr != ptr_word2int_map) {
         delete ptr_word2int_map;
     }

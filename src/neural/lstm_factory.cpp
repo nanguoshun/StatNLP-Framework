@@ -9,7 +9,10 @@ LSTMFactory::LSTMFactory() {
 }
 
 LSTMFactory::~LSTMFactory() {
-
+   for(auto it = ptr_nn_vec_->begin(); it != ptr_nn_vec_->end(); ++it){
+       delete (*it);
+   }
+   delete ptr_nn_vec_;
 }
 
 void LSTMFactory::InitNNParameter(int &argc, char **&argv, int vocab_size, int label_size, unsigned random_seed, bool shared_parameters) {
@@ -31,6 +34,6 @@ std::vector<NeuralNetwork *>* LSTMFactory::GetNeuralInst() {
 
 NeuralNetwork *LSTMFactory::CreateNN() {
     ptr_nn_vec_ = new std::vector<NeuralNetwork*>;
-    LSTMNetwork *ptr_lstm = new LSTMNetwork(param_);
+    LSTMNetwork *ptr_lstm = new LSTMNetwork(param_); /*create one LSTM here*/
     ptr_nn_vec_->push_back(ptr_lstm);
 }

@@ -184,7 +184,9 @@ void Network::Max(int nodeId) {
                 continue;
             }
             FeatureArray *ptr_fa = this->ptr_param_l_->Extract(this,nodeId,ptr_children_k,children_k);
-            double score = ptr_fa->GetScore(ptr_param_l_);
+            //double score = ptr_fa->GetScore(ptr_param_l_);
+            double score = GetScore(ptr_fa, nodeId, ptr_children_k, children_k);
+
             for(int i=0; i < size; ++i){
                 score += this->ptr_max_[ptr_children_k[i]];
             }

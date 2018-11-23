@@ -370,6 +370,7 @@ protected:
     std::mutex mtx;
     bool neural_feature_inserted_;
     int node_size_;
+    bool is_touched_;
 //    int inside_shared_array_size_;
 //    int outside_shared_array_size_;
 };

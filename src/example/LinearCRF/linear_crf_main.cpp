@@ -15,13 +15,6 @@
 //#include "src/common/common.h"
 #include "data_reader.h"
 
-void Release(std::vector<Instance*> *ptr_vec_all){
-    for(auto it = ptr_vec_all->begin(); it!=ptr_vec_all->end(); ++it){
-        delete (*it);
-    }
-    delete ptr_vec_all;
-}
-
 void ReleaseStaticPointer(){
     delete FeatureArray::PTR_EMPTY;
 //    delete Network::ptr_inside_shared_array_;
@@ -42,9 +35,8 @@ int main(int argc, char **argv){
     GlobalNetworkParam *ptr_param_g = nullptr;
     if(ComParam::USE_HANDCRAFTED_FEATURES == NetworkConfig::Feature_Type){
         ptr_param_g = new GlobalNetworkParam(argc,argv,DataReader::max_len_,ptr_inst_vec_all->size(),DataReader::ptr_all_labels_);
-
     } else if(ComParam::USE_HYBRID_NEURAL_FEATURES == NetworkConfig::Feature_Type){
-        ptr_param_g = new GlobalNetworkParam(argc,argv,DataReader::max_len_,ptr_inst_vec_all->size(),DataReader::ptr_all_labels_, (NeuralFactory*)NeuralFactory::GetLSTMFactory(),ptr_word2int_map,ptr_dict);
+        ptr_param_g = new GlobalNetworkParam(argc,argv,DataReader::max_len_,ptr_inst_vec_all->size(),DataReader::ptr_all_labels_,ComType::NeuralType::LSTM,ptr_word2int_map,ptr_dict);
 //        ptr_param_g = new GlobalNetworkParam(argc,argv,max_len,ptr_inst_vec_all->size(),&all_labels, (NeuralFactory*)NeuralFactory::GetCNNFactory(),ptr_word2int_map,ptr_dict);
     }
     //Below is the only hand-crafted features, and there are no parameters in the constructor of GlobalNetworkParam
@@ -86,9 +78,6 @@ int main(int argc, char **argv){
     delete ptr_nc;
     delete ptr_nm;
     delete ptr_word2int_map;
-    Release(ptr_inst_vec_all);
-    Release(ptr_inst_vec_all_duplicate_);
-    Release(ptr_inst_vec_all_test);
     ReleaseStaticPointer();
 }
 

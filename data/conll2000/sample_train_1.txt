@@ -1,5 +1,10 @@
 Confidence NN B-NP
+
 in IN B-PP
-the DT B-NP
-pound NN I-NP
+
+take VB I-VP
+
+another DT B-CP
+
+substantial JJ I-NP
 
