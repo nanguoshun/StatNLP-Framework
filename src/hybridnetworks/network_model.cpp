@@ -175,8 +175,8 @@ void NetworkModel::Train(std::vector<Instance *> *ptr_all_instances, std::vector
         ptr_learn_thread_vector_->clear();
         //save the model every 30 iteration.
         if (0 == i % 30 && 0 != i) {
-            std::cout << "saving the model to disk....." << std::endl;
             if (true == NetworkConfig::SAVE_MODEL) {
+                std::cout << "saving the model to disk....." << std::endl;
                 SaveModel();
             }
         }
@@ -226,8 +226,9 @@ std::vector<Instance *> *NetworkModel::Decode(std::vector<Instance *> *ptr_test_
 //        std::cout << std::endl;
     if (ComParam::USE_HYBRID_NEURAL_FEATURES == NetworkConfig::Feature_Type) {
         ptr_nn_decoder_g_ = new GlobalNeuralNetworkParam(ptr_nn_learner_g_->GetNNVect(),
-                                                         ptr_nn_learner_g_->GetDynetFunctionHelper());
+                                                         ptr_nn_learner_g_->GetDynetFunctionHelper(),false);
         ptr_nn_decoder_g_->SetLocalNetworkParams(this->ptr_fm_->GetLocalParams());
+        ptr_nn_decoder_g_->ResetNNBeforeDecode();
         ptr_nn_decoder_g_->PrepareInputId();
         ptr_nn_decoder_g_->SetDecodeState();
         ptr_nn_decoder_g_->SetInstance(ptr_test_instences);
@@ -236,10 +237,9 @@ std::vector<Instance *> *NetworkModel::Decode(std::vector<Instance *> *ptr_test_
             //TODO:
         }
         ptr_fm_->GetGlobalParam()->SetNNParameter(ptr_nn_decoder_g_);
-        std::cout << NetworkConfig::STATUS <<std::endl;
-
-        NetworkConfig::STATUS = ComType::ModelStatus::TESTING;
-        std::cout << NetworkConfig::STATUS <<std::endl;
+//        std::cout << NetworkConfig::STATUS <<std::endl;
+//        NetworkConfig::STATUS = ComType::ModelStatus::TESTING;
+//        std::cout << NetworkConfig::STATUS <<std::endl;
 //        std::cout << "neural parameter after decode"<<std::endl;
 //        ptr_vec = ptr_nn_decoder_g_->GetNNVect();
 //        (*ptr_vec)[0]->CopyParams2Dynet(true);

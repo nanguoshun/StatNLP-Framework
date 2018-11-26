@@ -220,6 +220,7 @@ void LocalNetworkParam::AddCount(int f_local, double count) {
         return;
     }
     if (std::isnan(count)) {
+        std::cout << "the cout is: "<<count << std::endl;
         std::cerr << "Error: the count is NAN. @LocalNetworkParam::AddCount" << std::endl;
     }
     if (this->is_global_mode_) {
@@ -360,6 +361,14 @@ ComType::Neural_Input_Map_Vect* LocalNetworkParam::GetLocalNNInput2Id() {
     return  ptr_localNNInput2IdMap_vect_;
 }
 
+/**
+ *
+ * @param ptr_network: graph ( or a sentence)
+ * @param netId: neural network id.
+ * @param parent_k: a root word for a set of hyperedges.
+ * @param children_k_index: the kth hyperedge.
+ * @return
+ */
 NeuralIO* LocalNetworkParam::GetHyperEdgeIO(Network *ptr_network, int netId, int parent_k, int children_k_index) {
     if(nullptr == this->ptr_neural_cache_[netId]){
         return nullptr;

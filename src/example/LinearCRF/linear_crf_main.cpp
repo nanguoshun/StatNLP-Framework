@@ -31,7 +31,7 @@ int main(int argc, char **argv){
     std::unordered_map<std::string,int> *ptr_word2int_map = new std::unordered_map<std::string,int>;
     DataReader::ReadData(train_file_name,ptr_inst_vec_all,ptr_inst_vec_all_duplicate_,false,true,true,ptr_word2int_map);
     DataReader::ReadData(test_file_name,ptr_inst_vec_all_test, nullptr, true, true, false,ptr_word2int_map);
-    int num_iterations = 200;
+    int num_iterations = 1500;
     GlobalNetworkParam *ptr_param_g = nullptr;
     if(ComParam::USE_HANDCRAFTED_FEATURES == NetworkConfig::Feature_Type){
         ptr_param_g = new GlobalNetworkParam(argc,argv,DataReader::max_len_,ptr_inst_vec_all->size(),DataReader::ptr_all_labels_);

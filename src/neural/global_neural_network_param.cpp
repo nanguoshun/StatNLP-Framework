@@ -12,27 +12,34 @@
  *
  */
 
-
-GlobalNeuralNetworkParam::GlobalNeuralNetworkParam() {
+GlobalNeuralNetworkParam::GlobalNeuralNetworkParam(bool is_training) {
     ptr_call_dynet_ = new DynetFunctionHelper();
     thread_num_ = ComParam::Num_Of_Threads;//????
     ptr_all_NNInput2Id_ = new ComType::Neural_Input_Map_Vect;
     pptr_param_l_ = nullptr;
     ptr_nn_vec_ = nullptr;
+    is_training_ = is_training;
 }
 
-GlobalNeuralNetworkParam::GlobalNeuralNetworkParam(std::vector<NeuralNetwork *> *ptr_nn_vec, DynetFunctionHelper *ptr_dynet_helper) {
+GlobalNeuralNetworkParam::GlobalNeuralNetworkParam(std::vector<NeuralNetwork *> *ptr_nn_vec, DynetFunctionHelper *ptr_dynet_helper, bool is_training) {
     ptr_nn_vec_ = ptr_nn_vec;
     ptr_call_dynet_ = ptr_dynet_helper;
     thread_num_ = ComParam::Num_Of_Threads;//????
     ptr_all_NNInput2Id_ = new ComType::Neural_Input_Map_Vect;
     pptr_param_l_ = nullptr;
+    is_training_ = is_training;
 }
 
 GlobalNeuralNetworkParam::~GlobalNeuralNetworkParam() {
+    if(is_training_){
+        /*this instance is allocated in training phase*/
+        delete ptr_call_dynet_;
+    }
     for (auto it = ptr_all_NNInput2Id_->begin(); it != ptr_all_NNInput2Id_->end(); ++it) {
         /* caution: only release the map */
-        delete (*it);
+        if(nullptr != (*it)){
+            delete (*it);
+        }
     }
     if(nullptr != ptr_all_NNInput2Id_){
         delete ptr_all_NNInput2Id_;
@@ -152,12 +159,6 @@ void GlobalNeuralNetworkParam::SetLocalNetworkParams(LocalNetworkParam **pptr_pa
  */
 void GlobalNeuralNetworkParam::PrepareInputId() {
     int net_size = ptr_nn_vec_->size();
-
-    for (auto it = ptr_all_NNInput2Id_->begin(); it != ptr_all_NNInput2Id_->end(); ++it) {
-        /* caution: only release the map */
-        delete (*it);
-    }
-    ptr_all_NNInput2Id_->clear();
     for(int net_id =0; net_id < net_size; ++net_id){
         ptr_all_NNInput2Id_->push_back(new ComType::Neural_Input_Map);
     }
@@ -188,11 +189,10 @@ void GlobalNeuralNetworkParam::PrepareInputId() {
         int input_id = 0;
         for (auto it = ptr_all_map_id->begin(); it != ptr_all_map_id->end(); ++it) {
             ComType::Input_Str_Vector *ptr_input = (*it).first;
-            for (auto itt = (*it).first->begin(); itt != (*it).first->end(); ++itt) {
-                std::cout << (*itt) << " ";
-            }
-            std::cout << std::endl;
-
+//            for (auto itt = (*it).first->begin(); itt != (*it).first->end(); ++itt) {
+//                std::cout << (*itt) << " ";
+//            }
+//            std::cout << std::endl;
             ptr_map->insert(std::make_pair(ptr_input, input_id));
             ++input_id;
         }
@@ -202,7 +202,6 @@ void GlobalNeuralNetworkParam::PrepareInputId() {
 std::vector<NeuralNetwork *> *GlobalNeuralNetworkParam::GetNNVect() {
     return ptr_nn_vec_;
 }
-
 
 bool GlobalNeuralNetworkParam::IsLearningState() {
     bool flag = (*ptr_nn_vec_)[0]->IsTraining();
@@ -237,12 +236,14 @@ void GlobalNeuralNetworkParam::SetMaxSentenceLength(int max_len) {
  *
  */
 void GlobalNeuralNetworkParam::AllocateOutSpaceBeforehand() {
+    nn_output_size_ = 0;
     for (auto it = ptr_nn_vec_->begin(); it != ptr_nn_vec_->end(); ++it) {
         if ((*it)->IsAllocateOutputBeforehand()) {
             (*it)->AllocateOutputSpace();
         }
         nn_output_size_ += (*it)->GetNNOutputSize();
     }
+    std::cout << "nn_output_size_ is "<<nn_output_size_<<std::endl;
 }
 
 int GlobalNeuralNetworkParam::GetNeuralParamsSize() {
@@ -256,7 +257,7 @@ void GlobalNeuralNetworkParam::Regularization(double coef, double kappa) {
 }
 
 /**
- * Set the memory adress of param array and gradient array.
+ * Set the memory address of param array and gradient array.
  *oti
  * @param ptr_param
  * @param ptr_param_grad
@@ -284,5 +285,20 @@ void GlobalNeuralNetworkParam::SetMemoryOfParamAndGradient(double *ptr_param, do
 void GlobalNeuralNetworkParam::SetDecodeState() {
     for(auto it = ptr_nn_vec_->begin(); it != ptr_nn_vec_->end(); ++it){
         (*it)->SetTraining(false);
+    }
+}
+
+void GlobalNeuralNetworkParam::ResetNNBeforeDecode() {
+    for (auto it = ptr_all_NNInput2Id_->begin(); it != ptr_all_NNInput2Id_->end(); ++it) {
+        /* caution: only release the map */
+        delete (*it);
+    }
+    ptr_all_NNInput2Id_->clear();
+    for (int net_id = 0; net_id <  ptr_nn_vec_->size(); ++net_id) {
+        ComType::Neural_Input_Map *ptr_map = (*ptr_nn_vec_)[net_id]->GetNNInput2IdMap();
+        ptr_map->clear();
+    }
+    for(auto it = ptr_nn_vec_->begin(); it != ptr_nn_vec_->end(); ++it){
+        (*it)->ReleaseOutputGradSpace();
     }
 }

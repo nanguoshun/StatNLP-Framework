@@ -17,9 +17,9 @@ class LocalNetworkParam;
 
 class GlobalNeuralNetworkParam {
 public:
-    GlobalNeuralNetworkParam();
+    GlobalNeuralNetworkParam(bool is_training);
 
-    GlobalNeuralNetworkParam(std::vector<NeuralNetwork *> *ptr_nn_vec, DynetFunctionHelper *ptr_dynet_helper);
+    GlobalNeuralNetworkParam(std::vector<NeuralNetwork *> *ptr_nn_vec, DynetFunctionHelper *ptr_dynet_helper, bool isTraining);
 
     ~GlobalNeuralNetworkParam();
 
@@ -71,8 +71,11 @@ public:
     void SetMemoryOfParamAndGradient(double *ptr_param, double *ptr_param_grad);
 
     void SetDecodeState();
+
+    void ResetNNBeforeDecode();
 private:
     /*the number of neural networks, such as two networks including an LSTM and a CNN*/
+    bool is_training_;
     std::vector<NeuralNetwork *> *ptr_nn_vec_;
     LocalNetworkParam **pptr_param_l_;
     //instance of LocalNetworkParam, equals to thread number.

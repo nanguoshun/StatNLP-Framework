@@ -100,6 +100,7 @@ private:
     GlobalNeuralNetworkParam *ptr_nn_g_;
     int batchSize_;
     int num_of_instances_;
+    NeuralFactory* ptr_nf_;
 };
 
 #endif //STATNLP_GLOBAL_NETWORK_PARAM_H

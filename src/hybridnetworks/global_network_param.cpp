@@ -11,7 +11,7 @@
  *
  * @param argc
  * @param argv
- * @param max_sent_size: the max length of sentence in dataset.
+ * @param max_sent_size: the max length of a sentence in dataset.
  * @param num_of_sentence:
  * @param ptr_label
  * @param ptr_nf
@@ -61,9 +61,8 @@ GlobalNetworkParam::GlobalNetworkParam(int &argc, char **&argv, int max_sent_siz
             return;
             //exit (EXIT_FAILURE);
         } else if(ComParam::USE_HYBRID_NEURAL_FEATURES == NetworkConfig::Feature_Type){ /*create neural instances*/
-            NeuralFactory* ptr_nf;
             if(ComType::NeuralType::LSTM == neural_type) {
-                ptr_nf = (NeuralFactory*)NeuralFactory::GetLSTMFactory();
+                ptr_nf_ = (NeuralFactory*)NeuralFactory::GetLSTMFactory();
             } else if(ComType::NeuralType::BILSTM == neural_type) {
                 //todo::
             } else if(ComType::NeuralType::CNN == neural_type) {
@@ -72,13 +71,13 @@ GlobalNetworkParam::GlobalNetworkParam(int &argc, char **&argv, int max_sent_siz
                //todo
             }
             NetworkConfig::FEATURE_TOUCH_TEST = true;
-            ptr_nn_g_ = new GlobalNeuralNetworkParam();
-            ptr_nf->SetDynetCallFunctionHelper(ptr_nn_g_->GetDynetFunctionHelper());
+            ptr_nn_g_ = new GlobalNeuralNetworkParam(true);
+            ptr_nf_->SetDynetCallFunctionHelper(ptr_nn_g_->GetDynetFunctionHelper());
             /* init the super-parameters of neural network*/
-            ptr_nf->InitNNParameter(argc,argv,ptr_word2int->size(),ptr_label->size());
+            ptr_nf_->InitNNParameter(argc,argv,ptr_word2int->size(),ptr_label->size());
             /* create the neural network*/
-            ptr_nf->CreateNN();
-            ptr_nn_g_->SetNeuralNetwork(ptr_nf->GetNeuralInst());
+            ptr_nf_->CreateNN();
+            ptr_nn_g_->SetNeuralNetwork(ptr_nf_->GetNeuralInst());
             ptr_nn_g_->Initialization(max_sent_size,ptr_word2int,ptr_label,ptr_dict);
         } else if(ComParam::USE_PURE_NEURAL_FEATURES == NetworkConfig::Feature_Type){
             NetworkConfig::FEATURE_TOUCH_TEST = true;
@@ -123,6 +122,7 @@ GlobalNetworkParam::~GlobalNetworkParam() {
     delete []ptr_counts_;
     std::cout << " Releasing GlobalNetworkParam Done!"<<std::endl;
 
+    delete ptr_nf_;
     //delete ptr_type2InputMap_;
 }
 /*
@@ -220,10 +220,6 @@ bool GlobalNetworkParam::UpdateDiscriminative() {
             ptr_weights_[i] = ptr_weights_[i] - ComParam::LEARNING_RATE * ptr_counts_[i];
             //std::cout << i << "th weights after is: "<<ptr_weights_[i]<<std::endl;
         }
-    }
-
-    for(int i = 0; i < params_size_; ++i){
-        std::cout << i <<"th weight of the neural network is: "<<ptr_weights_[i]<< std::endl;
     }
 
     double diff = this->obj_current_ - this->obj_prev_;
@@ -348,6 +344,7 @@ void GlobalNetworkParam::ResetCountsAndObj() {
             coef = 1.0;
         }
     }
+    /*gradient regularization*/
     if(IsDiscriminative()){
         for(int feature_no = 0; feature_no < h_feature_size_; ++feature_no){
             ptr_counts_[feature_no] = 0.0;
@@ -361,14 +358,14 @@ void GlobalNetworkParam::ResetCountsAndObj() {
             std::cout << feature_no<<"th gradient is: "<<this->ptr_counts_[feature_no]<<std::endl;
 #endif
         }
-        /*caution:: added by nan, no reguliation in java version*/
-        if(kappa_ > 0){
-            if(ComParam::USE_HYBRID_NEURAL_FEATURES == NetworkConfig::Feature_Type){
-                ptr_nn_g_->Regularization(coef, kappa_);
-            } else if(ComParam::USE_PURE_NEURAL_FEATURES == NetworkConfig::Feature_Type){
-                ptr_nn_g_->Regularization(coef, kappa_);
-            }
-        }
+        /*caution:: added by nan, no regularization in java version*/
+//        if(kappa_ > 0){
+//            if(ComParam::USE_HYBRID_NEURAL_FEATURES == NetworkConfig::Feature_Type){
+//                ptr_nn_g_->Regularization(coef, kappa_);
+//            } else if(ComParam::USE_PURE_NEURAL_FEATURES == NetworkConfig::Feature_Type){
+//                ptr_nn_g_->Regularization(coef, kappa_);
+//            }
+//        }
     }
     obj_current_ = 0.0;
     //for regulation, update the objective value;
@@ -381,7 +378,8 @@ void GlobalNetworkParam::ResetCountsAndObj() {
             for(auto it = ptr_nn_vec->begin(); it != ptr_nn_vec->end(); ++it){
                 (*it)->SetScale(coef);
                 if(NetworkConfig::REGULARIZE_NEURAL_FEATURES){
-                    obj_current_ += (*it)->GetL2Param();
+//                    obj_current_ += (*it)->GetL2Param();
+                    obj_current_ +=  - (kappa_ * (*it)->GetL2Param()); //FIXME: need further confirmation.
                 }
             }
         } else if(ComParam::USE_PURE_NEURAL_FEATURES == NetworkConfig::Feature_Type){

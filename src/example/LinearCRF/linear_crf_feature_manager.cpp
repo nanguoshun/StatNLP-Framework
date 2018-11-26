@@ -50,10 +50,10 @@ FeatureArray* LinearCRFFeatureManager::ExtractHelper(Network *ptr_network, int p
         /* caution: Do release the space allocated here */
         ComType::Neural_Input *ptr_nn_input_pair = new ComType::Neural_Input;
         ComType::Input_Str_Vector *ptr_input_vec = ptr_instance->GetStrVect();
-        for(auto it = ptr_input_vec->begin(); it != ptr_input_vec->end(); ++it){
-            std::cout << (*it) << " ";
-        }
-        std::cout << endl;
+//        for(auto it = ptr_input_vec->begin(); it != ptr_input_vec->end(); ++it){
+//            std::cout << (*it) << " ";
+//        }
+//        std::cout << endl;
         ptr_nn_input_pair->first = ptr_input_vec;
         ptr_nn_input_pair->second = pos;
         AddNeural(ptr_network,0,parent_k,children_k_index,ptr_nn_input_pair,tag_id);

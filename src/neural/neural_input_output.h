@@ -17,7 +17,9 @@ public:
     void SetInput(ComType::Neural_Input *ptr_input);
     void SetOutput(int output);
 private:
+    //contains the sentence and the position of a word.
     ComType::Neural_Input* ptr_input_;
+    //label index of the word.
     int output_;
 };
 

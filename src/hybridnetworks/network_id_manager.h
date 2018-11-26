@@ -17,5 +17,7 @@ public:
     static std::vector<int> ToHybridNodeArray(long NodeId);
     static int BinarySearch(long *ptr_array, int array_size, long value);
     static std::vector<int> *ptr_capacity_vec_;
+    static int ToNeuralPositionID(std::vector<int> &vec);
+    static std::vector<int> ToNerualPostionArray(int id);
 };
 #endif //STATNLP_NETWORKIDMANAGER_H

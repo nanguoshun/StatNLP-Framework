@@ -19,7 +19,7 @@ void DynetFunctionHelper::Initialize(int &argc, char **&argv, unsigned int rando
 
 void DynetFunctionHelper::SetParameters(int &argc, char **&argv) {
     get_args(argc, argv, params_, TRAIN);
-    params_.INPUT_DIM = 50;
+    params_.INPUT_DIM = 200;
 }
 
 StatNLP::SuperNNParameter DynetFunctionHelper::GetParam() {

@@ -23,13 +23,14 @@ LSTMNetwork::LSTMNetwork(LSTMSuperParam &param) {
 }
 
 LSTMNetwork::~LSTMNetwork() {
-    delete ptr_model_;
+//    delete ptr_model_;
     delete ppptr_output_matrix_;
     delete ptr_builder_;
+//    delete ptr_training_;
 }
 
 void LSTMNetwork::AddParameters(dynet::ParameterCollection &model, LSTMSuperParam &param) {
-    p_c_ = model.add_lookup_parameters(5,{param.input_dim_}); // 1123
+    p_c_ = model.add_lookup_parameters(param.vocab_size_,{param.input_dim_}); // 1123
 
 //    p_c_ = model.add_lookup_parameters(param.vocab_size_,{param.label_size_});
 
@@ -44,27 +45,32 @@ void LSTMNetwork::AddParameters(dynet::ParameterCollection &model, LSTMSuperPara
     param_size_ = model.parameter_count();
 }
 
-void LSTMNetwork::Initialize(int &argc, char **&argv) {
-    dynet::DynetParams dyparams = ExtractParam(argc,argv);
-    dyparams.random_seed = 0;
-    NeuralNetwork::AllocateNeuralParamSpace();
-    Params params;
-    get_args(argc,argv,params,Task::TRAIN);
-    NetworkConfig::kSOS = dict_.convert("<s>");
-    NetworkConfig::kEOS = dict_.convert("</s>");
-    ptr_model_ = new dynet::ParameterCollection();
-    ptr_training_ = new std::vector<std::vector<int>>;
-    {
-        std::string train_file_name = params.train_file;
-        std::cerr << "Reading training data from " << train_file_name << " ...\n";
-        int ttoks = ReadData(train_file_name, *ptr_training_);
-        int tlc = ptr_training_->size();
-        std::cerr << tlc << " lines, " << ttoks << " tokens, " << dict_.size() << " types\n";
-    }
-    dict_.freeze();
-    dict_.set_unk("<unk>");
-    //AddParameters(*ptr_model_,dict_.size(),params.LAYERS,params.INPUT_DIM,params.HIDDEN_DIM,params.dropout_rate);
-}
+/**
+ * we didn't call this function in currrent implementation.
+ *
+ * @param argc
+ * @param argv
+ */
+//void LSTMNetwork::Initialize(int &argc, char **&argv) {
+//    dynet::DynetParams dyparams = ExtractParam(argc,argv);
+//    dyparams.random_seed = 0;
+//    NeuralNetwork::AllocateNeuralParamSpace();
+//    Params params;
+//    get_args(argc,argv,params,Task::TRAIN);
+//    ptr_model_ = new dynet::ParameterCollection();
+//    NetworkConfig::kSOS = dict_.convert("<s>");
+//    NetworkConfig::kEOS = dict_.convert("</s>");
+//    ptr_training_ = new std::vector<std::vector<int>>;
+//    {
+//        std::string train_file_name = params.train_file;
+//        std::cerr << "Reading training data from " << train_file_name << " ...\n";
+//        int ttoks = ReadData(train_file_name, *ptr_training_);
+//        int tlc = ptr_training_->size();
+//        std::cerr << tlc << " lines, " << ttoks << " tokens, " << dict_.size() << " types\n";
+//    }
+//    dict_.freeze();
+//    dict_.set_unk("<unk>");
+//}
 
 dynet::DynetParams LSTMNetwork::ExtractParam(int &argc, char **&argv) {
     return dynet::extract_dynet_params(argc,argv);
@@ -80,14 +86,11 @@ void LSTMNetwork::Touch() {
  */
 void LSTMNetwork::BackWard() {
     NeuralNetwork::BackWard();
-    //ppptr_gradient_[]
-    //dynet::Expression expr = gradient * output
 }
 
 void LSTMNetwork::Update(double count, Network *ptr_network, int parent_k, int children_k_index) {
     NeuralNetwork::Update(count,ptr_network,parent_k,children_k_index);
 }
-
 
 // Read the dataset, returns the number of tokens
 unsigned LSTMNetwork::ReadData(const std::string &filename, std::vector<std::vector<int>> &data) {
@@ -110,23 +113,6 @@ unsigned LSTMNetwork::ReadData(const std::string &filename, std::vector<std::vec
 
 
 dynet::Expression LSTMNetwork::BuildForwardGraph(std::vector<std::vector<std::string>*> *pptr_sent) {
-    /*std::vector<float> temp;
-    std::string good[3] = {"I", "am", "Good"};
-    for(int i = 0; i< 3; i++){
-//        std::string word = good[i];
-        //float a = dict_.convert(word);
-        temp.push_back(i);
-    }
-
-    for(int i = 0; i< 3; ++i){
-        if(dict_.contains(good[i])){
-            //p_c_.initialize(dict_.convert(good[i]),temp);
-        } else{
-            std::cout<<"dic doesn't contain the word"<<std::endl;
-        }
-    }
-    return BuildLMGraph2(temp,ptr_cg_,false);
-    */
     dynet::Expression r_exp = dynet::parameter(*ptr_cg_,p_R_); //1123
     dynet::Expression bais_exp = dynet::parameter(*ptr_cg_,p_bias_);//1123
     //std::cout << "dim of r_exp is:"<<r_exp.dim() <<std::endl;
@@ -163,7 +149,8 @@ dynet::Expression LSTMNetwork::BuildForwardGraph(std::vector<std::vector<std::st
 //        continue;
 
 //below is commented 1123f
-        std::cout << "dim of lookup expression for position "<<pos<<" th is "<<expr.dim()<<std::endl;
+        //std::cout << "dim of lookup expression for position "<<pos<<" th is "<<expr.dim()<<std::endl;
+
         dynet::Expression predict_exp = ptr_builder_->add_input(expr);
         //std::cout << "dim of predict expression is "<<predict_exp.dim()<<std::endl;
         dynet::Expression output_exp = r_exp * predict_exp + bais_exp;
@@ -183,24 +170,45 @@ dynet::Expression LSTMNetwork::BuildForwardGraph(std::vector<std::vector<std::st
  *
  *         S_1, S_2, S_3..., S_N
  *
- *  Pos_1  idx
- *  Pos_2
+ *  Pos_1  l_1
+ *         l_2
+ *         ...
+ *         l_M
+ *  Pos_2  l_1
+ *         l_2
+ *         ...
+ *         l_M
  *  ...
  *
+ * Pos_L   ....
  *
  *
  * @param ptr_edgeInput: a pair which consists of a sentence vector and a position (actually a word) in the sentence.
+ * @param output_label: the label of the word.
  * @return
  */
-int LSTMNetwork::HyperEdgeInput2OutputRowIndex(void *ptr_edgeInput,int output_label) {
-    ComType::Neural_Input *ptr_sent_and_pos = (ComType::Neural_Input *)ptr_edgeInput;
+ /**
+  *
+  * @param ptr_edgeInput
+  * @return
+  */
+int LSTMNetwork::HyperEdgeInput2OutputRowIndex(NeuralIO *ptr_io) {
+     ComType::Neural_Input *ptr_sent_and_pos = ptr_io->GetInput();
+     int output_label = ptr_io->GetOutput();
+#ifdef DEBUG_NN_
+     ComType::Input_Str_Vector *ptr_input_vec = ptr_sent_and_pos->first;
+            std::cout << "get score input is: ";
+            for(auto it = ptr_input_vec->begin(); it != ptr_input_vec->end(); ++it){
+               std::cout <<(*it)<<" ";
+            }
+            std::cout <<std::endl;
+#endif
     int senId = GetNNInputID(ptr_sent_and_pos->first);
     int pos = ptr_sent_and_pos->second;
     int nn_input_size = GetNNInputSize();
     int pos_index = pos * label_size_ * nn_input_size;
     int rest_index = output_label * nn_input_size + senId;
     int row = pos_index + rest_index;
-    //int row = pos * nn_input_size + senId;
     return row;
 }
 
@@ -232,16 +240,24 @@ ComType::Input_Str_Vector *LSTMNetwork::HyperEdgeInput2NNInput(void *ptr_edgeInp
  */
 
 void LSTMNetwork::SetInstance(std::vector<Instance *> *ptr_inst) {
+    pptr_sent_->clear();
     for(auto it = ptr_inst->begin(); it != ptr_inst->end(); ++it){
         LSTMNetwork *ptr_base_inst = (LSTMNetwork *)(*it);
-        ComType::Input_Str_Matrix *ptr_input = ptr_base_inst->GetInput();
-        int sent_length = ptr_input->size();
+//        ComType::Input_Str_Matrix *ptr_input = ptr_base_inst->GetInput();
+        Sentence *ptr_input = ptr_base_inst->GetInput();
+        pptr_sent_->push_back(ptr_input->GetSentence());
+        //below code is for linear CRF.
+/*
+        int sent_len = ptr_input->size();
         std::vector<std::string> *ptr_vec = new std::vector<std::string>;
         for(auto itt = ptr_input->begin(); itt != ptr_input->end(); ++itt){
             std::string feature1 = (*itt)[0];
-            std::cout << "feature is "<<feature1<<std::endl;
+            //std::cout << "feature is "<<feature1<<std::endl;
             ptr_vec->push_back(feature1);
         }
         pptr_sent_->push_back(ptr_vec);
+*/
+        //above code is for linear CRF
     }
+
 }

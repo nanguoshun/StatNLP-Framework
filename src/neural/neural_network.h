@@ -28,6 +28,7 @@ public:
     void Initialize(int &argc, char **&argv, unsigned random_seed = 0, bool shared_parameters = false);
     void AllocateNeuralParamSpace();
     int GetNNOutputSize();
+    void ReleaseOutputGradSpace();
     void AddParam();
     virtual void Touch();
     virtual void Forward();
@@ -49,7 +50,7 @@ public:
     int GetParamSize();
     void SetScale(double scale);
     void SetLocalNetworkParams(LocalNetworkParam **ppr_params);
-    virtual int HyperEdgeInput2OutputRowIndex(void *ptr_edgeInput, int output_label) = 0;
+    virtual int HyperEdgeInput2OutputRowIndex(NeuralIO *ptr_io) = 0;
     virtual ComType::Input_Str_Vector* HyperEdgeInput2NNInput(void *ptr_edgeInput) = 0;
     NeuralIO *GetHyperEdgeInputOutput(Network *ptr_network, int parent_k, int children_k_index);
     int GetNNInputID(ComType::Input_Str_Vector *ptr_input);

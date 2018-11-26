@@ -21,6 +21,24 @@ void ReleaseStaticMemory() {
     delete NetworkIDManager::ptr_capacity_vec_;
 }
 
+void GenerateLabelVector(){
+    for (int i = 0; i < Entity::ptr_entity_->size(); ++i) {
+        std::string tag_str = (*Entity::ptr_entity_)[i]->GetForm();
+        if(0 == tag_str.compare("START_TAG") || 0 == tag_str.compare("END_TAG")){
+            continue;
+        }
+        EntityReader::ptr_all_labels_->push_back(tag_str);
+        std::cout << "tag is: " << (*Entity::ptr_entity_)[i]->GetForm() << "," << i << std::endl;
+    }
+}
+
+void InsertUNK(std::unordered_map<std::string, int> *ptr_map){
+    auto it = ptr_map->find(ComParam::UNK);
+    if (it == ptr_map->end()) {
+        ptr_map->insert(std::make_pair(ComParam::UNK, ptr_map->size()));
+    }
+}
+
 int main(int argc, char **argv) {
     std::string file_name_train = "data/conll2003/eng.train";
     std::string file_name_dev = "data/conll2003/eng.testa";
@@ -28,26 +46,26 @@ int main(int argc, char **argv) {
     int train_num = -100;
     int test_num = -100;
     std::unordered_map<std::string, int> *ptr_word2int_map = new std::unordered_map<std::string, int>;
-    std::pair<InstenceVector *, InstenceVector *> training_data_pair = EntityReader::ReadData(file_name_train,
-                                                                                              ptr_word2int_map, "IOBES",
-                                                                                              train_num, true);
+    std::pair<InstenceVector *, InstenceVector *> training_data_pair = EntityReader::ReadData(file_name_train, ptr_word2int_map, "IOBES", train_num, true);
     std::vector<Instance *> *ptr_inst_vec_train = training_data_pair.first;
     std::vector<Instance *> *ptr_inst_vec_train_dup = training_data_pair.second;
     Entity::GenerateEntityVector();
     int size = ptr_inst_vec_train->size();
     std::cout << "the vec size is " << size << std::endl;
     std::cout << "the size of dup vec is "<<ptr_inst_vec_train_dup->size()<<std::endl;
-    std::pair<InstenceVector *, InstenceVector *> test_data_pair = EntityReader::ReadData(file_name_test,
-                                                                                          ptr_word2int_map, "IOB", test_num,
-                                                                                          false,false);
+    std::pair<InstenceVector *, InstenceVector *> test_data_pair = EntityReader::ReadData(file_name_test, ptr_word2int_map, "IOB", test_num, false,false);
     std::vector<Instance *> *ptr_inst_vec_test = test_data_pair.first;
     //size = ptr_inst_vec_test->size();
-    int num_iterations = 1000;
+    int num_iterations = 100;
     GlobalNetworkParam *ptr_g_param = nullptr;
+
+    GenerateLabelVector();
+    InsertUNK(ptr_word2int_map);
+
     if (ComParam::USE_HYBRID_NEURAL_FEATURES == NetworkConfig::Feature_Type) {
-//        ptr_g_param = new GlobalNetworkParam(argc, argv, EntityReader::max_len_, ptr_inst_vec_train->size(),
-//                                             EntityReader::ptr_all_labels_,
-//                                             (NeuralFactory *) NeuralFactory::GetLSTMFactory(), ptr_word2int_map);
+        ptr_g_param = new GlobalNetworkParam(argc, argv, EntityReader::max_len_, ptr_inst_vec_train->size(),
+                                             EntityReader::ptr_all_labels_,
+                                             ComType::NeuralType::LSTM, ptr_word2int_map);
     } else if (ComParam::USE_HANDCRAFTED_FEATURES == NetworkConfig::Feature_Type) {
         ptr_g_param = new GlobalNetworkParam(argc, argv, EntityReader::max_len_, ptr_inst_vec_train->size(),
                                              EntityReader::ptr_all_labels_);
@@ -72,5 +90,4 @@ int main(int argc, char **argv) {
     ReleaseStaticMemory();
     return 0;
 }
-
 

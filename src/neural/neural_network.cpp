@@ -27,8 +27,11 @@ NeuralNetwork::NeuralNetwork() {
 NeuralNetwork::~NeuralNetwork() {
     delete ptr_model_;
     delete ptr_nnInput2Id_;
-    delete ptr_output_;
-    delete ptr_output_grad_vec_;
+    delete []ptr_output_;
+    delete []ptr_output_grad_vec_;
+    delete pptr_sent_;
+    delete []ptr_params_;
+    delete []ptr_params_grad_;
 }
 
 void NeuralNetwork::Initialize(int &argc, char **&argv, unsigned int random_seed, bool shared_parameters) {
@@ -61,6 +64,7 @@ void NeuralNetwork::Touch() {
 
 }
 
+
 void NeuralNetwork::Forward() {
     iteration_count_++;
     //call back the forward function
@@ -77,6 +81,10 @@ void NeuralNetwork::Forward() {
     if (NetworkConfig::USE_BATCH_TRAINING && is_training_) {
         //TODO:
     } else {
+        if(nullptr != ptr_cg_){
+            delete ptr_cg_;
+            ptr_cg_ = nullptr;
+        }
         ptr_cg_ = new dynet::ComputationGraph();//DynetFunctionHelper::NewGraph(ptr_cg_);
         output_expression_ = BuildForwardGraph(pptr_sent_); // is it a completed sentence???
         dynet::Tensor output_tensor = ptr_cg_->forward(output_expression_);
@@ -180,7 +188,7 @@ void NeuralNetwork::CopyParams2Dynet(bool printtest) {
                     std::cout << size_lookup << "th params before: " << ptr_params_[param_index]<<std::endl;
                 }
             } else {
-                    std::cout << size_lookup << "th params is: " << ptr_params_[param_index] <<std::endl;
+       //             std::cout << size_lookup << "th params is: " << ptr_params_[param_index] <<std::endl;
                     dynet::TensorTools::set_element(tensor, i, ptr_params_[param_index]);
             }
             ++param_index;
@@ -262,32 +270,21 @@ void NeuralNetwork::CopyParams2Dynet(bool printtest) {
         double val = 0;
         NeuralIO *ptr_io = GetHyperEdgeInputOutput(ptr_network, parent_k, children_k_index);
         if (nullptr != ptr_io) {
-            ComType::Neural_Input *ptr_edge_input = ptr_io->GetInput();
-#ifdef DEBUG_NN
-            ComType::Input_Str_Vector *ptr_input_vec = ptr_edge_input->first;
-            std::cout << "get score input is: ";
-            for(auto it = ptr_input_vec->begin(); it != ptr_input_vec->end(); ++it){
-               std::cout <<(*it)<<" ";
-            }
-            std::cout <<std::endl;
-#endif
-            int output_label = ptr_io->GetOutput();
-            int idx = HyperEdgeInput2OutputRowIndex(ptr_edge_input, output_label);
-            ptr_output_grad_[idx] -= count;
+            int idx = HyperEdgeInput2OutputRowIndex(ptr_io);
+            ptr_output_grad_[idx] -= count; //caution: may have scyornlized issues for MLP
         }
     }
-
 
     void NeuralNetwork::SetTraining(bool istraining) {
         is_training_ = istraining;
     }
 /**
- * Get the L2 param
+ * Get the L2 param. Reguliraztion for internal params of NN.
  * @return
  */
     double NeuralNetwork::GetL2Param() {
         if (nullptr != ptr_params_) {
-            return MathCalc::SquareVector(ptr_params_, param_size_);
+            return MathCalc::SquareVector(ptr_params_, param_size_); //FIXME: WHY?
         } else {
             return 0.0;
         }
@@ -322,18 +319,7 @@ void NeuralNetwork::CopyParams2Dynet(bool printtest) {
         double val = 0;
         NeuralIO *ptr_io = GetHyperEdgeInputOutput(ptr_network, parent_k, childeren_k_index);
         if (nullptr != ptr_io) {
-            ComType::Neural_Input *ptr_edge_input = ptr_io->GetInput();
-#ifdef DEBUG_NN_
-            ComType::Input_Str_Vector *ptr_input_vec = ptr_edge_input->first;
-            std::cout << "get score input is: ";
-            for(auto it = ptr_input_vec->begin(); it != ptr_input_vec->end(); ++it){
-               std::cout <<(*it)<<" ";
-            }
-            std::cout <<std::endl;
-#endif
-            int output_label = ptr_io->GetOutput();
-            int index = HyperEdgeInput2OutputRowIndex(ptr_edge_input, output_label);// * label_size_ + output_label ;
-            //int index = HyperEdgeInput2OutputRowIndex(ptr_edge_input) * label_size_ + output_label ;
+            int index = HyperEdgeInput2OutputRowIndex(ptr_io);// * label_size_ + output_label ;
             val = ptr_output_[index];
         }
         return val;
@@ -366,6 +352,14 @@ void NeuralNetwork::CopyParams2Dynet(bool printtest) {
         }
     }
 
+    void NeuralNetwork::ReleaseOutputGradSpace() {
+        delete [] ptr_output_;
+        delete [] ptr_output_grad_;
+    }
+
+    /**
+     * Allocate space for output array and gradient array.
+     */
     void NeuralNetwork::AllocateOutputSpace() {
         int num_of_sentence = pptr_sent_->size();
         output_size_ = num_of_sentence * max_len_ * label_size_;
@@ -375,6 +369,7 @@ void NeuralNetwork::CopyParams2Dynet(bool printtest) {
             ptr_output_[i] = 0;
             ptr_output_grad_[i] = 0;
         }
+        std::cout << "output size is: "<<output_size_<<std::endl;
     }
 
 /**
@@ -436,6 +431,13 @@ void NeuralNetwork::CopyParams2Dynet(bool printtest) {
         return id;
     }
 
+    /**
+     *
+     * @param ptr_network: a graph b sentence)
+     * @param parent_k
+     * @param children_k_index
+     * @return
+     */
     NeuralIO *NeuralNetwork::GetHyperEdgeInputOutput(Network *ptr_network, int parent_k, int children_k_index) {
         return pptr_param_l_[ptr_network->GetThreadId()]->GetHyperEdgeIO(ptr_network, net_id_, parent_k,
                                                                          children_k_index);

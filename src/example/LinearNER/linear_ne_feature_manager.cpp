@@ -71,16 +71,16 @@ FeatureArray* LinearNEFeatureManager::ExtractHelper(Network *ptr_network, int pa
             ptr_nn_input_pair->first = ptr_input_vec;
             ptr_nn_input_pair->second = pos;
             /* noted that the output is tag_id - 1, why tag_Id - 1 ????? */
-            AddNeural(ptr_network,0,parent,children_k_index,ptr_nn_input_pair,tag_Id - 1);
+            AddNeural(ptr_network,0,parent,children_k_index,ptr_nn_input_pair,tag_Id);
         }
-    } else if(ComParam::USE_HANDCRAFTED_FEATURES == NetworkConfig::Feature_Type){ /* emission */
-        std::string word = ptr_inst->GetInput()->Get(pos)->GetForm();
-        std::string type = ptr_feature_type_[0].type + ":" + std::to_string(0);
-        int featureID =  this->ptr_param_g_->ToFeature(type,entity_str,word);
-        ptr_features = new FeatureArray(new int[1]{featureID}, 1, ptr_features);
-        tmp_count_e_ ++;
     } else if(ComParam::USE_PURE_NEURAL_FEATURES){
 
     }
+    /* emission */
+    std::string word = ptr_inst->GetInput()->Get(pos)->GetForm();
+    type = ptr_feature_type_[0].type + ":" + std::to_string(0);
+    featureID =  this->ptr_param_g_->ToFeature(type,entity_str,word);
+    ptr_features = new FeatureArray(new int[1]{featureID}, 1, ptr_features);
+    tmp_count_e_ ++;
     return ptr_features;
 }

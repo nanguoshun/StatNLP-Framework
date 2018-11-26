@@ -10,9 +10,15 @@ LSTMFactory::LSTMFactory() {
 
 LSTMFactory::~LSTMFactory() {
    for(auto it = ptr_nn_vec_->begin(); it != ptr_nn_vec_->end(); ++it){
-       delete (*it);
+       if(nullptr != (*it)){
+           delete (*it);
+           (*it) = nullptr;
+       }
    }
-   delete ptr_nn_vec_;
+   if(nullptr != ptr_nn_vec_){
+       delete ptr_nn_vec_;
+       ptr_nn_vec_ = nullptr;
+   }
 }
 
 void LSTMFactory::InitNNParameter(int &argc, char **&argv, int vocab_size, int label_size, unsigned random_seed, bool shared_parameters) {

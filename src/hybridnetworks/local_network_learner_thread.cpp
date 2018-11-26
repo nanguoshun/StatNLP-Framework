@@ -98,7 +98,7 @@ void LocalNetworkLearnerThread::ReleaseLocalParamCache() {
             if(0 != node_no){ /* the first node is the Leaf node and it is a static memory, and no need release here*/
                 std::vector<int> vec = NetworkIDManager::ToHybridNodeArray(node_id);
                 int type = vec[vec.size()-1];
-                if(type == ComType::ROOT){ continue;} /*if the */
+                if(type == ComType::NODE_TYPES::ROOT){ continue;} /*if the */
                 //std::cout << "word, pos, tag, type"<<vec[0]<<" "<<vec[1]<<" "<<vec[2]<<" "<<vec[3]<<std::endl;
                 int num_of_hyperedge = ptr_network->GetChildrens_Size(node_no);
                 for(int hyperedgeNo = 0; hyperedgeNo < num_of_hyperedge; ++hyperedgeNo){
@@ -133,7 +133,12 @@ void LocalNetworkLearnerThread::ReleaseLocalParamNeuralCache() {
                 int num_of_node = ptr_network->CountNodes();
                 for(int node_no = 0; node_no < num_of_node; ++node_no){
                     /*please check the leaf node, i.e, node_no ==0*/
+                    long node_id = ptr_network->GetNode(node_no);
                     if(0 != node_no){
+                        std::vector<int> vec = NetworkIDManager::ToHybridNodeArray(node_id);
+                        int type = vec[vec.size()-1];
+                        if(type == ComType::NODE_TYPES::ROOT){ continue;} /**/
+                        //std::cout << "pos, tag, type "<<vec[0]<<" "<<vec[1]<<" "<<vec[2]<<" "<<std::endl;
                         int num_of_hyperedge = ptr_network->GetChildrens_Size(node_no);
                         for(int hyperedgeNo = 0; hyperedgeNo < num_of_hyperedge; ++hyperedgeNo){
                             NeuralIO *ptr_io = ptr_neuralIO[net][networkID][node_no][hyperedgeNo];

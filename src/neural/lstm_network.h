@@ -16,19 +16,19 @@
 //#include "dynet/examples/cpp-utils/cl-args.h"
 #include "dynet_interface.h"
 #include "src/common/types/base_instance.h"
+#include "src/common/types/sentence.h"
+#include "src/hybridnetworks/network_id_manager.h"
 
-//class LSTMNetwork: public VanillaRNN, public dynet::LSTMBuilder,public BaseInstance<LSTMNetwork, ComType::Input_Str_Matrix, ComType::Label_Str_Vector>{
-class LSTMNetwork: public VanillaRNN, public BaseInstance<LSTMNetwork, ComType::Input_Str_Matrix, ComType::Label_Str_Vector>{
+//class LSTMNetwork: public VanillaRNN, public BaseInstance<LSTMNetwork, ComType::Input_Str_Matrix, ComType::Label_Str_Vector>{
+class LSTMNetwork: public VanillaRNN, public BaseInstance<LSTMNetwork, Sentence, ComType::Label_Str_Vector>{
 public:
     LSTMNetwork(LSTMSuperParam &param);
     LSTMNetwork();
-    //LSTMNetwork(int& argc, char**& argv);
     ~LSTMNetwork();
     void Touch() override;
     //void Forward();
     void BackWard() override;
     void Update(double count, Network *ptr_network, int parent_k, int children_k_index) override;
-                                                  bool apply_dropout);
     unsigned ReadData(const std::string& filename, std::vector<std::vector<int>>& data);
     void Initialize(int &argc, char **&argv);
     dynet::DynetParams ExtractParam(int& argc, char**& argv);
@@ -36,7 +36,7 @@ public:
 
     dynet::Expression BuildForwardGraph(std::vector<std::vector<std::string>*> *ptr_input) override;
 
-    int HyperEdgeInput2OutputRowIndex(void *ptr_edgeInput,int output_label) override;
+    int HyperEdgeInput2OutputRowIndex(NeuralIO *ptr_io) override;
 
     ComType::Input_Str_Vector *HyperEdgeInput2NNInput(void *ptr_edgeInput) override;
 

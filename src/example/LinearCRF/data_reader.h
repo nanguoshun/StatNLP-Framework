@@ -98,7 +98,7 @@ public:
                 }
             }
         }
-        //duplicate the data
+        //insert the UNK
         if (!istest) {
             auto it = ptr_word2int->find(ComParam::UNK);
             if (it == ptr_word2int->end()) {
